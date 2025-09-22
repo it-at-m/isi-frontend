@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   CollectionModelObject,
   EntityModelBauvorhaben,
-} from '../models/index';
+} from '../models';
 import {
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
     EntityModelBauvorhabenFromJSON,
     EntityModelBauvorhabenToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreatePropertyReferenceInfrastruktureinrichtungPatchRequest {
     id: string;
@@ -62,18 +62,12 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
      * patch-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async createPropertyReferenceInfrastruktureinrichtungPatchRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPatch.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPatch().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPatch.');
         }
 
         const queryParameters: any = {};
@@ -82,16 +76,12 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -100,34 +90,21 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     /**
      * patch-bauvorhaben-by-infrastruktureinrichtung-Id
      */
-    async createPropertyReferenceInfrastruktureinrichtungPatch(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async createPropertyReferenceInfrastruktureinrichtungPatch(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.createPropertyReferenceInfrastruktureinrichtungPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * update-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async createPropertyReferenceInfrastruktureinrichtungPutRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPut.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPut().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceInfrastruktureinrichtungPut.');
         }
 
         const queryParameters: any = {};
@@ -136,16 +113,12 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -154,49 +127,29 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     /**
      * update-bauvorhaben-by-infrastruktureinrichtung-Id
      */
-    async createPropertyReferenceInfrastruktureinrichtungPut(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async createPropertyReferenceInfrastruktureinrichtungPut(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.createPropertyReferenceInfrastruktureinrichtungPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * delete-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async deletePropertyReferenceIdInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceIdInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdInfrastruktureinrichtungDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdInfrastruktureinrichtungDelete.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdInfrastruktureinrichtungDelete().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdInfrastruktureinrichtungDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -216,23 +169,16 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
      * delete-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async deletePropertyReferenceInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceInfrastruktureinrichtungDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceInfrastruktureinrichtungDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -252,23 +198,16 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
      * get-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async followPropertyReferenceInfrastruktureinrichtungGetRaw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -289,31 +228,20 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
      * get-bauvorhaben-by-infrastruktureinrichtung-Id
      */
     async followPropertyReferenceInfrastruktureinrichtungGet1Raw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet1.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet1().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceInfrastruktureinrichtungGet1.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

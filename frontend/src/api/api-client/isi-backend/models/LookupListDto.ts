@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { LookupEntryDto } from './LookupEntryDto';
 import {
     LookupEntryDtoFromJSON,
     LookupEntryDtoFromJSONTyped,
     LookupEntryDtoToJSON,
-    LookupEntryDtoToJSONTyped,
 } from './LookupEntryDto';
 
 /**
@@ -38,8 +37,10 @@ export interface LookupListDto {
 /**
  * Check if a given object implements the LookupListDto interface.
  */
-export function instanceOfLookupListDto(value: object): value is LookupListDto {
-    return true;
+export function instanceOfLookupListDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LookupListDtoFromJSON(json: any): LookupListDto {
@@ -47,27 +48,25 @@ export function LookupListDtoFromJSON(json: any): LookupListDto {
 }
 
 export function LookupListDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): LookupListDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'list': json['list'] == null ? undefined : ((json['list'] as Array<any>).map(LookupEntryDtoFromJSON)),
+        'list': !exists(json, 'list') ? undefined : ((json['list'] as Array<any>).map(LookupEntryDtoFromJSON)),
     };
 }
 
-export function LookupListDtoToJSON(json: any): LookupListDto {
-    return LookupListDtoToJSONTyped(json, false);
-}
-
-export function LookupListDtoToJSONTyped(value?: LookupListDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function LookupListDtoToJSON(value?: LookupListDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'list': value['list'] == null ? undefined : ((value['list'] as Array<any>).map(LookupEntryDtoToJSON)),
+        'list': value.list === undefined ? undefined : ((value.list as Array<any>).map(LookupEntryDtoToJSON)),
     };
 }
 

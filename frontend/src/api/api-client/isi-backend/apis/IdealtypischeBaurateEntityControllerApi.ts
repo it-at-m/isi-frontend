@@ -18,7 +18,7 @@ import type {
   EntityModelIdealtypischeBaurate,
   IdealtypischeBaurateRequestBody,
   PagedModelEntityModelIdealtypischeBaurate,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelIdealtypischeBaurateFromJSON,
     EntityModelIdealtypischeBaurateToJSON,
@@ -26,7 +26,7 @@ import {
     IdealtypischeBaurateRequestBodyToJSON,
     PagedModelEntityModelIdealtypischeBaurateFromJSON,
     PagedModelEntityModelIdealtypischeBaurateToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceIdealtypischebaurateDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
      * delete-idealtypischebaurate
      */
     async deleteItemResourceIdealtypischebaurateDeleteRaw(requestParameters: DeleteItemResourceIdealtypischebaurateDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceIdealtypischebaurateDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceIdealtypischebaurateDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceIdealtypischebaurateGetRaw(requestParameters: GetCollectionResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelIdealtypischeBaurate>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/idealtypischeBaurates`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
      * get-idealtypischebaurate
      */
     async getItemResourceIdealtypischebaurateGetRaw(requestParameters: GetItemResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceIdealtypischebaurateGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceIdealtypischebaurateGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
      * patch-idealtypischebaurate
      */
     async patchItemResourceIdealtypischebauratePatchRaw(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceIdealtypischebauratePatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceIdealtypischebauratePatch.');
         }
 
-        if (requestParameters['idealtypischeBaurateRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'idealtypischeBaurateRequestBody',
-                'Required parameter "idealtypischeBaurateRequestBody" was null or undefined when calling patchItemResourceIdealtypischebauratePatch().'
-            );
+        if (requestParameters.idealtypischeBaurateRequestBody === null || requestParameters.idealtypischeBaurateRequestBody === undefined) {
+            throw new runtime.RequiredError('idealtypischeBaurateRequestBody','Required parameter requestParameters.idealtypischeBaurateRequestBody was null or undefined when calling patchItemResourceIdealtypischebauratePatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
+            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters.idealtypischeBaurateRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-idealtypischebaurate
      */
-    async patchItemResourceIdealtypischebauratePatch(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelIdealtypischeBaurate | null | undefined > {
+    async patchItemResourceIdealtypischebauratePatch(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelIdealtypischeBaurate> {
         const response = await this.patchItemResourceIdealtypischebauratePatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-idealtypischebaurate
      */
     async postCollectionResourceIdealtypischebauratePostRaw(requestParameters: PostCollectionResourceIdealtypischebauratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
-        if (requestParameters['idealtypischeBaurateRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'idealtypischeBaurateRequestBody',
-                'Required parameter "idealtypischeBaurateRequestBody" was null or undefined when calling postCollectionResourceIdealtypischebauratePost().'
-            );
+        if (requestParameters.idealtypischeBaurateRequestBody === null || requestParameters.idealtypischeBaurateRequestBody === undefined) {
+            throw new runtime.RequiredError('idealtypischeBaurateRequestBody','Required parameter requestParameters.idealtypischeBaurateRequestBody was null or undefined when calling postCollectionResourceIdealtypischebauratePost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/idealtypischeBaurates`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
+            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters.idealtypischeBaurateRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
      * update-idealtypischebaurate
      */
     async putItemResourceIdealtypischebauratePutRaw(requestParameters: PutItemResourceIdealtypischebauratePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceIdealtypischebauratePut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceIdealtypischebauratePut.');
         }
 
-        if (requestParameters['idealtypischeBaurateRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'idealtypischeBaurateRequestBody',
-                'Required parameter "idealtypischeBaurateRequestBody" was null or undefined when calling putItemResourceIdealtypischebauratePut().'
-            );
+        if (requestParameters.idealtypischeBaurateRequestBody === null || requestParameters.idealtypischeBaurateRequestBody === undefined) {
+            throw new runtime.RequiredError('idealtypischeBaurateRequestBody','Required parameter requestParameters.idealtypischeBaurateRequestBody was null or undefined when calling putItemResourceIdealtypischebauratePut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
+            body: IdealtypischeBaurateRequestBodyToJSON(requestParameters.idealtypischeBaurateRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-idealtypischebaurate
      */
-    async putItemResourceIdealtypischebauratePut(requestParameters: PutItemResourceIdealtypischebauratePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelIdealtypischeBaurate | null | undefined > {
+    async putItemResourceIdealtypischebauratePut(requestParameters: PutItemResourceIdealtypischebauratePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelIdealtypischeBaurate> {
         const response = await this.putItemResourceIdealtypischebauratePutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

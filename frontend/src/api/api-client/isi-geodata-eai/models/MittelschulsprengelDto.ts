@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -78,8 +78,10 @@ export interface MittelschulsprengelDto {
 /**
  * Check if a given object implements the MittelschulsprengelDto interface.
  */
-export function instanceOfMittelschulsprengelDto(value: object): value is MittelschulsprengelDto {
-    return true;
+export function instanceOfMittelschulsprengelDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function MittelschulsprengelDtoFromJSON(json: any): MittelschulsprengelDto {
@@ -87,43 +89,41 @@ export function MittelschulsprengelDtoFromJSON(json: any): MittelschulsprengelDt
 }
 
 export function MittelschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MittelschulsprengelDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'objectId': json['objectId'] == null ? undefined : json['objectId'],
-        'ebene': json['ebene'] == null ? undefined : json['ebene'],
-        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'schulnummer': json['schulnummer'] == null ? undefined : json['schulnummer'],
-        'verbundnummer': json['verbundnummer'] == null ? undefined : json['verbundnummer'],
-        'verbundname': json['verbundname'] == null ? undefined : json['verbundname'],
-        'ebeneBedeutung': json['ebeneBedeutung'] == null ? undefined : json['ebeneBedeutung'],
-        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
-        'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
+        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
+        'ebene': !exists(json, 'ebene') ? undefined : json['ebene'],
+        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
+        'schulnummer': !exists(json, 'schulnummer') ? undefined : json['schulnummer'],
+        'verbundnummer': !exists(json, 'verbundnummer') ? undefined : json['verbundnummer'],
+        'verbundname': !exists(json, 'verbundname') ? undefined : json['verbundname'],
+        'ebeneBedeutung': !exists(json, 'ebeneBedeutung') ? undefined : json['ebeneBedeutung'],
+        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
+        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
     };
 }
 
-export function MittelschulsprengelDtoToJSON(json: any): MittelschulsprengelDto {
-    return MittelschulsprengelDtoToJSONTyped(json, false);
-}
-
-export function MittelschulsprengelDtoToJSONTyped(value?: MittelschulsprengelDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MittelschulsprengelDtoToJSON(value?: MittelschulsprengelDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'objectId': value['objectId'],
-        'ebene': value['ebene'],
-        'flaecheQm': value['flaecheQm'],
-        'schulnummer': value['schulnummer'],
-        'verbundnummer': value['verbundnummer'],
-        'verbundname': value['verbundname'],
-        'ebeneBedeutung': value['ebeneBedeutung'],
-        'xcoordinate': value['xcoordinate'],
-        'ycoordinate': value['ycoordinate'],
+        'objectId': value.objectId,
+        'ebene': value.ebene,
+        'flaecheQm': value.flaecheQm,
+        'schulnummer': value.schulnummer,
+        'verbundnummer': value.verbundnummer,
+        'verbundname': value.verbundname,
+        'ebeneBedeutung': value.ebeneBedeutung,
+        'xcoordinate': value.xcoordinate,
+        'ycoordinate': value.ycoordinate,
     };
 }
 

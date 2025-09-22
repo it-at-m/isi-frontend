@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
   TransitionDto,
-} from '../models/index';
+} from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
     TransitionDtoFromJSON,
     TransitionDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface AbbrechenAbfrageRequest {
     id: string;
@@ -88,27 +88,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status ABBRUCH
      */
     async abbrechenAbfrageRaw(requestParameters: AbbrechenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling abbrechenAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling abbrechenAbfrage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/abbrechen`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/abbrechen`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -128,27 +121,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status EINPLANUNG_BEDARFE
      */
     async bedarfsmeldungErfolgtRaw(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling bedarfsmeldungErfolgt().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling bedarfsmeldungErfolgt.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/bedarfsmeldung-erfolgt`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/bedarfsmeldung-erfolgt`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -168,27 +154,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
      */
     async erledigtMitFachreferatRaw(requestParameters: ErledigtMitFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling erledigtMitFachreferat().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erledigtMitFachreferat.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/erledigt-mit-fachreferat`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/erledigt-mit-fachreferat`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -208,27 +187,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
      */
     async erledigtOhneFachreferatRaw(requestParameters: ErledigtOhneFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling erledigtOhneFachreferat().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erledigtOhneFachreferat.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/erledigt-ohne-fachreferat`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/erledigt-ohne-fachreferat`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -248,27 +220,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async erneuteBearbeitungSachbearbeitungRaw(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling erneuteBearbeitungSachbearbeitung().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling erneuteBearbeitungSachbearbeitung.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -288,27 +253,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status UEBERMITTELT_ZUR_BEARBEITUNG
      */
     async freigabeAbfrageRaw(requestParameters: FreigabeAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling freigabeAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling freigabeAbfrage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/freigabe`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/freigabe`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -328,27 +286,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async inBearbeitungSetzenAbfrageRaw(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling inBearbeitungSetzenAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling inBearbeitungSetzenAbfrage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/in-bearbeitung-setzen`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/in-bearbeitung-setzen`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -368,23 +319,16 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status
      */
     async transitionsAbfrageRaw(requestParameters: TransitionsAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TransitionDto>>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling transitionsAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling transitionsAbfrage.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/transitions`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/transitions`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -405,27 +349,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status EINPFLEGEN_BEDARFSMELDUNG
      */
     async verschickenDerStellungnahmeRaw(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling verschickenDerStellungnahme().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling verschickenDerStellungnahme.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/verschicken-der-stellungnahme`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/verschicken-der-stellungnahme`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -445,27 +382,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status ANGELEGT
      */
     async zurueckAnAbfrageerstellungAbfrageRaw(requestParameters: ZurueckAnAbfrageerstellungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling zurueckAnAbfrageerstellungAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling zurueckAnAbfrageerstellungAbfrage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/zurueck-an-abfrageerstellung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/zurueck-an-abfrageerstellung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -485,27 +415,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
      * Setzt eine Abfrage auf den Status START_BEARBEITUNG
      */
     async zurueckAnSachbearbeitungAbfrageRaw(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling zurueckAnSachbearbeitungAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling zurueckAnSachbearbeitungAbfrage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['anmerkung'] != null) {
-            queryParameters['anmerkung'] = requestParameters['anmerkung'];
+        if (requestParameters.anmerkung !== undefined) {
+            queryParameters['anmerkung'] = requestParameters.anmerkung;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage-status/{id}/zurueck-an-sachbearbeitung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage-status/{id}/zurueck-an-sachbearbeitung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,

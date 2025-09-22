@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,8 +48,10 @@ export interface TransitionDto {
 /**
  * Check if a given object implements the TransitionDto interface.
  */
-export function instanceOfTransitionDto(value: object): value is TransitionDto {
-    return true;
+export function instanceOfTransitionDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function TransitionDtoFromJSON(json: any): TransitionDto {
@@ -57,33 +59,31 @@ export function TransitionDtoFromJSON(json: any): TransitionDto {
 }
 
 export function TransitionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransitionDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'url': json['url'] == null ? undefined : json['url'],
-        'buttonName': json['buttonName'] == null ? undefined : json['buttonName'],
-        'index': json['index'] == null ? undefined : json['index'],
-        'dialogText': json['dialogText'] == null ? undefined : json['dialogText'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'buttonName': !exists(json, 'buttonName') ? undefined : json['buttonName'],
+        'index': !exists(json, 'index') ? undefined : json['index'],
+        'dialogText': !exists(json, 'dialogText') ? undefined : json['dialogText'],
     };
 }
 
-export function TransitionDtoToJSON(json: any): TransitionDto {
-    return TransitionDtoToJSONTyped(json, false);
-}
-
-export function TransitionDtoToJSONTyped(value?: TransitionDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function TransitionDtoToJSON(value?: TransitionDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'url': value['url'],
-        'buttonName': value['buttonName'],
-        'index': value['index'],
-        'dialogText': value['dialogText'],
+        'url': value.url,
+        'buttonName': value.buttonName,
+        'index': value.index,
+        'dialogText': value.dialogText,
     };
 }
 

@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
-    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 import type { FlurstueckDto } from './FlurstueckDto';
 import {
     FlurstueckDtoFromJSON,
     FlurstueckDtoFromJSONTyped,
     FlurstueckDtoToJSON,
-    FlurstueckDtoToJSONTyped,
 } from './FlurstueckDto';
 
 /**
@@ -57,8 +55,10 @@ export interface FeatureDtoFlurstueckDto {
 /**
  * Check if a given object implements the FeatureDtoFlurstueckDto interface.
  */
-export function instanceOfFeatureDtoFlurstueckDto(value: object): value is FeatureDtoFlurstueckDto {
-    return true;
+export function instanceOfFeatureDtoFlurstueckDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueckDto {
@@ -66,31 +66,29 @@ export function FeatureDtoFlurstueckDtoFromJSON(json: any): FeatureDtoFlurstueck
 }
 
 export function FeatureDtoFlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoFlurstueckDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': json['properties'] == null ? undefined : FlurstueckDtoFromJSON(json['properties']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': !exists(json, 'properties') ? undefined : FlurstueckDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoFlurstueckDtoToJSON(json: any): FeatureDtoFlurstueckDto {
-    return FeatureDtoFlurstueckDtoToJSONTyped(json, false);
-}
-
-export function FeatureDtoFlurstueckDtoToJSONTyped(value?: FeatureDtoFlurstueckDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FeatureDtoFlurstueckDtoToJSON(value?: FeatureDtoFlurstueckDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
-        'properties': FlurstueckDtoToJSON(value['properties']),
+        'type': value.type,
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
+        'properties': FlurstueckDtoToJSON(value.properties),
     };
 }
 

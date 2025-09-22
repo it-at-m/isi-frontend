@@ -12,49 +12,46 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
-import {
-    VerortungMultiPolygonDtoFromJSON,
-    VerortungMultiPolygonDtoFromJSONTyped,
-    VerortungMultiPolygonDtoToJSON,
-    VerortungMultiPolygonDtoToJSONTyped,
-} from './VerortungMultiPolygonDto';
-import type { AbfragevarianteWeiteresVerfahrenAngelegtDto } from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
-import {
-    AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON,
-    AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSONTyped,
-    AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON,
-    AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSONTyped,
-} from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageAngelegtDto } from './AbfrageAngelegtDto';
 import {
     AbfrageAngelegtDtoFromJSON,
     AbfrageAngelegtDtoFromJSONTyped,
     AbfrageAngelegtDtoToJSON,
-    AbfrageAngelegtDtoToJSONTyped,
 } from './AbfrageAngelegtDto';
-import type { UncertainBoolean } from './UncertainBoolean';
+import type { AbfragevarianteWeiteresVerfahrenAngelegtDto } from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
 import {
-    UncertainBooleanFromJSON,
-    UncertainBooleanFromJSONTyped,
-    UncertainBooleanToJSON,
-    UncertainBooleanToJSONTyped,
-} from './UncertainBoolean';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
-} from './DokumentDto';
+    AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON,
+    AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSONTyped,
+    AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON,
+} from './AbfragevarianteWeiteresVerfahrenAngelegtDto';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
 } from './AdresseDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+} from './DokumentDto';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+} from './UncertainBoolean';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import {
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -141,14 +138,14 @@ export interface WeiteresVerfahrenAngelegtDto extends AbfrageAngelegtDto {
  * @export
  */
 export const WeiteresVerfahrenAngelegtDtoSobonJahrEnum = {
-    Jahr1995: 'JAHR_1995',
-    Jahr1997: 'JAHR_1997',
-    Jahr2001: 'JAHR_2001',
-    Jahr2006: 'JAHR_2006',
-    Jahr2012: 'JAHR_2012',
-    Jahr2017: 'JAHR_2017',
-    Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
+    _1995: 'JAHR_1995',
+    _1997: 'JAHR_1997',
+    _2001: 'JAHR_2001',
+    _2006: 'JAHR_2006',
+    _2012: 'JAHR_2012',
+    _2017: 'JAHR_2017',
+    _2017Plus: 'JAHR_2017_PLUS',
+    _2021: 'JAHR_2021'
 } as const;
 export type WeiteresVerfahrenAngelegtDtoSobonJahrEnum = typeof WeiteresVerfahrenAngelegtDtoSobonJahrEnum[keyof typeof WeiteresVerfahrenAngelegtDtoSobonJahrEnum];
 
@@ -182,13 +179,15 @@ export type WeiteresVerfahrenAngelegtDtoStandVerfahrenEnum = typeof WeiteresVerf
 /**
  * Check if a given object implements the WeiteresVerfahrenAngelegtDto interface.
  */
-export function instanceOfWeiteresVerfahrenAngelegtDto(value: object): value is WeiteresVerfahrenAngelegtDto {
-    if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
-    if (!('standVerfahren' in value) || value['standVerfahren'] === undefined) return false;
-    if (!('fristBearbeitung' in value) || value['fristBearbeitung'] === undefined) return false;
-    if (!('mitzeichnungBeschlussentwurf' in value) || value['mitzeichnungBeschlussentwurf'] === undefined) return false;
-    if (!('abfragevariantenWeiteresVerfahren' in value) || value['abfragevariantenWeiteresVerfahren'] === undefined) return false;
-    return true;
+export function instanceOfWeiteresVerfahrenAngelegtDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "sobonRelevant" in value;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "fristBearbeitung" in value;
+    isInstance = isInstance && "mitzeichnungBeschlussentwurf" in value;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+
+    return isInstance;
 }
 
 export function WeiteresVerfahrenAngelegtDtoFromJSON(json: any): WeiteresVerfahrenAngelegtDto {
@@ -196,58 +195,49 @@ export function WeiteresVerfahrenAngelegtDtoFromJSON(json: any): WeiteresVerfahr
 }
 
 export function WeiteresVerfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenAngelegtDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageAngelegtDtoFromJSONTyped(json, true),
-        'aktenzeichenProLbk': json['aktenzeichenProLbk'] == null ? undefined : json['aktenzeichenProLbk'],
-        'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
+        ...AbfrageAngelegtDtoFromJSONTyped(json, ignoreDiscriminator),
+        'aktenzeichenProLbk': !exists(json, 'aktenzeichenProLbk') ? undefined : json['aktenzeichenProLbk'],
+        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
-        'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
+        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'standVerfahren': json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
-        'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
+        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
         'mitzeichnungBeschlussentwurf': UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON)),
     };
 }
 
-export function WeiteresVerfahrenAngelegtDtoToJSON(json: any): WeiteresVerfahrenAngelegtDto {
-    return WeiteresVerfahrenAngelegtDtoToJSONTyped(json, false);
-}
-
-export function WeiteresVerfahrenAngelegtDtoToJSONTyped(value?: WeiteresVerfahrenAngelegtDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WeiteresVerfahrenAngelegtDtoToJSON(value?: WeiteresVerfahrenAngelegtDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageAngelegtDtoToJSONTyped(value, true),
-        'aktenzeichenProLbk': value['aktenzeichenProLbk'],
-        'bebauungsplannummer': value['bebauungsplannummer'],
-        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
-        'sobonJahr': value['sobonJahr'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
-        'adresse': AdresseDtoToJSON(value['adresse']),
-        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': ((value['fristBearbeitung']).toISOString().substring(0,10)),
-        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
-        'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
+        ...AbfrageAngelegtDtoToJSON(value),
+        'aktenzeichenProLbk': value.aktenzeichenProLbk,
+        'bebauungsplannummer': value.bebauungsplannummer,
+        'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
+        'sobonJahr': value.sobonJahr,
+        'standVerfahren': value.standVerfahren,
+        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
+        'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'fristBearbeitung': (value.fristBearbeitung.toISOString().substr(0,10)),
+        'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value.mitzeichnungBeschlussentwurf),
+        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
     };
 }
 

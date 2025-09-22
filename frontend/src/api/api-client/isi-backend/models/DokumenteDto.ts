@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
 } from './DokumentDto';
 
 /**
@@ -68,8 +67,10 @@ export interface DokumenteDto {
 /**
  * Check if a given object implements the DokumenteDto interface.
  */
-export function instanceOfDokumenteDto(value: object): value is DokumenteDto {
-    return true;
+export function instanceOfDokumenteDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function DokumenteDtoFromJSON(json: any): DokumenteDto {
@@ -77,37 +78,35 @@ export function DokumenteDtoFromJSON(json: any): DokumenteDto {
 }
 
 export function DokumenteDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): DokumenteDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'pageNumber': json['pageNumber'] == null ? undefined : json['pageNumber'],
-        'pageSize': json['pageSize'] == null ? undefined : json['pageSize'],
-        'totalElements': json['totalElements'] == null ? undefined : json['totalElements'],
-        'totalPages': json['totalPages'] == null ? undefined : json['totalPages'],
-        'last': json['last'] == null ? undefined : json['last'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'pageNumber': !exists(json, 'pageNumber') ? undefined : json['pageNumber'],
+        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
+        'totalElements': !exists(json, 'totalElements') ? undefined : json['totalElements'],
+        'totalPages': !exists(json, 'totalPages') ? undefined : json['totalPages'],
+        'last': !exists(json, 'last') ? undefined : json['last'],
     };
 }
 
-export function DokumenteDtoToJSON(json: any): DokumenteDto {
-    return DokumenteDtoToJSONTyped(json, false);
-}
-
-export function DokumenteDtoToJSONTyped(value?: DokumenteDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function DokumenteDtoToJSON(value?: DokumenteDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'pageNumber': value['pageNumber'],
-        'pageSize': value['pageSize'],
-        'totalElements': value['totalElements'],
-        'totalPages': value['totalPages'],
-        'last': value['last'],
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'pageNumber': value.pageNumber,
+        'pageSize': value.pageSize,
+        'totalElements': value.totalElements,
+        'totalPages': value.totalPages,
+        'last': value.last,
     };
 }
 

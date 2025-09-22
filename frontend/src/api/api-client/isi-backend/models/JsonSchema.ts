@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { AbstractJsonSchemaPropertyObject } from './AbstractJsonSchemaPropertyObject';
 import {
     AbstractJsonSchemaPropertyObjectFromJSON,
     AbstractJsonSchemaPropertyObjectFromJSONTyped,
     AbstractJsonSchemaPropertyObjectToJSON,
-    AbstractJsonSchemaPropertyObjectToJSONTyped,
 } from './AbstractJsonSchemaPropertyObject';
 import type { Item } from './Item';
 import {
     ItemFromJSON,
     ItemFromJSONTyped,
     ItemToJSON,
-    ItemToJSONTyped,
 } from './Item';
 
 /**
@@ -81,8 +79,10 @@ export interface JsonSchema {
 /**
  * Check if a given object implements the JsonSchema interface.
  */
-export function instanceOfJsonSchema(value: object): value is JsonSchema {
-    return true;
+export function instanceOfJsonSchema(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function JsonSchemaFromJSON(json: any): JsonSchema {
@@ -90,39 +90,37 @@ export function JsonSchemaFromJSON(json: any): JsonSchema {
 }
 
 export function JsonSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): JsonSchema {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'title': json['title'] == null ? undefined : json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'properties': json['properties'] == null ? undefined : (mapValues(json['properties'], AbstractJsonSchemaPropertyObjectFromJSON)),
-        'requiredProperties': json['requiredProperties'] == null ? undefined : json['requiredProperties'],
-        'definitions': json['definitions'] == null ? undefined : (mapValues(json['definitions'], ItemFromJSON)),
-        'type': json['type'] == null ? undefined : json['type'],
-        '$schema': json['$schema'] == null ? undefined : json['$schema'],
+        'title': !exists(json, 'title') ? undefined : json['title'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'properties': !exists(json, 'properties') ? undefined : (mapValues(json['properties'], AbstractJsonSchemaPropertyObjectFromJSON)),
+        'requiredProperties': !exists(json, 'requiredProperties') ? undefined : json['requiredProperties'],
+        'definitions': !exists(json, 'definitions') ? undefined : (mapValues(json['definitions'], ItemFromJSON)),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        '$schema': !exists(json, '$schema') ? undefined : json['$schema'],
     };
 }
 
-export function JsonSchemaToJSON(json: any): JsonSchema {
-    return JsonSchemaToJSONTyped(json, false);
-}
-
-export function JsonSchemaToJSONTyped(value?: JsonSchema | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function JsonSchemaToJSON(value?: JsonSchema | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'title': value['title'],
-        'description': value['description'],
-        'properties': value['properties'] == null ? undefined : (mapValues(value['properties'], AbstractJsonSchemaPropertyObjectToJSON)),
-        'requiredProperties': value['requiredProperties'],
-        'definitions': value['definitions'] == null ? undefined : (mapValues(value['definitions'], ItemToJSON)),
-        'type': value['type'],
-        '$schema': value['$schema'],
+        'title': value.title,
+        'description': value.description,
+        'properties': value.properties === undefined ? undefined : (mapValues(value.properties, AbstractJsonSchemaPropertyObjectToJSON)),
+        'requiredProperties': value.requiredProperties,
+        'definitions': value.definitions === undefined ? undefined : (mapValues(value.definitions, ItemToJSON)),
+        'type': value.type,
+        '$schema': value.$schema,
     };
 }
 

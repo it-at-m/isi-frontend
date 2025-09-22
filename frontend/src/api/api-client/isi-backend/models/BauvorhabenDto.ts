@@ -12,42 +12,37 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
 import {
-    VerortungMultiPolygonDtoFromJSON,
-    VerortungMultiPolygonDtoFromJSONTyped,
-    VerortungMultiPolygonDtoToJSON,
-    VerortungMultiPolygonDtoToJSONTyped,
-} from './VerortungMultiPolygonDto';
-import type { UncertainBoolean } from './UncertainBoolean';
-import {
-    UncertainBooleanFromJSON,
-    UncertainBooleanFromJSONTyped,
-    UncertainBooleanToJSON,
-    UncertainBooleanToJSONTyped,
-} from './UncertainBoolean';
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
 import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
 import {
     BearbeitendePersonDtoFromJSON,
     BearbeitendePersonDtoFromJSONTyped,
     BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
 } from './BearbeitendePersonDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
 } from './DokumentDto';
-import type { AdresseDto } from './AdresseDto';
+import type { UncertainBoolean } from './UncertainBoolean';
 import {
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
-} from './AdresseDto';
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+} from './UncertainBoolean';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import {
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
 
 /**
  * 
@@ -226,14 +221,14 @@ export type BauvorhabenDtoStandVerfahrenEnum = typeof BauvorhabenDtoStandVerfahr
  * @export
  */
 export const BauvorhabenDtoSobonJahrEnum = {
-    Jahr1995: 'JAHR_1995',
-    Jahr1997: 'JAHR_1997',
-    Jahr2001: 'JAHR_2001',
-    Jahr2006: 'JAHR_2006',
-    Jahr2012: 'JAHR_2012',
-    Jahr2017: 'JAHR_2017',
-    Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
+    _1995: 'JAHR_1995',
+    _1997: 'JAHR_1997',
+    _2001: 'JAHR_2001',
+    _2006: 'JAHR_2006',
+    _2012: 'JAHR_2012',
+    _2017: 'JAHR_2017',
+    _2017Plus: 'JAHR_2017_PLUS',
+    _2021: 'JAHR_2021'
 } as const;
 export type BauvorhabenDtoSobonJahrEnum = typeof BauvorhabenDtoSobonJahrEnum[keyof typeof BauvorhabenDtoSobonJahrEnum];
 
@@ -273,13 +268,15 @@ export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typ
 /**
  * Check if a given object implements the BauvorhabenDto interface.
  */
-export function instanceOfBauvorhabenDto(value: object): value is BauvorhabenDto {
-    if (!('nameVorhaben' in value) || value['nameVorhaben'] === undefined) return false;
-    if (!('standVerfahren' in value) || value['standVerfahren'] === undefined) return false;
-    if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
-    if (!('wesentlicheRechtsgrundlage' in value) || value['wesentlicheRechtsgrundlage'] === undefined) return false;
-    if (!('artFnp' in value) || value['artFnp'] === undefined) return false;
-    return true;
+export function instanceOfBauvorhabenDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "nameVorhaben" in value;
+    isInstance = isInstance && "standVerfahren" in value;
+    isInstance = isInstance && "sobonRelevant" in value;
+    isInstance = isInstance && "wesentlicheRechtsgrundlage" in value;
+    isInstance = isInstance && "artFnp" in value;
+
+    return isInstance;
 }
 
 export function BauvorhabenDtoFromJSON(json: any): BauvorhabenDto {
@@ -287,71 +284,69 @@ export function BauvorhabenDtoFromJSON(json: any): BauvorhabenDto {
 }
 
 export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauvorhabenDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': json['nameVorhaben'],
-        'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
+        'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
         'standVerfahren': json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
-        'bauvorhabenNummer': json['bauvorhabenNummer'] == null ? undefined : json['bauvorhabenNummer'],
-        'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
-        'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
-        'fisNummer': json['fisNummer'] == null ? undefined : json['fisNummer'],
-        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
+        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
+        'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
+        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
+        'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
-        'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
+        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'],
-        'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'relevanteAbfragevariante': json['relevanteAbfragevariante'] == null ? undefined : json['relevanteAbfragevariante'],
+        'artFnpFreieEingabe': !exists(json, 'artFnpFreieEingabe') ? undefined : json['artFnpFreieEingabe'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'relevanteAbfragevariante': !exists(json, 'relevanteAbfragevariante') ? undefined : json['relevanteAbfragevariante'],
     };
 }
 
-export function BauvorhabenDtoToJSON(json: any): BauvorhabenDto {
-    return BauvorhabenDtoToJSONTyped(json, false);
-}
-
-export function BauvorhabenDtoToJSONTyped(value?: BauvorhabenDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BauvorhabenDtoToJSON(value?: BauvorhabenDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
-        'nameVorhaben': value['nameVorhaben'],
-        'grundstuecksgroesse': value['grundstuecksgroesse'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
-        'bauvorhabenNummer': value['bauvorhabenNummer'],
-        'adresse': AdresseDtoToJSON(value['adresse']),
-        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
-        'bebauungsplannummer': value['bebauungsplannummer'],
-        'fisNummer': value['fisNummer'],
-        'anmerkung': value['anmerkung'],
-        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
-        'sobonJahr': value['sobonJahr'],
-        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
-        'artFnp': value['artFnp'],
-        'artFnpFreieEingabe': value['artFnpFreieEingabe'],
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'relevanteAbfragevariante': value['relevanteAbfragevariante'],
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value.bearbeitendePerson),
+        'nameVorhaben': value.nameVorhaben,
+        'grundstuecksgroesse': value.grundstuecksgroesse,
+        'standVerfahren': value.standVerfahren,
+        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
+        'bauvorhabenNummer': value.bauvorhabenNummer,
+        'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
+        'bebauungsplannummer': value.bebauungsplannummer,
+        'fisNummer': value.fisNummer,
+        'anmerkung': value.anmerkung,
+        'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
+        'sobonJahr': value.sobonJahr,
+        'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
+        'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
+        'artFnp': value.artFnp,
+        'artFnpFreieEingabe': value.artFnpFreieEingabe,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'relevanteAbfragevariante': value.relevanteAbfragevariante,
     };
 }
 

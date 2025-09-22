@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FoerdermixDto } from './FoerdermixDto';
 import {
     FoerdermixDtoFromJSON,
     FoerdermixDtoFromJSONTyped,
     FoerdermixDtoToJSON,
-    FoerdermixDtoToJSONTyped,
 } from './FoerdermixDto';
 
 /**
@@ -80,10 +79,12 @@ export interface BaurateDto {
 /**
  * Check if a given object implements the BaurateDto interface.
  */
-export function instanceOfBaurateDto(value: object): value is BaurateDto {
-    if (!('jahr' in value) || value['jahr'] === undefined) return false;
-    if (!('foerdermix' in value) || value['foerdermix'] === undefined) return false;
-    return true;
+export function instanceOfBaurateDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "jahr" in value;
+    isInstance = isInstance && "foerdermix" in value;
+
+    return isInstance;
 }
 
 export function BaurateDtoFromJSON(json: any): BaurateDto {
@@ -91,41 +92,39 @@ export function BaurateDtoFromJSON(json: any): BaurateDto {
 }
 
 export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaurateDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
         'jahr': json['jahr'],
-        'weGeplant': json['weGeplant'] == null ? undefined : json['weGeplant'],
-        'gfWohnenGeplant': json['gfWohnenGeplant'] == null ? undefined : json['gfWohnenGeplant'],
+        'weGeplant': !exists(json, 'weGeplant') ? undefined : json['weGeplant'],
+        'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
         'foerdermix': FoerdermixDtoFromJSON(json['foerdermix']),
     };
 }
 
-export function BaurateDtoToJSON(json: any): BaurateDto {
-    return BaurateDtoToJSONTyped(json, false);
-}
-
-export function BaurateDtoToJSONTyped(value?: BaurateDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BaurateDtoToJSON(value?: BaurateDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'jahr': value['jahr'],
-        'weGeplant': value['weGeplant'],
-        'gfWohnenGeplant': value['gfWohnenGeplant'],
-        'foerdermix': FoerdermixDtoToJSON(value['foerdermix']),
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'jahr': value.jahr,
+        'weGeplant': value.weGeplant,
+        'gfWohnenGeplant': value.gfWohnenGeplant,
+        'foerdermix': FoerdermixDtoToJSON(value.foerdermix),
     };
 }
 

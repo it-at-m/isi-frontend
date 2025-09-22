@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface FoerderartDto {
 /**
  * Check if a given object implements the FoerderartDto interface.
  */
-export function instanceOfFoerderartDto(value: object): value is FoerderartDto {
-    return true;
+export function instanceOfFoerderartDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FoerderartDtoFromJSON(json: any): FoerderartDto {
@@ -45,29 +47,27 @@ export function FoerderartDtoFromJSON(json: any): FoerderartDto {
 }
 
 export function FoerderartDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FoerderartDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
-        'anteilProzent': json['anteilProzent'] == null ? undefined : json['anteilProzent'],
+        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
+        'anteilProzent': !exists(json, 'anteilProzent') ? undefined : json['anteilProzent'],
     };
 }
 
-export function FoerderartDtoToJSON(json: any): FoerderartDto {
-    return FoerderartDtoToJSONTyped(json, false);
-}
-
-export function FoerderartDtoToJSONTyped(value?: FoerderartDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FoerderartDtoToJSON(value?: FoerderartDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'bezeichnung': value['bezeichnung'],
-        'anteilProzent': value['anteilProzent'],
+        'bezeichnung': value.bezeichnung,
+        'anteilProzent': value.anteilProzent,
     };
 }
 

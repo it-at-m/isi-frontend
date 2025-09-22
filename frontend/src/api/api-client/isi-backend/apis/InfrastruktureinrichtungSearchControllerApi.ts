@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelInfrastruktureinrichtung,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchInfrastruktureinrichtungGetRequest {
     id?: string;
@@ -36,17 +36,14 @@ export class InfrastruktureinrichtungSearchControllerApi extends runtime.BaseAPI
     async executeSearchInfrastruktureinrichtungGetRaw(requestParameters: ExecuteSearchInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id !== undefined) {
+            queryParameters['id'] = requestParameters.id;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/search/findAllByBauvorhabenId`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/search/findAllByBauvorhabenId`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

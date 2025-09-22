@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Foerderart } from './Foerderart';
 import {
     FoerderartFromJSON,
     FoerderartFromJSONTyped,
     FoerderartToJSON,
-    FoerderartToJSONTyped,
 } from './Foerderart';
 
 /**
@@ -50,8 +49,10 @@ export interface Foerdermix {
 /**
  * Check if a given object implements the Foerdermix interface.
  */
-export function instanceOfFoerdermix(value: object): value is Foerdermix {
-    return true;
+export function instanceOfFoerdermix(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FoerdermixFromJSON(json: any): Foerdermix {
@@ -59,31 +60,29 @@ export function FoerdermixFromJSON(json: any): Foerdermix {
 }
 
 export function FoerdermixFromJSONTyped(json: any, ignoreDiscriminator: boolean): Foerdermix {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'bezeichnungJahr': json['bezeichnungJahr'] == null ? undefined : json['bezeichnungJahr'],
-        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
-        'foerderarten': json['foerderarten'] == null ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartFromJSON)),
+        'bezeichnungJahr': !exists(json, 'bezeichnungJahr') ? undefined : json['bezeichnungJahr'],
+        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
+        'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartFromJSON)),
     };
 }
 
-export function FoerdermixToJSON(json: any): Foerdermix {
-    return FoerdermixToJSONTyped(json, false);
-}
-
-export function FoerdermixToJSONTyped(value?: Foerdermix | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FoerdermixToJSON(value?: Foerdermix | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'bezeichnungJahr': value['bezeichnungJahr'],
-        'bezeichnung': value['bezeichnung'],
-        'foerderarten': value['foerderarten'] == null ? undefined : ((value['foerderarten'] as Array<any>).map(FoerderartToJSON)),
+        'bezeichnungJahr': value.bezeichnungJahr,
+        'bezeichnung': value.bezeichnung,
+        'foerderarten': value.foerderarten === undefined ? undefined : ((value.foerderarten as Array<any>).map(FoerderartToJSON)),
     };
 }
 

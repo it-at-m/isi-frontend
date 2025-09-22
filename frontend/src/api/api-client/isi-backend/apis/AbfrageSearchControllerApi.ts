@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelAbfrage,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelAbfrageFromJSON,
     EntityModelAbfrageToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchAbfrageGetRequest {
     id?: string;
@@ -40,17 +40,14 @@ export class AbfrageSearchControllerApi extends runtime.BaseAPI {
     async executeSearchAbfrageGetRaw(requestParameters: ExecuteSearchAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id !== undefined) {
+            queryParameters['id'] = requestParameters.id;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrages/search/findAllByBauvorhabenId`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/search/findAllByBauvorhabenId`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -71,17 +68,14 @@ export class AbfrageSearchControllerApi extends runtime.BaseAPI {
     async executeSearchAbfrageGet1Raw(requestParameters: ExecuteSearchAbfrageGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id !== undefined) {
+            queryParameters['id'] = requestParameters.id;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrages/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

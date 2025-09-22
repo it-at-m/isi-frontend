@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FoerderartDto } from './FoerderartDto';
 import {
     FoerderartDtoFromJSON,
     FoerderartDtoFromJSONTyped,
     FoerderartDtoToJSON,
-    FoerderartDtoToJSONTyped,
 } from './FoerderartDto';
 
 /**
@@ -50,8 +49,10 @@ export interface FoerdermixDto {
 /**
  * Check if a given object implements the FoerdermixDto interface.
  */
-export function instanceOfFoerdermixDto(value: object): value is FoerdermixDto {
-    return true;
+export function instanceOfFoerdermixDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {
@@ -59,31 +60,29 @@ export function FoerdermixDtoFromJSON(json: any): FoerdermixDto {
 }
 
 export function FoerdermixDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FoerdermixDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'bezeichnungJahr': json['bezeichnungJahr'] == null ? undefined : json['bezeichnungJahr'],
-        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
-        'foerderarten': json['foerderarten'] == null ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
+        'bezeichnungJahr': !exists(json, 'bezeichnungJahr') ? undefined : json['bezeichnungJahr'],
+        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
+        'foerderarten': !exists(json, 'foerderarten') ? undefined : ((json['foerderarten'] as Array<any>).map(FoerderartDtoFromJSON)),
     };
 }
 
-export function FoerdermixDtoToJSON(json: any): FoerdermixDto {
-    return FoerdermixDtoToJSONTyped(json, false);
-}
-
-export function FoerdermixDtoToJSONTyped(value?: FoerdermixDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FoerdermixDtoToJSON(value?: FoerdermixDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'bezeichnungJahr': value['bezeichnungJahr'],
-        'bezeichnung': value['bezeichnung'],
-        'foerderarten': value['foerderarten'] == null ? undefined : ((value['foerderarten'] as Array<any>).map(FoerderartDtoToJSON)),
+        'bezeichnungJahr': value.bezeichnungJahr,
+        'bezeichnung': value.bezeichnung,
+        'foerderarten': value.foerderarten === undefined ? undefined : ((value.foerderarten as Array<any>).map(FoerderartDtoToJSON)),
     };
 }
 

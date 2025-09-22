@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,12 @@ export interface MultiPolygonGeometryDto {
 /**
  * Check if a given object implements the MultiPolygonGeometryDto interface.
  */
-export function instanceOfMultiPolygonGeometryDto(value: object): value is MultiPolygonGeometryDto {
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('coordinates' in value) || value['coordinates'] === undefined) return false;
-    return true;
+export function instanceOfMultiPolygonGeometryDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "coordinates" in value;
+
+    return isInstance;
 }
 
 export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometryDto {
@@ -47,7 +49,7 @@ export function MultiPolygonGeometryDtoFromJSON(json: any): MultiPolygonGeometry
 }
 
 export function MultiPolygonGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MultiPolygonGeometryDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function MultiPolygonGeometryDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function MultiPolygonGeometryDtoToJSON(json: any): MultiPolygonGeometryDto {
-    return MultiPolygonGeometryDtoToJSONTyped(json, false);
-}
-
-export function MultiPolygonGeometryDtoToJSONTyped(value?: MultiPolygonGeometryDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MultiPolygonGeometryDtoToJSON(value?: MultiPolygonGeometryDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'coordinates': value['coordinates'],
+        'type': value.type,
+        'coordinates': value.coordinates,
     };
 }
 

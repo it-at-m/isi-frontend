@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
-    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 import type { GemarkungDto } from './GemarkungDto';
 import {
     GemarkungDtoFromJSON,
     GemarkungDtoFromJSONTyped,
     GemarkungDtoToJSON,
-    GemarkungDtoToJSONTyped,
 } from './GemarkungDto';
 
 /**
@@ -57,8 +55,10 @@ export interface FeatureDtoGemarkungDto {
 /**
  * Check if a given object implements the FeatureDtoGemarkungDto interface.
  */
-export function instanceOfFeatureDtoGemarkungDto(value: object): value is FeatureDtoGemarkungDto {
-    return true;
+export function instanceOfFeatureDtoGemarkungDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FeatureDtoGemarkungDtoFromJSON(json: any): FeatureDtoGemarkungDto {
@@ -66,31 +66,29 @@ export function FeatureDtoGemarkungDtoFromJSON(json: any): FeatureDtoGemarkungDt
 }
 
 export function FeatureDtoGemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoGemarkungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': json['properties'] == null ? undefined : GemarkungDtoFromJSON(json['properties']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': !exists(json, 'properties') ? undefined : GemarkungDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoGemarkungDtoToJSON(json: any): FeatureDtoGemarkungDto {
-    return FeatureDtoGemarkungDtoToJSONTyped(json, false);
-}
-
-export function FeatureDtoGemarkungDtoToJSONTyped(value?: FeatureDtoGemarkungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FeatureDtoGemarkungDtoToJSON(value?: FeatureDtoGemarkungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
-        'properties': GemarkungDtoToJSON(value['properties']),
+        'type': value.type,
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
+        'properties': GemarkungDtoToJSON(value.properties),
     };
 }
 

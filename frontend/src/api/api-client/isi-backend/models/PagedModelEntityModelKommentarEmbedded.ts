@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelKommentar } from './EntityModelKommentar';
 import {
     EntityModelKommentarFromJSON,
     EntityModelKommentarFromJSONTyped,
     EntityModelKommentarToJSON,
-    EntityModelKommentarToJSONTyped,
 } from './EntityModelKommentar';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelKommentarEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelKommentarEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelKommentarEmbedded(value: object): value is PagedModelEntityModelKommentarEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelKommentarEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelKommentarEmbeddedFromJSON(json: any): PagedModelEntityModelKommentarEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelKommentarEmbeddedFromJSON(json: any): Paged
 }
 
 export function PagedModelEntityModelKommentarEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelKommentarEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'kommentars': json['kommentars'] == null ? undefined : ((json['kommentars'] as Array<any>).map(EntityModelKommentarFromJSON)),
+        'kommentars': !exists(json, 'kommentars') ? undefined : ((json['kommentars'] as Array<any>).map(EntityModelKommentarFromJSON)),
     };
 }
 
-export function PagedModelEntityModelKommentarEmbeddedToJSON(json: any): PagedModelEntityModelKommentarEmbedded {
-    return PagedModelEntityModelKommentarEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelKommentarEmbeddedToJSONTyped(value?: PagedModelEntityModelKommentarEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelKommentarEmbeddedToJSON(value?: PagedModelEntityModelKommentarEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'kommentars': value['kommentars'] == null ? undefined : ((value['kommentars'] as Array<any>).map(EntityModelKommentarToJSON)),
+        'kommentars': value.kommentars === undefined ? undefined : ((value.kommentars as Array<any>).map(EntityModelKommentarToJSON)),
     };
 }
 

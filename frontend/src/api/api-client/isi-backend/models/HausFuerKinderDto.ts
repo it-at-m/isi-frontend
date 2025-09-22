@@ -12,35 +12,34 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
+import {
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
-    InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
-    VerortungPointDtoToJSONTyped,
 } from './VerortungPointDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+
 import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
-} from './BearbeitendePersonDto';
-import type { AdresseDto } from './AdresseDto';
-import {
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
-} from './AdresseDto';
+} from './';
 
 /**
  * 
@@ -131,8 +130,10 @@ export type HausFuerKinderDtoEinrichtungstraegerEnum = typeof HausFuerKinderDtoE
 /**
  * Check if a given object implements the HausFuerKinderDto interface.
  */
-export function instanceOfHausFuerKinderDto(value: object): value is HausFuerKinderDto {
-    return true;
+export function instanceOfHausFuerKinderDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
@@ -140,54 +141,45 @@ export function HausFuerKinderDtoFromJSON(json: any): HausFuerKinderDto {
 }
 
 export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): HausFuerKinderDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
-        'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'] == null ? undefined : json['anzahlKinderkrippePlaetze'],
-        'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'] == null ? undefined : json['anzahlKindergartenPlaetze'],
-        'anzahlHortPlaetze': json['anzahlHortPlaetze'] == null ? undefined : json['anzahlHortPlaetze'],
-        'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'] == null ? undefined : json['anzahlKinderkrippeGruppen'],
-        'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'] == null ? undefined : json['anzahlKindergartenGruppen'],
-        'anzahlHortGruppen': json['anzahlHortGruppen'] == null ? undefined : json['anzahlHortGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': json['wohnungsnaheKinderkrippePlaetze'] == null ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
-        'wohnungsnaheKindergartenPlaetze': json['wohnungsnaheKindergartenPlaetze'] == null ? undefined : json['wohnungsnaheKindergartenPlaetze'],
-        'wohnungsnaheHortPlaetze': json['wohnungsnaheHortPlaetze'] == null ? undefined : json['wohnungsnaheHortPlaetze'],
-        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
+        'anzahlKinderkrippePlaetze': !exists(json, 'anzahlKinderkrippePlaetze') ? undefined : json['anzahlKinderkrippePlaetze'],
+        'anzahlKindergartenPlaetze': !exists(json, 'anzahlKindergartenPlaetze') ? undefined : json['anzahlKindergartenPlaetze'],
+        'anzahlHortPlaetze': !exists(json, 'anzahlHortPlaetze') ? undefined : json['anzahlHortPlaetze'],
+        'anzahlKinderkrippeGruppen': !exists(json, 'anzahlKinderkrippeGruppen') ? undefined : json['anzahlKinderkrippeGruppen'],
+        'anzahlKindergartenGruppen': !exists(json, 'anzahlKindergartenGruppen') ? undefined : json['anzahlKindergartenGruppen'],
+        'anzahlHortGruppen': !exists(json, 'anzahlHortGruppen') ? undefined : json['anzahlHortGruppen'],
+        'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
+        'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
+        'wohnungsnaheHortPlaetze': !exists(json, 'wohnungsnaheHortPlaetze') ? undefined : json['wohnungsnaheHortPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
-export function HausFuerKinderDtoToJSON(json: any): HausFuerKinderDto {
-    return HausFuerKinderDtoToJSONTyped(json, false);
-}
-
-export function HausFuerKinderDtoToJSONTyped(value?: HausFuerKinderDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function HausFuerKinderDtoToJSON(value?: HausFuerKinderDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['infrastruktureinrichtungTyp']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'anzahlKinderkrippePlaetze': value['anzahlKinderkrippePlaetze'],
-        'anzahlKindergartenPlaetze': value['anzahlKindergartenPlaetze'],
-        'anzahlHortPlaetze': value['anzahlHortPlaetze'],
-        'anzahlKinderkrippeGruppen': value['anzahlKinderkrippeGruppen'],
-        'anzahlKindergartenGruppen': value['anzahlKindergartenGruppen'],
-        'anzahlHortGruppen': value['anzahlHortGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': value['wohnungsnaheKinderkrippePlaetze'],
-        'wohnungsnaheKindergartenPlaetze': value['wohnungsnaheKindergartenPlaetze'],
-        'wohnungsnaheHortPlaetze': value['wohnungsnaheHortPlaetze'],
-        'einrichtungstraeger': value['einrichtungstraeger'],
+        ...InfrastruktureinrichtungDtoToJSON(value),
+        'anzahlKinderkrippePlaetze': value.anzahlKinderkrippePlaetze,
+        'anzahlKindergartenPlaetze': value.anzahlKindergartenPlaetze,
+        'anzahlHortPlaetze': value.anzahlHortPlaetze,
+        'anzahlKinderkrippeGruppen': value.anzahlKinderkrippeGruppen,
+        'anzahlKindergartenGruppen': value.anzahlKindergartenGruppen,
+        'anzahlHortGruppen': value.anzahlHortGruppen,
+        'wohnungsnaheKinderkrippePlaetze': value.wohnungsnaheKinderkrippePlaetze,
+        'wohnungsnaheKindergartenPlaetze': value.wohnungsnaheKindergartenPlaetze,
+        'wohnungsnaheHortPlaetze': value.wohnungsnaheHortPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

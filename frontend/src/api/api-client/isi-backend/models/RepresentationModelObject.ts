@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
-    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -38,8 +37,10 @@ export interface RepresentationModelObject {
 /**
  * Check if a given object implements the RepresentationModelObject interface.
  */
-export function instanceOfRepresentationModelObject(value: object): value is RepresentationModelObject {
-    return true;
+export function instanceOfRepresentationModelObject(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function RepresentationModelObjectFromJSON(json: any): RepresentationModelObject {
@@ -47,27 +48,25 @@ export function RepresentationModelObjectFromJSON(json: any): RepresentationMode
 }
 
 export function RepresentationModelObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): RepresentationModelObject {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function RepresentationModelObjectToJSON(json: any): RepresentationModelObject {
-    return RepresentationModelObjectToJSONTyped(json, false);
-}
-
-export function RepresentationModelObjectToJSONTyped(value?: RepresentationModelObject | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RepresentationModelObjectToJSON(value?: RepresentationModelObject | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
 

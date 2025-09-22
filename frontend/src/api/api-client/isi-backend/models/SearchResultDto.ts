@@ -12,18 +12,38 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { AbfrageSearchResultDto } from './AbfrageSearchResultDto';
+import {
+    AbfrageSearchResultDtoFromJSON,
+    AbfrageSearchResultDtoFromJSONTyped,
+    AbfrageSearchResultDtoToJSON,
+} from './AbfrageSearchResultDto';
+import type { BauvorhabenSearchResultDto } from './BauvorhabenSearchResultDto';
+import {
+    BauvorhabenSearchResultDtoFromJSON,
+    BauvorhabenSearchResultDtoFromJSONTyped,
+    BauvorhabenSearchResultDtoToJSON,
+} from './BauvorhabenSearchResultDto';
+import type { InfrastruktureinrichtungSearchResultDto } from './InfrastruktureinrichtungSearchResultDto';
+import {
+    InfrastruktureinrichtungSearchResultDtoFromJSON,
+    InfrastruktureinrichtungSearchResultDtoFromJSONTyped,
+    InfrastruktureinrichtungSearchResultDtoToJSON,
+} from './InfrastruktureinrichtungSearchResultDto';
 import type { Wgs84Dto } from './Wgs84Dto';
 import {
     Wgs84DtoFromJSON,
     Wgs84DtoFromJSONTyped,
     Wgs84DtoToJSON,
-    Wgs84DtoToJSONTyped,
 } from './Wgs84Dto';
 
-import { type AbfrageSearchResultDto, AbfrageSearchResultDtoFromJSONTyped, AbfrageSearchResultDtoToJSON, AbfrageSearchResultDtoToJSONTyped } from './AbfrageSearchResultDto';
-import { type BauvorhabenSearchResultDto, BauvorhabenSearchResultDtoFromJSONTyped, BauvorhabenSearchResultDtoToJSON, BauvorhabenSearchResultDtoToJSONTyped } from './BauvorhabenSearchResultDto';
-import { type InfrastruktureinrichtungSearchResultDto, InfrastruktureinrichtungSearchResultDtoFromJSONTyped, InfrastruktureinrichtungSearchResultDtoToJSON, InfrastruktureinrichtungSearchResultDtoToJSONTyped } from './InfrastruktureinrichtungSearchResultDto';
+import {
+     AbfrageSearchResultDtoFromJSONTyped,
+     BauvorhabenSearchResultDtoFromJSONTyped,
+     InfrastruktureinrichtungSearchResultDtoFromJSONTyped
+} from './';
+
 /**
  * SearchResultDto
  * @export
@@ -59,8 +79,10 @@ export type SearchResultDtoTypeEnum = typeof SearchResultDtoTypeEnum[keyof typeo
 /**
  * Check if a given object implements the SearchResultDto interface.
  */
-export function instanceOfSearchResultDto(value: object): value is SearchResultDto {
-    return true;
+export function instanceOfSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SearchResultDtoFromJSON(json: any): SearchResultDto {
@@ -68,53 +90,38 @@ export function SearchResultDtoFromJSON(json: any): SearchResultDto {
 }
 
 export function SearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchResultDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['type'] === 'ABFRAGE') {
-            return AbfrageSearchResultDtoFromJSONTyped(json, ignoreDiscriminator);
+            return AbfrageSearchResultDtoFromJSONTyped(json, true);
         }
         if (json['type'] === 'BAUVORHABEN') {
-            return BauvorhabenSearchResultDtoFromJSONTyped(json, ignoreDiscriminator);
+            return BauvorhabenSearchResultDtoFromJSONTyped(json, true);
         }
         if (json['type'] === 'INFRASTRUKTUREINRICHTUNG') {
-            return InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, ignoreDiscriminator);
+            return InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true);
         }
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'coordinate': json['coordinate'] == null ? undefined : Wgs84DtoFromJSON(json['coordinate']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84DtoFromJSON(json['coordinate']),
     };
 }
 
-export function SearchResultDtoToJSON(json: any): SearchResultDto {
-    return SearchResultDtoToJSONTyped(json, false);
-}
-
-export function SearchResultDtoToJSONTyped(value?: SearchResultDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SearchResultDtoToJSON(value?: SearchResultDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['type']) {
-            case 'ABFRAGE':
-                return AbfrageSearchResultDtoToJSONTyped(value as AbfrageSearchResultDto, ignoreDiscriminator);
-            case 'BAUVORHABEN':
-                return BauvorhabenSearchResultDtoToJSONTyped(value as BauvorhabenSearchResultDto, ignoreDiscriminator);
-            case 'INFRASTRUKTUREINRICHTUNG':
-                return InfrastruktureinrichtungSearchResultDtoToJSONTyped(value as InfrastruktureinrichtungSearchResultDto, ignoreDiscriminator);
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
         
-        'type': value['type'],
-        'coordinate': Wgs84DtoToJSON(value['coordinate']),
+        'type': value.type,
+        'coordinate': Wgs84DtoToJSON(value.coordinate),
     };
 }
 

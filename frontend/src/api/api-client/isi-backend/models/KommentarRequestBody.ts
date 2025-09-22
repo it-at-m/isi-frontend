@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -78,8 +78,10 @@ export interface KommentarRequestBody {
 /**
  * Check if a given object implements the KommentarRequestBody interface.
  */
-export function instanceOfKommentarRequestBody(value: object): value is KommentarRequestBody {
-    return true;
+export function instanceOfKommentarRequestBody(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function KommentarRequestBodyFromJSON(json: any): KommentarRequestBody {
@@ -87,43 +89,41 @@ export function KommentarRequestBodyFromJSON(json: any): KommentarRequestBody {
 }
 
 export function KommentarRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarRequestBody {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
-        'infrastruktureinrichtung': json['infrastruktureinrichtung'] == null ? undefined : json['infrastruktureinrichtung'],
-        'dokumente': json['dokumente'] == null ? undefined : json['dokumente'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'datum': !exists(json, 'datum') ? undefined : json['datum'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'infrastruktureinrichtung': !exists(json, 'infrastruktureinrichtung') ? undefined : json['infrastruktureinrichtung'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : json['dokumente'],
     };
 }
 
-export function KommentarRequestBodyToJSON(json: any): KommentarRequestBody {
-    return KommentarRequestBodyToJSONTyped(json, false);
-}
-
-export function KommentarRequestBodyToJSONTyped(value?: KommentarRequestBody | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function KommentarRequestBodyToJSON(value?: KommentarRequestBody | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'datum': value['datum'],
-        'text': value['text'],
-        'bauvorhaben': value['bauvorhaben'],
-        'infrastruktureinrichtung': value['infrastruktureinrichtung'],
-        'dokumente': value['dokumente'],
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'datum': value.datum,
+        'text': value.text,
+        'bauvorhaben': value.bauvorhaben,
+        'infrastruktureinrichtung': value.infrastruktureinrichtung,
+        'dokumente': value.dokumente,
     };
 }
 

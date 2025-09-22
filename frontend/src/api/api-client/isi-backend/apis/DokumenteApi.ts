@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   DokumenteDto,
-} from '../models/index';
+} from '../models';
 import {
     DokumenteDtoFromJSON,
     DokumenteDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetDokumenteRequest {
     pageNumber?: number;
@@ -38,21 +38,18 @@ export class DokumenteApi extends runtime.BaseAPI {
     async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
         const queryParameters: any = {};
 
-        if (requestParameters['pageNumber'] != null) {
-            queryParameters['pageNumber'] = requestParameters['pageNumber'];
+        if (requestParameters.pageNumber !== undefined) {
+            queryParameters['pageNumber'] = requestParameters.pageNumber;
         }
 
-        if (requestParameters['pageSize'] != null) {
-            queryParameters['pageSize'] = requestParameters['pageSize'];
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['pageSize'] = requestParameters.pageSize;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/dokumente`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/dokumente`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

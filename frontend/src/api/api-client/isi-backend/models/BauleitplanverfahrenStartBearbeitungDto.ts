@@ -12,35 +12,34 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto';
-import {
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoFromJSON,
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoFromJSONTyped,
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoToJSON,
-    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoToJSONTyped,
-} from './AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto';
-import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
-import {
-    VerortungMultiPolygonDtoFromJSON,
-    VerortungMultiPolygonDtoFromJSONTyped,
-    VerortungMultiPolygonDtoToJSON,
-    VerortungMultiPolygonDtoToJSONTyped,
-} from './VerortungMultiPolygonDto';
-import type { AbfragevarianteBauleitplanverfahrenStartBearbeitungDto } from './AbfragevarianteBauleitplanverfahrenStartBearbeitungDto';
-import {
-    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSON,
-    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSONTyped,
-    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSON,
-    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSONTyped,
-} from './AbfragevarianteBauleitplanverfahrenStartBearbeitungDto';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageStartBearbeitungDto } from './AbfrageStartBearbeitungDto';
 import {
     AbfrageStartBearbeitungDtoFromJSON,
     AbfrageStartBearbeitungDtoFromJSONTyped,
     AbfrageStartBearbeitungDtoToJSON,
-    AbfrageStartBearbeitungDtoToJSONTyped,
 } from './AbfrageStartBearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto } from './AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto';
+import {
+    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoFromJSON,
+    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoFromJSONTyped,
+    AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoToJSON,
+} from './AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto';
+import type { AbfragevarianteBauleitplanverfahrenStartBearbeitungDto } from './AbfragevarianteBauleitplanverfahrenStartBearbeitungDto';
+import {
+    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSON,
+    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSONTyped,
+    AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSON,
+} from './AbfragevarianteBauleitplanverfahrenStartBearbeitungDto';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import {
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+} from './VerortungMultiPolygonDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -73,10 +72,12 @@ export interface BauleitplanverfahrenStartBearbeitungDto extends AbfrageStartBea
 /**
  * Check if a given object implements the BauleitplanverfahrenStartBearbeitungDto interface.
  */
-export function instanceOfBauleitplanverfahrenStartBearbeitungDto(value: object): value is BauleitplanverfahrenStartBearbeitungDto {
-    if (!('abfragevariantenBauleitplanverfahren' in value) || value['abfragevariantenBauleitplanverfahren'] === undefined) return false;
-    if (!('abfragevariantenSachbearbeitungBauleitplanverfahren' in value) || value['abfragevariantenSachbearbeitungBauleitplanverfahren'] === undefined) return false;
-    return true;
+export function instanceOfBauleitplanverfahrenStartBearbeitungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBauleitplanverfahren" in value;
+
+    return isInstance;
 }
 
 export function BauleitplanverfahrenStartBearbeitungDtoFromJSON(json: any): BauleitplanverfahrenStartBearbeitungDto {
@@ -84,40 +85,31 @@ export function BauleitplanverfahrenStartBearbeitungDtoFromJSON(json: any): Baul
 }
 
 export function BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenStartBearbeitungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageStartBearbeitungDtoFromJSONTyped(json, true),
-        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        ...AbfrageStartBearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSON)),
     };
 }
 
-export function BauleitplanverfahrenStartBearbeitungDtoToJSON(json: any): BauleitplanverfahrenStartBearbeitungDto {
-    return BauleitplanverfahrenStartBearbeitungDtoToJSONTyped(json, false);
-}
-
-export function BauleitplanverfahrenStartBearbeitungDtoToJSONTyped(value?: BauleitplanverfahrenStartBearbeitungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BauleitplanverfahrenStartBearbeitungDtoToJSON(value?: BauleitplanverfahrenStartBearbeitungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageStartBearbeitungDtoToJSONTyped(value, true),
-        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
-        'abfragevariantenBauleitplanverfahren': ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSON)),
+        ...AbfrageStartBearbeitungDtoToJSON(value),
+        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
+        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSON)),
     };
 }
 

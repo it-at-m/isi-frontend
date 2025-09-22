@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
 import {
     MultiPolygonGeometryFromJSON,
     MultiPolygonGeometryFromJSONTyped,
     MultiPolygonGeometryToJSON,
-    MultiPolygonGeometryToJSONTyped,
 } from './MultiPolygonGeometry';
 
 /**
@@ -80,8 +79,10 @@ export interface Flurstueck {
 /**
  * Check if a given object implements the Flurstueck interface.
  */
-export function instanceOfFlurstueck(value: object): value is Flurstueck {
-    return true;
+export function instanceOfFlurstueck(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FlurstueckFromJSON(json: any): Flurstueck {
@@ -89,41 +90,39 @@ export function FlurstueckFromJSON(json: any): Flurstueck {
 }
 
 export function FlurstueckFromJSONTyped(json: any, ignoreDiscriminator: boolean): Flurstueck {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
-        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'zaehler': json['zaehler'] == null ? undefined : json['zaehler'],
-        'nenner': json['nenner'] == null ? undefined : json['nenner'],
-        'eigentumsart': json['eigentumsart'] == null ? undefined : json['eigentumsart'],
-        'eigentumsartBedeutung': json['eigentumsartBedeutung'] == null ? undefined : json['eigentumsartBedeutung'],
-        'gemarkungNummer': json['gemarkungNummer'] == null ? undefined : json['gemarkungNummer'],
-        'multiPolygon': json['multiPolygon'] == null ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
+        'zaehler': !exists(json, 'zaehler') ? undefined : json['zaehler'],
+        'nenner': !exists(json, 'nenner') ? undefined : json['nenner'],
+        'eigentumsart': !exists(json, 'eigentumsart') ? undefined : json['eigentumsart'],
+        'eigentumsartBedeutung': !exists(json, 'eigentumsartBedeutung') ? undefined : json['eigentumsartBedeutung'],
+        'gemarkungNummer': !exists(json, 'gemarkungNummer') ? undefined : json['gemarkungNummer'],
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
     };
 }
 
-export function FlurstueckToJSON(json: any): Flurstueck {
-    return FlurstueckToJSONTyped(json, false);
-}
-
-export function FlurstueckToJSONTyped(value?: Flurstueck | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FlurstueckToJSON(value?: Flurstueck | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'flaecheQm': value['flaecheQm'],
-        'zaehler': value['zaehler'],
-        'nenner': value['nenner'],
-        'eigentumsart': value['eigentumsart'],
-        'eigentumsartBedeutung': value['eigentumsartBedeutung'],
-        'gemarkungNummer': value['gemarkungNummer'],
-        'multiPolygon': MultiPolygonGeometryToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'flaecheQm': value.flaecheQm,
+        'zaehler': value.zaehler,
+        'nenner': value.nenner,
+        'eigentumsart': value.eigentumsart,
+        'eigentumsartBedeutung': value.eigentumsartBedeutung,
+        'gemarkungNummer': value.gemarkungNummer,
+        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
     };
 }
 

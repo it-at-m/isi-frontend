@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelAbfrage } from './EntityModelAbfrage';
 import {
     EntityModelAbfrageFromJSON,
     EntityModelAbfrageFromJSONTyped,
     EntityModelAbfrageToJSON,
-    EntityModelAbfrageToJSONTyped,
 } from './EntityModelAbfrage';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelAbfrageEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelAbfrageEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelAbfrageEmbedded(value: object): value is PagedModelEntityModelAbfrageEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelAbfrageEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelAbfrageEmbeddedFromJSON(json: any): PagedModelEntityModelAbfrageEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelAbfrageEmbeddedFromJSON(json: any): PagedMo
 }
 
 export function PagedModelEntityModelAbfrageEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfrageEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'abfrages': json['abfrages'] == null ? undefined : ((json['abfrages'] as Array<any>).map(EntityModelAbfrageFromJSON)),
+        'abfrages': !exists(json, 'abfrages') ? undefined : ((json['abfrages'] as Array<any>).map(EntityModelAbfrageFromJSON)),
     };
 }
 
-export function PagedModelEntityModelAbfrageEmbeddedToJSON(json: any): PagedModelEntityModelAbfrageEmbedded {
-    return PagedModelEntityModelAbfrageEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelAbfrageEmbeddedToJSONTyped(value?: PagedModelEntityModelAbfrageEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelAbfrageEmbeddedToJSON(value?: PagedModelEntityModelAbfrageEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'abfrages': value['abfrages'] == null ? undefined : ((value['abfrages'] as Array<any>).map(EntityModelAbfrageToJSON)),
+        'abfrages': value.abfrages === undefined ? undefined : ((value.abfrages as Array<any>).map(EntityModelAbfrageToJSON)),
     };
 }
 

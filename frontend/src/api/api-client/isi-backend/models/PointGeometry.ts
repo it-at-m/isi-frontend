@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface PointGeometry {
 /**
  * Check if a given object implements the PointGeometry interface.
  */
-export function instanceOfPointGeometry(value: object): value is PointGeometry {
-    return true;
+export function instanceOfPointGeometry(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PointGeometryFromJSON(json: any): PointGeometry {
@@ -45,29 +47,27 @@ export function PointGeometryFromJSON(json: any): PointGeometry {
 }
 
 export function PointGeometryFromJSONTyped(json: any, ignoreDiscriminator: boolean): PointGeometry {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'coordinates': json['coordinates'] == null ? undefined : json['coordinates'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'coordinates': !exists(json, 'coordinates') ? undefined : json['coordinates'],
     };
 }
 
-export function PointGeometryToJSON(json: any): PointGeometry {
-    return PointGeometryToJSONTyped(json, false);
-}
-
-export function PointGeometryToJSONTyped(value?: PointGeometry | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PointGeometryToJSON(value?: PointGeometry | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'coordinates': value['coordinates'],
+        'type': value.type,
+        'coordinates': value.coordinates,
     };
 }
 

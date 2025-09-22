@@ -18,7 +18,7 @@ import type {
   AbfrageRequestBody,
   EntityModelAbfrage,
   PagedModelEntityModelAbfrage,
-} from '../models/index';
+} from '../models';
 import {
     AbfrageRequestBodyFromJSON,
     AbfrageRequestBodyToJSON,
@@ -26,7 +26,7 @@ import {
     EntityModelAbfrageToJSON,
     PagedModelEntityModelAbfrageFromJSON,
     PagedModelEntityModelAbfrageToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceAbfrageDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
      * delete-abfrage
      */
     async deleteItemResourceAbfrageDeleteRaw(requestParameters: DeleteItemResourceAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceAbfrageDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceAbfrageDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceAbfrageGetRaw(requestParameters: GetCollectionResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelAbfrage>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrages`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
      * get-abfrage
      */
     async getItemResourceAbfrageGetRaw(requestParameters: GetItemResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceAbfrageGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceAbfrageGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
      * patch-abfrage
      */
     async patchItemResourceAbfragePatchRaw(requestParameters: PatchItemResourceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceAbfragePatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceAbfragePatch.');
         }
 
-        if (requestParameters['abfrageRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'abfrageRequestBody',
-                'Required parameter "abfrageRequestBody" was null or undefined when calling patchItemResourceAbfragePatch().'
-            );
+        if (requestParameters.abfrageRequestBody === null || requestParameters.abfrageRequestBody === undefined) {
+            throw new runtime.RequiredError('abfrageRequestBody','Required parameter requestParameters.abfrageRequestBody was null or undefined when calling patchItemResourceAbfragePatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
+            body: AbfrageRequestBodyToJSON(requestParameters.abfrageRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-abfrage
      */
-    async patchItemResourceAbfragePatch(requestParameters: PatchItemResourceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelAbfrage | null | undefined > {
+    async patchItemResourceAbfragePatch(requestParameters: PatchItemResourceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelAbfrage> {
         const response = await this.patchItemResourceAbfragePatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-abfrage
      */
     async postCollectionResourceAbfragePostRaw(requestParameters: PostCollectionResourceAbfragePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
-        if (requestParameters['abfrageRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'abfrageRequestBody',
-                'Required parameter "abfrageRequestBody" was null or undefined when calling postCollectionResourceAbfragePost().'
-            );
+        if (requestParameters.abfrageRequestBody === null || requestParameters.abfrageRequestBody === undefined) {
+            throw new runtime.RequiredError('abfrageRequestBody','Required parameter requestParameters.abfrageRequestBody was null or undefined when calling postCollectionResourceAbfragePost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrages`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
+            body: AbfrageRequestBodyToJSON(requestParameters.abfrageRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
      * update-abfrage
      */
     async putItemResourceAbfragePutRaw(requestParameters: PutItemResourceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceAbfragePut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceAbfragePut.');
         }
 
-        if (requestParameters['abfrageRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'abfrageRequestBody',
-                'Required parameter "abfrageRequestBody" was null or undefined when calling putItemResourceAbfragePut().'
-            );
+        if (requestParameters.abfrageRequestBody === null || requestParameters.abfrageRequestBody === undefined) {
+            throw new runtime.RequiredError('abfrageRequestBody','Required parameter requestParameters.abfrageRequestBody was null or undefined when calling putItemResourceAbfragePut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrages/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
+            body: AbfrageRequestBodyToJSON(requestParameters.abfrageRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-abfrage
      */
-    async putItemResourceAbfragePut(requestParameters: PutItemResourceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelAbfrage | null | undefined > {
+    async putItemResourceAbfragePut(requestParameters: PutItemResourceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelAbfrage> {
         const response = await this.putItemResourceAbfragePutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

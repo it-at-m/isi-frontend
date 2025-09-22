@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   CollectionModelDokument,
   CollectionModelObject,
-} from '../models/index';
+} from '../models';
 import {
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest {
     id: string;
@@ -62,18 +62,12 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
      * patch-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPatch.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPatch().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPatch.');
         }
 
         const queryParameters: any = {};
@@ -82,16 +76,12 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -100,34 +90,21 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     /**
      * patch-dokument-by-abfragevarianteweiteresverfahren-Id
      */
-    async createPropertyReferenceAbfragevarianteweiteresverfahrenPatch(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPatch(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
         const response = await this.createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * update-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async createPropertyReferenceAbfragevarianteweiteresverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPut.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPut().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceAbfragevarianteweiteresverfahrenPut.');
         }
 
         const queryParameters: any = {};
@@ -136,16 +113,12 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -154,41 +127,25 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     /**
      * update-dokument-by-abfragevarianteweiteresverfahren-Id
      */
-    async createPropertyReferenceAbfragevarianteweiteresverfahrenPut(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPut(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
         const response = await this.createPropertyReferenceAbfragevarianteweiteresverfahrenPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * delete-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async deletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceAbfragevarianteweiteresverfahrenDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceAbfragevarianteweiteresverfahrenDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -208,31 +165,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
      * delete-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDelete.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDelete().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -252,23 +198,16 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
      * get-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async followPropertyReferenceAbfragevarianteweiteresverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -289,31 +228,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
      * get-dokument-by-abfragevarianteweiteresverfahren-Id
      */
     async followPropertyReferenceAbfragevarianteweiteresverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet1.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet1().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceAbfragevarianteweiteresverfahrenGet1.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfragevarianteWeiteresVerfahrens/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

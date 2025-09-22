@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelUmlegungFoerderarten,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelUmlegungFoerderartenFromJSON,
     EntityModelUmlegungFoerderartenToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchUmlegungfoerderartenGetRequest {
     bezeichnung?: string;
@@ -37,21 +37,18 @@ export class UmlegungFoerderartenSearchControllerApi extends runtime.BaseAPI {
     async executeSearchUmlegungfoerderartenGetRaw(requestParameters: ExecuteSearchUmlegungfoerderartenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
         const queryParameters: any = {};
 
-        if (requestParameters['bezeichnung'] != null) {
-            queryParameters['bezeichnung'] = requestParameters['bezeichnung'];
+        if (requestParameters.bezeichnung !== undefined) {
+            queryParameters['bezeichnung'] = requestParameters.bezeichnung;
         }
 
-        if (requestParameters['datum'] != null) {
-            queryParameters['datum'] = (requestParameters['datum'] as any).toISOString().substring(0,10);
+        if (requestParameters.datum !== undefined) {
+            queryParameters['datum'] = (requestParameters.datum as any).toISOString().substr(0,10);
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/umlegungFoerderartens/search/findFirstByBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens/search/findFirstByBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

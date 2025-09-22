@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -126,8 +126,10 @@ export interface FlurstueckDto {
 /**
  * Check if a given object implements the FlurstueckDto interface.
  */
-export function instanceOfFlurstueckDto(value: object): value is FlurstueckDto {
-    return true;
+export function instanceOfFlurstueckDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FlurstueckDtoFromJSON(json: any): FlurstueckDto {
@@ -135,59 +137,57 @@ export function FlurstueckDtoFromJSON(json: any): FlurstueckDto {
 }
 
 export function FlurstueckDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FlurstueckDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'objectId': json['objectId'] == null ? undefined : json['objectId'],
-        'oid1': json['oid1'] == null ? undefined : json['oid1'],
-        'gemarkung': json['gemarkung'] == null ? undefined : json['gemarkung'],
-        'fluerstueckNummerZ': json['fluerstueckNummerZ'] == null ? undefined : json['fluerstueckNummerZ'],
-        'fluerstueckNummerN': json['fluerstueckNummerN'] == null ? undefined : json['fluerstueckNummerN'],
-        'afl': json['afl'] == null ? undefined : json['afl'],
-        'lage': json['lage'] == null ? undefined : json['lage'],
-        'gemeinde': json['gemeinde'] == null ? undefined : json['gemeinde'],
-        'objektart': json['objektart'] == null ? undefined : json['objektart'],
-        'nutzungsart': json['nutzungsart'] == null ? undefined : json['nutzungsart'],
-        'eigentumsart': json['eigentumsart'] == null ? undefined : json['eigentumsart'],
-        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'gemarkungName': json['gemarkungName'] == null ? undefined : json['gemarkungName'],
-        'flurstueckId': json['flurstueckId'] == null ? undefined : json['flurstueckId'],
-        'eigentumsartBedeutung': json['eigentumsartBedeutung'] == null ? undefined : json['eigentumsartBedeutung'],
-        'gemeindeBedeutung': json['gemeindeBedeutung'] == null ? undefined : json['gemeindeBedeutung'],
-        'nutzungsartBedeutung': json['nutzungsartBedeutung'] == null ? undefined : json['nutzungsartBedeutung'],
+        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
+        'oid1': !exists(json, 'oid1') ? undefined : json['oid1'],
+        'gemarkung': !exists(json, 'gemarkung') ? undefined : json['gemarkung'],
+        'fluerstueckNummerZ': !exists(json, 'fluerstueckNummerZ') ? undefined : json['fluerstueckNummerZ'],
+        'fluerstueckNummerN': !exists(json, 'fluerstueckNummerN') ? undefined : json['fluerstueckNummerN'],
+        'afl': !exists(json, 'afl') ? undefined : json['afl'],
+        'lage': !exists(json, 'lage') ? undefined : json['lage'],
+        'gemeinde': !exists(json, 'gemeinde') ? undefined : json['gemeinde'],
+        'objektart': !exists(json, 'objektart') ? undefined : json['objektart'],
+        'nutzungsart': !exists(json, 'nutzungsart') ? undefined : json['nutzungsart'],
+        'eigentumsart': !exists(json, 'eigentumsart') ? undefined : json['eigentumsart'],
+        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
+        'gemarkungName': !exists(json, 'gemarkungName') ? undefined : json['gemarkungName'],
+        'flurstueckId': !exists(json, 'flurstueckId') ? undefined : json['flurstueckId'],
+        'eigentumsartBedeutung': !exists(json, 'eigentumsartBedeutung') ? undefined : json['eigentumsartBedeutung'],
+        'gemeindeBedeutung': !exists(json, 'gemeindeBedeutung') ? undefined : json['gemeindeBedeutung'],
+        'nutzungsartBedeutung': !exists(json, 'nutzungsartBedeutung') ? undefined : json['nutzungsartBedeutung'],
     };
 }
 
-export function FlurstueckDtoToJSON(json: any): FlurstueckDto {
-    return FlurstueckDtoToJSONTyped(json, false);
-}
-
-export function FlurstueckDtoToJSONTyped(value?: FlurstueckDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FlurstueckDtoToJSON(value?: FlurstueckDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'objectId': value['objectId'],
-        'oid1': value['oid1'],
-        'gemarkung': value['gemarkung'],
-        'fluerstueckNummerZ': value['fluerstueckNummerZ'],
-        'fluerstueckNummerN': value['fluerstueckNummerN'],
-        'afl': value['afl'],
-        'lage': value['lage'],
-        'gemeinde': value['gemeinde'],
-        'objektart': value['objektart'],
-        'nutzungsart': value['nutzungsart'],
-        'eigentumsart': value['eigentumsart'],
-        'flaecheQm': value['flaecheQm'],
-        'gemarkungName': value['gemarkungName'],
-        'flurstueckId': value['flurstueckId'],
-        'eigentumsartBedeutung': value['eigentumsartBedeutung'],
-        'gemeindeBedeutung': value['gemeindeBedeutung'],
-        'nutzungsartBedeutung': value['nutzungsartBedeutung'],
+        'objectId': value.objectId,
+        'oid1': value.oid1,
+        'gemarkung': value.gemarkung,
+        'fluerstueckNummerZ': value.fluerstueckNummerZ,
+        'fluerstueckNummerN': value.fluerstueckNummerN,
+        'afl': value.afl,
+        'lage': value.lage,
+        'gemeinde': value.gemeinde,
+        'objektart': value.objektart,
+        'nutzungsart': value.nutzungsart,
+        'eigentumsart': value.eigentumsart,
+        'flaecheQm': value.flaecheQm,
+        'gemarkungName': value.gemarkungName,
+        'flurstueckId': value.flurstueckId,
+        'eigentumsartBedeutung': value.eigentumsartBedeutung,
+        'gemeindeBedeutung': value.gemeindeBedeutung,
+        'nutzungsartBedeutung': value.nutzungsartBedeutung,
     };
 }
 

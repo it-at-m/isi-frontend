@@ -18,7 +18,7 @@ import type {
   EntityModelInfrastruktureinrichtung,
   InfrastruktureinrichtungRequestBody,
   PagedModelEntityModelInfrastruktureinrichtung,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
@@ -26,7 +26,7 @@ import {
     InfrastruktureinrichtungRequestBodyToJSON,
     PagedModelEntityModelInfrastruktureinrichtungFromJSON,
     PagedModelEntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceInfrastruktureinrichtungDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
      * delete-infrastruktureinrichtung
      */
     async deleteItemResourceInfrastruktureinrichtungDeleteRaw(requestParameters: DeleteItemResourceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceInfrastruktureinrichtungDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceInfrastruktureinrichtungDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     async getCollectionResourceInfrastruktureinrichtungGetRaw(requestParameters: GetCollectionResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelInfrastruktureinrichtung>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
      * get-infrastruktureinrichtung
      */
     async getItemResourceInfrastruktureinrichtungGetRaw(requestParameters: GetItemResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceInfrastruktureinrichtungGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceInfrastruktureinrichtungGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
      * patch-infrastruktureinrichtung
      */
     async patchItemResourceInfrastruktureinrichtungPatchRaw(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceInfrastruktureinrichtungPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceInfrastruktureinrichtungPatch.');
         }
 
-        if (requestParameters['infrastruktureinrichtungRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'infrastruktureinrichtungRequestBody',
-                'Required parameter "infrastruktureinrichtungRequestBody" was null or undefined when calling patchItemResourceInfrastruktureinrichtungPatch().'
-            );
+        if (requestParameters.infrastruktureinrichtungRequestBody === null || requestParameters.infrastruktureinrichtungRequestBody === undefined) {
+            throw new runtime.RequiredError('infrastruktureinrichtungRequestBody','Required parameter requestParameters.infrastruktureinrichtungRequestBody was null or undefined when calling patchItemResourceInfrastruktureinrichtungPatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
+            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters.infrastruktureinrichtungRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     /**
      * patch-infrastruktureinrichtung
      */
-    async patchItemResourceInfrastruktureinrichtungPatch(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung | null | undefined > {
+    async patchItemResourceInfrastruktureinrichtungPatch(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung> {
         const response = await this.patchItemResourceInfrastruktureinrichtungPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-infrastruktureinrichtung
      */
     async postCollectionResourceInfrastruktureinrichtungPostRaw(requestParameters: PostCollectionResourceInfrastruktureinrichtungPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['infrastruktureinrichtungRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'infrastruktureinrichtungRequestBody',
-                'Required parameter "infrastruktureinrichtungRequestBody" was null or undefined when calling postCollectionResourceInfrastruktureinrichtungPost().'
-            );
+        if (requestParameters.infrastruktureinrichtungRequestBody === null || requestParameters.infrastruktureinrichtungRequestBody === undefined) {
+            throw new runtime.RequiredError('infrastruktureinrichtungRequestBody','Required parameter requestParameters.infrastruktureinrichtungRequestBody was null or undefined when calling postCollectionResourceInfrastruktureinrichtungPost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/infrastruktureinrichtungs`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
+            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters.infrastruktureinrichtungRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
      * update-infrastruktureinrichtung
      */
     async putItemResourceInfrastruktureinrichtungPutRaw(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceInfrastruktureinrichtungPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceInfrastruktureinrichtungPut.');
         }
 
-        if (requestParameters['infrastruktureinrichtungRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'infrastruktureinrichtungRequestBody',
-                'Required parameter "infrastruktureinrichtungRequestBody" was null or undefined when calling putItemResourceInfrastruktureinrichtungPut().'
-            );
+        if (requestParameters.infrastruktureinrichtungRequestBody === null || requestParameters.infrastruktureinrichtungRequestBody === undefined) {
+            throw new runtime.RequiredError('infrastruktureinrichtungRequestBody','Required parameter requestParameters.infrastruktureinrichtungRequestBody was null or undefined when calling putItemResourceInfrastruktureinrichtungPut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/infrastruktureinrichtungs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
+            body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters.infrastruktureinrichtungRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     /**
      * update-infrastruktureinrichtung
      */
-    async putItemResourceInfrastruktureinrichtungPut(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung | null | undefined > {
+    async putItemResourceInfrastruktureinrichtungPut(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung> {
         const response = await this.putItemResourceInfrastruktureinrichtungPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

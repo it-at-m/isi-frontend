@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageEinpflegenBedarfsmeldungDto } from './AbfrageEinpflegenBedarfsmeldungDto';
 import {
     AbfrageEinpflegenBedarfsmeldungDtoFromJSON,
     AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped,
     AbfrageEinpflegenBedarfsmeldungDtoToJSON,
-    AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped,
 } from './AbfrageEinpflegenBedarfsmeldungDto';
 import type { AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto } from './AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
 import {
     AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON,
-    AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped,
 } from './AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -53,10 +54,12 @@ export interface BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto extends Abf
 /**
  * Check if a given object implements the BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto interface.
  */
-export function instanceOfBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto(value: object): value is BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto {
-    if (!('abfragevariantenBaugenehmigungsverfahren' in value) || value['abfragevariantenBaugenehmigungsverfahren'] === undefined) return false;
-    if (!('abfragevariantenSachbearbeitungBaugenehmigungsverfahren' in value) || value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] === undefined) return false;
-    return true;
+export function instanceOfBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBaugenehmigungsverfahren" in value;
+
+    return isInstance;
 }
 
 export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON(json: any): BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto {
@@ -64,38 +67,29 @@ export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON(json
 }
 
 export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true),
+        ...AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped(json, ignoreDiscriminator),
         'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON)),
     };
 }
 
-export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON(json: any): BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto {
-    return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(json, false);
-}
-
-export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value?: BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON(value?: BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped(value, true),
-        'abfragevariantenBaugenehmigungsverfahren': ((value['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON)),
+        ...AbfrageEinpflegenBedarfsmeldungDtoToJSON(value),
+        'abfragevariantenBaugenehmigungsverfahren': ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON)),
     };
 }
 

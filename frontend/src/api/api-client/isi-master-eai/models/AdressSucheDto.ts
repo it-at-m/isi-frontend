@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Kriterien für die Adress-Suche
  * @export
@@ -42,9 +42,11 @@ export interface AdressSucheDto {
 /**
  * Check if a given object implements the AdressSucheDto interface.
  */
-export function instanceOfAdressSucheDto(value: object): value is AdressSucheDto {
-    if (!('query' in value) || value['query'] === undefined) return false;
-    return true;
+export function instanceOfAdressSucheDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "query" in value;
+
+    return isInstance;
 }
 
 export function AdressSucheDtoFromJSON(json: any): AdressSucheDto {
@@ -52,31 +54,29 @@ export function AdressSucheDtoFromJSON(json: any): AdressSucheDto {
 }
 
 export function AdressSucheDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AdressSucheDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'query': json['query'],
-        'page': json['page'] == null ? undefined : json['page'],
-        'pagesize': json['pagesize'] == null ? undefined : json['pagesize'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
+        'pagesize': !exists(json, 'pagesize') ? undefined : json['pagesize'],
     };
 }
 
-export function AdressSucheDtoToJSON(json: any): AdressSucheDto {
-    return AdressSucheDtoToJSONTyped(json, false);
-}
-
-export function AdressSucheDtoToJSONTyped(value?: AdressSucheDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AdressSucheDtoToJSON(value?: AdressSucheDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'query': value['query'],
-        'page': value['page'],
-        'pagesize': value['pagesize'],
+        'query': value.query,
+        'page': value.page,
+        'pagesize': value.pagesize,
     };
 }
 

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto } from './AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto';
-import {
-    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON,
-    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped,
-    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON,
-    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSONTyped,
-} from './AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
 import {
     AbfrageEinplanungBedarfeDtoFromJSON,
     AbfrageEinplanungBedarfeDtoFromJSONTyped,
     AbfrageEinplanungBedarfeDtoToJSON,
-    AbfrageEinplanungBedarfeDtoToJSONTyped,
 } from './AbfrageEinplanungBedarfeDto';
+import type { AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto } from './AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto';
+import {
+    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON,
+    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped,
+    AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON,
+} from './AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -53,10 +54,12 @@ export interface BaugenehmigungsverfahrenEinplanungBedarfeDto extends AbfrageEin
 /**
  * Check if a given object implements the BaugenehmigungsverfahrenEinplanungBedarfeDto interface.
  */
-export function instanceOfBaugenehmigungsverfahrenEinplanungBedarfeDto(value: object): value is BaugenehmigungsverfahrenEinplanungBedarfeDto {
-    if (!('abfragevariantenBaugenehmigungsverfahren' in value) || value['abfragevariantenBaugenehmigungsverfahren'] === undefined) return false;
-    if (!('abfragevariantenSachbearbeitungBaugenehmigungsverfahren' in value) || value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] === undefined) return false;
-    return true;
+export function instanceOfBaugenehmigungsverfahrenEinplanungBedarfeDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenBaugenehmigungsverfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungBaugenehmigungsverfahren" in value;
+
+    return isInstance;
 }
 
 export function BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON(json: any): BaugenehmigungsverfahrenEinplanungBedarfeDto {
@@ -64,38 +67,29 @@ export function BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON(json: any):
 }
 
 export function BaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenEinplanungBedarfeDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, true),
+        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator),
         'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJSON)),
     };
 }
 
-export function BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON(json: any): BaugenehmigungsverfahrenEinplanungBedarfeDto {
-    return BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSONTyped(json, false);
-}
-
-export function BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSONTyped(value?: BaugenehmigungsverfahrenEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON(value?: BaugenehmigungsverfahrenEinplanungBedarfeDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageEinplanungBedarfeDtoToJSONTyped(value, true),
-        'abfragevariantenBaugenehmigungsverfahren': ((value['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON)),
+        ...AbfrageEinplanungBedarfeDtoToJSON(value),
+        'abfragevariantenBaugenehmigungsverfahren': ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSON)),
     };
 }
 

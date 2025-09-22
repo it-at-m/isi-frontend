@@ -19,7 +19,7 @@ import type {
   CollectionModelObject,
   EntityModelBauvorhaben,
   EntityModelInfrastruktureinrichtung,
-} from '../models/index';
+} from '../models';
 import {
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
@@ -29,7 +29,7 @@ import {
     EntityModelBauvorhabenToJSON,
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreatePropertyReferenceKommentarPatchRequest {
     id: string;
@@ -124,18 +124,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * patch-bauvorhaben-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPatchRaw(requestParameters: CreatePropertyReferenceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPatch.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPatch().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPatch.');
         }
 
         const queryParameters: any = {};
@@ -144,16 +138,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -162,34 +152,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * patch-bauvorhaben-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPatch(requestParameters: CreatePropertyReferenceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async createPropertyReferenceKommentarPatch(requestParameters: CreatePropertyReferenceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.createPropertyReferenceKommentarPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * patch-dokument-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPatch1Raw(requestParameters: CreatePropertyReferenceKommentarPatch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPatch1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPatch1.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPatch1().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPatch1.');
         }
 
         const queryParameters: any = {};
@@ -198,16 +175,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -216,34 +189,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * patch-dokument-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPatch1(requestParameters: CreatePropertyReferenceKommentarPatch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
+    async createPropertyReferenceKommentarPatch1(requestParameters: CreatePropertyReferenceKommentarPatch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
         const response = await this.createPropertyReferenceKommentarPatch1Raw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * patch-infrastruktureinrichtung-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPatch2Raw(requestParameters: CreatePropertyReferenceKommentarPatch2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPatch2().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPatch2.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPatch2().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPatch2.');
         }
 
         const queryParameters: any = {};
@@ -252,16 +212,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
@@ -270,34 +226,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * patch-infrastruktureinrichtung-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPatch2(requestParameters: CreatePropertyReferenceKommentarPatch2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung | null | undefined > {
+    async createPropertyReferenceKommentarPatch2(requestParameters: CreatePropertyReferenceKommentarPatch2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung> {
         const response = await this.createPropertyReferenceKommentarPatch2Raw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * update-bauvorhaben-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPutRaw(requestParameters: CreatePropertyReferenceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPut.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPut().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPut.');
         }
 
         const queryParameters: any = {};
@@ -306,16 +249,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -324,36 +263,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * update-bauvorhaben-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPut(requestParameters: CreatePropertyReferenceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async createPropertyReferenceKommentarPut(requestParameters: CreatePropertyReferenceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.createPropertyReferenceKommentarPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * update-dokument-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPut1Raw(requestParameters: CreatePropertyReferenceKommentarPut1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPut1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPut1.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPut1().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPut1.');
         }
 
         const queryParameters: any = {};
@@ -362,16 +286,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
@@ -380,36 +300,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * update-dokument-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPut1(requestParameters: CreatePropertyReferenceKommentarPut1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument | null | undefined > {
+    async createPropertyReferenceKommentarPut1(requestParameters: CreatePropertyReferenceKommentarPut1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelDokument> {
         const response = await this.createPropertyReferenceKommentarPut1Raw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * update-infrastruktureinrichtung-by-kommentar-Id
      */
     async createPropertyReferenceKommentarPut2Raw(requestParameters: CreatePropertyReferenceKommentarPut2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling createPropertyReferenceKommentarPut2().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling createPropertyReferenceKommentarPut2.');
         }
 
-        if (requestParameters['collectionModelObject'] == null) {
-            throw new runtime.RequiredError(
-                'collectionModelObject',
-                'Required parameter "collectionModelObject" was null or undefined when calling createPropertyReferenceKommentarPut2().'
-            );
+        if (requestParameters.collectionModelObject === null || requestParameters.collectionModelObject === undefined) {
+            throw new runtime.RequiredError('collectionModelObject','Required parameter requestParameters.collectionModelObject was null or undefined when calling createPropertyReferenceKommentarPut2.');
         }
 
         const queryParameters: any = {};
@@ -418,16 +323,12 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
+            body: CollectionModelObjectToJSON(requestParameters.collectionModelObject),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
@@ -436,49 +337,29 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     /**
      * update-infrastruktureinrichtung-by-kommentar-Id
      */
-    async createPropertyReferenceKommentarPut2(requestParameters: CreatePropertyReferenceKommentarPut2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung | null | undefined > {
+    async createPropertyReferenceKommentarPut2(requestParameters: CreatePropertyReferenceKommentarPut2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelInfrastruktureinrichtung> {
         const response = await this.createPropertyReferenceKommentarPut2Raw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * delete-bauvorhaben-by-kommentar-Id
      */
     async deletePropertyReferenceIdKommentarDeleteRaw(requestParameters: DeletePropertyReferenceIdKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdKommentarDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdKommentarDelete.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdKommentarDelete().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdKommentarDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -498,31 +379,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * delete-dokument-by-kommentar-Id
      */
     async deletePropertyReferenceIdKommentarDelete1Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdKommentarDelete1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdKommentarDelete1.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdKommentarDelete1().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdKommentarDelete1.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -542,31 +412,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * delete-infrastruktureinrichtung-by-kommentar-Id
      */
     async deletePropertyReferenceIdKommentarDelete2Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceIdKommentarDelete2().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceIdKommentarDelete2.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling deletePropertyReferenceIdKommentarDelete2().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling deletePropertyReferenceIdKommentarDelete2.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -586,23 +445,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * delete-bauvorhaben-by-kommentar-Id
      */
     async deletePropertyReferenceKommentarDeleteRaw(requestParameters: DeletePropertyReferenceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceKommentarDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceKommentarDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -622,23 +474,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * delete-dokument-by-kommentar-Id
      */
     async deletePropertyReferenceKommentarDelete1Raw(requestParameters: DeletePropertyReferenceKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceKommentarDelete1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceKommentarDelete1.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -658,23 +503,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * delete-infrastruktureinrichtung-by-kommentar-Id
      */
     async deletePropertyReferenceKommentarDelete2Raw(requestParameters: DeletePropertyReferenceKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePropertyReferenceKommentarDelete2().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePropertyReferenceKommentarDelete2.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -694,23 +532,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-bauvorhaben-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGetRaw(requestParameters: FollowPropertyReferenceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -731,31 +562,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-bauvorhaben-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGet1Raw(requestParameters: FollowPropertyReferenceKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet1().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet1.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceKommentarGet1().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceKommentarGet1.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/bauvorhaben/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -776,23 +596,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-dokument-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGet2Raw(requestParameters: FollowPropertyReferenceKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet2().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet2.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -813,31 +626,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-dokument-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGet3Raw(requestParameters: FollowPropertyReferenceKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet3().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet3.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceKommentarGet3().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceKommentarGet3.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/dokumente/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -858,23 +660,16 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-infrastruktureinrichtung-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGet4Raw(requestParameters: FollowPropertyReferenceKommentarGet4Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet4().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet4.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -895,31 +690,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
      * get-infrastruktureinrichtung-by-kommentar-Id
      */
     async followPropertyReferenceKommentarGet5Raw(requestParameters: FollowPropertyReferenceKommentarGet5Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling followPropertyReferenceKommentarGet5().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followPropertyReferenceKommentarGet5.');
         }
 
-        if (requestParameters['propertyId'] == null) {
-            throw new runtime.RequiredError(
-                'propertyId',
-                'Required parameter "propertyId" was null or undefined when calling followPropertyReferenceKommentarGet5().'
-            );
+        if (requestParameters.propertyId === null || requestParameters.propertyId === undefined) {
+            throw new runtime.RequiredError('propertyId','Required parameter requestParameters.propertyId was null or undefined when calling followPropertyReferenceKommentarGet5.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters.propertyId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

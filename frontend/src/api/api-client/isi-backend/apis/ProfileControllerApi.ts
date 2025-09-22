@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   JsonSchema,
   RepresentationModelObject,
-} from '../models/index';
+} from '../models';
 import {
     JsonSchemaFromJSON,
     JsonSchemaToJSON,
     RepresentationModelObjectFromJSON,
     RepresentationModelObjectToJSON,
-} from '../models/index';
+} from '../models';
 
 /**
  * 
@@ -37,11 +37,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/abfrages`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/abfrages`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -68,11 +65,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/abfragevarianteBaugenehmigungsverfahrens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/abfragevarianteBaugenehmigungsverfahrens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -99,11 +93,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/infrastruktureinrichtungs`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/infrastruktureinrichtungs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -130,11 +121,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/kommentars`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/kommentars`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -161,11 +149,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/sobonOrientierungswertSozialeInfrastrukturs`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/sobonOrientierungswertSozialeInfrastrukturs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -192,11 +177,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/staedtebaulicheOrientierungswerts`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/staedtebaulicheOrientierungswerts`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -223,11 +205,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/umlegungFoerderartens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/umlegungFoerderartens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -254,11 +233,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/versorgungsquoteGruppenstaerkes`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/versorgungsquoteGruppenstaerkes`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -285,11 +261,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/abfragevarianteBauleitplanverfahrens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/abfragevarianteBauleitplanverfahrens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -316,11 +289,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/abfragevarianteWeiteresVerfahrens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/abfragevarianteWeiteresVerfahrens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -347,11 +317,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/abfragevariantes`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/abfragevariantes`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -378,11 +345,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/bauvorhabens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/bauvorhabens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -409,11 +373,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/dokuments`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/dokuments`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -440,11 +401,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/foerdermixStamms`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/foerdermixStamms`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -471,11 +429,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/globalCounters`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/globalCounters`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -502,11 +457,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile/idealtypischeBaurates`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile/idealtypischeBaurates`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -533,11 +485,8 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/profile`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/profile`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

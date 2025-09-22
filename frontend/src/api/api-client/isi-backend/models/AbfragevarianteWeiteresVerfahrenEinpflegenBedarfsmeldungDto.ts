@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { BedarfsmeldungDto } from './BedarfsmeldungDto';
 import {
     BedarfsmeldungDtoFromJSON,
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
-    BedarfsmeldungDtoToJSONTyped,
 } from './BedarfsmeldungDto';
 
 /**
@@ -123,8 +122,10 @@ export type AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoArtAbfrag
 /**
  * Check if a given object implements the AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto interface.
  */
-export function instanceOfAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto(value: object): value is AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    return true;
+export function instanceOfAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto {
@@ -132,51 +133,49 @@ export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJ
 }
 
 export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
-        'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
-        'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
-        'ausgeloesterBedarfMitversorgungImBplanSchule': json['ausgeloesterBedarfMitversorgungImBplanSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'anmerkungFachreferate': json['anmerkungFachreferate'] == null ? undefined : json['anmerkungFachreferate'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
+        'anmerkungFachreferate': !exists(json, 'anmerkungFachreferate') ? undefined : json['anmerkungFachreferate'],
     };
 }
 
-export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(json: any): AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    return AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(json, false);
-}
-
-export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value?: AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(value?: AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'artAbfragevariante': value['artAbfragevariante'],
-        'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
-        'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
-        'ausgeloesterBedarfMitversorgungImBplanSchule': value['ausgeloesterBedarfMitversorgungImBplanSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'anmerkungFachreferate': value['anmerkungFachreferate'],
+        'id': value.id,
+        'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+        'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
+        'anmerkungFachreferate': value.anmerkungFachreferate,
     };
 }
 

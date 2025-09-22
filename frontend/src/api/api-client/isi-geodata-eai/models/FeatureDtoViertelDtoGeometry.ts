@@ -12,15 +12,15 @@
  * Do not edit the class manually.
  */
 
-import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
+    MultiPolygonGeometryDto,
     instanceOfMultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
 } from './MultiPolygonGeometryDto';
-import type { PointGeometryDto } from './PointGeometryDto';
 import {
+    PointGeometryDto,
     instanceOfPointGeometryDto,
     PointGeometryDtoFromJSON,
     PointGeometryDtoFromJSONTyped,
@@ -32,41 +32,49 @@ import {
  * 
  * @export
  */
-export type FeatureDtoViertelDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto;
+export type FeatureDtoViertelDtoGeometry = { type: 'MultiPolygon' } & MultiPolygonGeometryDto | { type: 'MultiPolygonGeometryDto' } & MultiPolygonGeometryDto | { type: 'Point' } & PointGeometryDto | { type: 'PointGeometryDto' } & PointGeometryDto;
 
 export function FeatureDtoViertelDtoGeometryFromJSON(json: any): FeatureDtoViertelDtoGeometry {
     return FeatureDtoViertelDtoGeometryFromJSONTyped(json, false);
 }
 
 export function FeatureDtoViertelDtoGeometryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoViertelDtoGeometry {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     switch (json['type']) {
         case 'MultiPolygon':
-            return Object.assign({}, MultiPolygonGeometryDtoFromJSONTyped(json, true), { type: 'MultiPolygon' } as const);
+            return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygon'};
+        case 'MultiPolygonGeometryDto':
+            return {...MultiPolygonGeometryDtoFromJSONTyped(json, true), type: 'MultiPolygonGeometryDto'};
         case 'Point':
-            return Object.assign({}, PointGeometryDtoFromJSONTyped(json, true), { type: 'Point' } as const);
+            return {...PointGeometryDtoFromJSONTyped(json, true), type: 'Point'};
+        case 'PointGeometryDto':
+            return {...PointGeometryDtoFromJSONTyped(json, true), type: 'PointGeometryDto'};
         default:
-            return json;
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${json['type']}'`);
     }
 }
 
-export function FeatureDtoViertelDtoGeometryToJSON(json: any): any {
-    return FeatureDtoViertelDtoGeometryToJSONTyped(json, false);
-}
-
-export function FeatureDtoViertelDtoGeometryToJSONTyped(value?: FeatureDtoViertelDtoGeometry | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FeatureDtoViertelDtoGeometryToJSON(value?: FeatureDtoViertelDtoGeometry | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
     switch (value['type']) {
         case 'MultiPolygon':
-            return Object.assign({}, MultiPolygonGeometryDtoToJSON(value), { type: 'MultiPolygon' } as const);
+            return MultiPolygonGeometryDtoToJSON(value);
+        case 'MultiPolygonGeometryDto':
+            return MultiPolygonGeometryDtoToJSON(value);
         case 'Point':
-            return Object.assign({}, PointGeometryDtoToJSON(value), { type: 'Point' } as const);
+            return PointGeometryDtoToJSON(value);
+        case 'PointGeometryDto':
+            return PointGeometryDtoToJSON(value);
         default:
-            return value;
+            throw new Error(`No variant of FeatureDtoViertelDtoGeometry exists with 'type=${value['type']}'`);
     }
+
 }
 

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { LookupListDto } from './LookupListDto';
 import {
     LookupListDtoFromJSON,
     LookupListDtoFromJSONTyped,
     LookupListDtoToJSON,
-    LookupListDtoToJSONTyped,
 } from './LookupListDto';
 
 /**
@@ -158,8 +157,10 @@ export interface LookupListsDto {
 /**
  * Check if a given object implements the LookupListsDto interface.
  */
-export function instanceOfLookupListsDto(value: object): value is LookupListsDto {
-    return true;
+export function instanceOfLookupListsDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LookupListsDtoFromJSON(json: any): LookupListsDto {
@@ -167,67 +168,65 @@ export function LookupListsDtoFromJSON(json: any): LookupListsDto {
 }
 
 export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): LookupListsDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'uncertainBoolean': json['uncertainBoolean'] == null ? undefined : LookupListDtoFromJSON(json['uncertainBoolean']),
-        'artDokument': json['artDokument'] == null ? undefined : LookupListDtoFromJSON(json['artDokument']),
-        'artAbfrage': json['artAbfrage'] == null ? undefined : LookupListDtoFromJSON(json['artAbfrage']),
-        'sobonVerfahrensgrundsaetzeJahr': json['sobonVerfahrensgrundsaetzeJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
-        'standVerfahrenBauleitplanverfahren': json['standVerfahrenBauleitplanverfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahren']),
-        'standVerfahrenBaugenehmigungsverfahren': json['standVerfahrenBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenBaugenehmigungsverfahren']),
-        'standVerfahrenWeiteresVerfahren': json['standVerfahrenWeiteresVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenWeiteresVerfahren']),
-        'standVerfahren': json['standVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahren']),
-        'statusAbfrage': json['statusAbfrage'] == null ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
-        'wesentlicheRechtsgrundlageBauleitplanverfahren': json['wesentlicheRechtsgrundlageBauleitplanverfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
-        'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlage']),
-        'artBaulicheNutzung': json['artBaulicheNutzung'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
-        'artBaulicheNutzungBauvorhaben': json['artBaulicheNutzungBauvorhaben'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
-        'statusInfrastruktureinrichtung': json['statusInfrastruktureinrichtung'] == null ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
-        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
-        'einrichtungstraegerSchulen': json['einrichtungstraegerSchulen'] == null ? undefined : LookupListDtoFromJSON(json['einrichtungstraegerSchulen']),
-        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
-        'artGsNachmittagBetreuung': json['artGsNachmittagBetreuung'] == null ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
-        'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
-        'sobonOrientierungswertJahrWithoutStandortabfrage': json['sobonOrientierungswertJahrWithoutStandortabfrage'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'uncertainBoolean': !exists(json, 'uncertainBoolean') ? undefined : LookupListDtoFromJSON(json['uncertainBoolean']),
+        'artDokument': !exists(json, 'artDokument') ? undefined : LookupListDtoFromJSON(json['artDokument']),
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : LookupListDtoFromJSON(json['artAbfrage']),
+        'sobonVerfahrensgrundsaetzeJahr': !exists(json, 'sobonVerfahrensgrundsaetzeJahr') ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
+        'standVerfahrenBauleitplanverfahren': !exists(json, 'standVerfahrenBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahren']),
+        'standVerfahrenBaugenehmigungsverfahren': !exists(json, 'standVerfahrenBaugenehmigungsverfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenBaugenehmigungsverfahren']),
+        'standVerfahrenWeiteresVerfahren': !exists(json, 'standVerfahrenWeiteresVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahrenWeiteresVerfahren']),
+        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : LookupListDtoFromJSON(json['standVerfahren']),
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
+        'wesentlicheRechtsgrundlageBauleitplanverfahren': !exists(json, 'wesentlicheRechtsgrundlageBauleitplanverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
+        'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': !exists(json, 'wesentlicheRechtsgrundlageBaugenehmigungsverfahren') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
+        'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlage']),
+        'artBaulicheNutzung': !exists(json, 'artBaulicheNutzung') ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
+        'artBaulicheNutzungBauvorhaben': !exists(json, 'artBaulicheNutzungBauvorhaben') ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
+        'statusInfrastruktureinrichtung': !exists(json, 'statusInfrastruktureinrichtung') ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
+        'einrichtungstraegerSchulen': !exists(json, 'einrichtungstraegerSchulen') ? undefined : LookupListDtoFromJSON(json['einrichtungstraegerSchulen']),
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
+        'artGsNachmittagBetreuung': !exists(json, 'artGsNachmittagBetreuung') ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
+        'sobonOrientierungswertJahr': !exists(json, 'sobonOrientierungswertJahr') ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
+        'sobonOrientierungswertJahrWithoutStandortabfrage': !exists(json, 'sobonOrientierungswertJahrWithoutStandortabfrage') ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
     };
 }
 
-export function LookupListsDtoToJSON(json: any): LookupListsDto {
-    return LookupListsDtoToJSONTyped(json, false);
-}
-
-export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function LookupListsDtoToJSON(value?: LookupListsDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'uncertainBoolean': LookupListDtoToJSON(value['uncertainBoolean']),
-        'artDokument': LookupListDtoToJSON(value['artDokument']),
-        'artAbfrage': LookupListDtoToJSON(value['artAbfrage']),
-        'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value['sobonVerfahrensgrundsaetzeJahr']),
-        'standVerfahrenBauleitplanverfahren': LookupListDtoToJSON(value['standVerfahrenBauleitplanverfahren']),
-        'standVerfahrenBaugenehmigungsverfahren': LookupListDtoToJSON(value['standVerfahrenBaugenehmigungsverfahren']),
-        'standVerfahrenWeiteresVerfahren': LookupListDtoToJSON(value['standVerfahrenWeiteresVerfahren']),
-        'standVerfahren': LookupListDtoToJSON(value['standVerfahren']),
-        'statusAbfrage': LookupListDtoToJSON(value['statusAbfrage']),
-        'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBauleitplanverfahren']),
-        'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
-        'wesentlicheRechtsgrundlage': LookupListDtoToJSON(value['wesentlicheRechtsgrundlage']),
-        'artBaulicheNutzung': LookupListDtoToJSON(value['artBaulicheNutzung']),
-        'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value['artBaulicheNutzungBauvorhaben']),
-        'statusInfrastruktureinrichtung': LookupListDtoToJSON(value['statusInfrastruktureinrichtung']),
-        'einrichtungstraeger': LookupListDtoToJSON(value['einrichtungstraeger']),
-        'einrichtungstraegerSchulen': LookupListDtoToJSON(value['einrichtungstraegerSchulen']),
-        'infrastruktureinrichtungTyp': LookupListDtoToJSON(value['infrastruktureinrichtungTyp']),
-        'artGsNachmittagBetreuung': LookupListDtoToJSON(value['artGsNachmittagBetreuung']),
-        'sobonOrientierungswertJahr': LookupListDtoToJSON(value['sobonOrientierungswertJahr']),
-        'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'uncertainBoolean': LookupListDtoToJSON(value.uncertainBoolean),
+        'artDokument': LookupListDtoToJSON(value.artDokument),
+        'artAbfrage': LookupListDtoToJSON(value.artAbfrage),
+        'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value.sobonVerfahrensgrundsaetzeJahr),
+        'standVerfahrenBauleitplanverfahren': LookupListDtoToJSON(value.standVerfahrenBauleitplanverfahren),
+        'standVerfahrenBaugenehmigungsverfahren': LookupListDtoToJSON(value.standVerfahrenBaugenehmigungsverfahren),
+        'standVerfahrenWeiteresVerfahren': LookupListDtoToJSON(value.standVerfahrenWeiteresVerfahren),
+        'standVerfahren': LookupListDtoToJSON(value.standVerfahren),
+        'statusAbfrage': LookupListDtoToJSON(value.statusAbfrage),
+        'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBauleitplanverfahren),
+        'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': LookupListDtoToJSON(value.wesentlicheRechtsgrundlageBaugenehmigungsverfahren),
+        'wesentlicheRechtsgrundlage': LookupListDtoToJSON(value.wesentlicheRechtsgrundlage),
+        'artBaulicheNutzung': LookupListDtoToJSON(value.artBaulicheNutzung),
+        'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value.artBaulicheNutzungBauvorhaben),
+        'statusInfrastruktureinrichtung': LookupListDtoToJSON(value.statusInfrastruktureinrichtung),
+        'einrichtungstraeger': LookupListDtoToJSON(value.einrichtungstraeger),
+        'einrichtungstraegerSchulen': LookupListDtoToJSON(value.einrichtungstraegerSchulen),
+        'infrastruktureinrichtungTyp': LookupListDtoToJSON(value.infrastruktureinrichtungTyp),
+        'artGsNachmittagBetreuung': LookupListDtoToJSON(value.artGsNachmittagBetreuung),
+        'sobonOrientierungswertJahr': LookupListDtoToJSON(value.sobonOrientierungswertJahr),
+        'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value.sobonOrientierungswertJahrWithoutStandortabfrage),
     };
 }
 

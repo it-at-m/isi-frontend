@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelAbfragevarianteBaugenehmigungsverfahren } from './EntityModelAbfragevarianteBaugenehmigungsverfahren';
 import {
     EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSONTyped,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON,
-    EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSONTyped,
 } from './EntityModelAbfragevarianteBaugenehmigungsverfahren';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmb
 /**
  * Check if a given object implements the PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded(value: object): value is PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedFromJSON(json: any): PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbe
 }
 
 export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'abfragevarianteBaugenehmigungsverfahrens': json['abfragevarianteBaugenehmigungsverfahrens'] == null ? undefined : ((json['abfragevarianteBaugenehmigungsverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON)),
+        'abfragevarianteBaugenehmigungsverfahrens': !exists(json, 'abfragevarianteBaugenehmigungsverfahrens') ? undefined : ((json['abfragevarianteBaugenehmigungsverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON)),
     };
 }
 
-export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedToJSON(json: any): PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded {
-    return PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedToJSONTyped(value?: PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbeddedToJSON(value?: PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'abfragevarianteBaugenehmigungsverfahrens': value['abfragevarianteBaugenehmigungsverfahrens'] == null ? undefined : ((value['abfragevarianteBaugenehmigungsverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON)),
+        'abfragevarianteBaugenehmigungsverfahrens': value.abfragevarianteBaugenehmigungsverfahrens === undefined ? undefined : ((value.abfragevarianteBaugenehmigungsverfahrens as Array<any>).map(EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON)),
     };
 }
 

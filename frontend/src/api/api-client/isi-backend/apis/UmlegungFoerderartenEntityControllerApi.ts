@@ -18,7 +18,7 @@ import type {
   EntityModelUmlegungFoerderarten,
   PagedModelEntityModelUmlegungFoerderarten,
   UmlegungFoerderartenRequestBody,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelUmlegungFoerderartenFromJSON,
     EntityModelUmlegungFoerderartenToJSON,
@@ -26,7 +26,7 @@ import {
     PagedModelEntityModelUmlegungFoerderartenToJSON,
     UmlegungFoerderartenRequestBodyFromJSON,
     UmlegungFoerderartenRequestBodyToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceUmlegungfoerderartenDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
      * delete-umlegungfoerderarten
      */
     async deleteItemResourceUmlegungfoerderartenDeleteRaw(requestParameters: DeleteItemResourceUmlegungfoerderartenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceUmlegungfoerderartenDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceUmlegungfoerderartenDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceUmlegungfoerderartenGetRaw(requestParameters: GetCollectionResourceUmlegungfoerderartenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelUmlegungFoerderarten>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/umlegungFoerderartens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
      * get-umlegungfoerderarten
      */
     async getItemResourceUmlegungfoerderartenGetRaw(requestParameters: GetItemResourceUmlegungfoerderartenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceUmlegungfoerderartenGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceUmlegungfoerderartenGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
      * patch-umlegungfoerderarten
      */
     async patchItemResourceUmlegungfoerderartenPatchRaw(requestParameters: PatchItemResourceUmlegungfoerderartenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceUmlegungfoerderartenPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceUmlegungfoerderartenPatch.');
         }
 
-        if (requestParameters['umlegungFoerderartenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'umlegungFoerderartenRequestBody',
-                'Required parameter "umlegungFoerderartenRequestBody" was null or undefined when calling patchItemResourceUmlegungfoerderartenPatch().'
-            );
+        if (requestParameters.umlegungFoerderartenRequestBody === null || requestParameters.umlegungFoerderartenRequestBody === undefined) {
+            throw new runtime.RequiredError('umlegungFoerderartenRequestBody','Required parameter requestParameters.umlegungFoerderartenRequestBody was null or undefined when calling patchItemResourceUmlegungfoerderartenPatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters['umlegungFoerderartenRequestBody']),
+            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters.umlegungFoerderartenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelUmlegungFoerderartenFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-umlegungfoerderarten
      */
-    async patchItemResourceUmlegungfoerderartenPatch(requestParameters: PatchItemResourceUmlegungfoerderartenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelUmlegungFoerderarten | null | undefined > {
+    async patchItemResourceUmlegungfoerderartenPatch(requestParameters: PatchItemResourceUmlegungfoerderartenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelUmlegungFoerderarten> {
         const response = await this.patchItemResourceUmlegungfoerderartenPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-umlegungfoerderarten
      */
     async postCollectionResourceUmlegungfoerderartenPostRaw(requestParameters: PostCollectionResourceUmlegungfoerderartenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
-        if (requestParameters['umlegungFoerderartenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'umlegungFoerderartenRequestBody',
-                'Required parameter "umlegungFoerderartenRequestBody" was null or undefined when calling postCollectionResourceUmlegungfoerderartenPost().'
-            );
+        if (requestParameters.umlegungFoerderartenRequestBody === null || requestParameters.umlegungFoerderartenRequestBody === undefined) {
+            throw new runtime.RequiredError('umlegungFoerderartenRequestBody','Required parameter requestParameters.umlegungFoerderartenRequestBody was null or undefined when calling postCollectionResourceUmlegungfoerderartenPost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/umlegungFoerderartens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters['umlegungFoerderartenRequestBody']),
+            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters.umlegungFoerderartenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelUmlegungFoerderartenFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
      * update-umlegungfoerderarten
      */
     async putItemResourceUmlegungfoerderartenPutRaw(requestParameters: PutItemResourceUmlegungfoerderartenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceUmlegungfoerderartenPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceUmlegungfoerderartenPut.');
         }
 
-        if (requestParameters['umlegungFoerderartenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'umlegungFoerderartenRequestBody',
-                'Required parameter "umlegungFoerderartenRequestBody" was null or undefined when calling putItemResourceUmlegungfoerderartenPut().'
-            );
+        if (requestParameters.umlegungFoerderartenRequestBody === null || requestParameters.umlegungFoerderartenRequestBody === undefined) {
+            throw new runtime.RequiredError('umlegungFoerderartenRequestBody','Required parameter requestParameters.umlegungFoerderartenRequestBody was null or undefined when calling putItemResourceUmlegungfoerderartenPut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/umlegungFoerderartens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters['umlegungFoerderartenRequestBody']),
+            body: UmlegungFoerderartenRequestBodyToJSON(requestParameters.umlegungFoerderartenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelUmlegungFoerderartenFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-umlegungfoerderarten
      */
-    async putItemResourceUmlegungfoerderartenPut(requestParameters: PutItemResourceUmlegungfoerderartenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelUmlegungFoerderarten | null | undefined > {
+    async putItemResourceUmlegungfoerderartenPut(requestParameters: PutItemResourceUmlegungfoerderartenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelUmlegungFoerderarten> {
         const response = await this.putItemResourceUmlegungfoerderartenPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

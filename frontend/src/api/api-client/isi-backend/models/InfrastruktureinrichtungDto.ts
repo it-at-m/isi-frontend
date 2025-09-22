@@ -12,35 +12,71 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { VerortungPointDto } from './VerortungPointDto';
-import {
-    VerortungPointDtoFromJSON,
-    VerortungPointDtoFromJSONTyped,
-    VerortungPointDtoToJSON,
-    VerortungPointDtoToJSONTyped,
-} from './VerortungPointDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
-import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
-} from './BearbeitendePersonDto';
+import { exists, mapValues } from '../runtime';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
 } from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
+import type { GrundschuleDto } from './GrundschuleDto';
+import {
+    GrundschuleDtoFromJSON,
+    GrundschuleDtoFromJSONTyped,
+    GrundschuleDtoToJSON,
+} from './GrundschuleDto';
+import type { GsNachmittagBetreuungDto } from './GsNachmittagBetreuungDto';
+import {
+    GsNachmittagBetreuungDtoFromJSON,
+    GsNachmittagBetreuungDtoFromJSONTyped,
+    GsNachmittagBetreuungDtoToJSON,
+} from './GsNachmittagBetreuungDto';
+import type { HausFuerKinderDto } from './HausFuerKinderDto';
+import {
+    HausFuerKinderDtoFromJSON,
+    HausFuerKinderDtoFromJSONTyped,
+    HausFuerKinderDtoToJSON,
+} from './HausFuerKinderDto';
+import type { KindergartenDto } from './KindergartenDto';
+import {
+    KindergartenDtoFromJSON,
+    KindergartenDtoFromJSONTyped,
+    KindergartenDtoToJSON,
+} from './KindergartenDto';
+import type { KinderkrippeDto } from './KinderkrippeDto';
+import {
+    KinderkrippeDtoFromJSON,
+    KinderkrippeDtoFromJSONTyped,
+    KinderkrippeDtoToJSON,
+} from './KinderkrippeDto';
+import type { MittelschuleDto } from './MittelschuleDto';
+import {
+    MittelschuleDtoFromJSON,
+    MittelschuleDtoFromJSONTyped,
+    MittelschuleDtoToJSON,
+} from './MittelschuleDto';
+import type { VerortungPointDto } from './VerortungPointDto';
+import {
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
 
-import { type GrundschuleDto, GrundschuleDtoFromJSONTyped, GrundschuleDtoToJSON, GrundschuleDtoToJSONTyped } from './GrundschuleDto';
-import { type GsNachmittagBetreuungDto, GsNachmittagBetreuungDtoFromJSONTyped, GsNachmittagBetreuungDtoToJSON, GsNachmittagBetreuungDtoToJSONTyped } from './GsNachmittagBetreuungDto';
-import { type HausFuerKinderDto, HausFuerKinderDtoFromJSONTyped, HausFuerKinderDtoToJSON, HausFuerKinderDtoToJSONTyped } from './HausFuerKinderDto';
-import { type KindergartenDto, KindergartenDtoFromJSONTyped, KindergartenDtoToJSON, KindergartenDtoToJSONTyped } from './KindergartenDto';
-import { type KinderkrippeDto, KinderkrippeDtoFromJSONTyped, KinderkrippeDtoToJSON, KinderkrippeDtoToJSONTyped } from './KinderkrippeDto';
-import { type MittelschuleDto, MittelschuleDtoFromJSONTyped, MittelschuleDtoToJSON, MittelschuleDtoToJSONTyped } from './MittelschuleDto';
+import {
+     GrundschuleDtoFromJSONTyped,
+     GsNachmittagBetreuungDtoFromJSONTyped,
+     HausFuerKinderDtoFromJSONTyped,
+     KindergartenDtoFromJSONTyped,
+     KinderkrippeDtoFromJSONTyped,
+     MittelschuleDtoFromJSONTyped
+} from './';
+
 /**
  * InfrastruktureinrichtungDto
  * @export
@@ -180,10 +216,12 @@ export type InfrastruktureinrichtungDtoStatusEnum = typeof Infrastruktureinricht
 /**
  * Check if a given object implements the InfrastruktureinrichtungDto interface.
  */
-export function instanceOfInfrastruktureinrichtungDto(value: object): value is InfrastruktureinrichtungDto {
-    if (!('nameEinrichtung' in value) || value['nameEinrichtung'] === undefined) return false;
-    if (!('status' in value) || value['status'] === undefined) return false;
-    return true;
+export function instanceOfInfrastruktureinrichtungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "nameEinrichtung" in value;
+    isInstance = isInstance && "status" in value;
+
+    return isInstance;
 }
 
 export function InfrastruktureinrichtungDtoFromJSON(json: any): InfrastruktureinrichtungDto {
@@ -191,96 +229,75 @@ export function InfrastruktureinrichtungDtoFromJSON(json: any): Infrastrukturein
 }
 
 export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['infrastruktureinrichtungTyp'] === 'GRUNDSCHULE') {
-            return GrundschuleDtoFromJSONTyped(json, ignoreDiscriminator);
+            return GrundschuleDtoFromJSONTyped(json, true);
         }
         if (json['infrastruktureinrichtungTyp'] === 'GS_NACHMITTAG_BETREUUNG') {
-            return GsNachmittagBetreuungDtoFromJSONTyped(json, ignoreDiscriminator);
+            return GsNachmittagBetreuungDtoFromJSONTyped(json, true);
         }
         if (json['infrastruktureinrichtungTyp'] === 'HAUS_FUER_KINDER') {
-            return HausFuerKinderDtoFromJSONTyped(json, ignoreDiscriminator);
+            return HausFuerKinderDtoFromJSONTyped(json, true);
         }
         if (json['infrastruktureinrichtungTyp'] === 'KINDERGARTEN') {
-            return KindergartenDtoFromJSONTyped(json, ignoreDiscriminator);
+            return KindergartenDtoFromJSONTyped(json, true);
         }
         if (json['infrastruktureinrichtungTyp'] === 'KINDERKRIPPE') {
-            return KinderkrippeDtoFromJSONTyped(json, ignoreDiscriminator);
+            return KinderkrippeDtoFromJSONTyped(json, true);
         }
         if (json['infrastruktureinrichtungTyp'] === 'MITTELSCHULE') {
-            return MittelschuleDtoFromJSONTyped(json, ignoreDiscriminator);
+            return MittelschuleDtoFromJSONTyped(json, true);
         }
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
-        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'lfdNr': json['lfdNr'] == null ? undefined : json['lfdNr'],
-        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
-        'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': json['verortung'] == null ? undefined : VerortungPointDtoFromJSON(json['verortung']),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
+        'lfdNr': !exists(json, 'lfdNr') ? undefined : json['lfdNr'],
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': !exists(json, 'verortung') ? undefined : VerortungPointDtoFromJSON(json['verortung']),
         'nameEinrichtung': json['nameEinrichtung'],
-        'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
+        'fertigstellungsjahr': !exists(json, 'fertigstellungsjahr') ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
-        'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
-        'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
-        'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
+        'flaecheGesamtgrundstueck': !exists(json, 'flaecheGesamtgrundstueck') ? undefined : json['flaecheGesamtgrundstueck'],
+        'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
+        'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
     };
 }
 
-export function InfrastruktureinrichtungDtoToJSON(json: any): InfrastruktureinrichtungDto {
-    return InfrastruktureinrichtungDtoToJSONTyped(json, false);
-}
-
-export function InfrastruktureinrichtungDtoToJSONTyped(value?: InfrastruktureinrichtungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InfrastruktureinrichtungDtoToJSON(value?: InfrastruktureinrichtungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['infrastruktureinrichtungTyp']) {
-            case 'GRUNDSCHULE':
-                return GrundschuleDtoToJSONTyped(value as GrundschuleDto, ignoreDiscriminator);
-            case 'GS_NACHMITTAG_BETREUUNG':
-                return GsNachmittagBetreuungDtoToJSONTyped(value as GsNachmittagBetreuungDto, ignoreDiscriminator);
-            case 'HAUS_FUER_KINDER':
-                return HausFuerKinderDtoToJSONTyped(value as HausFuerKinderDto, ignoreDiscriminator);
-            case 'KINDERGARTEN':
-                return KindergartenDtoToJSONTyped(value as KindergartenDto, ignoreDiscriminator);
-            case 'KINDERKRIPPE':
-                return KinderkrippeDtoToJSONTyped(value as KinderkrippeDto, ignoreDiscriminator);
-            case 'MITTELSCHULE':
-                return MittelschuleDtoToJSONTyped(value as MittelschuleDto, ignoreDiscriminator);
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
-        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'lfdNr': value['lfdNr'],
-        'bauvorhaben': value['bauvorhaben'],
-        'adresse': AdresseDtoToJSON(value['adresse']),
-        'verortung': VerortungPointDtoToJSON(value['verortung']),
-        'nameEinrichtung': value['nameEinrichtung'],
-        'fertigstellungsjahr': value['fertigstellungsjahr'],
-        'status': value['status'],
-        'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
-        'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
-        'idKibigWeb': value['idKibigWeb'],
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value.bearbeitendePerson),
+        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
+        'lfdNr': value.lfdNr,
+        'bauvorhaben': value.bauvorhaben,
+        'adresse': AdresseDtoToJSON(value.adresse),
+        'verortung': VerortungPointDtoToJSON(value.verortung),
+        'nameEinrichtung': value.nameEinrichtung,
+        'fertigstellungsjahr': value.fertigstellungsjahr,
+        'status': value.status,
+        'flaecheGesamtgrundstueck': value.flaecheGesamtgrundstueck,
+        'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
+        'idKibigWeb': value.idKibigWeb,
     };
 }
 

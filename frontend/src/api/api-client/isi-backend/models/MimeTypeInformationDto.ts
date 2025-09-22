@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,8 +42,10 @@ export interface MimeTypeInformationDto {
 /**
  * Check if a given object implements the MimeTypeInformationDto interface.
  */
-export function instanceOfMimeTypeInformationDto(value: object): value is MimeTypeInformationDto {
-    return true;
+export function instanceOfMimeTypeInformationDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function MimeTypeInformationDtoFromJSON(json: any): MimeTypeInformationDto {
@@ -51,31 +53,29 @@ export function MimeTypeInformationDtoFromJSON(json: any): MimeTypeInformationDt
 }
 
 export function MimeTypeInformationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MimeTypeInformationDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'acronym': json['acronym'] == null ? undefined : json['acronym'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'acronym': !exists(json, 'acronym') ? undefined : json['acronym'],
     };
 }
 
-export function MimeTypeInformationDtoToJSON(json: any): MimeTypeInformationDto {
-    return MimeTypeInformationDtoToJSONTyped(json, false);
-}
-
-export function MimeTypeInformationDtoToJSONTyped(value?: MimeTypeInformationDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MimeTypeInformationDtoToJSON(value?: MimeTypeInformationDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'description': value['description'],
-        'acronym': value['acronym'],
+        'type': value.type,
+        'description': value.description,
+        'acronym': value.acronym,
     };
 }
 

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelGlobalCounter } from './EntityModelGlobalCounter';
 import {
     EntityModelGlobalCounterFromJSON,
     EntityModelGlobalCounterFromJSONTyped,
     EntityModelGlobalCounterToJSON,
-    EntityModelGlobalCounterToJSONTyped,
 } from './EntityModelGlobalCounter';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelGlobalCounterEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelGlobalCounterEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelGlobalCounterEmbedded(value: object): value is PagedModelEntityModelGlobalCounterEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelGlobalCounterEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelGlobalCounterEmbeddedFromJSON(json: any): PagedModelEntityModelGlobalCounterEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelGlobalCounterEmbeddedFromJSON(json: any): P
 }
 
 export function PagedModelEntityModelGlobalCounterEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelGlobalCounterEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'globalCounters': json['globalCounters'] == null ? undefined : ((json['globalCounters'] as Array<any>).map(EntityModelGlobalCounterFromJSON)),
+        'globalCounters': !exists(json, 'globalCounters') ? undefined : ((json['globalCounters'] as Array<any>).map(EntityModelGlobalCounterFromJSON)),
     };
 }
 
-export function PagedModelEntityModelGlobalCounterEmbeddedToJSON(json: any): PagedModelEntityModelGlobalCounterEmbedded {
-    return PagedModelEntityModelGlobalCounterEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelGlobalCounterEmbeddedToJSONTyped(value?: PagedModelEntityModelGlobalCounterEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelGlobalCounterEmbeddedToJSON(value?: PagedModelEntityModelGlobalCounterEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'globalCounters': value['globalCounters'] == null ? undefined : ((value['globalCounters'] as Array<any>).map(EntityModelGlobalCounterToJSON)),
+        'globalCounters': value.globalCounters === undefined ? undefined : ((value.globalCounters as Array<any>).map(EntityModelGlobalCounterToJSON)),
     };
 }
 

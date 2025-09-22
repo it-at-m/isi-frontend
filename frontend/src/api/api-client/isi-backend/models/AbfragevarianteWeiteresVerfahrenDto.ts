@@ -12,42 +12,37 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { SobonBerechnungDto } from './SobonBerechnungDto';
-import {
-    SobonBerechnungDtoFromJSON,
-    SobonBerechnungDtoFromJSONTyped,
-    SobonBerechnungDtoToJSON,
-    SobonBerechnungDtoToJSONTyped,
-} from './SobonBerechnungDto';
-import type { BauratendateiInputDto } from './BauratendateiInputDto';
-import {
-    BauratendateiInputDtoFromJSON,
-    BauratendateiInputDtoFromJSONTyped,
-    BauratendateiInputDtoToJSON,
-    BauratendateiInputDtoToJSONTyped,
-} from './BauratendateiInputDto';
+import { exists, mapValues } from '../runtime';
 import type { BauabschnittDto } from './BauabschnittDto';
 import {
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
-    BauabschnittDtoToJSONTyped,
 } from './BauabschnittDto';
+import type { BauratendateiInputDto } from './BauratendateiInputDto';
+import {
+    BauratendateiInputDtoFromJSON,
+    BauratendateiInputDtoFromJSONTyped,
+    BauratendateiInputDtoToJSON,
+} from './BauratendateiInputDto';
 import type { BedarfsmeldungDto } from './BedarfsmeldungDto';
 import {
     BedarfsmeldungDtoFromJSON,
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
-    BedarfsmeldungDtoToJSONTyped,
 } from './BedarfsmeldungDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
 } from './DokumentDto';
+import type { SobonBerechnungDto } from './SobonBerechnungDto';
+import {
+    SobonBerechnungDtoFromJSON,
+    SobonBerechnungDtoFromJSONTyped,
+    SobonBerechnungDtoToJSON,
+} from './SobonBerechnungDto';
 
 /**
  * 
@@ -422,8 +417,10 @@ export type AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanung
 /**
  * Check if a given object implements the AbfragevarianteWeiteresVerfahrenDto interface.
  */
-export function instanceOfAbfragevarianteWeiteresVerfahrenDto(value: object): value is AbfragevarianteWeiteresVerfahrenDto {
-    return true;
+export function instanceOfAbfragevarianteWeiteresVerfahrenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AbfragevarianteWeiteresVerfahrenDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenDto {
@@ -431,131 +428,129 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSON(json: any): Abfragev
 }
 
 export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteWeiteresVerfahrenDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfragevariantenNr': json['abfragevariantenNr'] == null ? undefined : json['abfragevariantenNr'],
-        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
-        'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
-        'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
-        'gfWohnenBaurechtlichGenehmigt': json['gfWohnenBaurechtlichGenehmigt'] == null ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
-        'gfWohnenBaurechtlichFestgesetzt': json['gfWohnenBaurechtlichFestgesetzt'] == null ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
-        'gfWohnenSobonUrsaechlich': json['gfWohnenSobonUrsaechlich'] == null ? undefined : json['gfWohnenSobonUrsaechlich'],
-        'gfWohnenBestandswohnbaurecht': json['gfWohnenBestandswohnbaurecht'] == null ? undefined : json['gfWohnenBestandswohnbaurecht'],
-        'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'] == null ? undefined : json['gfWohnenSonderwohnformen'],
-        'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
-        'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
-        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
-        'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
-        'weBaurechtlichGenehmigt': json['weBaurechtlichGenehmigt'] == null ? undefined : json['weBaurechtlichGenehmigt'],
-        'weBaurechtlichFestgesetzt': json['weBaurechtlichFestgesetzt'] == null ? undefined : json['weBaurechtlichFestgesetzt'],
-        'weSonderwohnformen': json['weSonderwohnformen'] == null ? undefined : json['weSonderwohnformen'],
-        'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
-        'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
-        'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
-        'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'] == null ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
-        'sobonBerechnung': json['sobonBerechnung'] == null ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
-        'stammdatenGueltigAb': json['stammdatenGueltigAb'] == null ? undefined : (new Date(json['stammdatenGueltigAb'])),
-        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
-        'hasBauratendateiInput': json['hasBauratendateiInput'] == null ? undefined : json['hasBauratendateiInput'],
-        'anmerkungBauratendateiInput': json['anmerkungBauratendateiInput'] == null ? undefined : json['anmerkungBauratendateiInput'],
-        'bauratendateiInputBasis': json['bauratendateiInputBasis'] == null ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
-        'bauratendateiInput': json['bauratendateiInput'] == null ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
-        'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'bauabschnitte': json['bauabschnitte'] == null ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
-        'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
-        'ausgeloesterBedarfMitversorgungImBplanSchule': json['ausgeloesterBedarfMitversorgungImBplanSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'anmerkungFachreferate': json['anmerkungFachreferate'] == null ? undefined : json['anmerkungFachreferate'],
-        'anmerkungAbfrageersteller': json['anmerkungAbfrageersteller'] == null ? undefined : json['anmerkungAbfrageersteller'],
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
+        'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : json['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'realisierungVon': !exists(json, 'realisierungVon') ? undefined : json['realisierungVon'],
+        'gfWohnenGesamt': !exists(json, 'gfWohnenGesamt') ? undefined : json['gfWohnenGesamt'],
+        'gfWohnenBaurechtlichGenehmigt': !exists(json, 'gfWohnenBaurechtlichGenehmigt') ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
+        'gfWohnenBaurechtlichFestgesetzt': !exists(json, 'gfWohnenBaurechtlichFestgesetzt') ? undefined : json['gfWohnenBaurechtlichFestgesetzt'],
+        'gfWohnenSobonUrsaechlich': !exists(json, 'gfWohnenSobonUrsaechlich') ? undefined : json['gfWohnenSobonUrsaechlich'],
+        'gfWohnenBestandswohnbaurecht': !exists(json, 'gfWohnenBestandswohnbaurecht') ? undefined : json['gfWohnenBestandswohnbaurecht'],
+        'gfWohnenSonderwohnformen': !exists(json, 'gfWohnenSonderwohnformen') ? undefined : json['gfWohnenSonderwohnformen'],
+        'gfWohnenStudentischesWohnen': !exists(json, 'gfWohnenStudentischesWohnen') ? undefined : json['gfWohnenStudentischesWohnen'],
+        'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
+        'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
+        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': !exists(json, 'gfAnmerkung') ? undefined : json['gfAnmerkung'],
+        'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
+        'weBaurechtlichGenehmigt': !exists(json, 'weBaurechtlichGenehmigt') ? undefined : json['weBaurechtlichGenehmigt'],
+        'weBaurechtlichFestgesetzt': !exists(json, 'weBaurechtlichFestgesetzt') ? undefined : json['weBaurechtlichFestgesetzt'],
+        'weSonderwohnformen': !exists(json, 'weSonderwohnformen') ? undefined : json['weSonderwohnformen'],
+        'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
+        'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
+        'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
+        'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
+        'sobonOrientierungswertJahrPlanungsursaechlich': !exists(json, 'sobonOrientierungswertJahrPlanungsursaechlich') ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
+        'sobonBerechnung': !exists(json, 'sobonBerechnung') ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
+        'stammdatenGueltigAb': !exists(json, 'stammdatenGueltigAb') ? undefined : (new Date(json['stammdatenGueltigAb'])),
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'hasBauratendateiInput': !exists(json, 'hasBauratendateiInput') ? undefined : json['hasBauratendateiInput'],
+        'anmerkungBauratendateiInput': !exists(json, 'anmerkungBauratendateiInput') ? undefined : json['anmerkungBauratendateiInput'],
+        'bauratendateiInputBasis': !exists(json, 'bauratendateiInputBasis') ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
+        'bauratendateiInput': !exists(json, 'bauratendateiInput') ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
+        'bedarfsmeldungFachreferate': !exists(json, 'bedarfsmeldungFachreferate') ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bauabschnitte': !exists(json, 'bauabschnitte') ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenKita') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
+        'ausgeloesterBedarfMitversorgungImBplanKita': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanKita') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': !exists(json, 'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule') ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
+        'ausgeloesterBedarfMitversorgungImBplanSchule': !exists(json, 'ausgeloesterBedarfMitversorgungImBplanSchule') ? undefined : json['ausgeloesterBedarfMitversorgungImBplanSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': !exists(json, 'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule') ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
+        'anmerkungFachreferate': !exists(json, 'anmerkungFachreferate') ? undefined : json['anmerkungFachreferate'],
+        'anmerkungAbfrageersteller': !exists(json, 'anmerkungAbfrageersteller') ? undefined : json['anmerkungAbfrageersteller'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
-export function AbfragevarianteWeiteresVerfahrenDtoToJSON(json: any): AbfragevarianteWeiteresVerfahrenDto {
-    return AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(json, false);
-}
-
-export function AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(value?: AbfragevarianteWeiteresVerfahrenDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AbfragevarianteWeiteresVerfahrenDtoToJSON(value?: AbfragevarianteWeiteresVerfahrenDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'abfragevariantenNr': value['abfragevariantenNr'],
-        'artAbfragevariante': value['artAbfragevariante'],
-        'name': value['name'],
-        'satzungsbeschluss': value['satzungsbeschluss'] == null ? undefined : ((value['satzungsbeschluss']).toISOString().substring(0,10)),
-        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
-        'realisierungVon': value['realisierungVon'],
-        'gfWohnenGesamt': value['gfWohnenGesamt'],
-        'gfWohnenBaurechtlichGenehmigt': value['gfWohnenBaurechtlichGenehmigt'],
-        'gfWohnenBaurechtlichFestgesetzt': value['gfWohnenBaurechtlichFestgesetzt'],
-        'gfWohnenSobonUrsaechlich': value['gfWohnenSobonUrsaechlich'],
-        'gfWohnenBestandswohnbaurecht': value['gfWohnenBestandswohnbaurecht'],
-        'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
-        'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
-        'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
-        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfAnmerkung': value['gfAnmerkung'],
-        'weGesamt': value['weGesamt'],
-        'weBaurechtlichGenehmigt': value['weBaurechtlichGenehmigt'],
-        'weBaurechtlichFestgesetzt': value['weBaurechtlichFestgesetzt'],
-        'weSonderwohnformen': value['weSonderwohnformen'],
-        'weStudentischesWohnen': value['weStudentischesWohnen'],
-        'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
-        'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'weAnmerkung': value['weAnmerkung'],
-        'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
-        'sobonBerechnung': SobonBerechnungDtoToJSON(value['sobonBerechnung']),
-        'stammdatenGueltigAb': value['stammdatenGueltigAb'] == null ? undefined : ((value['stammdatenGueltigAb']).toISOString().substring(0,10)),
-        'anmerkung': value['anmerkung'],
-        'hasBauratendateiInput': value['hasBauratendateiInput'],
-        'anmerkungBauratendateiInput': value['anmerkungBauratendateiInput'],
-        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value['bauratendateiInputBasis']),
-        'bauratendateiInput': value['bauratendateiInput'] == null ? undefined : ((value['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoToJSON)),
-        'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'bauabschnitte': value['bauabschnitte'] == null ? undefined : ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
-        'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita'],
-        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value['ausgeloesterBedarfImBaugebietBeruecksichtigenSchule'],
-        'ausgeloesterBedarfMitversorgungImBplanSchule': value['ausgeloesterBedarfMitversorgungImBplanSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule'],
-        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule'],
-        'anmerkungFachreferate': value['anmerkungFachreferate'],
-        'anmerkungAbfrageersteller': value['anmerkungAbfrageersteller'],
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'abfragevariantenNr': value.abfragevariantenNr,
+        'artAbfragevariante': value.artAbfragevariante,
+        'name': value.name,
+        'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
+        'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
+        'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
+        'realisierungVon': value.realisierungVon,
+        'gfWohnenGesamt': value.gfWohnenGesamt,
+        'gfWohnenBaurechtlichGenehmigt': value.gfWohnenBaurechtlichGenehmigt,
+        'gfWohnenBaurechtlichFestgesetzt': value.gfWohnenBaurechtlichFestgesetzt,
+        'gfWohnenSobonUrsaechlich': value.gfWohnenSobonUrsaechlich,
+        'gfWohnenBestandswohnbaurecht': value.gfWohnenBestandswohnbaurecht,
+        'gfWohnenSonderwohnformen': value.gfWohnenSonderwohnformen,
+        'gfWohnenStudentischesWohnen': value.gfWohnenStudentischesWohnen,
+        'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
+        'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
+        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
+        'gfAnmerkung': value.gfAnmerkung,
+        'weGesamt': value.weGesamt,
+        'weBaurechtlichGenehmigt': value.weBaurechtlichGenehmigt,
+        'weBaurechtlichFestgesetzt': value.weBaurechtlichFestgesetzt,
+        'weSonderwohnformen': value.weSonderwohnformen,
+        'weStudentischesWohnen': value.weStudentischesWohnen,
+        'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
+        'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
+        'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
+        'weAnmerkung': value.weAnmerkung,
+        'sobonOrientierungswertJahrPlanungsursaechlich': value.sobonOrientierungswertJahrPlanungsursaechlich,
+        'sobonBerechnung': SobonBerechnungDtoToJSON(value.sobonBerechnung),
+        'stammdatenGueltigAb': value.stammdatenGueltigAb === undefined ? undefined : (value.stammdatenGueltigAb.toISOString().substr(0,10)),
+        'anmerkung': value.anmerkung,
+        'hasBauratendateiInput': value.hasBauratendateiInput,
+        'anmerkungBauratendateiInput': value.anmerkungBauratendateiInput,
+        'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value.bauratendateiInputBasis),
+        'bauratendateiInput': value.bauratendateiInput === undefined ? undefined : ((value.bauratendateiInput as Array<any>).map(BauratendateiInputDtoToJSON)),
+        'bedarfsmeldungFachreferate': value.bedarfsmeldungFachreferate === undefined ? undefined : ((value.bedarfsmeldungFachreferate as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller === undefined ? undefined : ((value.bedarfsmeldungAbfrageersteller as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bauabschnitte': value.bauabschnitte === undefined ? undefined : ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
+        'ausgeloesterBedarfMitversorgungImBplanKita': value.ausgeloesterBedarfMitversorgungImBplanKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenKita,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita,
+        'ausgeloesterBedarfImBaugebietBeruecksichtigenSchule': value.ausgeloesterBedarfImBaugebietBeruecksichtigenSchule,
+        'ausgeloesterBedarfMitversorgungImBplanSchule': value.ausgeloesterBedarfMitversorgungImBplanSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule,
+        'ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule': value.ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule,
+        'anmerkungFachreferate': value.anmerkungFachreferate,
+        'anmerkungAbfrageersteller': value.anmerkungAbfrageersteller,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

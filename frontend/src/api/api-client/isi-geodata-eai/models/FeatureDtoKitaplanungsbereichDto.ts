@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { KitaplanungsbereichDto } from './KitaplanungsbereichDto';
-import {
-    KitaplanungsbereichDtoFromJSON,
-    KitaplanungsbereichDtoFromJSONTyped,
-    KitaplanungsbereichDtoToJSON,
-    KitaplanungsbereichDtoToJSONTyped,
-} from './KitaplanungsbereichDto';
+import { exists, mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
-    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
+import type { KitaplanungsbereichDto } from './KitaplanungsbereichDto';
+import {
+    KitaplanungsbereichDtoFromJSON,
+    KitaplanungsbereichDtoFromJSONTyped,
+    KitaplanungsbereichDtoToJSON,
+} from './KitaplanungsbereichDto';
 
 /**
  * 
@@ -57,8 +55,10 @@ export interface FeatureDtoKitaplanungsbereichDto {
 /**
  * Check if a given object implements the FeatureDtoKitaplanungsbereichDto interface.
  */
-export function instanceOfFeatureDtoKitaplanungsbereichDto(value: object): value is FeatureDtoKitaplanungsbereichDto {
-    return true;
+export function instanceOfFeatureDtoKitaplanungsbereichDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FeatureDtoKitaplanungsbereichDtoFromJSON(json: any): FeatureDtoKitaplanungsbereichDto {
@@ -66,31 +66,29 @@ export function FeatureDtoKitaplanungsbereichDtoFromJSON(json: any): FeatureDtoK
 }
 
 export function FeatureDtoKitaplanungsbereichDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoKitaplanungsbereichDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': json['properties'] == null ? undefined : KitaplanungsbereichDtoFromJSON(json['properties']),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': !exists(json, 'properties') ? undefined : KitaplanungsbereichDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoKitaplanungsbereichDtoToJSON(json: any): FeatureDtoKitaplanungsbereichDto {
-    return FeatureDtoKitaplanungsbereichDtoToJSONTyped(json, false);
-}
-
-export function FeatureDtoKitaplanungsbereichDtoToJSONTyped(value?: FeatureDtoKitaplanungsbereichDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FeatureDtoKitaplanungsbereichDtoToJSON(value?: FeatureDtoKitaplanungsbereichDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
-        'properties': KitaplanungsbereichDtoToJSON(value['properties']),
+        'type': value.type,
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
+        'properties': KitaplanungsbereichDtoToJSON(value.properties),
     };
 }
 

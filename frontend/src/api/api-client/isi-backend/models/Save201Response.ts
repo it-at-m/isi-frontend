@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
-import type { BaugenehmigungsverfahrenDto } from './BaugenehmigungsverfahrenDto';
 import {
+    BaugenehmigungsverfahrenDto,
     instanceOfBaugenehmigungsverfahrenDto,
     BaugenehmigungsverfahrenDtoFromJSON,
     BaugenehmigungsverfahrenDtoFromJSONTyped,
     BaugenehmigungsverfahrenDtoToJSON,
 } from './BaugenehmigungsverfahrenDto';
-import type { BauleitplanverfahrenDto } from './BauleitplanverfahrenDto';
 import {
+    BauleitplanverfahrenDto,
     instanceOfBauleitplanverfahrenDto,
     BauleitplanverfahrenDtoFromJSON,
     BauleitplanverfahrenDtoFromJSONTyped,
     BauleitplanverfahrenDtoToJSON,
 } from './BauleitplanverfahrenDto';
-import type { WeiteresVerfahrenDto } from './WeiteresVerfahrenDto';
 import {
+    WeiteresVerfahrenDto,
     instanceOfWeiteresVerfahrenDto,
     WeiteresVerfahrenDtoFromJSON,
     WeiteresVerfahrenDtoFromJSONTyped,
@@ -39,45 +39,57 @@ import {
  * 
  * @export
  */
-export type Save201Response = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenDto;
+export type Save201Response = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenDto | { artAbfrage: 'BaugenehmigungsverfahrenDto' } & BaugenehmigungsverfahrenDto | { artAbfrage: 'BauleitplanverfahrenDto' } & BauleitplanverfahrenDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenDto | { artAbfrage: 'WeiteresVerfahrenDto' } & WeiteresVerfahrenDto;
 
 export function Save201ResponseFromJSON(json: any): Save201Response {
     return Save201ResponseFromJSONTyped(json, false);
 }
 
 export function Save201ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): Save201Response {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     switch (json['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenDtoFromJSONTyped(json, true), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return {...BaugenehmigungsverfahrenDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenDtoFromJSONTyped(json, true), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return {...BauleitplanverfahrenDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
+        case 'BaugenehmigungsverfahrenDto':
+            return {...BaugenehmigungsverfahrenDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenDto'};
+        case 'BauleitplanverfahrenDto':
+            return {...BauleitplanverfahrenDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenDto'};
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenDtoFromJSONTyped(json, true), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return {...WeiteresVerfahrenDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
+        case 'WeiteresVerfahrenDto':
+            return {...WeiteresVerfahrenDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenDto'};
         default:
-            return json;
+            throw new Error(`No variant of Save201Response exists with 'artAbfrage=${json['artAbfrage']}'`);
     }
 }
 
-export function Save201ResponseToJSON(json: any): any {
-    return Save201ResponseToJSONTyped(json, false);
-}
-
-export function Save201ResponseToJSONTyped(value?: Save201Response | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Save201ResponseToJSON(value?: Save201Response | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return BaugenehmigungsverfahrenDtoToJSON(value);
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return BauleitplanverfahrenDtoToJSON(value);
+        case 'BaugenehmigungsverfahrenDto':
+            return BaugenehmigungsverfahrenDtoToJSON(value);
+        case 'BauleitplanverfahrenDto':
+            return BauleitplanverfahrenDtoToJSON(value);
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return WeiteresVerfahrenDtoToJSON(value);
+        case 'WeiteresVerfahrenDto':
+            return WeiteresVerfahrenDtoToJSON(value);
         default:
-            return value;
+            throw new Error(`No variant of Save201Response exists with 'artAbfrage=${value['artAbfrage']}'`);
     }
+
 }
 

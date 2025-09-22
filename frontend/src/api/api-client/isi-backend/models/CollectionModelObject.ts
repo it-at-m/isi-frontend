@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-    LinkToJSONTyped,
-} from './Link';
+import { exists, mapValues } from '../runtime';
 import type { CollectionModelObjectEmbedded } from './CollectionModelObjectEmbedded';
 import {
     CollectionModelObjectEmbeddedFromJSON,
     CollectionModelObjectEmbeddedFromJSONTyped,
     CollectionModelObjectEmbeddedToJSON,
-    CollectionModelObjectEmbeddedToJSONTyped,
 } from './CollectionModelObjectEmbedded';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+} from './Link';
 
 /**
  * 
@@ -51,8 +49,10 @@ export interface CollectionModelObject {
 /**
  * Check if a given object implements the CollectionModelObject interface.
  */
-export function instanceOfCollectionModelObject(value: object): value is CollectionModelObject {
-    return true;
+export function instanceOfCollectionModelObject(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function CollectionModelObjectFromJSON(json: any): CollectionModelObject {
@@ -60,29 +60,27 @@ export function CollectionModelObjectFromJSON(json: any): CollectionModelObject 
 }
 
 export function CollectionModelObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): CollectionModelObject {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embedded': json['_embedded'] == null ? undefined : CollectionModelObjectEmbeddedFromJSON(json['_embedded']),
-        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'embedded': !exists(json, '_embedded') ? undefined : CollectionModelObjectEmbeddedFromJSON(json['_embedded']),
+        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function CollectionModelObjectToJSON(json: any): CollectionModelObject {
-    return CollectionModelObjectToJSONTyped(json, false);
-}
-
-export function CollectionModelObjectToJSONTyped(value?: CollectionModelObject | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CollectionModelObjectToJSON(value?: CollectionModelObject | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        '_embedded': CollectionModelObjectEmbeddedToJSON(value['embedded']),
-        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        '_embedded': CollectionModelObjectEmbeddedToJSON(value.embedded),
+        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
 

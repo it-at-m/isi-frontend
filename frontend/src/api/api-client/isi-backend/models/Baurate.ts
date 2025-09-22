@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Foerdermix } from './Foerdermix';
 import {
     FoerdermixFromJSON,
     FoerdermixFromJSONTyped,
     FoerdermixToJSON,
-    FoerdermixToJSONTyped,
 } from './Foerdermix';
 
 /**
@@ -80,8 +79,10 @@ export interface Baurate {
 /**
  * Check if a given object implements the Baurate interface.
  */
-export function instanceOfBaurate(value: object): value is Baurate {
-    return true;
+export function instanceOfBaurate(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BaurateFromJSON(json: any): Baurate {
@@ -89,41 +90,39 @@ export function BaurateFromJSON(json: any): Baurate {
 }
 
 export function BaurateFromJSONTyped(json: any, ignoreDiscriminator: boolean): Baurate {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'jahr': json['jahr'] == null ? undefined : json['jahr'],
-        'weGeplant': json['weGeplant'] == null ? undefined : json['weGeplant'],
-        'gfWohnenGeplant': json['gfWohnenGeplant'] == null ? undefined : json['gfWohnenGeplant'],
-        'foerdermix': json['foerdermix'] == null ? undefined : FoerdermixFromJSON(json['foerdermix']),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'jahr': !exists(json, 'jahr') ? undefined : json['jahr'],
+        'weGeplant': !exists(json, 'weGeplant') ? undefined : json['weGeplant'],
+        'gfWohnenGeplant': !exists(json, 'gfWohnenGeplant') ? undefined : json['gfWohnenGeplant'],
+        'foerdermix': !exists(json, 'foerdermix') ? undefined : FoerdermixFromJSON(json['foerdermix']),
     };
 }
 
-export function BaurateToJSON(json: any): Baurate {
-    return BaurateToJSONTyped(json, false);
-}
-
-export function BaurateToJSONTyped(value?: Baurate | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BaurateToJSON(value?: Baurate | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'jahr': value['jahr'],
-        'weGeplant': value['weGeplant'],
-        'gfWohnenGeplant': value['gfWohnenGeplant'],
-        'foerdermix': FoerdermixToJSON(value['foerdermix']),
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'jahr': value.jahr,
+        'weGeplant': value.weGeplant,
+        'gfWohnenGeplant': value.gfWohnenGeplant,
+        'foerdermix': FoerdermixToJSON(value.foerdermix),
     };
 }
 

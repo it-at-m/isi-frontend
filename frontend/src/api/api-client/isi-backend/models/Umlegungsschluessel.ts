@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Foerderart } from './Foerderart';
 import {
     FoerderartFromJSON,
     FoerderartFromJSONTyped,
     FoerderartToJSON,
-    FoerderartToJSONTyped,
 } from './Foerderart';
 
 /**
@@ -38,8 +37,10 @@ export interface Umlegungsschluessel {
 /**
  * Check if a given object implements the Umlegungsschluessel interface.
  */
-export function instanceOfUmlegungsschluessel(value: object): value is Umlegungsschluessel {
-    return true;
+export function instanceOfUmlegungsschluessel(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function UmlegungsschluesselFromJSON(json: any): Umlegungsschluessel {
@@ -47,27 +48,25 @@ export function UmlegungsschluesselFromJSON(json: any): Umlegungsschluessel {
 }
 
 export function UmlegungsschluesselFromJSONTyped(json: any, ignoreDiscriminator: boolean): Umlegungsschluessel {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'foerderarten': json['foerderarten'] == null ? undefined : (new Set((json['foerderarten'] as Array<any>).map(FoerderartFromJSON))),
+        'foerderarten': !exists(json, 'foerderarten') ? undefined : (new Set((json['foerderarten'] as Array<any>).map(FoerderartFromJSON))),
     };
 }
 
-export function UmlegungsschluesselToJSON(json: any): Umlegungsschluessel {
-    return UmlegungsschluesselToJSONTyped(json, false);
-}
-
-export function UmlegungsschluesselToJSONTyped(value?: Umlegungsschluessel | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function UmlegungsschluesselToJSON(value?: Umlegungsschluessel | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'foerderarten': value['foerderarten'] == null ? undefined : (Array.from(value['foerderarten'] as Set<any>).map(FoerderartToJSON)),
+        'foerderarten': value.foerderarten === undefined ? undefined : (Array.from(value.foerderarten as Set<any>).map(FoerderartToJSON)),
     };
 }
 

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
   MultiPolygonGeometryDto,
-} from '../models/index';
+} from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface UnifyRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
@@ -38,11 +38,8 @@ export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84A
      * Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).
      */
     async unifyRaw(requestParameters: UnifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MultiPolygonGeometryDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling unify().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling unify.');
         }
 
         const queryParameters: any = {};
@@ -51,15 +48,12 @@ export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84A
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/geometry/operation/union`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/geometry/operation/union`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MultiPolygonGeometryDtoFromJSON(jsonValue));

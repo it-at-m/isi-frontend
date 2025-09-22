@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelIdealtypischeBaurate,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelIdealtypischeBaurateFromJSON,
     EntityModelIdealtypischeBaurateToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchIdealtypischebaurateGetRequest {
     typ?: ExecuteSearchIdealtypischebaurateGetTypEnum;
@@ -38,25 +38,22 @@ export class IdealtypischeBaurateSearchControllerApi extends runtime.BaseAPI {
     async executeSearchIdealtypischebaurateGetRaw(requestParameters: ExecuteSearchIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
         const queryParameters: any = {};
 
-        if (requestParameters['typ'] != null) {
-            queryParameters['typ'] = requestParameters['typ'];
+        if (requestParameters.typ !== undefined) {
+            queryParameters['typ'] = requestParameters.typ;
         }
 
-        if (requestParameters['von'] != null) {
-            queryParameters['von'] = requestParameters['von'];
+        if (requestParameters.von !== undefined) {
+            queryParameters['von'] = requestParameters.von;
         }
 
-        if (requestParameters['bisExklusiv'] != null) {
-            queryParameters['bisExklusiv'] = requestParameters['bisExklusiv'];
+        if (requestParameters.bisExklusiv !== undefined) {
+            queryParameters['bisExklusiv'] = requestParameters.bisExklusiv;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/idealtypischeBaurates/search/findByTypAndVonLessThanEqualAndBisExklusivGreaterThan`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/idealtypischeBaurates/search/findByTypAndVonLessThanEqualAndBisExklusivGreaterThan`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelStaedtebaulicheOrientierungswert } from './EntityModelStaedtebaulicheOrientierungswert';
 import {
     EntityModelStaedtebaulicheOrientierungswertFromJSON,
     EntityModelStaedtebaulicheOrientierungswertFromJSONTyped,
     EntityModelStaedtebaulicheOrientierungswertToJSON,
-    EntityModelStaedtebaulicheOrientierungswertToJSONTyped,
 } from './EntityModelStaedtebaulicheOrientierungswert';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded(value: object): value is PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedFromJSON(json: any): PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedFro
 }
 
 export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'staedtebaulicheOrientierungswerts': json['staedtebaulicheOrientierungswerts'] == null ? undefined : ((json['staedtebaulicheOrientierungswerts'] as Array<any>).map(EntityModelStaedtebaulicheOrientierungswertFromJSON)),
+        'staedtebaulicheOrientierungswerts': !exists(json, 'staedtebaulicheOrientierungswerts') ? undefined : ((json['staedtebaulicheOrientierungswerts'] as Array<any>).map(EntityModelStaedtebaulicheOrientierungswertFromJSON)),
     };
 }
 
-export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedToJSON(json: any): PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded {
-    return PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedToJSONTyped(value?: PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedToJSON(value?: PagedModelEntityModelStaedtebaulicheOrientierungswertEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'staedtebaulicheOrientierungswerts': value['staedtebaulicheOrientierungswerts'] == null ? undefined : ((value['staedtebaulicheOrientierungswerts'] as Array<any>).map(EntityModelStaedtebaulicheOrientierungswertToJSON)),
+        'staedtebaulicheOrientierungswerts': value.staedtebaulicheOrientierungswerts === undefined ? undefined : ((value.staedtebaulicheOrientierungswerts as Array<any>).map(EntityModelStaedtebaulicheOrientierungswertToJSON)),
     };
 }
 

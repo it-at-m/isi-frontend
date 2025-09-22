@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
-    MultiPolygonGeometryDtoToJSONTyped,
 } from './MultiPolygonGeometryDto';
 
 /**
@@ -50,9 +49,11 @@ export interface StadtbezirkDto {
 /**
  * Check if a given object implements the StadtbezirkDto interface.
  */
-export function instanceOfStadtbezirkDto(value: object): value is StadtbezirkDto {
-    if (!('multiPolygon' in value) || value['multiPolygon'] === undefined) return false;
-    return true;
+export function instanceOfStadtbezirkDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
@@ -60,31 +61,29 @@ export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
 }
 
 export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StadtbezirkDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
-        'name': json['name'] == null ? undefined : json['name'],
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function StadtbezirkDtoToJSON(json: any): StadtbezirkDto {
-    return StadtbezirkDtoToJSONTyped(json, false);
-}
-
-export function StadtbezirkDtoToJSONTyped(value?: StadtbezirkDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'name': value['name'],
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'name': value.name,
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

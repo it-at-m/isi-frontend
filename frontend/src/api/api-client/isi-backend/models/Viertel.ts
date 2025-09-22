@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
 import {
     MultiPolygonGeometryFromJSON,
     MultiPolygonGeometryFromJSONTyped,
     MultiPolygonGeometryToJSON,
-    MultiPolygonGeometryToJSONTyped,
 } from './MultiPolygonGeometry';
 
 /**
@@ -50,8 +49,10 @@ export interface Viertel {
 /**
  * Check if a given object implements the Viertel interface.
  */
-export function instanceOfViertel(value: object): value is Viertel {
-    return true;
+export function instanceOfViertel(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ViertelFromJSON(json: any): Viertel {
@@ -59,31 +60,29 @@ export function ViertelFromJSON(json: any): Viertel {
 }
 
 export function ViertelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Viertel {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
-        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'multiPolygon': json['multiPolygon'] == null ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
     };
 }
 
-export function ViertelToJSON(json: any): Viertel {
-    return ViertelToJSONTyped(json, false);
-}
-
-export function ViertelToJSONTyped(value?: Viertel | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ViertelToJSON(value?: Viertel | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'flaecheQm': value['flaecheQm'],
-        'multiPolygon': MultiPolygonGeometryToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'flaecheQm': value.flaecheQm,
+        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
     };
 }
 

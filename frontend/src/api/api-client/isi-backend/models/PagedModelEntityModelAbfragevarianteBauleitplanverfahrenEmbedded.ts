@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelAbfragevarianteBauleitplanverfahren } from './EntityModelAbfragevarianteBauleitplanverfahren';
 import {
     EntityModelAbfragevarianteBauleitplanverfahrenFromJSON,
     EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped,
     EntityModelAbfragevarianteBauleitplanverfahrenToJSON,
-    EntityModelAbfragevarianteBauleitplanverfahrenToJSONTyped,
 } from './EntityModelAbfragevarianteBauleitplanverfahren';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedde
 /**
  * Check if a given object implements the PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded(value: object): value is PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedFromJSON(json: any): PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded
 }
 
 export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'abfragevarianteBauleitplanverfahrens': json['abfragevarianteBauleitplanverfahrens'] == null ? undefined : ((json['abfragevarianteBauleitplanverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBauleitplanverfahrenFromJSON)),
+        'abfragevarianteBauleitplanverfahrens': !exists(json, 'abfragevarianteBauleitplanverfahrens') ? undefined : ((json['abfragevarianteBauleitplanverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBauleitplanverfahrenFromJSON)),
     };
 }
 
-export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedToJSON(json: any): PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded {
-    return PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedToJSONTyped(value?: PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbeddedToJSON(value?: PagedModelEntityModelAbfragevarianteBauleitplanverfahrenEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'abfragevarianteBauleitplanverfahrens': value['abfragevarianteBauleitplanverfahrens'] == null ? undefined : ((value['abfragevarianteBauleitplanverfahrens'] as Array<any>).map(EntityModelAbfragevarianteBauleitplanverfahrenToJSON)),
+        'abfragevarianteBauleitplanverfahrens': value.abfragevarianteBauleitplanverfahrens === undefined ? undefined : ((value.abfragevarianteBauleitplanverfahrens as Array<any>).map(EntityModelAbfragevarianteBauleitplanverfahrenToJSON)),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -132,8 +132,10 @@ export interface SchulstandortDto {
 /**
  * Check if a given object implements the SchulstandortDto interface.
  */
-export function instanceOfSchulstandortDto(value: object): value is SchulstandortDto {
-    return true;
+export function instanceOfSchulstandortDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SchulstandortDtoFromJSON(json: any): SchulstandortDto {
@@ -141,61 +143,59 @@ export function SchulstandortDtoFromJSON(json: any): SchulstandortDto {
 }
 
 export function SchulstandortDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SchulstandortDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'objectId': json['objectId'] == null ? undefined : json['objectId'],
-        'kreisschl': json['kreisschl'] == null ? undefined : json['kreisschl'],
-        'kreis': json['kreis'] == null ? undefined : json['kreis'],
-        'schulnummer': json['schulnummer'] == null ? undefined : json['schulnummer'],
-        'schulname': json['schulname'] == null ? undefined : json['schulname'],
-        'linkSchule': json['linkSchule'] == null ? undefined : json['linkSchule'],
-        'verbundname': json['verbundname'] == null ? undefined : json['verbundname'],
-        'verbundnummer': json['verbundnummer'] == null ? undefined : json['verbundnummer'],
-        'schulamt': json['schulamt'] == null ? undefined : json['schulamt'],
-        'rabl': json['rabl'] == null ? undefined : json['rabl'],
-        'linkRabl': json['linkRabl'] == null ? undefined : json['linkRabl'],
-        'schulart': json['schulart'] == null ? undefined : json['schulart'],
-        'postleitzahl': json['postleitzahl'] == null ? undefined : json['postleitzahl'],
-        'strasse': json['strasse'] == null ? undefined : json['strasse'],
-        'internetadresse': json['internetadresse'] == null ? undefined : json['internetadresse'],
-        'ebene': json['ebene'] == null ? undefined : json['ebene'],
-        'winkel': json['winkel'] == null ? undefined : json['winkel'],
-        'bedeutungEbene': json['bedeutungEbene'] == null ? undefined : json['bedeutungEbene'],
+        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
+        'kreisschl': !exists(json, 'kreisschl') ? undefined : json['kreisschl'],
+        'kreis': !exists(json, 'kreis') ? undefined : json['kreis'],
+        'schulnummer': !exists(json, 'schulnummer') ? undefined : json['schulnummer'],
+        'schulname': !exists(json, 'schulname') ? undefined : json['schulname'],
+        'linkSchule': !exists(json, 'linkSchule') ? undefined : json['linkSchule'],
+        'verbundname': !exists(json, 'verbundname') ? undefined : json['verbundname'],
+        'verbundnummer': !exists(json, 'verbundnummer') ? undefined : json['verbundnummer'],
+        'schulamt': !exists(json, 'schulamt') ? undefined : json['schulamt'],
+        'rabl': !exists(json, 'rabl') ? undefined : json['rabl'],
+        'linkRabl': !exists(json, 'linkRabl') ? undefined : json['linkRabl'],
+        'schulart': !exists(json, 'schulart') ? undefined : json['schulart'],
+        'postleitzahl': !exists(json, 'postleitzahl') ? undefined : json['postleitzahl'],
+        'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
+        'internetadresse': !exists(json, 'internetadresse') ? undefined : json['internetadresse'],
+        'ebene': !exists(json, 'ebene') ? undefined : json['ebene'],
+        'winkel': !exists(json, 'winkel') ? undefined : json['winkel'],
+        'bedeutungEbene': !exists(json, 'bedeutungEbene') ? undefined : json['bedeutungEbene'],
     };
 }
 
-export function SchulstandortDtoToJSON(json: any): SchulstandortDto {
-    return SchulstandortDtoToJSONTyped(json, false);
-}
-
-export function SchulstandortDtoToJSONTyped(value?: SchulstandortDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SchulstandortDtoToJSON(value?: SchulstandortDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'objectId': value['objectId'],
-        'kreisschl': value['kreisschl'],
-        'kreis': value['kreis'],
-        'schulnummer': value['schulnummer'],
-        'schulname': value['schulname'],
-        'linkSchule': value['linkSchule'],
-        'verbundname': value['verbundname'],
-        'verbundnummer': value['verbundnummer'],
-        'schulamt': value['schulamt'],
-        'rabl': value['rabl'],
-        'linkRabl': value['linkRabl'],
-        'schulart': value['schulart'],
-        'postleitzahl': value['postleitzahl'],
-        'strasse': value['strasse'],
-        'internetadresse': value['internetadresse'],
-        'ebene': value['ebene'],
-        'winkel': value['winkel'],
-        'bedeutungEbene': value['bedeutungEbene'],
+        'objectId': value.objectId,
+        'kreisschl': value.kreisschl,
+        'kreis': value.kreis,
+        'schulnummer': value.schulnummer,
+        'schulname': value.schulname,
+        'linkSchule': value.linkSchule,
+        'verbundname': value.verbundname,
+        'verbundnummer': value.verbundnummer,
+        'schulamt': value.schulamt,
+        'rabl': value.rabl,
+        'linkRabl': value.linkRabl,
+        'schulart': value.schulart,
+        'postleitzahl': value.postleitzahl,
+        'strasse': value.strasse,
+        'internetadresse': value.internetadresse,
+        'ebene': value.ebene,
+        'winkel': value.winkel,
+        'bedeutungEbene': value.bedeutungEbene,
     };
 }
 

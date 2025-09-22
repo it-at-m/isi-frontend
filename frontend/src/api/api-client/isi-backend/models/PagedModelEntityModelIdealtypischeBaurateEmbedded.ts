@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelIdealtypischeBaurate } from './EntityModelIdealtypischeBaurate';
 import {
     EntityModelIdealtypischeBaurateFromJSON,
     EntityModelIdealtypischeBaurateFromJSONTyped,
     EntityModelIdealtypischeBaurateToJSON,
-    EntityModelIdealtypischeBaurateToJSONTyped,
 } from './EntityModelIdealtypischeBaurate';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelIdealtypischeBaurateEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelIdealtypischeBaurateEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelIdealtypischeBaurateEmbedded(value: object): value is PagedModelEntityModelIdealtypischeBaurateEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelIdealtypischeBaurateEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelIdealtypischeBaurateEmbeddedFromJSON(json: any): PagedModelEntityModelIdealtypischeBaurateEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelIdealtypischeBaurateEmbeddedFromJSON(json: 
 }
 
 export function PagedModelEntityModelIdealtypischeBaurateEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelIdealtypischeBaurateEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'idealtypischeBaurates': json['idealtypischeBaurates'] == null ? undefined : ((json['idealtypischeBaurates'] as Array<any>).map(EntityModelIdealtypischeBaurateFromJSON)),
+        'idealtypischeBaurates': !exists(json, 'idealtypischeBaurates') ? undefined : ((json['idealtypischeBaurates'] as Array<any>).map(EntityModelIdealtypischeBaurateFromJSON)),
     };
 }
 
-export function PagedModelEntityModelIdealtypischeBaurateEmbeddedToJSON(json: any): PagedModelEntityModelIdealtypischeBaurateEmbedded {
-    return PagedModelEntityModelIdealtypischeBaurateEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelIdealtypischeBaurateEmbeddedToJSONTyped(value?: PagedModelEntityModelIdealtypischeBaurateEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelIdealtypischeBaurateEmbeddedToJSON(value?: PagedModelEntityModelIdealtypischeBaurateEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'idealtypischeBaurates': value['idealtypischeBaurates'] == null ? undefined : ((value['idealtypischeBaurates'] as Array<any>).map(EntityModelIdealtypischeBaurateToJSON)),
+        'idealtypischeBaurates': value.idealtypischeBaurates === undefined ? undefined : ((value.idealtypischeBaurates as Array<any>).map(EntityModelIdealtypischeBaurateToJSON)),
     };
 }
 

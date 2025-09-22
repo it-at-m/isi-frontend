@@ -18,7 +18,7 @@ import type {
   InformationResponseDto,
   UtmDto,
   Wgs84Dto,
-} from '../models/index';
+} from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -26,7 +26,7 @@ import {
     UtmDtoToJSON,
     Wgs84DtoFromJSON,
     Wgs84DtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface Utm32ToWgs84Request {
     utmDto: UtmDto;
@@ -45,11 +45,8 @@ export class KoordinatenApi extends runtime.BaseAPI {
      * Umrechnung UTM32 zu WGS84
      */
     async utm32ToWgs84Raw(requestParameters: Utm32ToWgs84Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Wgs84Dto>> {
-        if (requestParameters['utmDto'] == null) {
-            throw new runtime.RequiredError(
-                'utmDto',
-                'Required parameter "utmDto" was null or undefined when calling utm32ToWgs84().'
-            );
+        if (requestParameters.utmDto === null || requestParameters.utmDto === undefined) {
+            throw new runtime.RequiredError('utmDto','Required parameter requestParameters.utmDto was null or undefined when calling utm32ToWgs84.');
         }
 
         const queryParameters: any = {};
@@ -58,15 +55,12 @@ export class KoordinatenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/utm-to-wgs`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/utm-to-wgs`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: UtmDtoToJSON(requestParameters['utmDto']),
+            body: UtmDtoToJSON(requestParameters.utmDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Wgs84DtoFromJSON(jsonValue));
@@ -84,11 +78,8 @@ export class KoordinatenApi extends runtime.BaseAPI {
      * Umrechnung Wgs84 zu UTM
      */
     async wgs84toUtm32Raw(requestParameters: Wgs84toUtm32Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UtmDto>> {
-        if (requestParameters['wgs84Dto'] == null) {
-            throw new runtime.RequiredError(
-                'wgs84Dto',
-                'Required parameter "wgs84Dto" was null or undefined when calling wgs84toUtm32().'
-            );
+        if (requestParameters.wgs84Dto === null || requestParameters.wgs84Dto === undefined) {
+            throw new runtime.RequiredError('wgs84Dto','Required parameter requestParameters.wgs84Dto was null or undefined when calling wgs84toUtm32.');
         }
 
         const queryParameters: any = {};
@@ -97,15 +88,12 @@ export class KoordinatenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/wgs-to-utm`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/wgs-to-utm`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: Wgs84DtoToJSON(requestParameters['wgs84Dto']),
+            body: Wgs84DtoToJSON(requestParameters.wgs84Dto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UtmDtoFromJSON(jsonValue));

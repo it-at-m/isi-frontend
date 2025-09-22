@@ -12,35 +12,34 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
+import {
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
-    InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
-    VerortungPointDtoToJSONTyped,
 } from './VerortungPointDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+
 import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
-} from './BearbeitendePersonDto';
-import type { AdresseDto } from './AdresseDto';
-import {
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
-} from './AdresseDto';
+} from './';
 
 /**
  * 
@@ -95,10 +94,12 @@ export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinri
 /**
  * Check if a given object implements the KinderkrippeDto interface.
  */
-export function instanceOfKinderkrippeDto(value: object): value is KinderkrippeDto {
-    if (!('anzahlKinderkrippePlaetze' in value) || value['anzahlKinderkrippePlaetze'] === undefined) return false;
-    if (!('anzahlKinderkrippeGruppen' in value) || value['anzahlKinderkrippeGruppen'] === undefined) return false;
-    return true;
+export function instanceOfKinderkrippeDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "anzahlKinderkrippePlaetze" in value;
+    isInstance = isInstance && "anzahlKinderkrippeGruppen" in value;
+
+    return isInstance;
 }
 
 export function KinderkrippeDtoFromJSON(json: any): KinderkrippeDto {
@@ -106,42 +107,33 @@ export function KinderkrippeDtoFromJSON(json: any): KinderkrippeDto {
 }
 
 export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KinderkrippeDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
         'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': json['wohnungsnaheKinderkrippePlaetze'] == null ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
-        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
+        'wohnungsnaheKinderkrippePlaetze': !exists(json, 'wohnungsnaheKinderkrippePlaetze') ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
-export function KinderkrippeDtoToJSON(json: any): KinderkrippeDto {
-    return KinderkrippeDtoToJSONTyped(json, false);
-}
-
-export function KinderkrippeDtoToJSONTyped(value?: KinderkrippeDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function KinderkrippeDtoToJSON(value?: KinderkrippeDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['infrastruktureinrichtungTyp']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'anzahlKinderkrippePlaetze': value['anzahlKinderkrippePlaetze'],
-        'anzahlKinderkrippeGruppen': value['anzahlKinderkrippeGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': value['wohnungsnaheKinderkrippePlaetze'],
-        'einrichtungstraeger': value['einrichtungstraeger'],
+        ...InfrastruktureinrichtungDtoToJSON(value),
+        'anzahlKinderkrippePlaetze': value.anzahlKinderkrippePlaetze,
+        'anzahlKinderkrippeGruppen': value.anzahlKinderkrippeGruppen,
+        'wohnungsnaheKinderkrippePlaetze': value.wohnungsnaheKinderkrippePlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

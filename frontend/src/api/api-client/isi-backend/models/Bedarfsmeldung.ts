@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -100,8 +100,10 @@ export type BedarfsmeldungInfrastruktureinrichtungTypEnum = typeof Bedarfsmeldun
 /**
  * Check if a given object implements the Bedarfsmeldung interface.
  */
-export function instanceOfBedarfsmeldung(value: object): value is Bedarfsmeldung {
-    return true;
+export function instanceOfBedarfsmeldung(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BedarfsmeldungFromJSON(json: any): Bedarfsmeldung {
@@ -109,45 +111,43 @@ export function BedarfsmeldungFromJSON(json: any): Bedarfsmeldung {
 }
 
 export function BedarfsmeldungFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bedarfsmeldung {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'anzahlEinrichtungen': json['anzahlEinrichtungen'] == null ? undefined : json['anzahlEinrichtungen'],
-        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'anzahlKinderkrippengruppen': json['anzahlKinderkrippengruppen'] == null ? undefined : json['anzahlKinderkrippengruppen'],
-        'anzahlKindergartengruppen': json['anzahlKindergartengruppen'] == null ? undefined : json['anzahlKindergartengruppen'],
-        'anzahlHortgruppen': json['anzahlHortgruppen'] == null ? undefined : json['anzahlHortgruppen'],
-        'anzahlGrundschulzuege': json['anzahlGrundschulzuege'] == null ? undefined : json['anzahlGrundschulzuege'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'anzahlEinrichtungen': !exists(json, 'anzahlEinrichtungen') ? undefined : json['anzahlEinrichtungen'],
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
+        'anzahlKinderkrippengruppen': !exists(json, 'anzahlKinderkrippengruppen') ? undefined : json['anzahlKinderkrippengruppen'],
+        'anzahlKindergartengruppen': !exists(json, 'anzahlKindergartengruppen') ? undefined : json['anzahlKindergartengruppen'],
+        'anzahlHortgruppen': !exists(json, 'anzahlHortgruppen') ? undefined : json['anzahlHortgruppen'],
+        'anzahlGrundschulzuege': !exists(json, 'anzahlGrundschulzuege') ? undefined : json['anzahlGrundschulzuege'],
     };
 }
 
-export function BedarfsmeldungToJSON(json: any): Bedarfsmeldung {
-    return BedarfsmeldungToJSONTyped(json, false);
-}
-
-export function BedarfsmeldungToJSONTyped(value?: Bedarfsmeldung | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BedarfsmeldungToJSON(value?: Bedarfsmeldung | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'anzahlEinrichtungen': value['anzahlEinrichtungen'],
-        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'anzahlKinderkrippengruppen': value['anzahlKinderkrippengruppen'],
-        'anzahlKindergartengruppen': value['anzahlKindergartengruppen'],
-        'anzahlHortgruppen': value['anzahlHortgruppen'],
-        'anzahlGrundschulzuege': value['anzahlGrundschulzuege'],
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'anzahlEinrichtungen': value.anzahlEinrichtungen,
+        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
+        'anzahlKinderkrippengruppen': value.anzahlKinderkrippengruppen,
+        'anzahlKindergartengruppen': value.anzahlKindergartengruppen,
+        'anzahlHortgruppen': value.anzahlHortgruppen,
+        'anzahlGrundschulzuege': value.anzahlGrundschulzuege,
     };
 }
 

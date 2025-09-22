@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageEinpflegenBedarfsmeldungDto } from './AbfrageEinpflegenBedarfsmeldungDto';
 import {
     AbfrageEinpflegenBedarfsmeldungDtoFromJSON,
     AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped,
     AbfrageEinpflegenBedarfsmeldungDtoToJSON,
-    AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped,
 } from './AbfrageEinpflegenBedarfsmeldungDto';
 import type { AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto } from './AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto';
 import {
     AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON,
     AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
     AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON,
-    AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped,
 } from './AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -53,10 +54,12 @@ export interface WeiteresVerfahrenEinpflegenBedarfsmeldungDto extends AbfrageEin
 /**
  * Check if a given object implements the WeiteresVerfahrenEinpflegenBedarfsmeldungDto interface.
  */
-export function instanceOfWeiteresVerfahrenEinpflegenBedarfsmeldungDto(value: object): value is WeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    if (!('abfragevariantenWeiteresVerfahren' in value) || value['abfragevariantenWeiteresVerfahren'] === undefined) return false;
-    if (!('abfragevariantenSachbearbeitungWeiteresVerfahren' in value) || value['abfragevariantenSachbearbeitungWeiteresVerfahren'] === undefined) return false;
-    return true;
+export function instanceOfWeiteresVerfahrenEinpflegenBedarfsmeldungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
+
+    return isInstance;
 }
 
 export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON(json: any): WeiteresVerfahrenEinpflegenBedarfsmeldungDto {
@@ -64,38 +67,29 @@ export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON(json: any):
 }
 
 export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true),
+        ...AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped(json, ignoreDiscriminator),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON)),
         'abfragevariantenSachbearbeitungWeiteresVerfahren': ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON)),
     };
 }
 
-export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(json: any): WeiteresVerfahrenEinpflegenBedarfsmeldungDto {
-    return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(json, false);
-}
-
-export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value?: WeiteresVerfahrenEinpflegenBedarfsmeldungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON(value?: WeiteresVerfahrenEinpflegenBedarfsmeldungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped(value, true),
-        'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON)),
+        ...AbfrageEinpflegenBedarfsmeldungDtoToJSON(value),
+        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON)),
     };
 }
 

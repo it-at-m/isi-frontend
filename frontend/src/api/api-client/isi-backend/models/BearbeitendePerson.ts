@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,8 +42,10 @@ export interface BearbeitendePerson {
 /**
  * Check if a given object implements the BearbeitendePerson interface.
  */
-export function instanceOfBearbeitendePerson(value: object): value is BearbeitendePerson {
-    return true;
+export function instanceOfBearbeitendePerson(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BearbeitendePersonFromJSON(json: any): BearbeitendePerson {
@@ -51,31 +53,29 @@ export function BearbeitendePersonFromJSON(json: any): BearbeitendePerson {
 }
 
 export function BearbeitendePersonFromJSONTyped(json: any, ignoreDiscriminator: boolean): BearbeitendePerson {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'] == null ? undefined : json['name'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'organisationseinheit': json['organisationseinheit'] == null ? undefined : json['organisationseinheit'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'email': !exists(json, 'email') ? undefined : json['email'],
+        'organisationseinheit': !exists(json, 'organisationseinheit') ? undefined : json['organisationseinheit'],
     };
 }
 
-export function BearbeitendePersonToJSON(json: any): BearbeitendePerson {
-    return BearbeitendePersonToJSONTyped(json, false);
-}
-
-export function BearbeitendePersonToJSONTyped(value?: BearbeitendePerson | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BearbeitendePersonToJSON(value?: BearbeitendePerson | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'name': value['name'],
-        'email': value['email'],
-        'organisationseinheit': value['organisationseinheit'],
+        'name': value.name,
+        'email': value.email,
+        'organisationseinheit': value.organisationseinheit,
     };
 }
 

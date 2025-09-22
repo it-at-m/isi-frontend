@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto } from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
-import {
-    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON,
-    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped,
-    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON,
-    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped,
-} from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
+import { exists, mapValues } from '../runtime';
 import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
 import {
     AbfrageEinplanungBedarfeDtoFromJSON,
     AbfrageEinplanungBedarfeDtoFromJSONTyped,
     AbfrageEinplanungBedarfeDtoToJSON,
-    AbfrageEinplanungBedarfeDtoToJSONTyped,
 } from './AbfrageEinplanungBedarfeDto';
+import type { AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto } from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
+import {
+    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON,
+    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped,
+    AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON,
+} from './AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -53,10 +54,12 @@ export interface WeiteresVerfahrenEinplanungBedarfeDto extends AbfrageEinplanung
 /**
  * Check if a given object implements the WeiteresVerfahrenEinplanungBedarfeDto interface.
  */
-export function instanceOfWeiteresVerfahrenEinplanungBedarfeDto(value: object): value is WeiteresVerfahrenEinplanungBedarfeDto {
-    if (!('abfragevariantenWeiteresVerfahren' in value) || value['abfragevariantenWeiteresVerfahren'] === undefined) return false;
-    if (!('abfragevariantenSachbearbeitungWeiteresVerfahren' in value) || value['abfragevariantenSachbearbeitungWeiteresVerfahren'] === undefined) return false;
-    return true;
+export function instanceOfWeiteresVerfahrenEinplanungBedarfeDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
+    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
+
+    return isInstance;
 }
 
 export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSON(json: any): WeiteresVerfahrenEinplanungBedarfeDto {
@@ -64,38 +67,29 @@ export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSON(json: any): Weiter
 }
 
 export function WeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenEinplanungBedarfeDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, true),
+        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON)),
         'abfragevariantenSachbearbeitungWeiteresVerfahren': ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON)),
     };
 }
 
-export function WeiteresVerfahrenEinplanungBedarfeDtoToJSON(json: any): WeiteresVerfahrenEinplanungBedarfeDto {
-    return WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(json, false);
-}
-
-export function WeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(value?: WeiteresVerfahrenEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WeiteresVerfahrenEinplanungBedarfeDtoToJSON(value?: WeiteresVerfahrenEinplanungBedarfeDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...AbfrageEinplanungBedarfeDtoToJSONTyped(value, true),
-        'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
+        ...AbfrageEinplanungBedarfeDtoToJSON(value),
+        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON)),
     };
 }
 

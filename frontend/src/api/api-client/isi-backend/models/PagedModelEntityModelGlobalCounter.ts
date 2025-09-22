@@ -12,28 +12,25 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+} from './Link';
 import type { PageMetadata } from './PageMetadata';
 import {
     PageMetadataFromJSON,
     PageMetadataFromJSONTyped,
     PageMetadataToJSON,
-    PageMetadataToJSONTyped,
 } from './PageMetadata';
 import type { PagedModelEntityModelGlobalCounterEmbedded } from './PagedModelEntityModelGlobalCounterEmbedded';
 import {
     PagedModelEntityModelGlobalCounterEmbeddedFromJSON,
     PagedModelEntityModelGlobalCounterEmbeddedFromJSONTyped,
     PagedModelEntityModelGlobalCounterEmbeddedToJSON,
-    PagedModelEntityModelGlobalCounterEmbeddedToJSONTyped,
 } from './PagedModelEntityModelGlobalCounterEmbedded';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-    LinkToJSONTyped,
-} from './Link';
 
 /**
  * 
@@ -64,8 +61,10 @@ export interface PagedModelEntityModelGlobalCounter {
 /**
  * Check if a given object implements the PagedModelEntityModelGlobalCounter interface.
  */
-export function instanceOfPagedModelEntityModelGlobalCounter(value: object): value is PagedModelEntityModelGlobalCounter {
-    return true;
+export function instanceOfPagedModelEntityModelGlobalCounter(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelGlobalCounterFromJSON(json: any): PagedModelEntityModelGlobalCounter {
@@ -73,31 +72,29 @@ export function PagedModelEntityModelGlobalCounterFromJSON(json: any): PagedMode
 }
 
 export function PagedModelEntityModelGlobalCounterFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelGlobalCounter {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelGlobalCounterEmbeddedFromJSON(json['_embedded']),
-        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelGlobalCounterEmbeddedFromJSON(json['_embedded']),
+        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelGlobalCounterToJSON(json: any): PagedModelEntityModelGlobalCounter {
-    return PagedModelEntityModelGlobalCounterToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelGlobalCounterToJSONTyped(value?: PagedModelEntityModelGlobalCounter | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelGlobalCounterToJSON(value?: PagedModelEntityModelGlobalCounter | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        '_embedded': PagedModelEntityModelGlobalCounterEmbeddedToJSON(value['embedded']),
-        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
-        'page': PageMetadataToJSON(value['page']),
+        '_embedded': PagedModelEntityModelGlobalCounterEmbeddedToJSON(value.embedded),
+        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'page': PageMetadataToJSON(value.page),
     };
 }
 

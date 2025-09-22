@@ -18,7 +18,7 @@ import type {
   EntityModelVersorgungsquoteGruppenstaerke,
   PagedModelEntityModelVersorgungsquoteGruppenstaerke,
   VersorgungsquoteGruppenstaerkeRequestBody,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     EntityModelVersorgungsquoteGruppenstaerkeToJSON,
@@ -26,7 +26,7 @@ import {
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSON,
     VersorgungsquoteGruppenstaerkeRequestBodyFromJSON,
     VersorgungsquoteGruppenstaerkeRequestBodyToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
      * delete-versorgungsquotegruppenstaerke
      */
     async deleteItemResourceVersorgungsquotegruppenstaerkeDeleteRaw(requestParameters: DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceVersorgungsquotegruppenstaerkeDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceVersorgungsquotegruppenstaerkeDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     async getCollectionResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetCollectionResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelVersorgungsquoteGruppenstaerke>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
      * get-versorgungsquotegruppenstaerke
      */
     async getItemResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetItemResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceVersorgungsquotegruppenstaerkeGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceVersorgungsquotegruppenstaerkeGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
      * patch-versorgungsquotegruppenstaerke
      */
     async patchItemResourceVersorgungsquotegruppenstaerkePatchRaw(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceVersorgungsquotegruppenstaerkePatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceVersorgungsquotegruppenstaerkePatch.');
         }
 
-        if (requestParameters['versorgungsquoteGruppenstaerkeRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'versorgungsquoteGruppenstaerkeRequestBody',
-                'Required parameter "versorgungsquoteGruppenstaerkeRequestBody" was null or undefined when calling patchItemResourceVersorgungsquotegruppenstaerkePatch().'
-            );
+        if (requestParameters.versorgungsquoteGruppenstaerkeRequestBody === null || requestParameters.versorgungsquoteGruppenstaerkeRequestBody === undefined) {
+            throw new runtime.RequiredError('versorgungsquoteGruppenstaerkeRequestBody','Required parameter requestParameters.versorgungsquoteGruppenstaerkeRequestBody was null or undefined when calling patchItemResourceVersorgungsquotegruppenstaerkePatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
+            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters.versorgungsquoteGruppenstaerkeRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     /**
      * patch-versorgungsquotegruppenstaerke
      */
-    async patchItemResourceVersorgungsquotegruppenstaerkePatch(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelVersorgungsquoteGruppenstaerke | null | undefined > {
+    async patchItemResourceVersorgungsquotegruppenstaerkePatch(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelVersorgungsquoteGruppenstaerke> {
         const response = await this.patchItemResourceVersorgungsquotegruppenstaerkePatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-versorgungsquotegruppenstaerke
      */
     async postCollectionResourceVersorgungsquotegruppenstaerkePostRaw(requestParameters: PostCollectionResourceVersorgungsquotegruppenstaerkePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
-        if (requestParameters['versorgungsquoteGruppenstaerkeRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'versorgungsquoteGruppenstaerkeRequestBody',
-                'Required parameter "versorgungsquoteGruppenstaerkeRequestBody" was null or undefined when calling postCollectionResourceVersorgungsquotegruppenstaerkePost().'
-            );
+        if (requestParameters.versorgungsquoteGruppenstaerkeRequestBody === null || requestParameters.versorgungsquoteGruppenstaerkeRequestBody === undefined) {
+            throw new runtime.RequiredError('versorgungsquoteGruppenstaerkeRequestBody','Required parameter requestParameters.versorgungsquoteGruppenstaerkeRequestBody was null or undefined when calling postCollectionResourceVersorgungsquotegruppenstaerkePost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
+            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters.versorgungsquoteGruppenstaerkeRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
      * update-versorgungsquotegruppenstaerke
      */
     async putItemResourceVersorgungsquotegruppenstaerkePutRaw(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceVersorgungsquotegruppenstaerkePut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceVersorgungsquotegruppenstaerkePut.');
         }
 
-        if (requestParameters['versorgungsquoteGruppenstaerkeRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'versorgungsquoteGruppenstaerkeRequestBody',
-                'Required parameter "versorgungsquoteGruppenstaerkeRequestBody" was null or undefined when calling putItemResourceVersorgungsquotegruppenstaerkePut().'
-            );
+        if (requestParameters.versorgungsquoteGruppenstaerkeRequestBody === null || requestParameters.versorgungsquoteGruppenstaerkeRequestBody === undefined) {
+            throw new runtime.RequiredError('versorgungsquoteGruppenstaerkeRequestBody','Required parameter requestParameters.versorgungsquoteGruppenstaerkeRequestBody was null or undefined when calling putItemResourceVersorgungsquotegruppenstaerkePut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
+            body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters.versorgungsquoteGruppenstaerkeRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     /**
      * update-versorgungsquotegruppenstaerke
      */
-    async putItemResourceVersorgungsquotegruppenstaerkePut(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelVersorgungsquoteGruppenstaerke | null | undefined > {
+    async putItemResourceVersorgungsquotegruppenstaerkePut(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelVersorgungsquoteGruppenstaerke> {
         const response = await this.putItemResourceVersorgungsquotegruppenstaerkePutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

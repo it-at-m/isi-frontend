@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface AbstractJsonSchemaPropertyObject {
 /**
  * Check if a given object implements the AbstractJsonSchemaPropertyObject interface.
  */
-export function instanceOfAbstractJsonSchemaPropertyObject(value: object): value is AbstractJsonSchemaPropertyObject {
-    return true;
+export function instanceOfAbstractJsonSchemaPropertyObject(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AbstractJsonSchemaPropertyObjectFromJSON(json: any): AbstractJsonSchemaPropertyObject {
@@ -45,29 +47,27 @@ export function AbstractJsonSchemaPropertyObjectFromJSON(json: any): AbstractJso
 }
 
 export function AbstractJsonSchemaPropertyObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbstractJsonSchemaPropertyObject {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'title': json['title'] == null ? undefined : json['title'],
-        'readOnly': json['readOnly'] == null ? undefined : json['readOnly'],
+        'title': !exists(json, 'title') ? undefined : json['title'],
+        'readOnly': !exists(json, 'readOnly') ? undefined : json['readOnly'],
     };
 }
 
-export function AbstractJsonSchemaPropertyObjectToJSON(json: any): AbstractJsonSchemaPropertyObject {
-    return AbstractJsonSchemaPropertyObjectToJSONTyped(json, false);
-}
-
-export function AbstractJsonSchemaPropertyObjectToJSONTyped(value?: AbstractJsonSchemaPropertyObject | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AbstractJsonSchemaPropertyObjectToJSON(value?: AbstractJsonSchemaPropertyObject | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'title': value['title'],
-        'readOnly': value['readOnly'],
+        'title': value.title,
+        'readOnly': value.readOnly,
     };
 }
 

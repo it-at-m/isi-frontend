@@ -18,7 +18,7 @@ import type {
   BauvorhabenRequestBody,
   EntityModelBauvorhaben,
   PagedModelEntityModelBauvorhaben,
-} from '../models/index';
+} from '../models';
 import {
     BauvorhabenRequestBodyFromJSON,
     BauvorhabenRequestBodyToJSON,
@@ -26,7 +26,7 @@ import {
     EntityModelBauvorhabenToJSON,
     PagedModelEntityModelBauvorhabenFromJSON,
     PagedModelEntityModelBauvorhabenToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteItemResourceBauvorhabenDeleteRequest {
     id: string;
@@ -65,23 +65,16 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
      * delete-bauvorhaben
      */
     async deleteItemResourceBauvorhabenDeleteRaw(requestParameters: DeleteItemResourceBauvorhabenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteItemResourceBauvorhabenDelete().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceBauvorhabenDelete.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -103,25 +96,22 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceBauvorhabenGetRaw(requestParameters: GetCollectionResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelBauvorhaben>> {
         const queryParameters: any = {};
 
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
-        if (requestParameters['size'] != null) {
-            queryParameters['size'] = requestParameters['size'];
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhabens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -142,23 +132,16 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
      * get-bauvorhaben
      */
     async getItemResourceBauvorhabenGetRaw(requestParameters: GetItemResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getItemResourceBauvorhabenGet().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceBauvorhabenGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -179,18 +162,12 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
      * patch-bauvorhaben
      */
     async patchItemResourceBauvorhabenPatchRaw(requestParameters: PatchItemResourceBauvorhabenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchItemResourceBauvorhabenPatch().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceBauvorhabenPatch.');
         }
 
-        if (requestParameters['bauvorhabenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'bauvorhabenRequestBody',
-                'Required parameter "bauvorhabenRequestBody" was null or undefined when calling patchItemResourceBauvorhabenPatch().'
-            );
+        if (requestParameters.bauvorhabenRequestBody === null || requestParameters.bauvorhabenRequestBody === undefined) {
+            throw new runtime.RequiredError('bauvorhabenRequestBody','Required parameter requestParameters.bauvorhabenRequestBody was null or undefined when calling patchItemResourceBauvorhabenPatch.');
         }
 
         const queryParameters: any = {};
@@ -199,16 +176,12 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
+            body: BauvorhabenRequestBodyToJSON(requestParameters.bauvorhabenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -217,27 +190,17 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-bauvorhaben
      */
-    async patchItemResourceBauvorhabenPatch(requestParameters: PatchItemResourceBauvorhabenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async patchItemResourceBauvorhabenPatch(requestParameters: PatchItemResourceBauvorhabenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.patchItemResourceBauvorhabenPatchRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
     /**
      * create-bauvorhaben
      */
     async postCollectionResourceBauvorhabenPostRaw(requestParameters: PostCollectionResourceBauvorhabenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['bauvorhabenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'bauvorhabenRequestBody',
-                'Required parameter "bauvorhabenRequestBody" was null or undefined when calling postCollectionResourceBauvorhabenPost().'
-            );
+        if (requestParameters.bauvorhabenRequestBody === null || requestParameters.bauvorhabenRequestBody === undefined) {
+            throw new runtime.RequiredError('bauvorhabenRequestBody','Required parameter requestParameters.bauvorhabenRequestBody was null or undefined when calling postCollectionResourceBauvorhabenPost.');
         }
 
         const queryParameters: any = {};
@@ -246,15 +209,12 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/bauvorhabens`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
+            body: BauvorhabenRequestBodyToJSON(requestParameters.bauvorhabenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -272,18 +232,12 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
      * update-bauvorhaben
      */
     async putItemResourceBauvorhabenPutRaw(requestParameters: PutItemResourceBauvorhabenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling putItemResourceBauvorhabenPut().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceBauvorhabenPut.');
         }
 
-        if (requestParameters['bauvorhabenRequestBody'] == null) {
-            throw new runtime.RequiredError(
-                'bauvorhabenRequestBody',
-                'Required parameter "bauvorhabenRequestBody" was null or undefined when calling putItemResourceBauvorhabenPut().'
-            );
+        if (requestParameters.bauvorhabenRequestBody === null || requestParameters.bauvorhabenRequestBody === undefined) {
+            throw new runtime.RequiredError('bauvorhabenRequestBody','Required parameter requestParameters.bauvorhabenRequestBody was null or undefined when calling putItemResourceBauvorhabenPut.');
         }
 
         const queryParameters: any = {};
@@ -292,16 +246,12 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhabens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
+            body: BauvorhabenRequestBodyToJSON(requestParameters.bauvorhabenRequestBody),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
@@ -310,18 +260,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-bauvorhaben
      */
-    async putItemResourceBauvorhabenPut(requestParameters: PutItemResourceBauvorhabenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben | null | undefined > {
+    async putItemResourceBauvorhabenPut(requestParameters: PutItemResourceBauvorhabenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelBauvorhaben> {
         const response = await this.putItemResourceBauvorhabenPutRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return await response.value();
-            case 204:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

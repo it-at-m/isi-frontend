@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface LookupEntryDto {
 /**
  * Check if a given object implements the LookupEntryDto interface.
  */
-export function instanceOfLookupEntryDto(value: object): value is LookupEntryDto {
-    return true;
+export function instanceOfLookupEntryDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LookupEntryDtoFromJSON(json: any): LookupEntryDto {
@@ -45,29 +47,27 @@ export function LookupEntryDtoFromJSON(json: any): LookupEntryDto {
 }
 
 export function LookupEntryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): LookupEntryDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'key': json['key'] == null ? undefined : json['key'],
-        'value': json['value'] == null ? undefined : json['value'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
+        'value': !exists(json, 'value') ? undefined : json['value'],
     };
 }
 
-export function LookupEntryDtoToJSON(json: any): LookupEntryDto {
-    return LookupEntryDtoToJSONTyped(json, false);
-}
-
-export function LookupEntryDtoToJSONTyped(value?: LookupEntryDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function LookupEntryDtoToJSON(value?: LookupEntryDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'key': value['key'],
-        'value': value['value'],
+        'key': value.key,
+        'value': value.value,
     };
 }
 

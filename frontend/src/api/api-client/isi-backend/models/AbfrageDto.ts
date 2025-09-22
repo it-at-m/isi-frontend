@@ -12,25 +12,44 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { StatusAbfrage } from './StatusAbfrage';
+import { exists, mapValues } from '../runtime';
+import type { BaugenehmigungsverfahrenDto } from './BaugenehmigungsverfahrenDto';
 import {
-    StatusAbfrageFromJSON,
-    StatusAbfrageFromJSONTyped,
-    StatusAbfrageToJSON,
-    StatusAbfrageToJSONTyped,
-} from './StatusAbfrage';
+    BaugenehmigungsverfahrenDtoFromJSON,
+    BaugenehmigungsverfahrenDtoFromJSONTyped,
+    BaugenehmigungsverfahrenDtoToJSON,
+} from './BaugenehmigungsverfahrenDto';
+import type { BauleitplanverfahrenDto } from './BauleitplanverfahrenDto';
+import {
+    BauleitplanverfahrenDtoFromJSON,
+    BauleitplanverfahrenDtoFromJSONTyped,
+    BauleitplanverfahrenDtoToJSON,
+} from './BauleitplanverfahrenDto';
 import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
 import {
     BearbeitungshistorieDtoFromJSON,
     BearbeitungshistorieDtoFromJSONTyped,
     BearbeitungshistorieDtoToJSON,
-    BearbeitungshistorieDtoToJSONTyped,
 } from './BearbeitungshistorieDto';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+} from './StatusAbfrage';
+import type { WeiteresVerfahrenDto } from './WeiteresVerfahrenDto';
+import {
+    WeiteresVerfahrenDtoFromJSON,
+    WeiteresVerfahrenDtoFromJSONTyped,
+    WeiteresVerfahrenDtoToJSON,
+} from './WeiteresVerfahrenDto';
 
-import { type BaugenehmigungsverfahrenDto, BaugenehmigungsverfahrenDtoFromJSONTyped, BaugenehmigungsverfahrenDtoToJSON, BaugenehmigungsverfahrenDtoToJSONTyped } from './BaugenehmigungsverfahrenDto';
-import { type BauleitplanverfahrenDto, BauleitplanverfahrenDtoFromJSONTyped, BauleitplanverfahrenDtoToJSON, BauleitplanverfahrenDtoToJSONTyped } from './BauleitplanverfahrenDto';
-import { type WeiteresVerfahrenDto, WeiteresVerfahrenDtoFromJSONTyped, WeiteresVerfahrenDtoToJSON, WeiteresVerfahrenDtoToJSONTyped } from './WeiteresVerfahrenDto';
+import {
+     BaugenehmigungsverfahrenDtoFromJSONTyped,
+     BauleitplanverfahrenDtoFromJSONTyped,
+     WeiteresVerfahrenDtoFromJSONTyped
+} from './';
+
 /**
  * AbfrageDto
  * @export
@@ -133,8 +152,10 @@ export type AbfrageDtoArtAbfrageEnum = typeof AbfrageDtoArtAbfrageEnum[keyof typ
 /**
  * Check if a given object implements the AbfrageDto interface.
  */
-export function instanceOfAbfrageDto(value: object): value is AbfrageDto {
-    return true;
+export function instanceOfAbfrageDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AbfrageDtoFromJSON(json: any): AbfrageDto {
@@ -142,75 +163,60 @@ export function AbfrageDtoFromJSON(json: any): AbfrageDto {
 }
 
 export function AbfrageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
-            return BaugenehmigungsverfahrenDtoFromJSONTyped(json, ignoreDiscriminator);
+            return BaugenehmigungsverfahrenDtoFromJSONTyped(json, true);
         }
         if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
-            return BauleitplanverfahrenDtoFromJSONTyped(json, ignoreDiscriminator);
+            return BauleitplanverfahrenDtoFromJSONTyped(json, true);
         }
         if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
-            return WeiteresVerfahrenDtoFromJSONTyped(json, ignoreDiscriminator);
+            return WeiteresVerfahrenDtoFromJSONTyped(json, true);
         }
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'statusAbfrage': json['statusAbfrage'] == null ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
-        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
-        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
-        'sub': json['sub'] == null ? undefined : json['sub'],
-        'displayName': json['displayName'] == null ? undefined : json['displayName'],
-        'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
-        'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoFromJSON)),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
+        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
+        'sub': !exists(json, 'sub') ? undefined : json['sub'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoFromJSON)),
     };
 }
 
-export function AbfrageDtoToJSON(json: any): AbfrageDto {
-    return AbfrageDtoToJSONTyped(json, false);
-}
-
-export function AbfrageDtoToJSONTyped(value?: AbfrageDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AbfrageDtoToJSON(value?: AbfrageDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['artAbfrage']) {
-            case 'BAUGENEHMIGUNGSVERFAHREN':
-                return BaugenehmigungsverfahrenDtoToJSONTyped(value as BaugenehmigungsverfahrenDto, ignoreDiscriminator);
-            case 'BAULEITPLANVERFAHREN':
-                return BauleitplanverfahrenDtoToJSONTyped(value as BauleitplanverfahrenDto, ignoreDiscriminator);
-            case 'WEITERES_VERFAHREN':
-                return WeiteresVerfahrenDtoToJSONTyped(value as WeiteresVerfahrenDto, ignoreDiscriminator);
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'artAbfrage': value['artAbfrage'],
-        'name': value['name'],
-        'statusAbfrage': StatusAbfrageToJSON(value['statusAbfrage']),
-        'anmerkung': value['anmerkung'],
-        'bauvorhaben': value['bauvorhaben'],
-        'sub': value['sub'],
-        'displayName': value['displayName'],
-        'linkEakte': value['linkEakte'],
-        'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoToJSON)),
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'artAbfrage': value.artAbfrage,
+        'name': value.name,
+        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
+        'anmerkung': value.anmerkung,
+        'bauvorhaben': value.bauvorhaben,
+        'sub': value.sub,
+        'displayName': value.displayName,
+        'linkEakte': value.linkEakte,
+        'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieDtoToJSON)),
     };
 }
 

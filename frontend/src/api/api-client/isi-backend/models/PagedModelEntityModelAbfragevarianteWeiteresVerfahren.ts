@@ -12,28 +12,25 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+} from './Link';
 import type { PageMetadata } from './PageMetadata';
 import {
     PageMetadataFromJSON,
     PageMetadataFromJSONTyped,
     PageMetadataToJSON,
-    PageMetadataToJSONTyped,
 } from './PageMetadata';
 import type { PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded } from './PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded';
 import {
     PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSON,
     PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSONTyped,
     PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSON,
-    PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSONTyped,
 } from './PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-    LinkToJSONTyped,
-} from './Link';
 
 /**
  * 
@@ -64,8 +61,10 @@ export interface PagedModelEntityModelAbfragevarianteWeiteresVerfahren {
 /**
  * Check if a given object implements the PagedModelEntityModelAbfragevarianteWeiteresVerfahren interface.
  */
-export function instanceOfPagedModelEntityModelAbfragevarianteWeiteresVerfahren(value: object): value is PagedModelEntityModelAbfragevarianteWeiteresVerfahren {
-    return true;
+export function instanceOfPagedModelEntityModelAbfragevarianteWeiteresVerfahren(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenFromJSON(json: any): PagedModelEntityModelAbfragevarianteWeiteresVerfahren {
@@ -73,31 +72,29 @@ export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenFromJSON(js
 }
 
 export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfragevarianteWeiteresVerfahren {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSON(json['_embedded']),
-        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSON(json['_embedded']),
+        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenToJSON(json: any): PagedModelEntityModelAbfragevarianteWeiteresVerfahren {
-    return PagedModelEntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped(value?: PagedModelEntityModelAbfragevarianteWeiteresVerfahren | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenToJSON(value?: PagedModelEntityModelAbfragevarianteWeiteresVerfahren | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        '_embedded': PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSON(value['embedded']),
-        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
-        'page': PageMetadataToJSON(value['page']),
+        '_embedded': PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSON(value.embedded),
+        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'page': PageMetadataToJSON(value.page),
     };
 }
 

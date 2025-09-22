@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
-import {
-    MultiPolygonGeometryDtoFromJSON,
-    MultiPolygonGeometryDtoFromJSONTyped,
-    MultiPolygonGeometryDtoToJSON,
-    MultiPolygonGeometryDtoToJSONTyped,
-} from './MultiPolygonGeometryDto';
+import { exists, mapValues } from '../runtime';
 import type { FlurstueckDto } from './FlurstueckDto';
 import {
     FlurstueckDtoFromJSON,
     FlurstueckDtoFromJSONTyped,
     FlurstueckDtoToJSON,
-    FlurstueckDtoToJSONTyped,
 } from './FlurstueckDto';
+import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
+import {
+    MultiPolygonGeometryDtoFromJSON,
+    MultiPolygonGeometryDtoFromJSONTyped,
+    MultiPolygonGeometryDtoToJSON,
+} from './MultiPolygonGeometryDto';
 
 /**
  * 
@@ -63,10 +61,12 @@ export interface GemarkungDto {
 /**
  * Check if a given object implements the GemarkungDto interface.
  */
-export function instanceOfGemarkungDto(value: object): value is GemarkungDto {
-    if (!('flurstuecke' in value) || value['flurstuecke'] === undefined) return false;
-    if (!('multiPolygon' in value) || value['multiPolygon'] === undefined) return false;
-    return true;
+export function instanceOfGemarkungDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "flurstuecke" in value;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function GemarkungDtoFromJSON(json: any): GemarkungDto {
@@ -74,33 +74,31 @@ export function GemarkungDtoFromJSON(json: any): GemarkungDto {
 }
 
 export function GemarkungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GemarkungDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
-        'name': json['name'] == null ? undefined : json['name'],
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'flurstuecke': (new Set((json['flurstuecke'] as Array<any>).map(FlurstueckDtoFromJSON))),
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function GemarkungDtoToJSON(json: any): GemarkungDto {
-    return GemarkungDtoToJSONTyped(json, false);
-}
-
-export function GemarkungDtoToJSONTyped(value?: GemarkungDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function GemarkungDtoToJSON(value?: GemarkungDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'name': value['name'],
-        'flurstuecke': (Array.from(value['flurstuecke'] as Set<any>).map(FlurstueckDtoToJSON)),
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'name': value.name,
+        'flurstuecke': (Array.from(value.flurstuecke as Set<any>).map(FlurstueckDtoToJSON)),
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

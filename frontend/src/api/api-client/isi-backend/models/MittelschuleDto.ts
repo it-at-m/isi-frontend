@@ -12,42 +12,40 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
-import {
-    InfrastruktureinrichtungDtoFromJSON,
-    InfrastruktureinrichtungDtoFromJSONTyped,
-    InfrastruktureinrichtungDtoToJSON,
-    InfrastruktureinrichtungDtoToJSONTyped,
-} from './InfrastruktureinrichtungDto';
-import type { VerortungPointDto } from './VerortungPointDto';
-import {
-    VerortungPointDtoFromJSON,
-    VerortungPointDtoFromJSONTyped,
-    VerortungPointDtoToJSON,
-    VerortungPointDtoToJSONTyped,
-} from './VerortungPointDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
-import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
-} from './BearbeitendePersonDto';
+import { exists, mapValues } from '../runtime';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
 } from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
+import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
+import {
+    InfrastruktureinrichtungDtoFromJSON,
+    InfrastruktureinrichtungDtoFromJSONTyped,
+    InfrastruktureinrichtungDtoToJSON,
+} from './InfrastruktureinrichtungDto';
 import type { SchuleDto } from './SchuleDto';
 import {
     SchuleDtoFromJSON,
     SchuleDtoFromJSONTyped,
     SchuleDtoToJSON,
-    SchuleDtoToJSONTyped,
 } from './SchuleDto';
+import type { VerortungPointDto } from './VerortungPointDto';
+import {
+    VerortungPointDtoFromJSON,
+    VerortungPointDtoFromJSONTyped,
+    VerortungPointDtoToJSON,
+} from './VerortungPointDto';
+
+import {
+} from './';
 
 /**
  * 
@@ -68,9 +66,11 @@ export interface MittelschuleDto extends InfrastruktureinrichtungDto {
 /**
  * Check if a given object implements the MittelschuleDto interface.
  */
-export function instanceOfMittelschuleDto(value: object): value is MittelschuleDto {
-    if (!('schule' in value) || value['schule'] === undefined) return false;
-    return true;
+export function instanceOfMittelschuleDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "schule" in value;
+
+    return isInstance;
 }
 
 export function MittelschuleDtoFromJSON(json: any): MittelschuleDto {
@@ -78,36 +78,27 @@ export function MittelschuleDtoFromJSON(json: any): MittelschuleDto {
 }
 
 export function MittelschuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MittelschuleDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'schule': SchuleDtoFromJSON(json['schule']),
     };
 }
 
-export function MittelschuleDtoToJSON(json: any): MittelschuleDto {
-    return MittelschuleDtoToJSONTyped(json, false);
-}
-
-export function MittelschuleDtoToJSONTyped(value?: MittelschuleDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MittelschuleDtoToJSON(value?: MittelschuleDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['infrastruktureinrichtungTyp']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'schule': SchuleDtoToJSON(value['schule']),
+        ...InfrastruktureinrichtungDtoToJSON(value),
+        'schule': SchuleDtoToJSON(value.schule),
     };
 }
 

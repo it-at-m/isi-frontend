@@ -12,35 +12,34 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { AdresseDto } from './AdresseDto';
+import {
+    AdresseDtoFromJSON,
+    AdresseDtoFromJSONTyped,
+    AdresseDtoToJSON,
+} from './AdresseDto';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+} from './BearbeitendePersonDto';
 import type { InfrastruktureinrichtungDto } from './InfrastruktureinrichtungDto';
 import {
     InfrastruktureinrichtungDtoFromJSON,
     InfrastruktureinrichtungDtoFromJSONTyped,
     InfrastruktureinrichtungDtoToJSON,
-    InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
     VerortungPointDtoFromJSONTyped,
     VerortungPointDtoToJSON,
-    VerortungPointDtoToJSONTyped,
 } from './VerortungPointDto';
-import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+
 import {
-    BearbeitendePersonDtoFromJSON,
-    BearbeitendePersonDtoFromJSONTyped,
-    BearbeitendePersonDtoToJSON,
-    BearbeitendePersonDtoToJSONTyped,
-} from './BearbeitendePersonDto';
-import type { AdresseDto } from './AdresseDto';
-import {
-    AdresseDtoFromJSON,
-    AdresseDtoFromJSONTyped,
-    AdresseDtoToJSON,
-    AdresseDtoToJSONTyped,
-} from './AdresseDto';
+} from './';
 
 /**
  * 
@@ -95,10 +94,12 @@ export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinri
 /**
  * Check if a given object implements the KindergartenDto interface.
  */
-export function instanceOfKindergartenDto(value: object): value is KindergartenDto {
-    if (!('anzahlKindergartenPlaetze' in value) || value['anzahlKindergartenPlaetze'] === undefined) return false;
-    if (!('anzahlKindergartenGruppen' in value) || value['anzahlKindergartenGruppen'] === undefined) return false;
-    return true;
+export function instanceOfKindergartenDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "anzahlKindergartenPlaetze" in value;
+    isInstance = isInstance && "anzahlKindergartenGruppen" in value;
+
+    return isInstance;
 }
 
 export function KindergartenDtoFromJSON(json: any): KindergartenDto {
@@ -106,42 +107,33 @@ export function KindergartenDtoFromJSON(json: any): KindergartenDto {
 }
 
 export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KindergartenDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
+        ...InfrastruktureinrichtungDtoFromJSONTyped(json, ignoreDiscriminator),
         'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'],
         'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
-        'wohnungsnaheKindergartenPlaetze': json['wohnungsnaheKindergartenPlaetze'] == null ? undefined : json['wohnungsnaheKindergartenPlaetze'],
-        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
+        'wohnungsnaheKindergartenPlaetze': !exists(json, 'wohnungsnaheKindergartenPlaetze') ? undefined : json['wohnungsnaheKindergartenPlaetze'],
+        'einrichtungstraeger': !exists(json, 'einrichtungstraeger') ? undefined : json['einrichtungstraeger'],
     };
 }
 
-export function KindergartenDtoToJSON(json: any): KindergartenDto {
-    return KindergartenDtoToJSONTyped(json, false);
-}
-
-export function KindergartenDtoToJSONTyped(value?: KindergartenDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function KindergartenDtoToJSON(value?: KindergartenDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['infrastruktureinrichtungTyp']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'anzahlKindergartenPlaetze': value['anzahlKindergartenPlaetze'],
-        'anzahlKindergartenGruppen': value['anzahlKindergartenGruppen'],
-        'wohnungsnaheKindergartenPlaetze': value['wohnungsnaheKindergartenPlaetze'],
-        'einrichtungstraeger': value['einrichtungstraeger'],
+        ...InfrastruktureinrichtungDtoToJSON(value),
+        'anzahlKindergartenPlaetze': value.anzahlKindergartenPlaetze,
+        'anzahlKindergartenGruppen': value.anzahlKindergartenGruppen,
+        'wohnungsnaheKindergartenPlaetze': value.wohnungsnaheKindergartenPlaetze,
+        'einrichtungstraeger': value.einrichtungstraeger,
     };
 }
 

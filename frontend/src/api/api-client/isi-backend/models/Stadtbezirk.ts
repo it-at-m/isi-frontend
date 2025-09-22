@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
 import {
     MultiPolygonGeometryFromJSON,
     MultiPolygonGeometryFromJSONTyped,
     MultiPolygonGeometryToJSON,
-    MultiPolygonGeometryToJSONTyped,
 } from './MultiPolygonGeometry';
 
 /**
@@ -50,8 +49,10 @@ export interface Stadtbezirk {
 /**
  * Check if a given object implements the Stadtbezirk interface.
  */
-export function instanceOfStadtbezirk(value: object): value is Stadtbezirk {
-    return true;
+export function instanceOfStadtbezirk(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function StadtbezirkFromJSON(json: any): Stadtbezirk {
@@ -59,31 +60,29 @@ export function StadtbezirkFromJSON(json: any): Stadtbezirk {
 }
 
 export function StadtbezirkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Stadtbezirk {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'multiPolygon': json['multiPolygon'] == null ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
     };
 }
 
-export function StadtbezirkToJSON(json: any): Stadtbezirk {
-    return StadtbezirkToJSONTyped(json, false);
-}
-
-export function StadtbezirkToJSONTyped(value?: Stadtbezirk | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function StadtbezirkToJSON(value?: Stadtbezirk | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'name': value['name'],
-        'multiPolygon': MultiPolygonGeometryToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'name': value.name,
+        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
     };
 }
 

@@ -21,7 +21,7 @@ import type {
   PatchStartBearbeitungRequest,
   Save201Response,
   SaveRequest,
-} from '../models/index';
+} from '../models';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
@@ -35,7 +35,7 @@ import {
     Save201ResponseToJSON,
     SaveRequestFromJSON,
     SaveRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteByIdRequest {
     id: string;
@@ -78,23 +78,16 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Löschen einer Abfrage
      */
     async deleteByIdRaw(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteById().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteById.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -114,23 +107,16 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Lesen einer Abfrage.
      */
     async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getById().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -151,18 +137,12 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Aktualisierung einer Abfrage im Status ANGELEGT.
      */
     async patchAngelegtRaw(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchAngelegt().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchAngelegt.');
         }
 
-        if (requestParameters['saveRequest'] == null) {
-            throw new runtime.RequiredError(
-                'saveRequest',
-                'Required parameter "saveRequest" was null or undefined when calling patchAngelegt().'
-            );
+        if (requestParameters.saveRequest === null || requestParameters.saveRequest === undefined) {
+            throw new runtime.RequiredError('saveRequest','Required parameter requestParameters.saveRequest was null or undefined when calling patchAngelegt.');
         }
 
         const queryParameters: any = {};
@@ -171,16 +151,12 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrage/angelegt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/angelegt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: SaveRequestToJSON(requestParameters['saveRequest']),
+            body: SaveRequestToJSON(requestParameters.saveRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
@@ -198,18 +174,12 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Aktualisierung einer Abfrage im Status EINPFLEGEN_BEDARFSMELDUNG.
      */
     async patchEinpflegenBedarfsmeldungRaw(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchEinpflegenBedarfsmeldung().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchEinpflegenBedarfsmeldung.');
         }
 
-        if (requestParameters['patchEinpflegenBedarfsmeldungRequest'] == null) {
-            throw new runtime.RequiredError(
-                'patchEinpflegenBedarfsmeldungRequest',
-                'Required parameter "patchEinpflegenBedarfsmeldungRequest" was null or undefined when calling patchEinpflegenBedarfsmeldung().'
-            );
+        if (requestParameters.patchEinpflegenBedarfsmeldungRequest === null || requestParameters.patchEinpflegenBedarfsmeldungRequest === undefined) {
+            throw new runtime.RequiredError('patchEinpflegenBedarfsmeldungRequest','Required parameter requestParameters.patchEinpflegenBedarfsmeldungRequest was null or undefined when calling patchEinpflegenBedarfsmeldung.');
         }
 
         const queryParameters: any = {};
@@ -218,16 +188,12 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrage/in-bearbeitung-fachreferate/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/in-bearbeitung-fachreferate/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchEinpflegenBedarfsmeldungRequestToJSON(requestParameters['patchEinpflegenBedarfsmeldungRequest']),
+            body: PatchEinpflegenBedarfsmeldungRequestToJSON(requestParameters.patchEinpflegenBedarfsmeldungRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
@@ -245,18 +211,12 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE.
      */
     async patchEinplanungBedarfeRaw(requestParameters: PatchEinplanungBedarfeOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchEinplanungBedarfe().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchEinplanungBedarfe.');
         }
 
-        if (requestParameters['patchEinplanungBedarfeRequest'] == null) {
-            throw new runtime.RequiredError(
-                'patchEinplanungBedarfeRequest',
-                'Required parameter "patchEinplanungBedarfeRequest" was null or undefined when calling patchEinplanungBedarfe().'
-            );
+        if (requestParameters.patchEinplanungBedarfeRequest === null || requestParameters.patchEinplanungBedarfeRequest === undefined) {
+            throw new runtime.RequiredError('patchEinplanungBedarfeRequest','Required parameter requestParameters.patchEinplanungBedarfeRequest was null or undefined when calling patchEinplanungBedarfe.');
         }
 
         const queryParameters: any = {};
@@ -265,16 +225,12 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrage/bedarfsmeldung-erfolgt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/bedarfsmeldung-erfolgt/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchEinplanungBedarfeRequestToJSON(requestParameters['patchEinplanungBedarfeRequest']),
+            body: PatchEinplanungBedarfeRequestToJSON(requestParameters.patchEinplanungBedarfeRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
@@ -292,18 +248,12 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Aktualisierung einer Abfrage im Status START_BEARBEITUNG.
      */
     async patchStartBearbeitungRaw(requestParameters: PatchStartBearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchStartBearbeitung().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchStartBearbeitung.');
         }
 
-        if (requestParameters['patchStartBearbeitungRequest'] == null) {
-            throw new runtime.RequiredError(
-                'patchStartBearbeitungRequest',
-                'Required parameter "patchStartBearbeitungRequest" was null or undefined when calling patchStartBearbeitung().'
-            );
+        if (requestParameters.patchStartBearbeitungRequest === null || requestParameters.patchStartBearbeitungRequest === undefined) {
+            throw new runtime.RequiredError('patchStartBearbeitungRequest','Required parameter requestParameters.patchStartBearbeitungRequest was null or undefined when calling patchStartBearbeitung.');
         }
 
         const queryParameters: any = {};
@@ -312,16 +262,12 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrage/in-bearbeitung-sachbearbeitung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage/in-bearbeitung-sachbearbeitung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchStartBearbeitungRequestToJSON(requestParameters['patchStartBearbeitungRequest']),
+            body: PatchStartBearbeitungRequestToJSON(requestParameters.patchStartBearbeitungRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
@@ -339,11 +285,8 @@ export class AbfragenApi extends runtime.BaseAPI {
      * Anlegen einer neuen Abfrage
      */
     async saveRaw(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
-        if (requestParameters['saveRequest'] == null) {
-            throw new runtime.RequiredError(
-                'saveRequest',
-                'Required parameter "saveRequest" was null or undefined when calling save().'
-            );
+        if (requestParameters.saveRequest === null || requestParameters.saveRequest === undefined) {
+            throw new runtime.RequiredError('saveRequest','Required parameter requestParameters.saveRequest was null or undefined when calling save.');
         }
 
         const queryParameters: any = {};
@@ -352,15 +295,12 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/abfrage`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/abfrage`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SaveRequestToJSON(requestParameters['saveRequest']),
+            body: SaveRequestToJSON(requestParameters.saveRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));

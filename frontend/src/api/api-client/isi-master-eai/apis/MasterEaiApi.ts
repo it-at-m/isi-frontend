@@ -18,7 +18,7 @@ import type {
   AdressSucheDto,
   InformationResponseDto,
   MuenchenAdressenDto,
-} from '../models/index';
+} from '../models';
 import {
     AdressSucheDtoFromJSON,
     AdressSucheDtoToJSON,
@@ -26,7 +26,7 @@ import {
     InformationResponseDtoToJSON,
     MuenchenAdressenDtoFromJSON,
     MuenchenAdressenDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetAdressenRequest {
     adressSucheDto: AdressSucheDto;
@@ -41,11 +41,8 @@ export class MasterEaiApi extends runtime.BaseAPI {
      * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
      */
     async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
-        if (requestParameters['adressSucheDto'] == null) {
-            throw new runtime.RequiredError(
-                'adressSucheDto',
-                'Required parameter "adressSucheDto" was null or undefined when calling getAdressen().'
-            );
+        if (requestParameters.adressSucheDto === null || requestParameters.adressSucheDto === undefined) {
+            throw new runtime.RequiredError('adressSucheDto','Required parameter requestParameters.adressSucheDto was null or undefined when calling getAdressen.');
         }
 
         const queryParameters: any = {};
@@ -54,15 +51,12 @@ export class MasterEaiApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/adresse/search`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/adresse/search`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AdressSucheDtoToJSON(requestParameters['adressSucheDto']),
+            body: AdressSucheDtoToJSON(requestParameters.adressSucheDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdressenDtoFromJSON(jsonValue));

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { SearchResultDto } from './SearchResultDto';
 import {
     SearchResultDtoFromJSON,
     SearchResultDtoFromJSONTyped,
     SearchResultDtoToJSON,
-    SearchResultDtoToJSONTyped,
 } from './SearchResultDto';
 import type { Wgs84Dto } from './Wgs84Dto';
 import {
     Wgs84DtoFromJSON,
     Wgs84DtoFromJSONTyped,
     Wgs84DtoToJSON,
-    Wgs84DtoToJSONTyped,
 } from './Wgs84Dto';
+
+import {
+} from './';
 
 /**
  * 
@@ -79,8 +80,10 @@ export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEn
 /**
  * Check if a given object implements the InfrastruktureinrichtungSearchResultDto interface.
  */
-export function instanceOfInfrastruktureinrichtungSearchResultDto(value: object): value is InfrastruktureinrichtungSearchResultDto {
-    return true;
+export function instanceOfInfrastruktureinrichtungSearchResultDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function InfrastruktureinrichtungSearchResultDtoFromJSON(json: any): InfrastruktureinrichtungSearchResultDto {
@@ -88,42 +91,33 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSON(json: any): Infr
 }
 
 export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InfrastruktureinrichtungSearchResultDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     if (!ignoreDiscriminator) {
     }
     return {
-        ...SearchResultDtoFromJSONTyped(json, true),
-        'id': json['id'] == null ? undefined : json['id'],
-        'nameEinrichtung': json['nameEinrichtung'] == null ? undefined : json['nameEinrichtung'],
-        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'zugehoerigesBauvorhaben': json['zugehoerigesBauvorhaben'] == null ? undefined : json['zugehoerigesBauvorhaben'],
+        ...SearchResultDtoFromJSONTyped(json, ignoreDiscriminator),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'nameEinrichtung': !exists(json, 'nameEinrichtung') ? undefined : json['nameEinrichtung'],
+        'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
+        'zugehoerigesBauvorhaben': !exists(json, 'zugehoerigesBauvorhaben') ? undefined : json['zugehoerigesBauvorhaben'],
     };
 }
 
-export function InfrastruktureinrichtungSearchResultDtoToJSON(json: any): InfrastruktureinrichtungSearchResultDto {
-    return InfrastruktureinrichtungSearchResultDtoToJSONTyped(json, false);
-}
-
-export function InfrastruktureinrichtungSearchResultDtoToJSONTyped(value?: InfrastruktureinrichtungSearchResultDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InfrastruktureinrichtungSearchResultDtoToJSON(value?: InfrastruktureinrichtungSearchResultDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
-    if (!ignoreDiscriminator) {
-        switch (value['type']) {
-            default:
-                return value;
-        }
+    if (value === null) {
+        return null;
     }
-
     return {
-        ...SearchResultDtoToJSONTyped(value, true),
-        'id': value['id'],
-        'nameEinrichtung': value['nameEinrichtung'],
-        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'zugehoerigesBauvorhaben': value['zugehoerigesBauvorhaben'],
+        ...SearchResultDtoToJSON(value),
+        'id': value.id,
+        'nameEinrichtung': value.nameEinrichtung,
+        'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
+        'zugehoerigesBauvorhaben': value.zugehoerigesBauvorhaben,
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelFoerdermixStamm,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelFoerdermixStammFromJSON,
     EntityModelFoerdermixStammToJSON,
-} from '../models/index';
+} from '../models';
 
 /**
  * 
@@ -34,11 +34,8 @@ export class FoerdermixStammSearchControllerApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/foerdermixStamms/search/findAllByOrderByFoerdermixBezeichnungAsc`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/foerdermixStamms/search/findAllByOrderByFoerdermixBezeichnungAsc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface PresignedUrlDto {
 /**
  * Check if a given object implements the PresignedUrlDto interface.
  */
-export function instanceOfPresignedUrlDto(value: object): value is PresignedUrlDto {
-    return true;
+export function instanceOfPresignedUrlDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PresignedUrlDtoFromJSON(json: any): PresignedUrlDto {
@@ -45,29 +47,27 @@ export function PresignedUrlDtoFromJSON(json: any): PresignedUrlDto {
 }
 
 export function PresignedUrlDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PresignedUrlDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'httpMethodToUse': json['httpMethodToUse'] == null ? undefined : json['httpMethodToUse'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'httpMethodToUse': !exists(json, 'httpMethodToUse') ? undefined : json['httpMethodToUse'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function PresignedUrlDtoToJSON(json: any): PresignedUrlDto {
-    return PresignedUrlDtoToJSONTyped(json, false);
-}
-
-export function PresignedUrlDtoToJSONTyped(value?: PresignedUrlDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PresignedUrlDtoToJSON(value?: PresignedUrlDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'httpMethodToUse': value['httpMethodToUse'],
-        'url': value['url'],
+        'httpMethodToUse': value.httpMethodToUse,
+        'url': value.url,
     };
 }
 

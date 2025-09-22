@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface CollectionModelObjectEmbedded {
 /**
  * Check if a given object implements the CollectionModelObjectEmbedded interface.
  */
-export function instanceOfCollectionModelObjectEmbedded(value: object): value is CollectionModelObjectEmbedded {
-    return true;
+export function instanceOfCollectionModelObjectEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function CollectionModelObjectEmbeddedFromJSON(json: any): CollectionModelObjectEmbedded {
@@ -39,27 +41,25 @@ export function CollectionModelObjectEmbeddedFromJSON(json: any): CollectionMode
 }
 
 export function CollectionModelObjectEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): CollectionModelObjectEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'objects': json['objects'] == null ? undefined : json['objects'],
+        'objects': !exists(json, 'objects') ? undefined : json['objects'],
     };
 }
 
-export function CollectionModelObjectEmbeddedToJSON(json: any): CollectionModelObjectEmbedded {
-    return CollectionModelObjectEmbeddedToJSONTyped(json, false);
-}
-
-export function CollectionModelObjectEmbeddedToJSONTyped(value?: CollectionModelObjectEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CollectionModelObjectEmbeddedToJSON(value?: CollectionModelObjectEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'objects': value['objects'],
+        'objects': value.objects,
     };
 }
 

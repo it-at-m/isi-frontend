@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { BedarfsmeldungDto } from './BedarfsmeldungDto';
 import {
     BedarfsmeldungDtoFromJSON,
     BedarfsmeldungDtoFromJSONTyped,
     BedarfsmeldungDtoToJSON,
-    BedarfsmeldungDtoToJSONTyped,
 } from './BedarfsmeldungDto';
 
 /**
@@ -75,8 +74,10 @@ export type AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoArtAbfragevarian
 /**
  * Check if a given object implements the AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto interface.
  */
-export function instanceOfAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(value: object): value is AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto {
-    return true;
+export function instanceOfAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON(json: any): AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto {
@@ -84,35 +85,33 @@ export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSON(jso
 }
 
 export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
-        'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'anmerkungAbfrageersteller': json['anmerkungAbfrageersteller'] == null ? undefined : json['anmerkungAbfrageersteller'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'bedarfsmeldungAbfrageersteller': !exists(json, 'bedarfsmeldungAbfrageersteller') ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'anmerkungAbfrageersteller': !exists(json, 'anmerkungAbfrageersteller') ? undefined : json['anmerkungAbfrageersteller'],
     };
 }
 
-export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON(json: any): AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto {
-    return AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(json, false);
-}
-
-export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSONTyped(value?: AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoToJSON(value?: AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'artAbfragevariante': value['artAbfragevariante'],
-        'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'anmerkungAbfrageersteller': value['anmerkungAbfrageersteller'],
+        'id': value.id,
+        'version': value.version,
+        'artAbfragevariante': value.artAbfragevariante,
+        'bedarfsmeldungAbfrageersteller': value.bedarfsmeldungAbfrageersteller === undefined ? undefined : ((value.bedarfsmeldungAbfrageersteller as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'anmerkungAbfrageersteller': value.anmerkungAbfrageersteller,
     };
 }
 

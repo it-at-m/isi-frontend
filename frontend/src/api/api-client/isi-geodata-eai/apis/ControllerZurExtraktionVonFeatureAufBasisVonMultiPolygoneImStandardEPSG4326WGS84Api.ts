@@ -26,7 +26,7 @@ import type {
   FeatureCollectionDtoFeatureDtoViertelDto,
   InformationResponseDto,
   MultiPolygonGeometryDto,
-} from '../models/index';
+} from '../models';
 import {
     FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoToJSON,
@@ -50,7 +50,7 @@ import {
     InformationResponseDtoToJSON,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetBezirksteileRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
@@ -97,11 +97,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Bezirksteile die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getBezirksteileRaw(requestParameters: GetBezirksteileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBezirksteilDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getBezirksteile().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getBezirksteile.');
         }
 
         const queryParameters: any = {};
@@ -110,15 +107,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/bezirksteile`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/bezirksteile`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON(jsonValue));
@@ -136,11 +130,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstueckeRaw(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getFlurstuecke().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getFlurstuecke.');
         }
 
         const queryParameters: any = {};
@@ -149,15 +140,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/flurstuecke`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/flurstuecke`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON(jsonValue));
@@ -175,11 +163,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungenRaw(requestParameters: GetGemarkungenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getGemarkungen().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getGemarkungen.');
         }
 
         const queryParameters: any = {};
@@ -188,15 +173,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/gemarkungen`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/gemarkungen`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(jsonValue));
@@ -214,11 +196,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Grundschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGrundschulsprengelRaw(requestParameters: GetGrundschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGrundschulsprengelDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getGrundschulsprengel().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getGrundschulsprengel.');
         }
 
         const queryParameters: any = {};
@@ -227,15 +206,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/grundschulsprengel`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/grundschulsprengel`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON(jsonValue));
@@ -253,11 +229,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Kitaplanungsbereiche die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getKitaplanungsbereicheRaw(requestParameters: GetKitaplanungsbereicheRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getKitaplanungsbereiche().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getKitaplanungsbereiche.');
         }
 
         const queryParameters: any = {};
@@ -266,15 +239,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/kitaplanungsbereiche`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/kitaplanungsbereiche`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON(jsonValue));
@@ -292,11 +262,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Mittelschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getMittelschulsprengelRaw(requestParameters: GetMittelschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getMittelschulsprengel().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getMittelschulsprengel.');
         }
 
         const queryParameters: any = {};
@@ -305,15 +272,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/mittelschulsprengel`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/mittelschulsprengel`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoFromJSON(jsonValue));
@@ -331,11 +295,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getSchulstandorteRaw(requestParameters: GetSchulstandorteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoSchulstandortDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getSchulstandorte().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getSchulstandorte.');
         }
 
         const queryParameters: any = {};
@@ -344,15 +305,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/schulstandorte`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/schulstandorte`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON(jsonValue));
@@ -370,11 +328,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirkeRaw(requestParameters: GetStadtbezirkeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getStadtbezirke().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getStadtbezirke.');
         }
 
         const queryParameters: any = {};
@@ -383,15 +338,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/stadtbezirke`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/stadtbezirke`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(jsonValue));
@@ -409,11 +361,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      * Holt die Viertel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getViertelRaw(requestParameters: GetViertelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoViertelDto>> {
-        if (requestParameters['multiPolygonGeometryDto'] == null) {
-            throw new runtime.RequiredError(
-                'multiPolygonGeometryDto',
-                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getViertel().'
-            );
+        if (requestParameters.multiPolygonGeometryDto === null || requestParameters.multiPolygonGeometryDto === undefined) {
+            throw new runtime.RequiredError('multiPolygonGeometryDto','Required parameter requestParameters.multiPolygonGeometryDto was null or undefined when calling getViertel.');
         }
 
         const queryParameters: any = {};
@@ -422,15 +371,12 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/polygon/viertel`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/polygon/viertel`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+            body: MultiPolygonGeometryDtoToJSON(requestParameters.multiPolygonGeometryDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoViertelDtoFromJSON(jsonValue));

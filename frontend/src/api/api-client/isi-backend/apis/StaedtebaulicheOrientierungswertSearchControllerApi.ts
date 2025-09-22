@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelStaedtebaulicheOrientierungswert,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelStaedtebaulicheOrientierungswertFromJSON,
     EntityModelStaedtebaulicheOrientierungswertToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchStaedtebaulicheorientierungswertGetRequest {
     foerderartBezeichnung?: string;
@@ -37,21 +37,18 @@ export class StaedtebaulicheOrientierungswertSearchControllerApi extends runtime
     async executeSearchStaedtebaulicheorientierungswertGetRaw(requestParameters: ExecuteSearchStaedtebaulicheorientierungswertGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
         const queryParameters: any = {};
 
-        if (requestParameters['foerderartBezeichnung'] != null) {
-            queryParameters['foerderartBezeichnung'] = requestParameters['foerderartBezeichnung'];
+        if (requestParameters.foerderartBezeichnung !== undefined) {
+            queryParameters['foerderartBezeichnung'] = requestParameters.foerderartBezeichnung;
         }
 
-        if (requestParameters['gueltigAb'] != null) {
-            queryParameters['gueltigAb'] = (requestParameters['gueltigAb'] as any).toISOString().substring(0,10);
+        if (requestParameters.gueltigAb !== undefined) {
+            queryParameters['gueltigAb'] = (requestParameters.gueltigAb as any).toISOString().substr(0,10);
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/staedtebaulicheOrientierungswerts/search/findFirstByFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/staedtebaulicheOrientierungswerts/search/findFirstByFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

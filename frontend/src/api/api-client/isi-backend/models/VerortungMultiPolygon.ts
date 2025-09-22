@@ -12,77 +12,67 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
-import {
-    MultiPolygonGeometryFromJSON,
-    MultiPolygonGeometryFromJSONTyped,
-    MultiPolygonGeometryToJSON,
-    MultiPolygonGeometryToJSONTyped,
-} from './MultiPolygonGeometry';
-import type { Kitaplanungsbereich } from './Kitaplanungsbereich';
-import {
-    KitaplanungsbereichFromJSON,
-    KitaplanungsbereichFromJSONTyped,
-    KitaplanungsbereichToJSON,
-    KitaplanungsbereichToJSONTyped,
-} from './Kitaplanungsbereich';
-import type { Viertel } from './Viertel';
-import {
-    ViertelFromJSON,
-    ViertelFromJSONTyped,
-    ViertelToJSON,
-    ViertelToJSONTyped,
-} from './Viertel';
+import { exists, mapValues } from '../runtime';
 import type { Bezirksteil } from './Bezirksteil';
 import {
     BezirksteilFromJSON,
     BezirksteilFromJSONTyped,
     BezirksteilToJSON,
-    BezirksteilToJSONTyped,
 } from './Bezirksteil';
 import type { Gemarkung } from './Gemarkung';
 import {
     GemarkungFromJSON,
     GemarkungFromJSONTyped,
     GemarkungToJSON,
-    GemarkungToJSONTyped,
 } from './Gemarkung';
-import type { Mittelschulsprengel } from './Mittelschulsprengel';
-import {
-    MittelschulsprengelFromJSON,
-    MittelschulsprengelFromJSONTyped,
-    MittelschulsprengelToJSON,
-    MittelschulsprengelToJSONTyped,
-} from './Mittelschulsprengel';
-import type { PointGeometry } from './PointGeometry';
-import {
-    PointGeometryFromJSON,
-    PointGeometryFromJSONTyped,
-    PointGeometryToJSON,
-    PointGeometryToJSONTyped,
-} from './PointGeometry';
 import type { Grundschulsprengel } from './Grundschulsprengel';
 import {
     GrundschulsprengelFromJSON,
     GrundschulsprengelFromJSONTyped,
     GrundschulsprengelToJSON,
-    GrundschulsprengelToJSONTyped,
 } from './Grundschulsprengel';
+import type { Kitaplanungsbereich } from './Kitaplanungsbereich';
+import {
+    KitaplanungsbereichFromJSON,
+    KitaplanungsbereichFromJSONTyped,
+    KitaplanungsbereichToJSON,
+} from './Kitaplanungsbereich';
+import type { Mittelschulsprengel } from './Mittelschulsprengel';
+import {
+    MittelschulsprengelFromJSON,
+    MittelschulsprengelFromJSONTyped,
+    MittelschulsprengelToJSON,
+} from './Mittelschulsprengel';
+import type { MultiPolygonGeometry } from './MultiPolygonGeometry';
+import {
+    MultiPolygonGeometryFromJSON,
+    MultiPolygonGeometryFromJSONTyped,
+    MultiPolygonGeometryToJSON,
+} from './MultiPolygonGeometry';
+import type { PointGeometry } from './PointGeometry';
+import {
+    PointGeometryFromJSON,
+    PointGeometryFromJSONTyped,
+    PointGeometryToJSON,
+} from './PointGeometry';
 import type { Stadtbezirk } from './Stadtbezirk';
 import {
     StadtbezirkFromJSON,
     StadtbezirkFromJSONTyped,
     StadtbezirkToJSON,
-    StadtbezirkToJSONTyped,
 } from './Stadtbezirk';
 import type { Utm } from './Utm';
 import {
     UtmFromJSON,
     UtmFromJSONTyped,
     UtmToJSON,
-    UtmToJSONTyped,
 } from './Utm';
+import type { Viertel } from './Viertel';
+import {
+    ViertelFromJSON,
+    ViertelFromJSONTyped,
+    ViertelToJSON,
+} from './Viertel';
 
 /**
  * 
@@ -155,8 +145,10 @@ export interface VerortungMultiPolygon {
 /**
  * Check if a given object implements the VerortungMultiPolygon interface.
  */
-export function instanceOfVerortungMultiPolygon(value: object): value is VerortungMultiPolygon {
-    return true;
+export function instanceOfVerortungMultiPolygon(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function VerortungMultiPolygonFromJSON(json: any): VerortungMultiPolygon {
@@ -164,45 +156,43 @@ export function VerortungMultiPolygonFromJSON(json: any): VerortungMultiPolygon 
 }
 
 export function VerortungMultiPolygonFromJSONTyped(json: any, ignoreDiscriminator: boolean): VerortungMultiPolygon {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkFromJSON))),
-        'bezirksteile': json['bezirksteile'] == null ? undefined : (new Set((json['bezirksteile'] as Array<any>).map(BezirksteilFromJSON))),
-        'viertel': json['viertel'] == null ? undefined : (new Set((json['viertel'] as Array<any>).map(ViertelFromJSON))),
-        'gemarkungen': json['gemarkungen'] == null ? undefined : (new Set((json['gemarkungen'] as Array<any>).map(GemarkungFromJSON))),
-        'kitaplanungsbereiche': json['kitaplanungsbereiche'] == null ? undefined : (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichFromJSON))),
-        'grundschulsprengel': json['grundschulsprengel'] == null ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelFromJSON))),
-        'mittelschulsprengel': json['mittelschulsprengel'] == null ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelFromJSON))),
-        'multiPolygon': json['multiPolygon'] == null ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
-        'centroid': json['centroid'] == null ? undefined : PointGeometryFromJSON(json['centroid']),
-        'centroidUtm': json['centroidUtm'] == null ? undefined : UtmFromJSON(json['centroidUtm']),
+        'stadtbezirke': !exists(json, 'stadtbezirke') ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkFromJSON))),
+        'bezirksteile': !exists(json, 'bezirksteile') ? undefined : (new Set((json['bezirksteile'] as Array<any>).map(BezirksteilFromJSON))),
+        'viertel': !exists(json, 'viertel') ? undefined : (new Set((json['viertel'] as Array<any>).map(ViertelFromJSON))),
+        'gemarkungen': !exists(json, 'gemarkungen') ? undefined : (new Set((json['gemarkungen'] as Array<any>).map(GemarkungFromJSON))),
+        'kitaplanungsbereiche': !exists(json, 'kitaplanungsbereiche') ? undefined : (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichFromJSON))),
+        'grundschulsprengel': !exists(json, 'grundschulsprengel') ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelFromJSON))),
+        'mittelschulsprengel': !exists(json, 'mittelschulsprengel') ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelFromJSON))),
+        'multiPolygon': !exists(json, 'multiPolygon') ? undefined : MultiPolygonGeometryFromJSON(json['multiPolygon']),
+        'centroid': !exists(json, 'centroid') ? undefined : PointGeometryFromJSON(json['centroid']),
+        'centroidUtm': !exists(json, 'centroidUtm') ? undefined : UtmFromJSON(json['centroidUtm']),
     };
 }
 
-export function VerortungMultiPolygonToJSON(json: any): VerortungMultiPolygon {
-    return VerortungMultiPolygonToJSONTyped(json, false);
-}
-
-export function VerortungMultiPolygonToJSONTyped(value?: VerortungMultiPolygon | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VerortungMultiPolygonToJSON(value?: VerortungMultiPolygon | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkToJSON)),
-        'bezirksteile': value['bezirksteile'] == null ? undefined : (Array.from(value['bezirksteile'] as Set<any>).map(BezirksteilToJSON)),
-        'viertel': value['viertel'] == null ? undefined : (Array.from(value['viertel'] as Set<any>).map(ViertelToJSON)),
-        'gemarkungen': value['gemarkungen'] == null ? undefined : (Array.from(value['gemarkungen'] as Set<any>).map(GemarkungToJSON)),
-        'kitaplanungsbereiche': value['kitaplanungsbereiche'] == null ? undefined : (Array.from(value['kitaplanungsbereiche'] as Set<any>).map(KitaplanungsbereichToJSON)),
-        'grundschulsprengel': value['grundschulsprengel'] == null ? undefined : (Array.from(value['grundschulsprengel'] as Set<any>).map(GrundschulsprengelToJSON)),
-        'mittelschulsprengel': value['mittelschulsprengel'] == null ? undefined : (Array.from(value['mittelschulsprengel'] as Set<any>).map(MittelschulsprengelToJSON)),
-        'multiPolygon': MultiPolygonGeometryToJSON(value['multiPolygon']),
-        'centroid': PointGeometryToJSON(value['centroid']),
-        'centroidUtm': UtmToJSON(value['centroidUtm']),
+        'stadtbezirke': value.stadtbezirke === undefined ? undefined : (Array.from(value.stadtbezirke as Set<any>).map(StadtbezirkToJSON)),
+        'bezirksteile': value.bezirksteile === undefined ? undefined : (Array.from(value.bezirksteile as Set<any>).map(BezirksteilToJSON)),
+        'viertel': value.viertel === undefined ? undefined : (Array.from(value.viertel as Set<any>).map(ViertelToJSON)),
+        'gemarkungen': value.gemarkungen === undefined ? undefined : (Array.from(value.gemarkungen as Set<any>).map(GemarkungToJSON)),
+        'kitaplanungsbereiche': value.kitaplanungsbereiche === undefined ? undefined : (Array.from(value.kitaplanungsbereiche as Set<any>).map(KitaplanungsbereichToJSON)),
+        'grundschulsprengel': value.grundschulsprengel === undefined ? undefined : (Array.from(value.grundschulsprengel as Set<any>).map(GrundschulsprengelToJSON)),
+        'mittelschulsprengel': value.mittelschulsprengel === undefined ? undefined : (Array.from(value.mittelschulsprengel as Set<any>).map(MittelschulsprengelToJSON)),
+        'multiPolygon': MultiPolygonGeometryToJSON(value.multiPolygon),
+        'centroid': PointGeometryToJSON(value.centroid),
+        'centroidUtm': UtmToJSON(value.centroidUtm),
     };
 }
 

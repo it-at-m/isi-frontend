@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FeatureDtoGrundschulsprengelDto } from './FeatureDtoGrundschulsprengelDto';
 import {
     FeatureDtoGrundschulsprengelDtoFromJSON,
     FeatureDtoGrundschulsprengelDtoFromJSONTyped,
     FeatureDtoGrundschulsprengelDtoToJSON,
-    FeatureDtoGrundschulsprengelDtoToJSONTyped,
 } from './FeatureDtoGrundschulsprengelDto';
 
 /**
@@ -44,8 +43,10 @@ export interface FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoGrundschulsprengelDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoGrundschulsprengelDto(value: object): value is FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
-    return true;
+export function instanceOfFeatureCollectionDtoFeatureDtoGrundschulsprengelDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
@@ -53,29 +54,27 @@ export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON(json
 }
 
 export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoGrundschulsprengelDtoFromJSON)),
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoGrundschulsprengelDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
-    return FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSONTyped(json, false);
-}
-
-export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoGrundschulsprengelDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSON(value?: FeatureCollectionDtoFeatureDtoGrundschulsprengelDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoGrundschulsprengelDtoToJSON)),
+        'type': value.type,
+        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoGrundschulsprengelDtoToJSON)),
     };
 }
 

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   BaurateDto,
   InformationResponseDto,
-} from '../models/index';
+} from '../models';
 import {
     BaurateDtoFromJSON,
     BaurateDtoToJSON,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DetermineBauratenRequest {
     realisierungsbeginn: number;
@@ -40,34 +40,28 @@ export class BaurateApi extends runtime.BaseAPI {
      * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
      */
     async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
-        if (requestParameters['realisierungsbeginn'] == null) {
-            throw new runtime.RequiredError(
-                'realisierungsbeginn',
-                'Required parameter "realisierungsbeginn" was null or undefined when calling determineBauraten().'
-            );
+        if (requestParameters.realisierungsbeginn === null || requestParameters.realisierungsbeginn === undefined) {
+            throw new runtime.RequiredError('realisierungsbeginn','Required parameter requestParameters.realisierungsbeginn was null or undefined when calling determineBauraten.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['realisierungsbeginn'] != null) {
-            queryParameters['realisierungsbeginn'] = requestParameters['realisierungsbeginn'];
+        if (requestParameters.realisierungsbeginn !== undefined) {
+            queryParameters['realisierungsbeginn'] = requestParameters.realisierungsbeginn;
         }
 
-        if (requestParameters['wohneinheiten'] != null) {
-            queryParameters['wohneinheiten'] = requestParameters['wohneinheiten'];
+        if (requestParameters.wohneinheiten !== undefined) {
+            queryParameters['wohneinheiten'] = requestParameters.wohneinheiten;
         }
 
-        if (requestParameters['geschossflaecheWohnen'] != null) {
-            queryParameters['geschossflaecheWohnen'] = requestParameters['geschossflaecheWohnen'];
+        if (requestParameters.geschossflaecheWohnen !== undefined) {
+            queryParameters['geschossflaecheWohnen'] = requestParameters.geschossflaecheWohnen;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/baurate/determine`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/baurate/determine`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

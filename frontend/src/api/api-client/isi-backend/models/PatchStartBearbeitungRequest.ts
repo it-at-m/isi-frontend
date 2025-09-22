@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
-import type { BaugenehmigungsverfahrenStartBearbeitungDto } from './BaugenehmigungsverfahrenStartBearbeitungDto';
 import {
+    BaugenehmigungsverfahrenStartBearbeitungDto,
     instanceOfBaugenehmigungsverfahrenStartBearbeitungDto,
     BaugenehmigungsverfahrenStartBearbeitungDtoFromJSON,
     BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped,
     BaugenehmigungsverfahrenStartBearbeitungDtoToJSON,
 } from './BaugenehmigungsverfahrenStartBearbeitungDto';
-import type { BauleitplanverfahrenStartBearbeitungDto } from './BauleitplanverfahrenStartBearbeitungDto';
 import {
+    BauleitplanverfahrenStartBearbeitungDto,
     instanceOfBauleitplanverfahrenStartBearbeitungDto,
     BauleitplanverfahrenStartBearbeitungDtoFromJSON,
     BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped,
     BauleitplanverfahrenStartBearbeitungDtoToJSON,
 } from './BauleitplanverfahrenStartBearbeitungDto';
-import type { WeiteresVerfahrenStartBearbeitungDto } from './WeiteresVerfahrenStartBearbeitungDto';
 import {
+    WeiteresVerfahrenStartBearbeitungDto,
     instanceOfWeiteresVerfahrenStartBearbeitungDto,
     WeiteresVerfahrenStartBearbeitungDtoFromJSON,
     WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped,
@@ -39,45 +39,57 @@ import {
  * 
  * @export
  */
-export type PatchStartBearbeitungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenStartBearbeitungDto;
+export type PatchStartBearbeitungRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'BaugenehmigungsverfahrenStartBearbeitungDto' } & BaugenehmigungsverfahrenStartBearbeitungDto | { artAbfrage: 'BauleitplanverfahrenStartBearbeitungDto' } & BauleitplanverfahrenStartBearbeitungDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenStartBearbeitungDto | { artAbfrage: 'WeiteresVerfahrenStartBearbeitungDto' } & WeiteresVerfahrenStartBearbeitungDto;
 
 export function PatchStartBearbeitungRequestFromJSON(json: any): PatchStartBearbeitungRequest {
     return PatchStartBearbeitungRequestFromJSONTyped(json, false);
 }
 
 export function PatchStartBearbeitungRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatchStartBearbeitungRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     switch (json['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped(json, true), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return {...BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json, true), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return {...BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
+        case 'BaugenehmigungsverfahrenStartBearbeitungDto':
+            return {...BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenStartBearbeitungDto'};
+        case 'BauleitplanverfahrenStartBearbeitungDto':
+            return {...BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenStartBearbeitungDto'};
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return {...WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
+        case 'WeiteresVerfahrenStartBearbeitungDto':
+            return {...WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenStartBearbeitungDto'};
         default:
-            return json;
+            throw new Error(`No variant of PatchStartBearbeitungRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
     }
 }
 
-export function PatchStartBearbeitungRequestToJSON(json: any): any {
-    return PatchStartBearbeitungRequestToJSONTyped(json, false);
-}
-
-export function PatchStartBearbeitungRequestToJSONTyped(value?: PatchStartBearbeitungRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PatchStartBearbeitungRequestToJSON(value?: PatchStartBearbeitungRequest | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return BaugenehmigungsverfahrenStartBearbeitungDtoToJSON(value);
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return BauleitplanverfahrenStartBearbeitungDtoToJSON(value);
+        case 'BaugenehmigungsverfahrenStartBearbeitungDto':
+            return BaugenehmigungsverfahrenStartBearbeitungDtoToJSON(value);
+        case 'BauleitplanverfahrenStartBearbeitungDto':
+            return BauleitplanverfahrenStartBearbeitungDtoToJSON(value);
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return WeiteresVerfahrenStartBearbeitungDtoToJSON(value);
+        case 'WeiteresVerfahrenStartBearbeitungDto':
+            return WeiteresVerfahrenStartBearbeitungDtoToJSON(value);
         default:
-            return value;
+            throw new Error(`No variant of PatchStartBearbeitungRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
     }
+
 }
 

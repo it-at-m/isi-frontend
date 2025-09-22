@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
 } from './DokumentDto';
 
 /**
@@ -80,8 +79,10 @@ export interface KommentarBauvorhabenDto {
 /**
  * Check if a given object implements the KommentarBauvorhabenDto interface.
  */
-export function instanceOfKommentarBauvorhabenDto(value: object): value is KommentarBauvorhabenDto {
-    return true;
+export function instanceOfKommentarBauvorhabenDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function KommentarBauvorhabenDtoFromJSON(json: any): KommentarBauvorhabenDto {
@@ -89,41 +90,39 @@ export function KommentarBauvorhabenDtoFromJSON(json: any): KommentarBauvorhaben
 }
 
 export function KommentarBauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarBauvorhabenDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
+        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'datum': !exists(json, 'datum') ? undefined : json['datum'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
     };
 }
 
-export function KommentarBauvorhabenDtoToJSON(json: any): KommentarBauvorhabenDto {
-    return KommentarBauvorhabenDtoToJSONTyped(json, false);
-}
-
-export function KommentarBauvorhabenDtoToJSONTyped(value?: KommentarBauvorhabenDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function KommentarBauvorhabenDtoToJSON(value?: KommentarBauvorhabenDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? undefined : ((value['createdDateTime']).toISOString()),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? undefined : ((value['lastModifiedDateTime']).toISOString()),
-        'datum': value['datum'],
-        'text': value['text'],
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'bauvorhaben': value['bauvorhaben'],
+        'id': value.id,
+        'version': value.version,
+        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
+        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
+        'datum': value.datum,
+        'text': value.text,
+        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
+        'bauvorhaben': value.bauvorhaben,
     };
 }
 

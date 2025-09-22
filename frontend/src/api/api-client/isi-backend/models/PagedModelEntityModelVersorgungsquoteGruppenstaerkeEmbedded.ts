@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityModelVersorgungsquoteGruppenstaerke } from './EntityModelVersorgungsquoteGruppenstaerke';
 import {
     EntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     EntityModelVersorgungsquoteGruppenstaerkeFromJSONTyped,
     EntityModelVersorgungsquoteGruppenstaerkeToJSON,
-    EntityModelVersorgungsquoteGruppenstaerkeToJSONTyped,
 } from './EntityModelVersorgungsquoteGruppenstaerke';
 
 /**
@@ -38,8 +37,10 @@ export interface PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded(value: object): value is PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded {
-    return true;
+export function instanceOfPagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSON(json: any): PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded {
@@ -47,27 +48,25 @@ export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJ
 }
 
 export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'versorgungsquoteGruppenstaerkes': json['versorgungsquoteGruppenstaerkes'] == null ? undefined : ((json['versorgungsquoteGruppenstaerkes'] as Array<any>).map(EntityModelVersorgungsquoteGruppenstaerkeFromJSON)),
+        'versorgungsquoteGruppenstaerkes': !exists(json, 'versorgungsquoteGruppenstaerkes') ? undefined : ((json['versorgungsquoteGruppenstaerkes'] as Array<any>).map(EntityModelVersorgungsquoteGruppenstaerkeFromJSON)),
     };
 }
 
-export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSON(json: any): PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded {
-    return PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSONTyped(json, false);
-}
-
-export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSONTyped(value?: PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSON(value?: PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'versorgungsquoteGruppenstaerkes': value['versorgungsquoteGruppenstaerkes'] == null ? undefined : ((value['versorgungsquoteGruppenstaerkes'] as Array<any>).map(EntityModelVersorgungsquoteGruppenstaerkeToJSON)),
+        'versorgungsquoteGruppenstaerkes': value.versorgungsquoteGruppenstaerkes === undefined ? undefined : ((value.versorgungsquoteGruppenstaerkes as Array<any>).map(EntityModelVersorgungsquoteGruppenstaerkeToJSON)),
     };
 }
 

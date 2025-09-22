@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
-import type { AbfrageSearchResultDto } from './AbfrageSearchResultDto';
 import {
+    AbfrageSearchResultDto,
     instanceOfAbfrageSearchResultDto,
     AbfrageSearchResultDtoFromJSON,
     AbfrageSearchResultDtoFromJSONTyped,
     AbfrageSearchResultDtoToJSON,
 } from './AbfrageSearchResultDto';
-import type { BauvorhabenSearchResultDto } from './BauvorhabenSearchResultDto';
 import {
+    BauvorhabenSearchResultDto,
     instanceOfBauvorhabenSearchResultDto,
     BauvorhabenSearchResultDtoFromJSON,
     BauvorhabenSearchResultDtoFromJSONTyped,
     BauvorhabenSearchResultDtoToJSON,
 } from './BauvorhabenSearchResultDto';
-import type { InfrastruktureinrichtungSearchResultDto } from './InfrastruktureinrichtungSearchResultDto';
 import {
+    InfrastruktureinrichtungSearchResultDto,
     instanceOfInfrastruktureinrichtungSearchResultDto,
     InfrastruktureinrichtungSearchResultDtoFromJSON,
     InfrastruktureinrichtungSearchResultDtoFromJSONTyped,
@@ -39,45 +39,57 @@ import {
  * 
  * @export
  */
-export type SearchResultsDtoSearchResultsInner = { type: 'ABFRAGE' } & AbfrageSearchResultDto | { type: 'BAUVORHABEN' } & BauvorhabenSearchResultDto | { type: 'INFRASTRUKTUREINRICHTUNG' } & InfrastruktureinrichtungSearchResultDto;
+export type SearchResultsDtoSearchResultsInner = { type: 'ABFRAGE' } & AbfrageSearchResultDto | { type: 'AbfrageSearchResultDto' } & AbfrageSearchResultDto | { type: 'BAUVORHABEN' } & BauvorhabenSearchResultDto | { type: 'BauvorhabenSearchResultDto' } & BauvorhabenSearchResultDto | { type: 'INFRASTRUKTUREINRICHTUNG' } & InfrastruktureinrichtungSearchResultDto | { type: 'InfrastruktureinrichtungSearchResultDto' } & InfrastruktureinrichtungSearchResultDto;
 
 export function SearchResultsDtoSearchResultsInnerFromJSON(json: any): SearchResultsDtoSearchResultsInner {
     return SearchResultsDtoSearchResultsInnerFromJSONTyped(json, false);
 }
 
 export function SearchResultsDtoSearchResultsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchResultsDtoSearchResultsInner {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     switch (json['type']) {
         case 'ABFRAGE':
-            return Object.assign({}, AbfrageSearchResultDtoFromJSONTyped(json, true), { type: 'ABFRAGE' } as const);
+            return {...AbfrageSearchResultDtoFromJSONTyped(json, true), type: 'ABFRAGE'};
+        case 'AbfrageSearchResultDto':
+            return {...AbfrageSearchResultDtoFromJSONTyped(json, true), type: 'AbfrageSearchResultDto'};
         case 'BAUVORHABEN':
-            return Object.assign({}, BauvorhabenSearchResultDtoFromJSONTyped(json, true), { type: 'BAUVORHABEN' } as const);
+            return {...BauvorhabenSearchResultDtoFromJSONTyped(json, true), type: 'BAUVORHABEN'};
+        case 'BauvorhabenSearchResultDto':
+            return {...BauvorhabenSearchResultDtoFromJSONTyped(json, true), type: 'BauvorhabenSearchResultDto'};
         case 'INFRASTRUKTUREINRICHTUNG':
-            return Object.assign({}, InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true), { type: 'INFRASTRUKTUREINRICHTUNG' } as const);
+            return {...InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true), type: 'INFRASTRUKTUREINRICHTUNG'};
+        case 'InfrastruktureinrichtungSearchResultDto':
+            return {...InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json, true), type: 'InfrastruktureinrichtungSearchResultDto'};
         default:
-            return json;
+            throw new Error(`No variant of SearchResultsDtoSearchResultsInner exists with 'type=${json['type']}'`);
     }
 }
 
-export function SearchResultsDtoSearchResultsInnerToJSON(json: any): any {
-    return SearchResultsDtoSearchResultsInnerToJSONTyped(json, false);
-}
-
-export function SearchResultsDtoSearchResultsInnerToJSONTyped(value?: SearchResultsDtoSearchResultsInner | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SearchResultsDtoSearchResultsInnerToJSON(value?: SearchResultsDtoSearchResultsInner | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
     switch (value['type']) {
         case 'ABFRAGE':
-            return Object.assign({}, AbfrageSearchResultDtoToJSON(value), { type: 'ABFRAGE' } as const);
+            return AbfrageSearchResultDtoToJSON(value);
+        case 'AbfrageSearchResultDto':
+            return AbfrageSearchResultDtoToJSON(value);
         case 'BAUVORHABEN':
-            return Object.assign({}, BauvorhabenSearchResultDtoToJSON(value), { type: 'BAUVORHABEN' } as const);
+            return BauvorhabenSearchResultDtoToJSON(value);
+        case 'BauvorhabenSearchResultDto':
+            return BauvorhabenSearchResultDtoToJSON(value);
         case 'INFRASTRUKTUREINRICHTUNG':
-            return Object.assign({}, InfrastruktureinrichtungSearchResultDtoToJSON(value), { type: 'INFRASTRUKTUREINRICHTUNG' } as const);
+            return InfrastruktureinrichtungSearchResultDtoToJSON(value);
+        case 'InfrastruktureinrichtungSearchResultDto':
+            return InfrastruktureinrichtungSearchResultDtoToJSON(value);
         default:
-            return value;
+            throw new Error(`No variant of SearchResultsDtoSearchResultsInner exists with 'type=${value['type']}'`);
     }
+
 }
 

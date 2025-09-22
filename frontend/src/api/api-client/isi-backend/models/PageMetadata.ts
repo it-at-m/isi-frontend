@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,8 +48,10 @@ export interface PageMetadata {
 /**
  * Check if a given object implements the PageMetadata interface.
  */
-export function instanceOfPageMetadata(value: object): value is PageMetadata {
-    return true;
+export function instanceOfPageMetadata(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PageMetadataFromJSON(json: any): PageMetadata {
@@ -57,33 +59,31 @@ export function PageMetadataFromJSON(json: any): PageMetadata {
 }
 
 export function PageMetadataFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageMetadata {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'size': json['size'] == null ? undefined : json['size'],
-        'totalElements': json['totalElements'] == null ? undefined : json['totalElements'],
-        'totalPages': json['totalPages'] == null ? undefined : json['totalPages'],
-        'number': json['number'] == null ? undefined : json['number'],
+        'size': !exists(json, 'size') ? undefined : json['size'],
+        'totalElements': !exists(json, 'totalElements') ? undefined : json['totalElements'],
+        'totalPages': !exists(json, 'totalPages') ? undefined : json['totalPages'],
+        'number': !exists(json, 'number') ? undefined : json['number'],
     };
 }
 
-export function PageMetadataToJSON(json: any): PageMetadata {
-    return PageMetadataToJSONTyped(json, false);
-}
-
-export function PageMetadataToJSONTyped(value?: PageMetadata | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PageMetadataToJSON(value?: PageMetadata | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'size': value['size'],
-        'totalElements': value['totalElements'],
-        'totalPages': value['totalPages'],
-        'number': value['number'],
+        'size': value.size,
+        'totalElements': value.totalElements,
+        'totalPages': value.totalPages,
+        'number': value.number,
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelVersorgungsquoteGruppenstaerke,
-} from '../models/index';
+} from '../models';
 import {
     EntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     EntityModelVersorgungsquoteGruppenstaerkeToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest {
     infrastruktureinrichtungTyp?: ExecuteSearchVersorgungsquotegruppenstaerkeGetInfrastruktureinrichtungTypEnum;
@@ -37,21 +37,18 @@ export class VersorgungsquoteGruppenstaerkeSearchControllerApi extends runtime.B
     async executeSearchVersorgungsquotegruppenstaerkeGetRaw(requestParameters: ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
         const queryParameters: any = {};
 
-        if (requestParameters['infrastruktureinrichtungTyp'] != null) {
-            queryParameters['infrastruktureinrichtungTyp'] = requestParameters['infrastruktureinrichtungTyp'];
+        if (requestParameters.infrastruktureinrichtungTyp !== undefined) {
+            queryParameters['infrastruktureinrichtungTyp'] = requestParameters.infrastruktureinrichtungTyp;
         }
 
-        if (requestParameters['gueltigAb'] != null) {
-            queryParameters['gueltigAb'] = (requestParameters['gueltigAb'] as any).toISOString().substring(0,10);
+        if (requestParameters.gueltigAb !== undefined) {
+            queryParameters['gueltigAb'] = (requestParameters.gueltigAb as any).toISOString().substr(0,10);
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/versorgungsquoteGruppenstaerkes/search/findFirstByInfrastruktureinrichtungTypAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/versorgungsquoteGruppenstaerkes/search/findFirstByInfrastruktureinrichtungTypAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

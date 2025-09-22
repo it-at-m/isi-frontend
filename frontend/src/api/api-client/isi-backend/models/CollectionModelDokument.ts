@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { CollectionModelDokumentEmbedded } from './CollectionModelDokumentEmbedded';
 import {
     CollectionModelDokumentEmbeddedFromJSON,
     CollectionModelDokumentEmbeddedFromJSONTyped,
     CollectionModelDokumentEmbeddedToJSON,
-    CollectionModelDokumentEmbeddedToJSONTyped,
 } from './CollectionModelDokumentEmbedded';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
-    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -51,8 +49,10 @@ export interface CollectionModelDokument {
 /**
  * Check if a given object implements the CollectionModelDokument interface.
  */
-export function instanceOfCollectionModelDokument(value: object): value is CollectionModelDokument {
-    return true;
+export function instanceOfCollectionModelDokument(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function CollectionModelDokumentFromJSON(json: any): CollectionModelDokument {
@@ -60,29 +60,27 @@ export function CollectionModelDokumentFromJSON(json: any): CollectionModelDokum
 }
 
 export function CollectionModelDokumentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CollectionModelDokument {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embedded': json['_embedded'] == null ? undefined : CollectionModelDokumentEmbeddedFromJSON(json['_embedded']),
-        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'embedded': !exists(json, '_embedded') ? undefined : CollectionModelDokumentEmbeddedFromJSON(json['_embedded']),
+        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function CollectionModelDokumentToJSON(json: any): CollectionModelDokument {
-    return CollectionModelDokumentToJSONTyped(json, false);
-}
-
-export function CollectionModelDokumentToJSONTyped(value?: CollectionModelDokument | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CollectionModelDokumentToJSON(value?: CollectionModelDokument | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        '_embedded': CollectionModelDokumentEmbeddedToJSON(value['embedded']),
-        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        '_embedded': CollectionModelDokumentEmbeddedToJSON(value.embedded),
+        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
 

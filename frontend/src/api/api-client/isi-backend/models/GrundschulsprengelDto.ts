@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { MultiPolygonGeometryDto } from './MultiPolygonGeometryDto';
 import {
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoFromJSONTyped,
     MultiPolygonGeometryDtoToJSON,
-    MultiPolygonGeometryDtoToJSONTyped,
 } from './MultiPolygonGeometryDto';
 
 /**
@@ -44,9 +43,11 @@ export interface GrundschulsprengelDto {
 /**
  * Check if a given object implements the GrundschulsprengelDto interface.
  */
-export function instanceOfGrundschulsprengelDto(value: object): value is GrundschulsprengelDto {
-    if (!('multiPolygon' in value) || value['multiPolygon'] === undefined) return false;
-    return true;
+export function instanceOfGrundschulsprengelDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "multiPolygon" in value;
+
+    return isInstance;
 }
 
 export function GrundschulsprengelDtoFromJSON(json: any): GrundschulsprengelDto {
@@ -54,29 +55,27 @@ export function GrundschulsprengelDtoFromJSON(json: any): GrundschulsprengelDto 
 }
 
 export function GrundschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GrundschulsprengelDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'nummer': json['nummer'] == null ? undefined : json['nummer'],
+        'nummer': !exists(json, 'nummer') ? undefined : json['nummer'],
         'multiPolygon': MultiPolygonGeometryDtoFromJSON(json['multiPolygon']),
     };
 }
 
-export function GrundschulsprengelDtoToJSON(json: any): GrundschulsprengelDto {
-    return GrundschulsprengelDtoToJSONTyped(json, false);
-}
-
-export function GrundschulsprengelDtoToJSONTyped(value?: GrundschulsprengelDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function GrundschulsprengelDtoToJSON(value?: GrundschulsprengelDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'nummer': value['nummer'],
-        'multiPolygon': MultiPolygonGeometryDtoToJSON(value['multiPolygon']),
+        'nummer': value.nummer,
+        'multiPolygon': MultiPolygonGeometryDtoToJSON(value.multiPolygon),
     };
 }
 

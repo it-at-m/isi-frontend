@@ -19,7 +19,7 @@ import type {
   BauvorhabenDto,
   InformationResponseDto,
   InfrastruktureinrichtungSearchResultDto,
-} from '../models/index';
+} from '../models';
 import {
     AbfrageSearchResultDtoFromJSON,
     AbfrageSearchResultDtoToJSON,
@@ -29,7 +29,7 @@ import {
     InformationResponseDtoToJSON,
     InfrastruktureinrichtungSearchResultDtoFromJSON,
     InfrastruktureinrichtungSearchResultDtoToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateBauvorhabenRequest {
     bauvorhabenDto: BauvorhabenDto;
@@ -69,32 +69,26 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Anlegen eines neuen Bauvorhabens
      */
     async createBauvorhabenRaw(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters['bauvorhabenDto'] == null) {
-            throw new runtime.RequiredError(
-                'bauvorhabenDto',
-                'Required parameter "bauvorhabenDto" was null or undefined when calling createBauvorhaben().'
-            );
+        if (requestParameters.bauvorhabenDto === null || requestParameters.bauvorhabenDto === undefined) {
+            throw new runtime.RequiredError('bauvorhabenDto','Required parameter requestParameters.bauvorhabenDto was null or undefined when calling createBauvorhaben.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['abfrageId'] != null) {
-            queryParameters['abfrageId'] = requestParameters['abfrageId'];
+        if (requestParameters.abfrageId !== undefined) {
+            queryParameters['abfrageId'] = requestParameters.abfrageId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/bauvorhaben`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BauvorhabenDtoToJSON(requestParameters['bauvorhabenDto']),
+            body: BauvorhabenDtoToJSON(requestParameters.bauvorhabenDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
@@ -112,23 +106,16 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Löschen eines Bauvorhabens
      */
     async deleteBauvorhabenRaw(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteBauvorhaben().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteBauvorhaben.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhaben/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -148,23 +135,16 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Lesen eines Bauvorhabens
      */
     async getBauvorhabenByIdRaw(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getBauvorhabenById().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getBauvorhabenById.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhaben/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -186,23 +166,16 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Lade alle Abfragen die einem Bauvorhaben angehören
      */
     async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getReferencedAbfrage().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedAbfrage.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhaben/referenced/abfragen/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben/referenced/abfragen/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -225,23 +198,16 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
      */
     async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungSearchResultDto>>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getReferencedInfrastruktureinrichtung().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReferencedInfrastruktureinrichtung.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhaben/referenced/infrastruktureinrichtung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben/referenced/infrastruktureinrichtung/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -263,26 +229,20 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#START_BEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
      */
     async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters['abfragevarianteId'] == null) {
-            throw new runtime.RequiredError(
-                'abfragevarianteId',
-                'Required parameter "abfragevarianteId" was null or undefined when calling putChangeRelevanteAbfragevariante().'
-            );
+        if (requestParameters.abfragevarianteId === null || requestParameters.abfragevarianteId === undefined) {
+            throw new runtime.RequiredError('abfragevarianteId','Required parameter requestParameters.abfragevarianteId was null or undefined when calling putChangeRelevanteAbfragevariante.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['abfragevarianteId'] != null) {
-            queryParameters['abfragevariante-id'] = requestParameters['abfragevarianteId'];
+        if (requestParameters.abfragevarianteId !== undefined) {
+            queryParameters['abfragevariante-id'] = requestParameters.abfragevarianteId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-
-        let urlPath = `/bauvorhaben/change-relevante-abfragevariante`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben/change-relevante-abfragevariante`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -303,11 +263,8 @@ export class BauvorhabenApi extends runtime.BaseAPI {
      * Aktualisierung eines Bauvorhabens
      */
     async updateBauvorhabenRaw(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
-        if (requestParameters['bauvorhabenDto'] == null) {
-            throw new runtime.RequiredError(
-                'bauvorhabenDto',
-                'Required parameter "bauvorhabenDto" was null or undefined when calling updateBauvorhaben().'
-            );
+        if (requestParameters.bauvorhabenDto === null || requestParameters.bauvorhabenDto === undefined) {
+            throw new runtime.RequiredError('bauvorhabenDto','Required parameter requestParameters.bauvorhabenDto was null or undefined when calling updateBauvorhaben.');
         }
 
         const queryParameters: any = {};
@@ -316,15 +273,12 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-
-        let urlPath = `/bauvorhaben`;
-
         const response = await this.request({
-            path: urlPath,
+            path: `/bauvorhaben`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: BauvorhabenDtoToJSON(requestParameters['bauvorhabenDto']),
+            body: BauvorhabenDtoToJSON(requestParameters.bauvorhabenDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));

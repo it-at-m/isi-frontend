@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,8 +60,10 @@ export interface StadtbezirkDto {
 /**
  * Check if a given object implements the StadtbezirkDto interface.
  */
-export function instanceOfStadtbezirkDto(value: object): value is StadtbezirkDto {
-    return true;
+export function instanceOfStadtbezirkDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
@@ -69,37 +71,35 @@ export function StadtbezirkDtoFromJSON(json: any): StadtbezirkDto {
 }
 
 export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StadtbezirkDto {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'objectId': json['objectId'] == null ? undefined : json['objectId'],
-        'stadtbezirkNummer': json['stadtbezirkNummer'] == null ? undefined : json['stadtbezirkNummer'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
-        'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
+        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
+        'stadtbezirkNummer': !exists(json, 'stadtbezirkNummer') ? undefined : json['stadtbezirkNummer'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'flaecheQm': !exists(json, 'flaecheQm') ? undefined : json['flaecheQm'],
+        'xcoordinate': !exists(json, 'xcoordinate') ? undefined : json['xcoordinate'],
+        'ycoordinate': !exists(json, 'ycoordinate') ? undefined : json['ycoordinate'],
     };
 }
 
-export function StadtbezirkDtoToJSON(json: any): StadtbezirkDto {
-    return StadtbezirkDtoToJSONTyped(json, false);
-}
-
-export function StadtbezirkDtoToJSONTyped(value?: StadtbezirkDto | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function StadtbezirkDtoToJSON(value?: StadtbezirkDto | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'objectId': value['objectId'],
-        'stadtbezirkNummer': value['stadtbezirkNummer'],
-        'name': value['name'],
-        'flaecheQm': value['flaecheQm'],
-        'xcoordinate': value['xcoordinate'],
-        'ycoordinate': value['ycoordinate'],
+        'objectId': value.objectId,
+        'stadtbezirkNummer': value.stadtbezirkNummer,
+        'name': value.name,
+        'flaecheQm': value.flaecheQm,
+        'xcoordinate': value.xcoordinate,
+        'ycoordinate': value.ycoordinate,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface MultiPolygonGeometry {
 /**
  * Check if a given object implements the MultiPolygonGeometry interface.
  */
-export function instanceOfMultiPolygonGeometry(value: object): value is MultiPolygonGeometry {
-    return true;
+export function instanceOfMultiPolygonGeometry(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function MultiPolygonGeometryFromJSON(json: any): MultiPolygonGeometry {
@@ -45,29 +47,27 @@ export function MultiPolygonGeometryFromJSON(json: any): MultiPolygonGeometry {
 }
 
 export function MultiPolygonGeometryFromJSONTyped(json: any, ignoreDiscriminator: boolean): MultiPolygonGeometry {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : json['type'],
-        'coordinates': json['coordinates'] == null ? undefined : json['coordinates'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'coordinates': !exists(json, 'coordinates') ? undefined : json['coordinates'],
     };
 }
 
-export function MultiPolygonGeometryToJSON(json: any): MultiPolygonGeometry {
-    return MultiPolygonGeometryToJSONTyped(json, false);
-}
-
-export function MultiPolygonGeometryToJSONTyped(value?: MultiPolygonGeometry | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MultiPolygonGeometryToJSON(value?: MultiPolygonGeometry | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': value['type'],
-        'coordinates': value['coordinates'],
+        'type': value.type,
+        'coordinates': value.coordinates,
     };
 }
 
