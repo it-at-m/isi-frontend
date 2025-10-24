@@ -45,11 +45,16 @@ export function useGeodataEaiApi() {
 
   async function getFlurstueckeForPoint(point: PointGeometryDto): Promise<Array<FeatureDtoFlurstueckDto>> {
     const request: GetFlurstuecke1Request = { pointGeometryDto: point };
-    try {
-      const response = await punktApi.getFlurstuecke1(request, RequestUtils.getPOSTConfig());
-      return response.features ?? [];
-    } catch (error) {
-      throw handleErrorInternal(error);
+    const maxIterations = 3; // Prävention für den Fall, dass noch keine Session zu Geodata-EAI aufgebaut ist
+    for (let i = 0; i < maxIterations; i++) {
+      try {
+        const response = await punktApi.getFlurstuecke1(request, RequestUtils.getPOSTConfig());
+        return response.features ?? [];
+      } catch (error) {
+        if (i === maxIterations - 1) {
+          throw handleErrorInternal(error);
+        }
+      }
     }
   }
 
