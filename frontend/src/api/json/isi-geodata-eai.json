@@ -579,6 +579,7 @@
         "type": "object",
         "properties": {
           "type": {
+            "minLength": 1,
             "type": "string",
             "description": "Definiert den Geometrietyp in der Ausprägung als Multipolygon oder als Point."
           }

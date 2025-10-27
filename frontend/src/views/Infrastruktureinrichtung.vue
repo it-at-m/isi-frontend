@@ -168,7 +168,7 @@ import {
   type HausFuerKinderDto,
   type InfrastruktureinrichtungDto,
   InfrastruktureinrichtungDtoStatusEnum,
-  InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
@@ -282,49 +282,49 @@ const isEinrichtungstraegerRequired = computed(() => {
 const isInfrastruktureinrichtungTypNotUnspecified = computed(() => {
   return (
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Unspecified
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Unspecified
   );
 });
 
 const isKinderkrippe = computed(() => {
   return (
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kinderkrippe
   );
 });
 
 const isKindergarten = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kindergarten
   );
 });
 
 const isHausFuerKinder = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.HausFuerKinder
   );
 });
 
 const isGsNachmittagBetreuung = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung
   );
 });
 
 const isGrundschule = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Grundschule
   );
 });
 
 const isMittelschule = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule
   );
 });
 
@@ -375,17 +375,17 @@ async function yesNoDialogYes(): Promise<void> {
 
 function validateInfrastruktureinrichtung(infrastruktureinrichtung: InfrastruktureinrichtungDto): string | null {
   switch (infrastruktureinrichtung?.infrastruktureinrichtungTyp) {
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
       return findFaultInKinderkrippeForSave(infrastruktureinrichtung as KinderkrippeDto);
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kindergarten:
       return findFaultInKindergartenForSave(infrastruktureinrichtung as KindergartenDto);
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
       return findFaultInHausFuerKinderForSave(infrastruktureinrichtung as HausFuerKinderDto);
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
       return findFaultInGsNachmittagBetreuungForSave(infrastruktureinrichtung as GsNachmittagBetreuungDto);
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Grundschule:
       return findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule:
       return findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
     default:
       return null;
@@ -393,7 +393,7 @@ function validateInfrastruktureinrichtung(infrastruktureinrichtung: Infrastruktu
 }
 
 function getModelOfNewDtoForInfrastruktureinrichtungTyp(
-  infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum | undefined,
+  infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined,
 ):
   | KinderkrippeModel
   | KindergartenModel
@@ -403,17 +403,17 @@ function getModelOfNewDtoForInfrastruktureinrichtungTyp(
   | MittelschuleModel
   | InfrastruktureinrichtungModel {
   switch (infrastruktureinrichtungTyp) {
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kinderkrippe:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
       return new KinderkrippeModel(createKinderkrippeDto());
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Kindergarten:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kindergarten:
       return new KindergartenModel(createKindergartenDto());
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.HausFuerKinder:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.HausFuerKinder:
       return new HausFuerKinderModel(createHausFuerKinderDto());
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.GsNachmittagBetreuung:
       return new GsNachmittagBetreuungModel(createGsNachmittagBetreuungDto());
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Grundschule:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Grundschule:
       return new GrundschuleModel(createGrundschuleDto());
-    case InfrastruktureinrichtungSearchResultDtoAllOfInfrastruktureinrichtungTypEnum.Mittelschule:
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule:
       return new MittelschuleModel(createMittelschuleDto());
     default:
       return new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto());

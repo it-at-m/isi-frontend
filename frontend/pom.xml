@@ -24,8 +24,8 @@
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <exec.maven.plugin>3.5.0</exec.maven.plugin>
-        <maven.clean.plugin>3.4.1</maven.clean.plugin>
+        <exec.maven.plugin>3.5.1</exec.maven.plugin>
+        <maven.clean.plugin>3.5.0</maven.clean.plugin>
         <openapi-generator-version>6.6.0</openapi-generator-version>
         <sonar.sources>src</sonar.sources>
         <sonar.coverage.exclusions>src</sonar.coverage.exclusions>

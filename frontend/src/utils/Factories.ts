@@ -79,8 +79,8 @@ import {
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SchuleDtoEinrichtungstraegerEnum,
   KindergartenDtoEinrichtungstraegerEnum,
-  HausFuerKinderDtoAllOfEinrichtungstraegerEnum,
-  GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum,
+  HausFuerKinderDtoEinrichtungstraegerEnum,
+  GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
   // Suche
@@ -721,7 +721,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: HausFuerKinderDtoAllOfEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: HausFuerKinderDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
@@ -753,7 +753,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: GsNachmittagBetreuungDtoAllOfEinrichtungstraegerEnum.Unspecified,
+    einrichtungstraeger: GsNachmittagBetreuungDtoEinrichtungstraegerEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     artGsNachmittagBetreuung: undefined,
