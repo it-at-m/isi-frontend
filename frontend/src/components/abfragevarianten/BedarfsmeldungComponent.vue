@@ -163,7 +163,7 @@
             id="anmerkungen_field"
             ref="anmerkungenField"
             v-model="anmerkung"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             variant="underlined"
             label="Anmerkungen"
             auto-grow
