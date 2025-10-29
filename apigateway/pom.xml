@@ -22,18 +22,18 @@
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-        <spring.boot.version>3.4.3</spring.boot.version>
-        <spring.cloud.version>2024.0.0</spring.cloud.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <spring.boot.version>3.5.6</spring.boot.version>
+        <spring.cloud.version>2025.0.0</spring.cloud.version>
         <!-- Version muss mit der in den spring-boot-dependencies bereitgestellten Lombok-Version
         übereinstimmen -->
         <org.projectlombok.lombok.version>1.18.36</org.projectlombok.lombok.version>
-        <logstash.encoder.version>7.4</logstash.encoder.version>
-        <apache.commons.lang.version>3.17.0</apache.commons.lang.version>
+        <logstash.encoder.version>8.1</logstash.encoder.version>
+        <apache.commons.lang.version>3.18.0</apache.commons.lang.version>
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <!-- TestCoverage -->
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
     </properties>
 
 
@@ -68,7 +68,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
 
         <!-- actuator -->
@@ -228,18 +228,16 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>3.2.1</version>
                 <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
+                  <execution>
+                    <phase>validate</phase>
+                    <goals>
+                      <goal>create</goal>
+                    </goals>
+                  </execution>
                 </executions>
-            </plugin>
+              </plugin>
         </plugins>
     </build>
-
-
 </project>
