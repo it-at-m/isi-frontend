@@ -15,7 +15,7 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
@@ -34,7 +34,7 @@
             id="infrastruktureinrichtung_infrastruktureinrichtungtyp_darstellung"
             v-model="infrastruktureinrichtungTypDisplay"
             label="Typ der Infrastruktureinrichtung"
-            disabled
+            readonly
             maxlength="255"
           />
         </v-col>
@@ -46,7 +46,7 @@
             id="infrastruktureinrichtung_infrastruktureinrichtungtyp_ldfNr_darstellung"
             v-model="lfdNrInfrastruktureinrichtung"
             label="Lfd. Nr."
-            disabled
+            readonly
             maxlength="255"
           />
         </v-col>

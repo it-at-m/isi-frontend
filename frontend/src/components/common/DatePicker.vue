@@ -11,7 +11,7 @@
         variant="underlined"
         validate-on="blur"
         :hint="displayFormat"
-        :disabled="disabled"
+        :readonly="disabled"
         :required="required"
         @update:model-value="formChanged"
         @update:focused="$event || blur()"

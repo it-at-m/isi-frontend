@@ -19,7 +19,7 @@
             label="Anzahl der Kinderkrippenplätze"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -33,7 +33,7 @@
             label="Anzahl der Kinderkrippengruppen"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
       </v-row>
@@ -48,7 +48,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col

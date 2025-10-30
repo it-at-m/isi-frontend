@@ -14,7 +14,7 @@
           v-model.trim="kommentar.datum"
           maxlength="32"
           variant="filled"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           @update:model-value="changed"
         >
           <template #label> Datum </template>
@@ -68,7 +68,7 @@
           auto-grow
           variant="filled"
           rows="5"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           @update:model-value="changed"
         />
       </v-col>

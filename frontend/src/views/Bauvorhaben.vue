@@ -15,7 +15,7 @@
                 maxlength="255"
                 validate-on="blur"
                 variant="underlined"
-                :disabled="!isEditable"
+                :readonly="!isEditable"
                 @update:model-value="formChanged"
               >
                 <template #label> Name des Bauvorhabens <span class="text-secondary">*</span> </template>

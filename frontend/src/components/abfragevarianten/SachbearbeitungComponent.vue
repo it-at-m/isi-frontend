@@ -12,7 +12,7 @@
               ref="sobonOrientierungswertJahrPlanungsursaechlichDropdown"
               v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahrPlanungsursaechlich"
               variant="underlined"
-              :disabled="!isEditableBySachbearbeitung"
+              :readonly="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
               item-title="value"
@@ -78,7 +78,7 @@
           <v-textarea
             id="abfragevarianteSachbearbeitung_anmerkung"
             v-model="abfragevarianteSachbearbeitung.anmerkung"
-            :disabled="!isEditableBySachbearbeitung"
+            :readonly="!isEditableBySachbearbeitung"
             label="Anmerkungen"
             variant="underlined"
             auto-grow

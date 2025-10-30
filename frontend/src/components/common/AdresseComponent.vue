@@ -10,7 +10,7 @@
             id="adresse_suchen_dropdown"
             ref="adresseSuchenDropdown"
             v-model="selected"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :items="searchResults"
             :loading="loading"
             variant="underlined"
@@ -60,7 +60,7 @@
           v-model="adresse.strasse"
           label="Straße"
           variant="underlined"
-          disabled
+          readonly
         />
       </v-col>
       <v-col
@@ -74,7 +74,7 @@
           :rules="[hausnummer]"
           label="Hausnummer"
           variant="underlined"
-          disabled
+          readonly
         />
       </v-col>
       <v-col
@@ -88,7 +88,7 @@
           label="Postleitzahl"
           :rules="[digits, min5]"
           variant="underlined"
-          disabled
+          readonly
         />
       </v-col>
       <v-col
@@ -101,7 +101,7 @@
           v-model="adresse.ort"
           label="Ort"
           variant="underlined"
-          disabled
+          readonly
         />
       </v-col>
     </v-row>
@@ -111,7 +111,7 @@
           id="angabe_lage_ergaenzende_adressinformation_field"
           ref="angabeLageErgaenzendeAdressinformationField"
           v-model="adresse.angabeLageErgaenzendeAdressinformation"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           label="Angabe zur Lage und ergänzende Adressinformationen"
           maxlength="255"
           :rules="[angabeLageErgaenzendeAdressinformationValidationRule]"

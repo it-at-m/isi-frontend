@@ -9,7 +9,7 @@
           id="we_geplant_field"
           ref="weGeplantField"
           v-model="baugebiet.weGeplant"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           :rules="[validateWohneinheiten(abfragevariante)]"
           class="mx-3"
           label="Geplante Anzahl Wohneinheiten"
@@ -24,7 +24,7 @@
           id="we_baurechtlich_genehmigt_field"
           ref="weBaurechtlichGenehmigtField"
           v-model="baugebiet.weBaurechtlichGenehmigt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich genehmigt"
           integer
@@ -38,7 +38,7 @@
           id="we_baurechtlich_festgesetzt_field"
           ref="weBaurechtlichFestgesetztField"
           v-model="baugebiet.weBaurechtlichFestgesetzt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich festgesetzt"
           integer

@@ -19,7 +19,7 @@
             label="Anzahl der Hortplätze"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -33,7 +33,7 @@
             label="Anzahl der Hortgruppen"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
       </v-row>
@@ -48,7 +48,7 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -63,7 +63,7 @@
             item-title="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           />
         </v-col>

@@ -10,7 +10,7 @@
             variant="underlined"
             maxlength="255"
             validate-on="blur"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label> Name der Einrichtung <span class="text-secondary">*</span> </template>
@@ -42,7 +42,7 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
@@ -60,7 +60,7 @@
             year
             :required="isFertigstellungsjahrRequired()"
             maxlength="4"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -76,7 +76,7 @@
             item-value="id"
             label="Bauvorhaben"
             clearable
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:focused="!$event || fetchBauvorhaben()"
             @update:model-value="formChanged"
           />
@@ -100,7 +100,7 @@
             class="mx-3"
             label="Fläche Gesamtgrundstück"
             :suffix="SQUARE_METER"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -113,7 +113,7 @@
             class="mx-3"
             label="Fläche Teilgrundstück"
             :suffix="SQUARE_METER"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
       </v-row>

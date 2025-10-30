@@ -14,7 +14,7 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
@@ -31,7 +31,7 @@
               ref="standVerfahrenFreieEingabeField"
               v-model="bauvorhaben.standVerfahrenFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
               @update:model-value="formChanged"
@@ -49,7 +49,7 @@
             v-model="grundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="SQUARE_METER"
-            :disabled="true"
+            :readonly="true"
           />
         </v-col>
         <v-col
@@ -60,7 +60,7 @@
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
             variant="underlined"
-            disabled
+            readonly
             label="Bauvorhabennummer"
           />
         </v-col>
@@ -93,7 +93,7 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label> Wesentliche Rechtsgrundlage <span class="text-secondary">*</span> </template>
@@ -110,7 +110,7 @@
               ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @update:model-value="formChanged"
@@ -130,7 +130,7 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label>
@@ -149,7 +149,7 @@
               ref="artFnpFreieEingabeField"
               v-model="bauvorhaben.artFnpFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Art der baulichen Nutzung"
               maxlength="1000"
               @update:model-value="formChanged"
@@ -168,7 +168,7 @@
             label="Bebauungsplannummer"
             variant="underlined"
             maxlength="255"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           />
         </v-col>
@@ -182,7 +182,7 @@
             label="FIS-Nummer"
             variant="underlined"
             maxlength="255"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           />
         </v-col>
@@ -197,7 +197,7 @@
             rows="1"
             auto-grow
             maxlength="1000"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           />
         </v-col>
@@ -242,7 +242,7 @@
               item-value="key"
               item-title="value"
               :rules="[pflichtfeld]"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               @update:model-value="formChanged"
             >
               <template #label>

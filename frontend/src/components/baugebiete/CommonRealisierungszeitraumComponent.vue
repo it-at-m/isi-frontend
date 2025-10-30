@@ -8,7 +8,7 @@
         <num-field
           id="abfragevariante_realisierungvon"
           v-model="baugebiet.realisierungVon"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           label="Realisierung von (JJJJ)"
           class="mx-3"
           :min="abfragevarianteRealisierungVonOr1900"
@@ -26,7 +26,7 @@
         <num-field
           id="abfragevariante_realisierungBis"
           v-model="calcRealisierungBis"
-          :disabled="true"
+          :readonly="true"
           label="Realisierung bis (JJJJ)"
           class="mx-3"
           year

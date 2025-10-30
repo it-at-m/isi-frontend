@@ -49,7 +49,7 @@
               multiple
               chips
               closable-chips
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -66,7 +66,7 @@
               multiple
               chips
               closable-chips
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -83,7 +83,7 @@
               multiple
               chips
               closable-chips
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -120,7 +120,7 @@
         <v-textarea
           id="abfragevarianteSachbearbeitung_bauratendatei_anmerkung"
           v-model="abfragevarianteSachbearbeitung.anmerkungBauratendateiInput"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           variant="underlined"
           label="Anmerkungen"
           auto-grow

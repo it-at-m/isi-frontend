@@ -6,7 +6,7 @@
           <v-text-field
             id="name_field"
             v-model.trim="abfragevariante.name"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[pflichtfeld]"
             variant="underlined"
             maxlength="30"
@@ -34,7 +34,7 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
           >
             <template #label>
@@ -52,7 +52,7 @@
               v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
               id="wesentliche_rechtsgrundlage_freie_eingabe_field"
               v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               variant="underlined"
               label="Freie Eingabe"
               maxlength="1000"
@@ -69,7 +69,7 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Realisierung von (JJJJ)"
             year
             maxlength="4"
@@ -83,7 +83,7 @@
           <num-field
             id="abfragevariante_realisierungBis"
             v-model="calcRealisierungBis"
-            :disabled="true"
+            :readonly="true"
             label="Realisierung bis (JJJJ)"
             year
             maxlength="4"

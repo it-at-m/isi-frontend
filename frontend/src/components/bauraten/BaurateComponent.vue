@@ -9,7 +9,7 @@
           <num-field
             id="bauraten_jahr"
             v-model="baurate.jahr"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Jahr (JJJJ)"
             :min="baugebietRealisierungVonOr1900"
             :max="2100"
@@ -26,7 +26,7 @@
           <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.weGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateWohneinheiten(baugebiet, abfragevariante)]"
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
@@ -40,7 +40,7 @@
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.gfWohnenGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"

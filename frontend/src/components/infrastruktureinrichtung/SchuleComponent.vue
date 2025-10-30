@@ -19,7 +19,7 @@
             label="Anzahl der Klassen"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
         <v-col
@@ -33,7 +33,7 @@
             label="Anzahl der Plätze"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
           />
         </v-col>
       </v-row>

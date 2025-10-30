@@ -12,7 +12,7 @@
         item-value="key"
         item-title="value"
         :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
-        :disabled="!isEditable"
+        :readonly="!isEditable"
         @update:model-value="formChanged"
       >
         <template #label>

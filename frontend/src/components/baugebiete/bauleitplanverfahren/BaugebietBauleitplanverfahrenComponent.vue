@@ -19,7 +19,7 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="baugebiet.realisierungVon"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Realisierung von (JJJJ)"
             class="mx-3"
             :min="abfragevarianteRealisierungVonOr1900"
@@ -37,7 +37,7 @@
           <num-field
             id="abfragevariante_realisierungBis"
             v-model="calcRealisierungBis"
-            :disabled="true"
+            :readonly="true"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
             year
@@ -53,7 +53,7 @@
           <num-field
             id="baugebiet_geplante_anzahl_we"
             v-model="baugebiet.weGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateWohneinheiten(abfragevariante)]"
             class="mx-3"
             label="Geplante Anzahl Wohneinheiten"
@@ -68,7 +68,7 @@
           <num-field
             id="baugebiet_geplante_geschossflaeche_wohnen"
             v-model="baugebiet.gfWohnenGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateGeschossflaecheWohnen(abfragevariante)]"
             class="mx-3"
             label="Geplante Geschossfläche Wohnen"

@@ -38,7 +38,7 @@
           id="anmerkung_field"
           ref="anmerkungField"
           v-model="abfrage.anmerkung"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           label="Anmerkungen"
           variant="underlined"
           auto-grow

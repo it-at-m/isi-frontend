@@ -24,7 +24,7 @@
         <v-select
           id="sobon_berechnung_foerdermix_stammdaten_dropdown"
           v-model="sobonFoerdermix"
-          :disabled="!isEditableBySachbearbeitung"
+          :readonly="!isEditableBySachbearbeitung"
           :items="groupedStammdaten"
           label="Fördermix für Berechnung"
           variant="underlined"
@@ -68,7 +68,7 @@
               v-model="foerderart.anteilProzent"
               :label="foerderart.bezeichnung"
               :suffix="PERCENT"
-              :disabled="!isFreieEingabe"
+              :readonly="!isFreieEingabe"
             />
           </v-col>
         </v-row>

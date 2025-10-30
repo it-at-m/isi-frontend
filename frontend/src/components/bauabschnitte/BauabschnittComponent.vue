@@ -11,7 +11,7 @@
           <v-text-field
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[pflichtfeld]"
             maxlength="255"
             validate-on="blur"

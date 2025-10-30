@@ -9,7 +9,7 @@
           <v-select
             id="foerdermix_stammdaten_dropdown"
             v-model="selectedItem"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :items="groupedStammdaten"
             label="Fördermix"
             item-title="foerdermix.bezeichnung"
@@ -47,7 +47,7 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :disabled="!isFreieEingabe"
+              :readonly="!isFreieEingabe"
               :label="foerderart.bezeichnung"
               :suffix="PERCENT"
             />
