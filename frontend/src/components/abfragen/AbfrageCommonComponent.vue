@@ -15,7 +15,11 @@
             validate-on="blur"
             @update:model-value="formChanged"
           >
-            <template #label> Name der Abfrage <span class="text-secondary">*</span> </template>
+            <template #label>
+              <span :class="isEditable ? 'v-label theme--light' : 'v-label text-grey-lighten-1'">
+                Name der Abfrage <span class="text-secondary">*</span>
+              </span>
+            </template>
           </v-text-field>
         </v-col>
       </v-row>
