@@ -16,7 +16,9 @@
             @update:model-value="formChanged"
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
-            <template #label> Name der Abfrage <span class="text-secondary">*</span>s </template>
+            <template #label>
+              <span class="text-primary"> Name der Abfrage <span class="text-secondary">*</span> </span>
+            </template>
           </v-text-field>
         </v-col>
       </v-row>
