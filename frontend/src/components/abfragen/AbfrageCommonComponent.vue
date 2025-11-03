@@ -14,6 +14,7 @@
             maxlength="70"
             validate-on="blur"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               <span :class="isEditable ? 'v-label theme--light' : 'v-label text-grey-lighten-1'">
