@@ -28,6 +28,7 @@
             no-grouping
             required
             maxlength="4"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -37,7 +38,7 @@
           <num-field
             id="abfragevariante_realisierungBis"
             v-model="calcRealisierungBis"
-            :readonly="true"
+            :disabled="true"
             label="Realisierung bis (JJJJ)"
             class="mx-3"
             year
@@ -59,6 +60,7 @@
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten()"
             integer
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -73,6 +75,7 @@
             class="mx-3"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen()"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

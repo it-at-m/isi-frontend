@@ -13,6 +13,7 @@
           class="mx-3"
           label="Gesamt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -44,6 +45,7 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -58,6 +60,7 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>
@@ -80,6 +83,7 @@
           class="mx-3"
           label="Bestandswohnbaurecht"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -138,6 +142,7 @@
               class="mx-3"
               label="Studentisches Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -152,6 +157,7 @@
               class="mx-3"
               label="Senior*innenwohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -177,6 +183,7 @@
               class="mx-3"
               label="Genossenschaftliches Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -191,6 +198,7 @@
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -206,6 +214,7 @@
       rows="1"
       maxlength="200"
       @update:model-value="formChanged"
+      :class="isEditable ? '' : 'text-grey-lighten-1'"
     >
     </v-textarea>
   </field-group-card>

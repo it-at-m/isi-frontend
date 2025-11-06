@@ -14,8 +14,9 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :readonly="!isEditable"
+            :disabled="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
           </v-select>
@@ -35,6 +36,7 @@
               label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -49,7 +51,7 @@
             v-model="grundstuecksgroesse"
             label="Grundstücksgröße"
             :suffix="SQUARE_METER"
-            :readonly="true"
+            :disabled="true"
           />
         </v-col>
         <v-col
@@ -95,6 +97,7 @@
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Wesentliche Rechtsgrundlage <span class="text-secondary">*</span> </template>
           </v-autocomplete>
@@ -114,6 +117,7 @@
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -132,6 +136,7 @@
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Art der baulichen Nutzung
@@ -153,6 +158,7 @@
               label="Freie Eingabe für Art der baulichen Nutzung"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -170,6 +176,7 @@
             maxlength="255"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -184,6 +191,7 @@
             maxlength="255"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -199,6 +207,7 @@
             maxlength="1000"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -242,8 +251,9 @@
               item-value="key"
               item-title="value"
               :rules="[pflichtfeld]"
-              :readonly="!isEditable"
+              :disabled="!isEditable"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             >
               <template #label>
                 Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="text-secondary">*</span>

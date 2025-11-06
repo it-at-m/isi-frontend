@@ -17,6 +17,7 @@
             no-grouping
             required
             maxlength="4"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -31,6 +32,7 @@
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -44,6 +46,7 @@
             :rules="[validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -95,7 +98,7 @@ import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
 import { useToast } from "vue-toastification";
-import { toast } from "@/plugins/toast";
+
 interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;

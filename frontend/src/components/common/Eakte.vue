@@ -31,6 +31,7 @@
         maxlength="8000"
         :readonly="!isEditable"
         @update:model-value="formChanged"
+        :class="isEditable ? '' : 'text-grey-lighten-1'"
       />
       <a
         v-else

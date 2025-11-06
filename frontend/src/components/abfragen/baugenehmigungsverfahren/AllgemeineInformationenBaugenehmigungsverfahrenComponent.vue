@@ -14,6 +14,7 @@
           label="Aktenzeichen ProLBK"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -29,6 +30,7 @@
           label="Bebauungsplannummer"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -82,13 +84,14 @@
           id="stand_verfahren_dropdown"
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
-          :readonly="!isEditable"
+          :disabled="!isEditable"
           variant="underlined"
           :items="lookupStore.standVerfahrenBaugenehmigungsverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
         </v-select>
@@ -108,6 +111,7 @@
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

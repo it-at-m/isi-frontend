@@ -12,8 +12,9 @@
         item-value="key"
         item-title="value"
         :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
-        :readonly="!isEditable"
+        :disabled="!isEditable"
         @update:model-value="formChanged"
+        :class="isEditable ? '' : 'text-grey-lighten-1'"
       >
         <template #label>
           Einrichtungsträger

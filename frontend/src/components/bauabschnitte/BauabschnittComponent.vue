@@ -17,6 +17,7 @@
             validate-on="blur"
             variant="underlined"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Bezeichnung des Bauabschnitts <span class="text-secondary">*</span> </template>
           </v-text-field>

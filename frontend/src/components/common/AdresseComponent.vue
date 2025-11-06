@@ -29,6 +29,7 @@
             validate-on="blur"
             @update:search="searchForAdressenWith"
             @blur="resetAdressSuche"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col cols="1">
@@ -118,6 +119,7 @@
           validate-on="blur"
           variant="underlined"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

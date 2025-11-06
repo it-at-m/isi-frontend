@@ -49,7 +49,7 @@
               multiple
               chips
               closable-chips
-              :readonly="!isEditable"
+              :disabled="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -66,7 +66,7 @@
               multiple
               chips
               closable-chips
-              :readonly="!isEditable"
+              :disabled="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -83,7 +83,7 @@
               multiple
               chips
               closable-chips
-              :readonly="!isEditable"
+              :disabled="!isEditable"
               @update:model-value="formChanged"
             />
           </v-col>
@@ -127,6 +127,7 @@
           rows="3"
           maxlength="1000"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

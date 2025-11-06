@@ -12,6 +12,7 @@
             validate-on="blur"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Name der Einrichtung <span class="text-secondary">*</span> </template>
           </v-text-field>
@@ -42,8 +43,9 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :readonly="!isEditable"
+            :disabled="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
           </v-select>
@@ -61,6 +63,7 @@
             :required="isFertigstellungsjahrRequired()"
             maxlength="4"
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -79,6 +82,7 @@
             :readonly="!isEditable"
             @update:focused="!$event || fetchBauvorhaben()"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -101,6 +105,7 @@
             label="Fläche Gesamtgrundstück"
             :suffix="SQUARE_METER"
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -114,6 +119,7 @@
             label="Fläche Teilgrundstück"
             :suffix="SQUARE_METER"
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

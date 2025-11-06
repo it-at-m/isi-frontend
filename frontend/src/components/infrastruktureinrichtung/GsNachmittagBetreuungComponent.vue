@@ -20,6 +20,7 @@
             integer
             required
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -34,6 +35,7 @@
             integer
             required
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -49,6 +51,7 @@
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -63,8 +66,9 @@
             item-title="value"
             item-value="key"
             label="Art der Nachmittagsbetreuung für Grundschulkinder"
-            :readonly="!isEditable"
+            :disabled="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

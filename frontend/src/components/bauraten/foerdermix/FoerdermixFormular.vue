@@ -9,7 +9,7 @@
           <v-select
             id="foerdermix_stammdaten_dropdown"
             v-model="selectedItem"
-            :readonly="!isEditable"
+            :disabled="!isEditable"
             :items="groupedStammdaten"
             label="Fördermix"
             item-title="foerdermix.bezeichnung"
@@ -17,6 +17,7 @@
             variant="underlined"
             @update:model-value="foerdermixSelected"
             @update:menu="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -50,6 +51,7 @@
               :readonly="!isFreieEingabe"
               :label="foerderart.bezeichnung"
               :suffix="PERCENT"
+              :class="isFreieEingabe ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </template>

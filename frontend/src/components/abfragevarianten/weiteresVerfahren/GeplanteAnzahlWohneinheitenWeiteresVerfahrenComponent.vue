@@ -13,6 +13,7 @@
           class="mx-3"
           label="Gesamt"
           integer
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -27,6 +28,7 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           integer
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -41,6 +43,7 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           integer
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>
@@ -95,6 +98,7 @@
               class="mx-3"
               label="Studierendenwohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -109,6 +113,7 @@
               class="mx-3"
               label="Senior*innenwohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -132,6 +137,7 @@
               class="mx-3"
               label="Genossenschaftswohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -146,6 +152,7 @@
               class="mx-3"
               label="Weitere nicht-infrastrukturrelevante Wohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -161,6 +168,7 @@
       rows="1"
       maxlength="200"
       @update:model-value="formChanged"
+      :class="isEditable ? '' : 'text-grey-lighten-1'"
     >
     </v-textarea>
   </field-group-card>

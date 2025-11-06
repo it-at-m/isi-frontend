@@ -16,6 +16,7 @@
           variant="filled"
           :readonly="!isEditable"
           @update:model-value="changed"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -70,6 +71,7 @@
           rows="5"
           :readonly="!isEditable"
           @update:model-value="changed"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

@@ -14,6 +14,7 @@
           class="mx-3"
           label="Gesamt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -28,6 +29,7 @@
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -42,6 +44,7 @@
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

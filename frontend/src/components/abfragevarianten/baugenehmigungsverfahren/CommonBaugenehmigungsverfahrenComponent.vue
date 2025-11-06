@@ -12,6 +12,7 @@
             maxlength="30"
             validate-on="blur"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Name der Abfragevariante <span class="text-secondary">*</span> </template>
           </v-text-field>
@@ -36,6 +37,7 @@
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
             :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Wesentliche Rechtsgrundlage
@@ -57,6 +59,7 @@
               label="Freie Eingabe"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -74,6 +77,7 @@
             year
             maxlength="4"
             required
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -83,7 +87,7 @@
           <num-field
             id="abfragevariante_realisierungBis"
             v-model="calcRealisierungBis"
-            :readonly="true"
+            :disabled="true"
             label="Realisierung bis (JJJJ)"
             year
             maxlength="4"

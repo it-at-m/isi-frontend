@@ -11,6 +11,7 @@
           maxlength="255"
           validate-on="blur"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Bezeichnung des Baugebiets <span class="text-secondary">*</span> </template>
         </v-text-field>
@@ -21,7 +22,7 @@
         <v-select
           id="baugebiet_art_bauliche_nutzung"
           v-model="baugebiet.artBaulicheNutzung"
-          :readonly="!isEditable"
+          :disabled="!isEditable"
           class="mx-3"
           :items="artBaulicheNutzungList"
           item-value="key"
@@ -29,6 +30,7 @@
           :rules="[pflichtfeld, notUnspecified]"
           variant="underlined"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Art der baulichen Nutzung <span class="text-secondary">*</span> </template>
         </v-select>
@@ -46,6 +48,7 @@
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

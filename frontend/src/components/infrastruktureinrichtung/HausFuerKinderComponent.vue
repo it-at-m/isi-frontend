@@ -19,6 +19,7 @@
             label="Anzahl der Kinderkrippenplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -32,6 +33,7 @@
             label="Anzahl der Kindergartenplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -47,6 +49,7 @@
             label="Anzahl der Hortplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -66,6 +69,7 @@
             label="Anzahl der Kinderkrippengruppen"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -79,6 +83,7 @@
             label="Anzahl der Kindergartengruppen"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -94,6 +99,7 @@
             label="Anzahl der Hortgruppen"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -113,6 +119,7 @@
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -126,6 +133,7 @@
             label="Anzahl der wohnungsnahen Kindergartenplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -141,6 +149,7 @@
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
             :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col

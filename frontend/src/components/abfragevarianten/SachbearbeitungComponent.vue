@@ -12,12 +12,13 @@
               ref="sobonOrientierungswertJahrPlanungsursaechlichDropdown"
               v-model="abfragevarianteSachbearbeitung.sobonOrientierungswertJahrPlanungsursaechlich"
               variant="underlined"
-              :readonly="!isEditableBySachbearbeitung"
+              :disabled="!isEditableBySachbearbeitung"
               :items="sobonOrientierungswertJahrList"
               item-value="key"
               item-title="value"
               :rules="sobonOrientierungswertJahrValidator"
               @update:model-value="formChanged"
+              :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
             >
               <template #label>
                 Jahr für SoBoN-Orientierungwerte (planungsursächlich) <span class="text-secondary">*</span>
@@ -85,6 +86,7 @@
             rows="1"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

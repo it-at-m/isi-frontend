@@ -14,6 +14,7 @@
           label="Bebauungsplannummer"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -86,12 +87,13 @@
             ref="sobonJahrDropdown"
             v-model="abfrage.sobonJahr"
             variant="underlined"
-            :readonly="!isEditable"
+            :disabled="!isEditable"
             :items="lookupStore.sobonVerfahrensgrundsaetzeJahr"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld]"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Jahr der anzuwendenden Verfahrensgrundsätze <span class="text-secondary">*</span>
@@ -110,12 +112,13 @@
           ref="standVerfahrenDropdown"
           v-model="abfrage.standVerfahren"
           variant="underlined"
-          :readonly="!isEditable"
+          :disabled="!isEditable"
           :items="lookupStore.standVerfahrenBauleitplanverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
         </v-select>
@@ -135,6 +138,7 @@
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

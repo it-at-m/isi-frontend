@@ -11,6 +11,7 @@
           maxlength="30"
           validate-on="blur"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Name der Abfragevariante <span class="text-secondary">*</span> </template>
         </v-text-field>
@@ -55,6 +56,7 @@
           :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
           :readonly="!isEditable"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label>
             Wesentliche Rechtsgrundlage
@@ -76,6 +78,7 @@
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>
@@ -94,6 +97,7 @@
           maxlength="4"
           required
           help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -103,7 +107,7 @@
         <num-field
           id="abfragevariante_realisierungBis"
           v-model="calcRealisierungBis"
-          :readonly="true"
+          :disabled="true"
           label="Realisierung bis (JJJJ)"
           year
           maxlength="4"
