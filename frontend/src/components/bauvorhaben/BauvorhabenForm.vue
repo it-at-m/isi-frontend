@@ -16,7 +16,6 @@
             :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
             @update:model-value="formChanged"
-            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
           </v-select>
@@ -253,7 +252,6 @@
               :rules="[pflichtfeld]"
               :disabled="!isEditable"
               @update:model-value="formChanged"
-              :class="isEditable ? '' : 'text-grey-lighten-1'"
             >
               <template #label>
                 Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN <span class="text-secondary">*</span>

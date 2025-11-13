@@ -93,7 +93,6 @@
             item-title="value"
             :rules="[pflichtfeld]"
             @update:model-value="formChanged"
-            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Jahr der anzuwendenden Verfahrensgrundsätze <span class="text-secondary">*</span>
@@ -118,7 +117,6 @@
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
         </v-select>

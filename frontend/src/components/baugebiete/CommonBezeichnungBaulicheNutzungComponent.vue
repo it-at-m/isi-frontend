@@ -30,7 +30,6 @@
           :rules="[pflichtfeld, notUnspecified]"
           variant="underlined"
           @update:model-value="formChanged"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Art der baulichen Nutzung <span class="text-secondary">*</span> </template>
         </v-select>

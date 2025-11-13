@@ -17,7 +17,6 @@
             variant="underlined"
             @update:model-value="foerdermixSelected"
             @update:menu="formChanged"
-            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col

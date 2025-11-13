@@ -31,7 +31,6 @@
           item-title="foerdermix.bezeichnung"
           return-object
           @update:model-value="formChanged"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-expand-transition>

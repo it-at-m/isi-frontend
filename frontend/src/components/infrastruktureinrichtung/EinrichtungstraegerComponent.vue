@@ -14,7 +14,6 @@
         :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
         :disabled="!isEditable"
         @update:model-value="formChanged"
-        :class="isEditable ? '' : 'text-grey-lighten-1'"
       >
         <template #label>
           Einrichtungsträger

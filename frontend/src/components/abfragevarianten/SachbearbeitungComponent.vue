@@ -18,7 +18,6 @@
               item-title="value"
               :rules="sobonOrientierungswertJahrValidator"
               @update:model-value="formChanged"
-              :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
             >
               <template #label>
                 Jahr für SoBoN-Orientierungwerte (planungsursächlich) <span class="text-secondary">*</span>
