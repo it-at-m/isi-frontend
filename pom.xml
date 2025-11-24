@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <name>isi_frontend_frontend</name>
     <description>UI of ISI Frontend</description>
-
+    <url>https://github.com/it-at-m/isi-frontend</url>
 
     <properties>
         <java.version>21</java.version>
