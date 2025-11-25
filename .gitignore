@@ -152,6 +152,9 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+.env.development
+.env.production
+
 # dotenv environment variables file
 .env
 .env.test
