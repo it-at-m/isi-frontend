@@ -28,5 +28,5 @@ jobs:
         with:
           name: npm-artifacts
           path: |
-            /dist
+            dist
           retention-days: 10
