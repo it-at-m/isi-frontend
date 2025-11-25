@@ -8,7 +8,7 @@
     <artifactId>isi-frontend</artifactId>
     <version>1.5.0</version>
     <packaging>jar</packaging>
-    <name>isi_frontend_frontend</name>
+    <name>isi_frontend</name>
     <description>UI of ISI Frontend</description>
     <url>https://github.com/it-at-m/isi-frontend</url>
 
