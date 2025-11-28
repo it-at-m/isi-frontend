@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   server: {
     host: "0.0.0.0",
-    port: "8081",
+    port: 8081,
     allowedHosts: ["localhost", "host.docker.internal"],
   },
   define: { "process.env": {} },
