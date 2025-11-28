@@ -31,7 +31,7 @@ export function useUserInfoApi() {
   function mapJson(json: any): Userinfo {
     const userinfo: Userinfo = new Userinfo();
     userinfo.surname = !_.isNil(json.surname) ? json.surname : undefined;
-    userinfo.givenname = !_.isNil(json.givenname) ? json.givenname : undefined;
+    userinfo.givenname = !_.isNil(json.given_name) ? json.given_name : undefined;
     userinfo.email = !_.isNil(json.email) ? json.email : undefined;
     userinfo.department = !_.isNil(json.department) ? json.department : undefined;
     userinfo.roles = !_.isNil(json.resource_access.isi.roles) ? json.resource_access.isi.roles : undefined;
