@@ -15,7 +15,7 @@
         :required="required"
         @update:model-value="formChanged"
         @update:focused="$event || blur()"
-        :class="disabled ? '' : 'text-grey-lighten-1'"
+        :class="disabled ? 'text-grey-lighten-1' : ''"
       >
         <template #label>
           {{ label }}
