@@ -9,10 +9,11 @@
           id="gf_wohnen_gesamt_field"
           ref="gfWohnenGesamtField"
           v-model="abfragevariante.gfWohnenGesamt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Gesamt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -40,10 +41,11 @@
           id="gf_wohnen_sobon_ursaechlich_field"
           ref="gfWohnenSobonUrsaechlichField"
           v-model="abfragevariante.gfWohnenSobonUrsaechlich"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="SoBoN-ursächlich"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -54,10 +56,11 @@
           id="gf_wohnen_bestandswohnbaurecht_field"
           ref="gfWohnenBestandswohnbaurechtField"
           v-model="abfragevariante.gfWohnenBestandswohnbaurecht"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Bestandswohnbaurecht"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>
@@ -74,10 +77,11 @@
           id="gf_wohnen_baurechtlich_genehmigt_field"
           ref="gfWohnenBaurechtlichGenehmigtField"
           v-model="abfragevariante.gfWohnenBaurechtlichGenehmigt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -88,10 +92,11 @@
           id="gf_wohnen_baurechtlich_festgesetzt_field"
           ref="gfWohnenBaurechtlichFestgesetztField"
           v-model="abfragevariante.gfWohnenBaurechtlichFestgesetzt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>
@@ -140,10 +145,11 @@
               id="gf_studentisches_wohnen_field"
               ref="gfStudentischesWohnenField"
               v-model="abfragevariante.gfWohnenStudentischesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Studentisches Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -154,10 +160,11 @@
               id="gf_seniorInnen_wohnen_field"
               ref="gfSeniorInnenWohnenField"
               v-model="abfragevariante.gfWohnenSeniorinnenWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Senior*innenwohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -178,10 +185,11 @@
               id="gf_wohnen_genossenschaftlich_field"
               ref="gfWohnenField"
               v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Genossenschaftliches Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -192,10 +200,11 @@
               id="gf_nicht_infrastruktur_relevantes_wohnen_field"
               ref="gfNichtInfrastrukturRelevantesWohnenField"
               v-model="abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Weiteres nicht-infrastrukturrelevantes Wohnen"
               :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -204,13 +213,14 @@
     <v-textarea
       id="gf_wohnen_anmerkung"
       v-model="abfragevariante.gfAnmerkung"
-      :disabled="!isEditable"
+      :readonly="!isEditable"
       label="Anmerkungen"
       variant="underlined"
       auto-grow
       rows="1"
       maxlength="200"
       @update:model-value="formChanged"
+      :class="isEditable ? '' : 'text-grey-lighten-1'"
     >
     </v-textarea>
   </field-group-card>

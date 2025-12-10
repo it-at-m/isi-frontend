@@ -11,12 +11,13 @@
           <v-text-field
             id="bauabschnitt_bezeichnung"
             v-model.trim="bauabschnitt.bezeichnung"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[pflichtfeld]"
             maxlength="255"
             validate-on="blur"
             variant="underlined"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Bezeichnung des Bauabschnitts <span class="text-secondary">*</span> </template>
           </v-text-field>

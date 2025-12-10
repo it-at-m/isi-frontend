@@ -10,8 +10,9 @@
             variant="underlined"
             maxlength="255"
             validate-on="blur"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Name der Einrichtung <span class="text-secondary">*</span> </template>
           </v-text-field>
@@ -60,7 +61,8 @@
             year
             :required="isFertigstellungsjahrRequired()"
             maxlength="4"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -76,9 +78,10 @@
             item-value="id"
             label="Bauvorhaben"
             clearable
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:focused="!$event || fetchBauvorhaben()"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -100,7 +103,8 @@
             class="mx-3"
             label="Fläche Gesamtgrundstück"
             :suffix="SQUARE_METER"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -113,7 +117,8 @@
             class="mx-3"
             label="Fläche Teilgrundstück"
             :suffix="SQUARE_METER"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

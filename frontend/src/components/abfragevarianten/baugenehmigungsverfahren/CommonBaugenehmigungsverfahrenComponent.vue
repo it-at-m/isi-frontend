@@ -6,12 +6,13 @@
           <v-text-field
             id="name_field"
             v-model.trim="abfragevariante.name"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[pflichtfeld]"
             variant="underlined"
             maxlength="30"
             validate-on="blur"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Name der Abfragevariante <span class="text-secondary">*</span> </template>
           </v-text-field>
@@ -34,8 +35,9 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Wesentliche Rechtsgrundlage
@@ -52,11 +54,12 @@
               v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
               id="wesentliche_rechtsgrundlage_freie_eingabe_field"
               v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               variant="underlined"
               label="Freie Eingabe"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -69,11 +72,12 @@
           <num-field
             id="abfragevariante_realisierungvon"
             v-model="abfragevariante.realisierungVon"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Realisierung von (JJJJ)"
             year
             maxlength="4"
             required
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col

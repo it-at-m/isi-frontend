@@ -120,13 +120,14 @@
         <v-textarea
           id="abfragevarianteSachbearbeitung_bauratendatei_anmerkung"
           v-model="abfragevarianteSachbearbeitung.anmerkungBauratendateiInput"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="3"
           maxlength="1000"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

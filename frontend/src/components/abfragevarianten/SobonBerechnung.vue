@@ -68,7 +68,8 @@
               v-model="foerderart.anteilProzent"
               :label="foerderart.bezeichnung"
               :suffix="PERCENT"
-              :disabled="!isFreieEingabe"
+              :readonly="!isFreieEingabe"
+              :class="isFreieEingabe ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>

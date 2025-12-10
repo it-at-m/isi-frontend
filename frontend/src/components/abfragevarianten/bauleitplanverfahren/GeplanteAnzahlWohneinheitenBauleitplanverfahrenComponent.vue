@@ -9,10 +9,11 @@
           id="we_gesamt_field"
           ref="weGesamtField"
           v-model="abfragevariante.weGesamt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Gesamt"
           integer
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <!-- Space für Platzhalter -->
@@ -69,10 +70,11 @@
               id="we_studentenwohnungen_field"
               ref="weStudentenwohnungenField"
               v-model="abfragevariante.weStudentischesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Studierendenwohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -83,10 +85,11 @@
               id="we_seniorInnen_wohnungen_field"
               ref="weSeniorInnenWohnungenField"
               v-model="abfragevariante.weSeniorinnenWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Senior*innenwohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -106,10 +109,11 @@
               id="we_genossenschaftswohnungen_field"
               ref="weGenossenschaftswohnungenField"
               v-model="abfragevariante.weGenossenschaftlichesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Genossenschaftswohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
           <v-col
@@ -120,10 +124,11 @@
               id="we_nicht_infrastruktur_relevante_wohnungen_field"
               ref="weNichtInfrastrukturRelevanteWohnungenField"
               v-model="abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               class="mx-3"
               label="Weitere nicht-infrastrukturrelevante Wohnungen"
               integer
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </v-row>
@@ -132,13 +137,14 @@
     <v-textarea
       id="we_anmerkung"
       v-model="abfragevariante.weAnmerkung"
-      :disabled="!isEditable"
+      :readonly="!isEditable"
       label="Anmerkungen"
       variant="underlined"
       auto-grow
       rows="1"
       maxlength="200"
       @update:model-value="formChanged"
+      :class="isEditable ? '' : 'text-grey-lighten-1'"
     >
     </v-textarea>
   </field-group-card>

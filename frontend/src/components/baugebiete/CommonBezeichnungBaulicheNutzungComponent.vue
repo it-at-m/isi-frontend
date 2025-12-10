@@ -5,12 +5,13 @@
         <v-text-field
           id="baugebiet_bezeichnung"
           v-model.trim="baugebiet.bezeichnung"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           :rules="[pflichtfeld]"
           variant="underlined"
           maxlength="255"
           validate-on="blur"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Bezeichnung des Baugebiets <span class="text-secondary">*</span> </template>
         </v-text-field>
@@ -42,10 +43,11 @@
             id="art_bauliche_nutzung_freie_eingabe_field"
             ref="artBaulicheNutzungFreieEingabeField"
             v-model="baugebiet.artBaulicheNutzungFreieEingabe"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

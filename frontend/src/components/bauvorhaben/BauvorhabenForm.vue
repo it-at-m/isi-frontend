@@ -31,10 +31,11 @@
               ref="standVerfahrenFreieEingabeField"
               v-model="bauvorhaben.standVerfahrenFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Stand des Verfahrens"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -60,7 +61,7 @@
             id="bauvorhaben_bauvorhabenNummer"
             v-model="bauvorhaben.bauvorhabenNummer"
             variant="underlined"
-            disabled
+            readonly
             label="Bauvorhabennummer"
           />
         </v-col>
@@ -93,8 +94,9 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label> Wesentliche Rechtsgrundlage <span class="text-secondary">*</span> </template>
           </v-autocomplete>
@@ -110,10 +112,11 @@
               ref="wesentlicheRechtsgrundlageFreieEingabeField"
               v-model="bauvorhaben.wesentlicheRechtsgrundlageFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -130,8 +133,9 @@
             multiple
             chips
             :rules="[pflichtfeldMehrfachauswahl, notUnspecified]"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           >
             <template #label>
               Art der baulichen Nutzung
@@ -149,10 +153,11 @@
               ref="artFnpFreieEingabeField"
               v-model="bauvorhaben.artFnpFreieEingabe"
               variant="underlined"
-              :disabled="!isEditable"
+              :readonly="!isEditable"
               label="Freie Eingabe für Art der baulichen Nutzung"
               maxlength="1000"
               @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
             />
           </v-slide-y-reverse-transition>
         </v-col>
@@ -168,8 +173,9 @@
             label="Bebauungsplannummer"
             variant="underlined"
             maxlength="255"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -182,8 +188,9 @@
             label="FIS-Nummer"
             variant="underlined"
             maxlength="255"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -197,8 +204,9 @@
             rows="1"
             auto-grow
             maxlength="1000"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>

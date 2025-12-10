@@ -8,7 +8,7 @@
         <num-field
           id="abfragevariante_realisierungvon"
           v-model="baugebiet.realisierungVon"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           label="Realisierung von (JJJJ)"
           class="mx-3"
           :min="abfragevarianteRealisierungVonOr1900"
@@ -17,6 +17,7 @@
           no-grouping
           required
           maxlength="4"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col

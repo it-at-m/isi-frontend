@@ -14,8 +14,9 @@
           v-model.trim="kommentar.datum"
           maxlength="32"
           variant="filled"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           @update:model-value="changed"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label> Datum </template>
         </v-text-field>
@@ -68,8 +69,9 @@
           auto-grow
           variant="filled"
           rows="5"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           @update:model-value="changed"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

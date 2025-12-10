@@ -19,7 +19,8 @@
             label="Anzahl der Hortplätze"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -33,7 +34,8 @@
             label="Anzahl der Hortgruppen"
             integer
             required
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -48,7 +50,8 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col

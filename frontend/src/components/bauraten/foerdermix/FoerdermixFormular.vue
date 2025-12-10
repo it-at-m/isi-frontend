@@ -47,9 +47,10 @@
               :id="'foerdermix_foerderart_' + foerderartIndex"
               :key="foerderartIndex"
               v-model="foerderart.anteilProzent"
-              :disabled="!isFreieEingabe"
+              :readonly="!isFreieEingabe"
               :label="foerderart.bezeichnung"
               :suffix="PERCENT"
+              :class="isFreieEingabe ? '' : 'text-grey-lighten-1'"
             />
           </v-col>
         </template>

@@ -78,13 +78,14 @@
           <v-textarea
             id="abfragevarianteSachbearbeitung_anmerkung"
             v-model="abfragevarianteSachbearbeitung.anmerkung"
-            :disabled="!isEditableBySachbearbeitung"
+            :readonly="!isEditableBySachbearbeitung"
             label="Anmerkungen"
             variant="underlined"
             auto-grow
             rows="1"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
