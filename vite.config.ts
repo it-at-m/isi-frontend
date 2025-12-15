@@ -22,6 +22,7 @@ export default defineConfig({
     port: 8081,
     allowedHosts: ["localhost", "host.docker.internal"],
   },
+  define: { "process.env": {} },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

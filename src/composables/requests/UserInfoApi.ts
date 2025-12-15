@@ -3,10 +3,12 @@ import { Userinfo } from "@/types/common/Userinfo";
 import { useToast } from "vue-toastification";
 import _ from "lodash";
 
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
+
 // eslint-disable-next-line
 export function useUserInfoApi() {
   async function getUserinfo(): Promise<Userinfo> {
-    const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/api/sso/userinfo";
+    const fetchServicesUrl = base ? `${base.replace(/\/+$/, "")}/api/sso/userinfo` : `/api/sso/userinfo`;
     const toast = useToast();
     let userinfo = new Userinfo();
 
