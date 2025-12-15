@@ -58,7 +58,7 @@ Dieses Projekt verwendet die folgenden Technologien:
   <br/>
 </div>
 
-Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler)
+Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler).
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
