@@ -9,7 +9,7 @@
           <num-field
             id="bauraten_jahr"
             v-model="baurate.jahr"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Jahr (JJJJ)"
             :min="baugebietRealisierungVonOr1900"
             :max="2100"
@@ -17,6 +17,7 @@
             no-grouping
             required
             maxlength="4"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -26,11 +27,12 @@
           <num-field
             id="bauraten_anzahlWeGeplant"
             v-model="baurate.weGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateWohneinheiten(baugebiet, abfragevariante)]"
             label="Geplante Anzahl Wohneinheiten"
             :suffix="suffixWohneinheiten"
             integer
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -40,10 +42,11 @@
           <num-field
             id="bauraten_geschossflaecheWohnenGeplant"
             v-model="baurate.gfWohnenGeplant"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             :rules="[validateGeschossflaecheWohnen(baugebiet, abfragevariante)]"
             label="Geplante Geschossfläche Wohnen"
             :suffix="suffixGeschossflaecheWohnen"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -95,7 +98,7 @@ import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import _ from "lodash";
 import type { Rule } from "@/utils/FieldValidationRules";
 import { useToast } from "vue-toastification";
-import { toast } from "@/plugins/toast";
+
 interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;

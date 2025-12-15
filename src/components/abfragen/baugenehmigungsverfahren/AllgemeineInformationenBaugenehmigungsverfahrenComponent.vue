@@ -9,11 +9,12 @@
           id="aktenzeichen_pro_lbk_field"
           ref="aktenzeichenProLbkField"
           v-model="abfrage.aktenzeichenProLbk"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           variant="underlined"
           label="Aktenzeichen ProLBK"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -24,11 +25,12 @@
           id="bebauungsplannummer_field"
           ref="bebauungsplannummerField"
           v-model="abfrage.bebauungsplannummer"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           variant="underlined"
           label="Bebauungsplannummer"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -103,11 +105,12 @@
             id="stand_verfahren_freie_eingabe_field"
             ref="standVerfahrenFreieEingabeField"
             v-model="abfrage.standVerfahrenFreieEingabe"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             variant="underlined"
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

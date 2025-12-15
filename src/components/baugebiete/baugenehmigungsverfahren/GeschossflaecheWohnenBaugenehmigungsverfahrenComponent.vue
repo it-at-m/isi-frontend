@@ -9,11 +9,12 @@
           id="gf_wohnen_geplant_field"
           ref="gfWohnenGeplantField"
           v-model="baugebiet.gfWohnenGeplant"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           :rules="[validateGeschossflaecheWohnen(abfragevariante)]"
           class="mx-3"
           label="Geplante Geschossfläche Wohnen"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -24,10 +25,11 @@
           id="gf_wohnen_baurechtlich_genehmigt_field"
           ref="gfWohnenBaurechtlichGenehmigtField"
           v-model="baugebiet.gfWohnenBaurechtlichGenehmigt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich genehmigt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -38,10 +40,11 @@
           id="gf_wohnen_baurechtlich_festgesetzt_field"
           ref="gfWohnenBaurechtlichFestgesetztField"
           v-model="baugebiet.gfWohnenBaurechtlichFestgesetzt"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           class="mx-3"
           label="Baurechtlich festgesetzt"
           :suffix="SQUARE_METER"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

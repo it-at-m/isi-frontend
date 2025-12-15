@@ -38,13 +38,14 @@
           id="anmerkung_field"
           ref="anmerkungField"
           v-model="abfrage.anmerkung"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           variant="underlined"
           label="Anmerkungen"
           auto-grow
           rows="1"
           maxlength="1000"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>

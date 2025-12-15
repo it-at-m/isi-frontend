@@ -10,10 +10,11 @@
           ref="bebauungsplannummerField"
           v-model="abfrage.bebauungsplannummer"
           variant="underlined"
-          :disabled="!isEditable"
+          :readonly="!isEditable"
           label="Bebauungsplannummer"
           maxlength="255"
           @update:model-value="formChanged"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
       <v-col
@@ -131,10 +132,11 @@
             ref="standVerfahrenFreieEingabeField"
             v-model="abfrage.standVerfahrenFreieEingabe"
             variant="underlined"
-            :disabled="!isEditable"
+            :readonly="!isEditable"
             label="Freie Eingabe"
             maxlength="1000"
             @update:model-value="formChanged"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-slide-y-reverse-transition>
       </v-col>

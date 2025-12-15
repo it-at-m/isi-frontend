@@ -18,7 +18,8 @@
             class="mx-3"
             label="Anzahl der Kinderkrippenplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -31,7 +32,8 @@
             class="mx-3"
             label="Anzahl der Kindergartenplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -46,7 +48,8 @@
             class="mx-3"
             label="Anzahl der Hortplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -65,7 +68,8 @@
             class="mx-3"
             label="Anzahl der Kinderkrippengruppen"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -78,7 +82,8 @@
             class="mx-3"
             label="Anzahl der Kindergartengruppen"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -93,7 +98,8 @@
             class="mx-3"
             label="Anzahl der Hortgruppen"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -112,7 +118,8 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kinderkrippenplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col
@@ -125,7 +132,8 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Kindergartenplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
@@ -140,7 +148,8 @@
             class="mx-3"
             label="Anzahl der wohnungsnahen Hortplätze"
             integer
-            :disabled="!isEditable"
+            :readonly="!isEditable"
+            :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
         <v-col

@@ -15,8 +15,9 @@
                 maxlength="255"
                 validate-on="blur"
                 variant="underlined"
-                :disabled="!isEditable"
+                :readonly="!isEditable"
                 @update:model-value="formChanged"
+                :class="isEditable ? '' : 'text-grey-lighten-1'"
               >
                 <template #label> Name des Bauvorhabens <span class="text-secondary">*</span> </template>
               </v-text-field>

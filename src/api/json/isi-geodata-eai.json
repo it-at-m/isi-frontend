@@ -4,7 +4,7 @@
     "title": "ISI GEODATA EAI",
     "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
     "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [

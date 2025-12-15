@@ -29,8 +29,9 @@
         auto-grow
         rows="1"
         maxlength="8000"
-        :disabled="!isEditable"
+        :readonly="!isEditable"
         @update:model-value="formChanged"
+        :class="isEditable ? '' : 'text-grey-lighten-1'"
       />
       <a
         v-else
