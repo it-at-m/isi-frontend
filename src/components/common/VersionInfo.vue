@@ -103,6 +103,7 @@ import _ from "lodash";
 const visible = defineModel<boolean>({ required: true });
 const services = ref<Service[]>([]);
 const fetchSuccess = ref<boolean | undefined>(undefined);
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
 
 watch(visible, updateServices);
 
@@ -135,7 +136,7 @@ async function updateServices(): Promise<void> {
 }
 
 async function fetchServices(): Promise<Service[]> {
-  const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/actuator/info";
+  const fetchServicesUrl = base ? `${base.replace(/\/+$/, "")}/actuator/info` : `/actuator/info`;
   let services: Service[] = [];
 
   try {
@@ -159,7 +160,8 @@ async function fetchServices(): Promise<Service[]> {
 
 async function fetchCommitHash(service: Service): Promise<string> {
   let commitHash = "";
-  const serviceInfoUrl = import.meta.env.VITE_VUE_APP_API_URL + service.infoPath;
+  const serviceInfoUrl = base ? `${base.replace(/\/+$/, "")}${service.infoPath}` : `${service.infoPath}`;
+  base ? `${base.replace(/\/+$/, "")}${service.infoPath}` : `${service.infoPath}`;
 
   try {
     const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());

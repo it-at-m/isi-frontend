@@ -12,17 +12,19 @@ import {
 } from "@/api/api-client/isi-geodata-eai";
 import XsrfTokenExtractorUtil from "@/utils/XsrfTokenExtractorUtil";
 
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
+
 export default class RequestUtils {
   public static getBaseUrl(): string {
-    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-backend-service";
+    return base ? `${base.replace(/\/+$/, "")}/api/isi-backend-service` : `/api/isi-backend-service`;
   }
 
   public static getBaseMasterEaiUrl(): string {
-    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-master-eai";
+    return base ? `${base.replace(/\/+$/, "")}/api/isi-master-eai` : `/api/isi-master-eai`;
   }
 
   public static getBaseGeodataUrl(): string {
-    return import.meta.env.VITE_VUE_APP_API_URL + "/api/isi-geodata-eai";
+    return base ? `${base.replace(/\/+$/, "")}/api/isi-geodata-eai` : `/api/isi-geodata-eai`;
   }
 
   public static getBasicFetchConfigurationForBackend(): ConfigurationBackend {

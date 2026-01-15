@@ -17,14 +17,16 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  server: {
+    host: "0.0.0.0",
+    port: 8081,
+    allowedHosts: ["localhost", "host.docker.internal"],
+  },
   define: { "process.env": {} },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
     extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
-  },
-  server: {
-    port: 8081,
   },
 });

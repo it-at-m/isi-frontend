@@ -3,10 +3,12 @@ import { Userinfo } from "@/types/common/Userinfo";
 import { useToast } from "vue-toastification";
 import _ from "lodash";
 
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
+
 // eslint-disable-next-line
 export function useUserInfoApi() {
   async function getUserinfo(): Promise<Userinfo> {
-    const fetchServicesUrl = import.meta.env.VITE_VUE_APP_API_URL + "/api/sso/userinfo";
+    const fetchServicesUrl = base ? `${base.replace(/\/+$/, "")}/api/sso/userinfo` : `/api/sso/userinfo`;
     const toast = useToast();
     let userinfo = new Userinfo();
 
@@ -31,7 +33,7 @@ export function useUserInfoApi() {
   function mapJson(json: any): Userinfo {
     const userinfo: Userinfo = new Userinfo();
     userinfo.surname = !_.isNil(json.surname) ? json.surname : undefined;
-    userinfo.givenname = !_.isNil(json.givenname) ? json.givenname : undefined;
+    userinfo.givenname = !_.isNil(json.given_name) ? json.given_name : undefined;
     userinfo.email = !_.isNil(json.email) ? json.email : undefined;
     userinfo.department = !_.isNil(json.department) ? json.department : undefined;
     userinfo.roles = !_.isNil(json.resource_access.isi.roles) ? json.resource_access.isi.roles : undefined;

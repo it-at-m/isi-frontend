@@ -58,18 +58,43 @@ Dieses Projekt verwendet die folgenden Technologien:
   <br/>
 </div>
 
-Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler)
+Siehe auch unter [open issues](https://github.com/it-at-m/isi-frontend/issues) die Liste der vorgeschlagenen Verbesserungen (und bekannten Fehler).
 
 <p align="right">(<a href="#top">nach oben</a>)</p>
 
-<!--
-## Set up
+## Erste Schritte
 
-*how can i start and fly this project*
-*tbd*
+### Installieren der Abhängigkeiten
 
-<p align="right">(<a href="#top">nach oben</a>)</p>
--->
+```
+npm install
+```
+
+### Starten des Frontends
+
+```
+npm run serve
+```
+
+### Projekt builden
+
+```
+npm run build
+```
+
+### Test Suite ausführen
+
+```
+npm run test
+```
+
+### Codeformatierung mit Prettier
+
+```
+npm run lint
+```
+
+See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Dokumentation
 

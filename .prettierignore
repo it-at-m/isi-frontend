@@ -1,12 +1,11 @@
 # Build-Ordner
-apigateway/target
-frontend/dist
-frontend/target
+dist
+target
 
 # Generierte Datieien
-frontend/src/api/api-client
-frontend/auto-imports.d.ts
-frontend/components.d.ts
+src/api/api-client
+auto-imports.d.ts
+components.d.ts
 
 # yml-Datieien könnnen evtl. zu Fehlern führen
 *.yml
