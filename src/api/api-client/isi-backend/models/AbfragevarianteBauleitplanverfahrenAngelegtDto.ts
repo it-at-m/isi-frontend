@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BauabschnittDto } from './BauabschnittDto';
 import {
     BauabschnittDtoFromJSON,
     BauabschnittDtoFromJSONTyped,
     BauabschnittDtoToJSON,
+    BauabschnittDtoToJSONTyped,
 } from './BauabschnittDto';
 
 /**
@@ -217,17 +218,15 @@ export type AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrund
 /**
  * Check if a given object implements the AbfragevarianteBauleitplanverfahrenAngelegtDto interface.
  */
-export function instanceOfAbfragevarianteBauleitplanverfahrenAngelegtDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "abfragevariantenNr" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "wesentlicheRechtsgrundlage" in value;
-    isInstance = isInstance && "realisierungVon" in value;
-    isInstance = isInstance && "gfWohnenSonderwohnformen" in value;
-    isInstance = isInstance && "weSonderwohnformen" in value;
-    isInstance = isInstance && "bauabschnitte" in value;
-
-    return isInstance;
+export function instanceOfAbfragevarianteBauleitplanverfahrenAngelegtDto(value: object): value is AbfragevarianteBauleitplanverfahrenAngelegtDto {
+    if (!('abfragevariantenNr' in value) || value['abfragevariantenNr'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('wesentlicheRechtsgrundlage' in value) || value['wesentlicheRechtsgrundlage'] === undefined) return false;
+    if (!('realisierungVon' in value) || value['realisierungVon'] === undefined) return false;
+    if (!('gfWohnenSonderwohnformen' in value) || value['gfWohnenSonderwohnformen'] === undefined) return false;
+    if (!('weSonderwohnformen' in value) || value['weSonderwohnformen'] === undefined) return false;
+    if (!('bauabschnitte' in value) || value['bauabschnitte'] === undefined) return false;
+    return true;
 }
 
 export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON(json: any): AbfragevarianteBauleitplanverfahrenAngelegtDto {
@@ -235,75 +234,77 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON(json: any
 }
 
 export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteBauleitplanverfahrenAngelegtDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
-        'satzungsbeschluss': !exists(json, 'satzungsbeschluss') ? undefined : (new Date(json['satzungsbeschluss'])),
+        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
-        'gfWohnenGesamt': !exists(json, 'gfWohnenGesamt') ? undefined : json['gfWohnenGesamt'],
-        'gfWohnenSobonUrsaechlich': !exists(json, 'gfWohnenSobonUrsaechlich') ? undefined : json['gfWohnenSobonUrsaechlich'],
-        'gfWohnenBestandswohnbaurecht': !exists(json, 'gfWohnenBestandswohnbaurecht') ? undefined : json['gfWohnenBestandswohnbaurecht'],
+        'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
+        'gfWohnenSobonUrsaechlich': json['gfWohnenSobonUrsaechlich'] == null ? undefined : json['gfWohnenSobonUrsaechlich'],
+        'gfWohnenBestandswohnbaurecht': json['gfWohnenBestandswohnbaurecht'] == null ? undefined : json['gfWohnenBestandswohnbaurecht'],
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'],
-        'gfWohnenStudentischesWohnen': !exists(json, 'gfWohnenStudentischesWohnen') ? undefined : json['gfWohnenStudentischesWohnen'],
-        'gfWohnenSeniorinnenWohnen': !exists(json, 'gfWohnenSeniorinnenWohnen') ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': !exists(json, 'gfWohnenGenossenschaftlichesWohnen') ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
-        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'gfAnmerkung': !exists(json, 'gfAnmerkung') ? undefined : json['gfAnmerkung'],
-        'weGesamt': !exists(json, 'weGesamt') ? undefined : json['weGesamt'],
+        'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
+        'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
+        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
+        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
+        'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
         'weSonderwohnformen': json['weSonderwohnformen'],
-        'weStudentischesWohnen': !exists(json, 'weStudentischesWohnen') ? undefined : json['weStudentischesWohnen'],
-        'weSeniorinnenWohnen': !exists(json, 'weSeniorinnenWohnen') ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': !exists(json, 'weGenossenschaftlichesWohnen') ? undefined : json['weGenossenschaftlichesWohnen'],
-        'weWeiteresNichtInfrastrukturrelevantesWohnen': !exists(json, 'weWeiteresNichtInfrastrukturrelevantesWohnen') ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
-        'weAnmerkung': !exists(json, 'weAnmerkung') ? undefined : json['weAnmerkung'],
+        'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
+        'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
+        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
+        'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
     };
 }
 
-export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(value?: AbfragevarianteBauleitplanverfahrenAngelegtDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON(json: any): AbfragevarianteBauleitplanverfahrenAngelegtDto {
+    return AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSONTyped(json, false);
+}
+
+export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSONTyped(value?: AbfragevarianteBauleitplanverfahrenAngelegtDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'artAbfragevariante': value.artAbfragevariante,
-        'abfragevariantenNr': value.abfragevariantenNr,
-        'name': value.name,
-        'satzungsbeschluss': value.satzungsbeschluss === undefined ? undefined : (value.satzungsbeschluss.toISOString().substr(0,10)),
-        'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
-        'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
-        'realisierungVon': value.realisierungVon,
-        'gfWohnenGesamt': value.gfWohnenGesamt,
-        'gfWohnenSobonUrsaechlich': value.gfWohnenSobonUrsaechlich,
-        'gfWohnenBestandswohnbaurecht': value.gfWohnenBestandswohnbaurecht,
-        'gfWohnenSonderwohnformen': value.gfWohnenSonderwohnformen,
-        'gfWohnenStudentischesWohnen': value.gfWohnenStudentischesWohnen,
-        'gfWohnenSeniorinnenWohnen': value.gfWohnenSeniorinnenWohnen,
-        'gfWohnenGenossenschaftlichesWohnen': value.gfWohnenGenossenschaftlichesWohnen,
-        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
-        'gfAnmerkung': value.gfAnmerkung,
-        'weGesamt': value.weGesamt,
-        'weSonderwohnformen': value.weSonderwohnformen,
-        'weStudentischesWohnen': value.weStudentischesWohnen,
-        'weSeniorinnenWohnen': value.weSeniorinnenWohnen,
-        'weGenossenschaftlichesWohnen': value.weGenossenschaftlichesWohnen,
-        'weWeiteresNichtInfrastrukturrelevantesWohnen': value.weWeiteresNichtInfrastrukturrelevantesWohnen,
-        'weAnmerkung': value.weAnmerkung,
-        'bauabschnitte': ((value.bauabschnitte as Array<any>).map(BauabschnittDtoToJSON)),
+        'id': value['id'],
+        'version': value['version'],
+        'artAbfragevariante': value['artAbfragevariante'],
+        'abfragevariantenNr': value['abfragevariantenNr'],
+        'name': value['name'],
+        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
+        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'realisierungVon': value['realisierungVon'],
+        'gfWohnenGesamt': value['gfWohnenGesamt'],
+        'gfWohnenSobonUrsaechlich': value['gfWohnenSobonUrsaechlich'],
+        'gfWohnenBestandswohnbaurecht': value['gfWohnenBestandswohnbaurecht'],
+        'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
+        'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
+        'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
+        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
+        'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'gfAnmerkung': value['gfAnmerkung'],
+        'weGesamt': value['weGesamt'],
+        'weSonderwohnformen': value['weSonderwohnformen'],
+        'weStudentischesWohnen': value['weStudentischesWohnen'],
+        'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
+        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
+        'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
+        'weAnmerkung': value['weAnmerkung'],
+        'bauabschnitte': ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),
     };
 }
 

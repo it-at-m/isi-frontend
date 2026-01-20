@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Baugebiet } from './Baugebiet';
 import {
     BaugebietFromJSON,
     BaugebietFromJSONTyped,
     BaugebietToJSON,
+    BaugebietToJSONTyped,
 } from './Baugebiet';
 
 /**
@@ -73,10 +74,8 @@ export interface Bauabschnitt {
 /**
  * Check if a given object implements the Bauabschnitt interface.
  */
-export function instanceOfBauabschnitt(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBauabschnitt(value: object): value is Bauabschnitt {
+    return true;
 }
 
 export function BauabschnittFromJSON(json: any): Bauabschnitt {
@@ -84,37 +83,39 @@ export function BauabschnittFromJSON(json: any): Bauabschnitt {
 }
 
 export function BauabschnittFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bauabschnitt {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
-        'baugebiete': !exists(json, 'baugebiete') ? undefined : ((json['baugebiete'] as Array<any>).map(BaugebietFromJSON)),
-        'technical': !exists(json, 'technical') ? undefined : json['technical'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
+        'baugebiete': json['baugebiete'] == null ? undefined : ((json['baugebiete'] as Array<any>).map(BaugebietFromJSON)),
+        'technical': json['technical'] == null ? undefined : json['technical'],
     };
 }
 
-export function BauabschnittToJSON(value?: Bauabschnitt | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BauabschnittToJSON(json: any): Bauabschnitt {
+    return BauabschnittToJSONTyped(json, false);
+}
+
+export function BauabschnittToJSONTyped(value?: Bauabschnitt | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnung': value.bezeichnung,
-        'baugebiete': value.baugebiete === undefined ? undefined : ((value.baugebiete as Array<any>).map(BaugebietToJSON)),
-        'technical': value.technical,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'bezeichnung': value['bezeichnung'],
+        'baugebiete': value['baugebiete'] == null ? undefined : ((value['baugebiete'] as Array<any>).map(BaugebietToJSON)),
+        'technical': value['technical'],
     };
 }
 

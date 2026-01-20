@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoStadtbezirkDto } from './FeatureDtoStadtbezirkDto';
 import {
     FeatureDtoStadtbezirkDtoFromJSON,
     FeatureDtoStadtbezirkDtoFromJSONTyped,
     FeatureDtoStadtbezirkDtoToJSON,
+    FeatureDtoStadtbezirkDtoToJSONTyped,
 } from './FeatureDtoStadtbezirkDto';
 
 /**
@@ -43,10 +44,8 @@ export interface FeatureCollectionDtoFeatureDtoStadtbezirkDto {
 /**
  * Check if a given object implements the FeatureCollectionDtoFeatureDtoStadtbezirkDto interface.
  */
-export function instanceOfFeatureCollectionDtoFeatureDtoStadtbezirkDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureCollectionDtoFeatureDtoStadtbezirkDto(value: object): value is FeatureCollectionDtoFeatureDtoStadtbezirkDto {
+    return true;
 }
 
 export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(json: any): FeatureCollectionDtoFeatureDtoStadtbezirkDto {
@@ -54,27 +53,29 @@ export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(json: any):
 }
 
 export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureCollectionDtoFeatureDtoStadtbezirkDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'features': !exists(json, 'features') ? undefined : ((json['features'] as Array<any>).map(FeatureDtoStadtbezirkDtoFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'features': json['features'] == null ? undefined : ((json['features'] as Array<any>).map(FeatureDtoStadtbezirkDtoFromJSON)),
     };
 }
 
-export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSON(value?: FeatureCollectionDtoFeatureDtoStadtbezirkDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSON(json: any): FeatureCollectionDtoFeatureDtoStadtbezirkDto {
+    return FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSONTyped(json, false);
+}
+
+export function FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSONTyped(value?: FeatureCollectionDtoFeatureDtoStadtbezirkDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'features': value.features === undefined ? undefined : ((value.features as Array<any>).map(FeatureDtoStadtbezirkDtoToJSON)),
+        'type': value['type'],
+        'features': value['features'] == null ? undefined : ((value['features'] as Array<any>).map(FeatureDtoStadtbezirkDtoToJSON)),
     };
 }
 

@@ -12,37 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Adresse } from './Adresse';
 import {
     AdresseFromJSON,
     AdresseFromJSONTyped,
     AdresseToJSON,
+    AdresseToJSONTyped,
 } from './Adresse';
 import type { BearbeitendePerson } from './BearbeitendePerson';
 import {
     BearbeitendePersonFromJSON,
     BearbeitendePersonFromJSONTyped,
     BearbeitendePersonToJSON,
+    BearbeitendePersonToJSONTyped,
 } from './BearbeitendePerson';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
 import type { UncertainBoolean } from './UncertainBoolean';
 import {
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
+    UncertainBooleanToJSONTyped,
 } from './UncertainBoolean';
 import type { VerortungMultiPolygon } from './VerortungMultiPolygon';
 import {
     VerortungMultiPolygonFromJSON,
     VerortungMultiPolygonFromJSONTyped,
     VerortungMultiPolygonToJSON,
+    VerortungMultiPolygonToJSONTyped,
 } from './VerortungMultiPolygon';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -227,14 +232,14 @@ export type EntityModelBauvorhabenStandVerfahrenEnum = typeof EntityModelBauvorh
  * @export
  */
 export const EntityModelBauvorhabenSobonJahrEnum = {
-    _1995: 'JAHR_1995',
-    _1997: 'JAHR_1997',
-    _2001: 'JAHR_2001',
-    _2006: 'JAHR_2006',
-    _2012: 'JAHR_2012',
-    _2017: 'JAHR_2017',
-    _2017Plus: 'JAHR_2017_PLUS',
-    _2021: 'JAHR_2021'
+    Jahr1995: 'JAHR_1995',
+    Jahr1997: 'JAHR_1997',
+    Jahr2001: 'JAHR_2001',
+    Jahr2006: 'JAHR_2006',
+    Jahr2012: 'JAHR_2012',
+    Jahr2017: 'JAHR_2017',
+    Jahr2017Plus: 'JAHR_2017_PLUS',
+    Jahr2021: 'JAHR_2021'
 } as const;
 export type EntityModelBauvorhabenSobonJahrEnum = typeof EntityModelBauvorhabenSobonJahrEnum[keyof typeof EntityModelBauvorhabenSobonJahrEnum];
 
@@ -284,10 +289,8 @@ export type EntityModelBauvorhabenResultTypeEnum = typeof EntityModelBauvorhaben
 /**
  * Check if a given object implements the EntityModelBauvorhaben interface.
  */
-export function instanceOfEntityModelBauvorhaben(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelBauvorhaben(value: object): value is EntityModelBauvorhaben {
+    return true;
 }
 
 export function EntityModelBauvorhabenFromJSON(json: any): EntityModelBauvorhaben {
@@ -295,71 +298,73 @@ export function EntityModelBauvorhabenFromJSON(json: any): EntityModelBauvorhabe
 }
 
 export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelBauvorhaben {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
-        'nameVorhaben': !exists(json, 'nameVorhaben') ? undefined : json['nameVorhaben'],
-        'grundstuecksgroesse': !exists(json, 'grundstuecksgroesse') ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
-        'bauvorhabenNummer': !exists(json, 'bauvorhabenNummer') ? undefined : json['bauvorhabenNummer'],
-        'adresse': !exists(json, 'adresse') ? undefined : AdresseFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonFromJSON(json['verortung']),
-        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'fisNummer': !exists(json, 'fisNummer') ? undefined : json['fisNummer'],
-        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'sobonRelevant': !exists(json, 'sobonRelevant') ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
-        'sobonJahr': !exists(json, 'sobonJahr') ? undefined : json['sobonJahr'],
-        'wesentlicheRechtsgrundlage': !exists(json, 'wesentlicheRechtsgrundlage') ? undefined : json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': !exists(json, 'wesentlicheRechtsgrundlageFreieEingabe') ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
-        'artFnp': !exists(json, 'artFnp') ? undefined : json['artFnp'],
-        'artFnpFreieEingabe': !exists(json, 'artFnpFreieEingabe') ? undefined : json['artFnpFreieEingabe'],
-        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
-        'verortungJson': !exists(json, 'verortungJson') ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
-        'adresseJson': !exists(json, 'adresseJson') ? undefined : AdresseFromJSON(json['adresseJson']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
+        'nameVorhaben': json['nameVorhaben'] == null ? undefined : json['nameVorhaben'],
+        'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
+        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'bauvorhabenNummer': json['bauvorhabenNummer'] == null ? undefined : json['bauvorhabenNummer'],
+        'adresse': json['adresse'] == null ? undefined : AdresseFromJSON(json['adresse']),
+        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortung']),
+        'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
+        'fisNummer': json['fisNummer'] == null ? undefined : json['fisNummer'],
+        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
+        'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
+        'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
+        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
+        'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelBauvorhabenToJSON(value?: EntityModelBauvorhaben | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelBauvorhabenToJSON(json: any): EntityModelBauvorhaben {
+    return EntityModelBauvorhabenToJSONTyped(json, false);
+}
+
+export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
-        'nameVorhaben': value.nameVorhaben,
-        'grundstuecksgroesse': value.grundstuecksgroesse,
-        'standVerfahren': value.standVerfahren,
-        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
-        'bauvorhabenNummer': value.bauvorhabenNummer,
-        'adresse': AdresseToJSON(value.adresse),
-        'verortung': VerortungMultiPolygonToJSON(value.verortung),
-        'bebauungsplannummer': value.bebauungsplannummer,
-        'fisNummer': value.fisNummer,
-        'anmerkung': value.anmerkung,
-        'sobonRelevant': UncertainBooleanToJSON(value.sobonRelevant),
-        'sobonJahr': value.sobonJahr,
-        'wesentlicheRechtsgrundlage': value.wesentlicheRechtsgrundlage,
-        'wesentlicheRechtsgrundlageFreieEingabe': value.wesentlicheRechtsgrundlageFreieEingabe,
-        'artFnp': value.artFnp,
-        'artFnpFreieEingabe': value.artFnpFreieEingabe,
-        'resultType': value.resultType,
-        'verortungJson': VerortungMultiPolygonToJSON(value.verortungJson),
-        'adresseJson': AdresseToJSON(value.adresseJson),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
+        'nameVorhaben': value['nameVorhaben'],
+        'grundstuecksgroesse': value['grundstuecksgroesse'],
+        'standVerfahren': value['standVerfahren'],
+        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'bauvorhabenNummer': value['bauvorhabenNummer'],
+        'adresse': AdresseToJSON(value['adresse']),
+        'verortung': VerortungMultiPolygonToJSON(value['verortung']),
+        'bebauungsplannummer': value['bebauungsplannummer'],
+        'fisNummer': value['fisNummer'],
+        'anmerkung': value['anmerkung'],
+        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
+        'sobonJahr': value['sobonJahr'],
+        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
+        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'artFnp': value['artFnp'],
+        'artFnpFreieEingabe': value['artFnpFreieEingabe'],
+        'resultType': value['resultType'],
+        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

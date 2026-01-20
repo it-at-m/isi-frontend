@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,10 +30,8 @@ export interface Filepath {
 /**
  * Check if a given object implements the Filepath interface.
  */
-export function instanceOfFilepath(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFilepath(value: object): value is Filepath {
+    return true;
 }
 
 export function FilepathFromJSON(json: any): Filepath {
@@ -41,25 +39,27 @@ export function FilepathFromJSON(json: any): Filepath {
 }
 
 export function FilepathFromJSONTyped(json: any, ignoreDiscriminator: boolean): Filepath {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'pathToFile': !exists(json, 'pathToFile') ? undefined : json['pathToFile'],
+        'pathToFile': json['pathToFile'] == null ? undefined : json['pathToFile'],
     };
 }
 
-export function FilepathToJSON(value?: Filepath | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FilepathToJSON(json: any): Filepath {
+    return FilepathToJSONTyped(json, false);
+}
+
+export function FilepathToJSONTyped(value?: Filepath | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'pathToFile': value.pathToFile,
+        'pathToFile': value['pathToFile'],
     };
 }
 

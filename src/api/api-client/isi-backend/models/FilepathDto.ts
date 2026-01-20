@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,11 +30,9 @@ export interface FilepathDto {
 /**
  * Check if a given object implements the FilepathDto interface.
  */
-export function instanceOfFilepathDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "pathToFile" in value;
-
-    return isInstance;
+export function instanceOfFilepathDto(value: object): value is FilepathDto {
+    if (!('pathToFile' in value) || value['pathToFile'] === undefined) return false;
+    return true;
 }
 
 export function FilepathDtoFromJSON(json: any): FilepathDto {
@@ -42,7 +40,7 @@ export function FilepathDtoFromJSON(json: any): FilepathDto {
 }
 
 export function FilepathDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FilepathDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -51,16 +49,18 @@ export function FilepathDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function FilepathDtoToJSON(value?: FilepathDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FilepathDtoToJSON(json: any): FilepathDto {
+    return FilepathDtoToJSONTyped(json, false);
+}
+
+export function FilepathDtoToJSONTyped(value?: FilepathDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'pathToFile': value.pathToFile,
+        'pathToFile': value['pathToFile'],
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   MetabaseReportingDto,
-} from '../models';
+} from '../models/index';
 import {
     MetabaseReportingDtoFromJSON,
     MetabaseReportingDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 /**
  * 
@@ -35,8 +35,11 @@ export class MetabaseReportingInformationApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/stammdaten/metabase-reporting`;
+
         const response = await this.request({
-            path: `/stammdaten/metabase-reporting`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
-import type { PageMetadata } from './PageMetadata';
-import {
-    PageMetadataFromJSON,
-    PageMetadataFromJSONTyped,
-    PageMetadataToJSON,
-} from './PageMetadata';
+import { mapValues } from '../runtime';
 import type { PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbedded } from './PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbedded';
 import {
     PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedFromJSON,
     PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedFromJSONTyped,
     PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedToJSON,
+    PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedToJSONTyped,
 } from './PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbedded';
+import type { PageMetadata } from './PageMetadata';
+import {
+    PageMetadataFromJSON,
+    PageMetadataFromJSONTyped,
+    PageMetadataToJSON,
+    PageMetadataToJSONTyped,
+} from './PageMetadata';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -61,10 +64,8 @@ export interface PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur
 /**
  * Check if a given object implements the PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur interface.
  */
-export function instanceOfPagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur(value: object): value is PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur {
+    return true;
 }
 
 export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(json: any): PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur {
@@ -72,29 +73,31 @@ export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturF
 }
 
 export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedFromJSON(json['_embedded']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedFromJSON(json['_embedded']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturToJSON(value?: PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturToJSON(json: any): PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur {
+    return PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturToJSONTyped(value?: PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        '_embedded': PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedToJSON(value.embedded),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
-        'page': PageMetadataToJSON(value.page),
+        '_embedded': PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturEmbeddedToJSON(value['embedded']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        'page': PageMetadataToJSON(value['page']),
     };
 }
 

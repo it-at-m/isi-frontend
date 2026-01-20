@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BearbeitendePerson } from './BearbeitendePerson';
 import {
     BearbeitendePersonFromJSON,
     BearbeitendePersonFromJSONTyped,
     BearbeitendePersonToJSON,
+    BearbeitendePersonToJSONTyped,
 } from './BearbeitendePerson';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
+    StatusAbfrageToJSONTyped,
 } from './StatusAbfrage';
 
 /**
@@ -52,13 +54,13 @@ export interface Bearbeitungshistorie {
     bearbeitendePerson?: BearbeitendePerson;
 }
 
+
+
 /**
  * Check if a given object implements the Bearbeitungshistorie interface.
  */
-export function instanceOfBearbeitungshistorie(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBearbeitungshistorie(value: object): value is Bearbeitungshistorie {
+    return true;
 }
 
 export function BearbeitungshistorieFromJSON(json: any): Bearbeitungshistorie {
@@ -66,29 +68,31 @@ export function BearbeitungshistorieFromJSON(json: any): Bearbeitungshistorie {
 }
 
 export function BearbeitungshistorieFromJSONTyped(json: any, ignoreDiscriminator: boolean): Bearbeitungshistorie {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'zielStatus': !exists(json, 'zielStatus') ? undefined : StatusAbfrageFromJSON(json['zielStatus']),
-        'zeitpunkt': !exists(json, 'zeitpunkt') ? undefined : (new Date(json['zeitpunkt'])),
-        'bearbeitendePerson': !exists(json, 'bearbeitendePerson') ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
+        'zielStatus': json['zielStatus'] == null ? undefined : StatusAbfrageFromJSON(json['zielStatus']),
+        'zeitpunkt': json['zeitpunkt'] == null ? undefined : (new Date(json['zeitpunkt'])),
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
     };
 }
 
-export function BearbeitungshistorieToJSON(value?: Bearbeitungshistorie | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BearbeitungshistorieToJSON(json: any): Bearbeitungshistorie {
+    return BearbeitungshistorieToJSONTyped(json, false);
+}
+
+export function BearbeitungshistorieToJSONTyped(value?: Bearbeitungshistorie | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'zielStatus': StatusAbfrageToJSON(value.zielStatus),
-        'zeitpunkt': value.zeitpunkt === undefined ? undefined : (value.zeitpunkt.toISOString()),
-        'bearbeitendePerson': BearbeitendePersonToJSON(value.bearbeitendePerson),
+        'zielStatus': StatusAbfrageToJSON(value['zielStatus']),
+        'zeitpunkt': value['zeitpunkt'] == null ? value['zeitpunkt'] : value['zeitpunkt'].toISOString(),
+        'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface KitaplanungsbereichDto {
 /**
  * Check if a given object implements the KitaplanungsbereichDto interface.
  */
-export function instanceOfKitaplanungsbereichDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfKitaplanungsbereichDto(value: object): value is KitaplanungsbereichDto {
+    return true;
 }
 
 export function KitaplanungsbereichDtoFromJSON(json: any): KitaplanungsbereichDto {
@@ -53,29 +51,31 @@ export function KitaplanungsbereichDtoFromJSON(json: any): KitaplanungsbereichDt
 }
 
 export function KitaplanungsbereichDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KitaplanungsbereichDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'objectId': !exists(json, 'objectId') ? undefined : json['objectId'],
-        'kitaPlb': !exists(json, 'kitaPlb') ? undefined : json['kitaPlb'],
-        'kitaPlbT': !exists(json, 'kitaPlbT') ? undefined : json['kitaPlbT'],
+        'objectId': json['objectId'] == null ? undefined : json['objectId'],
+        'kitaPlb': json['kitaPlb'] == null ? undefined : json['kitaPlb'],
+        'kitaPlbT': json['kitaPlbT'] == null ? undefined : json['kitaPlbT'],
     };
 }
 
-export function KitaplanungsbereichDtoToJSON(value?: KitaplanungsbereichDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function KitaplanungsbereichDtoToJSON(json: any): KitaplanungsbereichDto {
+    return KitaplanungsbereichDtoToJSONTyped(json, false);
+}
+
+export function KitaplanungsbereichDtoToJSONTyped(value?: KitaplanungsbereichDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'objectId': value.objectId,
-        'kitaPlb': value.kitaPlb,
-        'kitaPlbT': value.kitaPlbT,
+        'objectId': value['objectId'],
+        'kitaPlb': value['kitaPlb'],
+        'kitaPlbT': value['kitaPlbT'],
     };
 }
 

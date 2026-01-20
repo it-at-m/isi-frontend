@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -79,10 +79,8 @@ export type InformationResponseDtoTypeEnum = typeof InformationResponseDtoTypeEn
 /**
  * Check if a given object implements the InformationResponseDto interface.
  */
-export function instanceOfInformationResponseDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfInformationResponseDto(value: object): value is InformationResponseDto {
+    return true;
 }
 
 export function InformationResponseDtoFromJSON(json: any): InformationResponseDto {
@@ -90,37 +88,39 @@ export function InformationResponseDtoFromJSON(json: any): InformationResponseDt
 }
 
 export function InformationResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InformationResponseDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'timestamp': !exists(json, 'timestamp') ? undefined : (new Date(json['timestamp'])),
-        'traceId': !exists(json, 'traceId') ? undefined : json['traceId'],
-        'spanId': !exists(json, 'spanId') ? undefined : json['spanId'],
-        'httpStatus': !exists(json, 'httpStatus') ? undefined : json['httpStatus'],
-        'originalException': !exists(json, 'originalException') ? undefined : json['originalException'],
-        'messages': !exists(json, 'messages') ? undefined : json['messages'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'timestamp': json['timestamp'] == null ? undefined : (new Date(json['timestamp'])),
+        'traceId': json['traceId'] == null ? undefined : json['traceId'],
+        'spanId': json['spanId'] == null ? undefined : json['spanId'],
+        'httpStatus': json['httpStatus'] == null ? undefined : json['httpStatus'],
+        'originalException': json['originalException'] == null ? undefined : json['originalException'],
+        'messages': json['messages'] == null ? undefined : json['messages'],
     };
 }
 
-export function InformationResponseDtoToJSON(value?: InformationResponseDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function InformationResponseDtoToJSON(json: any): InformationResponseDto {
+    return InformationResponseDtoToJSONTyped(json, false);
+}
+
+export function InformationResponseDtoToJSONTyped(value?: InformationResponseDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'timestamp': value.timestamp === undefined ? undefined : (value.timestamp.toISOString()),
-        'traceId': value.traceId,
-        'spanId': value.spanId,
-        'httpStatus': value.httpStatus,
-        'originalException': value.originalException,
-        'messages': value.messages,
+        'type': value['type'],
+        'timestamp': value['timestamp'] == null ? value['timestamp'] : value['timestamp'].toISOString(),
+        'traceId': value['traceId'],
+        'spanId': value['spanId'],
+        'httpStatus': value['httpStatus'],
+        'originalException': value['originalException'],
+        'messages': value['messages'],
     };
 }
 

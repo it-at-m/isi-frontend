@@ -12,22 +12,22 @@
  * Do not edit the class manually.
  */
 
+import type { BaugenehmigungsverfahrenAngelegtDto } from './BaugenehmigungsverfahrenAngelegtDto';
 import {
-    BaugenehmigungsverfahrenAngelegtDto,
     instanceOfBaugenehmigungsverfahrenAngelegtDto,
     BaugenehmigungsverfahrenAngelegtDtoFromJSON,
     BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped,
     BaugenehmigungsverfahrenAngelegtDtoToJSON,
 } from './BaugenehmigungsverfahrenAngelegtDto';
+import type { BauleitplanverfahrenAngelegtDto } from './BauleitplanverfahrenAngelegtDto';
 import {
-    BauleitplanverfahrenAngelegtDto,
     instanceOfBauleitplanverfahrenAngelegtDto,
     BauleitplanverfahrenAngelegtDtoFromJSON,
     BauleitplanverfahrenAngelegtDtoFromJSONTyped,
     BauleitplanverfahrenAngelegtDtoToJSON,
 } from './BauleitplanverfahrenAngelegtDto';
+import type { WeiteresVerfahrenAngelegtDto } from './WeiteresVerfahrenAngelegtDto';
 import {
-    WeiteresVerfahrenAngelegtDto,
     instanceOfWeiteresVerfahrenAngelegtDto,
     WeiteresVerfahrenAngelegtDtoFromJSON,
     WeiteresVerfahrenAngelegtDtoFromJSONTyped,
@@ -39,57 +39,45 @@ import {
  * 
  * @export
  */
-export type SaveRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenAngelegtDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenAngelegtDto | { artAbfrage: 'BaugenehmigungsverfahrenAngelegtDto' } & BaugenehmigungsverfahrenAngelegtDto | { artAbfrage: 'BauleitplanverfahrenAngelegtDto' } & BauleitplanverfahrenAngelegtDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenAngelegtDto | { artAbfrage: 'WeiteresVerfahrenAngelegtDto' } & WeiteresVerfahrenAngelegtDto;
+export type SaveRequest = { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } & BaugenehmigungsverfahrenAngelegtDto | { artAbfrage: 'BAULEITPLANVERFAHREN' } & BauleitplanverfahrenAngelegtDto | { artAbfrage: 'WEITERES_VERFAHREN' } & WeiteresVerfahrenAngelegtDto;
 
 export function SaveRequestFromJSON(json: any): SaveRequest {
     return SaveRequestFromJSONTyped(json, false);
 }
 
 export function SaveRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SaveRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     switch (json['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return {...BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN'};
+            return Object.assign({}, BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return {...BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'BAULEITPLANVERFAHREN'};
-        case 'BaugenehmigungsverfahrenAngelegtDto':
-            return {...BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'BaugenehmigungsverfahrenAngelegtDto'};
-        case 'BauleitplanverfahrenAngelegtDto':
-            return {...BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'BauleitplanverfahrenAngelegtDto'};
+            return Object.assign({}, BauleitplanverfahrenAngelegtDtoFromJSONTyped(json, true), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return {...WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'WEITERES_VERFAHREN'};
-        case 'WeiteresVerfahrenAngelegtDto':
-            return {...WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true), artAbfrage: 'WeiteresVerfahrenAngelegtDto'};
+            return Object.assign({}, WeiteresVerfahrenAngelegtDtoFromJSONTyped(json, true), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of SaveRequest exists with 'artAbfrage=${json['artAbfrage']}'`);
+            return json;
     }
 }
 
-export function SaveRequestToJSON(value?: SaveRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+export function SaveRequestToJSON(json: any): any {
+    return SaveRequestToJSONTyped(json, false);
+}
+
+export function SaveRequestToJSONTyped(value?: SaveRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return BaugenehmigungsverfahrenAngelegtDtoToJSON(value);
+            return Object.assign({}, BaugenehmigungsverfahrenAngelegtDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return BauleitplanverfahrenAngelegtDtoToJSON(value);
-        case 'BaugenehmigungsverfahrenAngelegtDto':
-            return BaugenehmigungsverfahrenAngelegtDtoToJSON(value);
-        case 'BauleitplanverfahrenAngelegtDto':
-            return BauleitplanverfahrenAngelegtDtoToJSON(value);
+            return Object.assign({}, BauleitplanverfahrenAngelegtDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return WeiteresVerfahrenAngelegtDtoToJSON(value);
-        case 'WeiteresVerfahrenAngelegtDto':
-            return WeiteresVerfahrenAngelegtDtoToJSON(value);
+            return Object.assign({}, WeiteresVerfahrenAngelegtDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
         default:
-            throw new Error(`No variant of SaveRequest exists with 'artAbfrage=${value['artAbfrage']}'`);
+            return value;
     }
-
 }
 
