@@ -6362,8 +6362,8 @@
           },
           "artFnpFreieEingabe": { "type": "string" },
           "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
-          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
           "verortungJson": { "$ref": "#/components/schemas/VerortungMultiPolygon" },
+          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
@@ -6380,17 +6380,14 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "EntityModelAbfragevariante": {
+      "CollectionModelDokument": {
         "type": "object",
         "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "type": "string" },
-          "artAbfragevariante": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
+            }
           },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
@@ -6405,14 +6402,17 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "CollectionModelDokument": {
+      "EntityModelAbfragevariante": {
         "type": "object",
         "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
-            }
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
@@ -6530,10 +6530,10 @@
               "MITTELSCHULE"
             ]
           },
+          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" },
           "bauvorhabenName": { "type": "string" },
           "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
           "adresseJson": { "$ref": "#/components/schemas/Adresse" },
-          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
@@ -6783,7 +6783,7 @@
               "STANDORTABFRAGE"
             ]
           },
-          "versorgungsquoteHortSobon": { "type": "string", "enum": ["FUENFIZG_PROZENT", "NEUNZIG_PROZENT"] }
+          "versorgungsquoteHortSobon": { "type": "string", "enum": ["FUENFUNDFUENFZIG_PROZENT", "NEUNZIG_PROZENT"] }
         }
       },
       "WohneinheitenProFoerderartProJahr": {
@@ -7311,8 +7311,8 @@
           "dokumente": { "type": "array", "items": { "type": "string" } },
           "relevanteAbfragevariante": { "type": "string" },
           "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
-          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
-          "verortungJson": { "$ref": "#/components/schemas/VerortungMultiPolygon" }
+          "verortungJson": { "$ref": "#/components/schemas/VerortungMultiPolygon" },
+          "adresseJson": { "$ref": "#/components/schemas/Adresse" }
         }
       },
       "DokumentRequestBody": {
@@ -7720,10 +7720,10 @@
               "MITTELSCHULE"
             ]
           },
+          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" },
           "bauvorhabenName": { "type": "string" },
           "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
-          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
-          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" }
+          "adresseJson": { "$ref": "#/components/schemas/Adresse" }
         }
       },
       "KommentarRequestBody": {
@@ -9785,7 +9785,7 @@
               "STANDORTABFRAGE"
             ]
           },
-          "versorgungsquoteHortSobon": { "type": "string", "enum": ["FUENFIZG_PROZENT", "NEUNZIG_PROZENT"] }
+          "versorgungsquoteHortSobon": { "type": "string", "enum": ["FUENFUNDFUENFZIG_PROZENT", "NEUNZIG_PROZENT"] }
         }
       },
       "WeiteresVerfahrenDto": {

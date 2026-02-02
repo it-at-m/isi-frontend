@@ -72,7 +72,7 @@ export type SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum = type
  * @export
  */
 export const SobonBerechnungVersorgungsquoteHortSobonEnum = {
-    FuenfizgProzent: 'FUENFIZG_PROZENT',
+    FuenfundfuenfzigProzent: 'FUENFUNDFUENFZIG_PROZENT',
     NeunzigProzent: 'NEUNZIG_PROZENT'
 } as const;
 export type SobonBerechnungVersorgungsquoteHortSobonEnum = typeof SobonBerechnungVersorgungsquoteHortSobonEnum[keyof typeof SobonBerechnungVersorgungsquoteHortSobonEnum];
