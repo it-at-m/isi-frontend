@@ -45,6 +45,12 @@ export interface SobonBerechnungDto {
      * @memberof SobonBerechnungDto
      */
     sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SobonBerechnungDto
+     */
+    versorgungsquoteHortSobon?: SobonBerechnungDtoVersorgungsquoteHortSobonEnum;
 }
 
 
@@ -61,6 +67,15 @@ export const SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = 
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum];
+
+/**
+ * @export
+ */
+export const SobonBerechnungDtoVersorgungsquoteHortSobonEnum = {
+    FuenfundfuenfzigProzent: 'FUENFUNDFUENFZIG_PROZENT',
+    NeunzigProzent: 'NEUNZIG_PROZENT'
+} as const;
+export type SobonBerechnungDtoVersorgungsquoteHortSobonEnum = typeof SobonBerechnungDtoVersorgungsquoteHortSobonEnum[keyof typeof SobonBerechnungDtoVersorgungsquoteHortSobonEnum];
 
 
 /**
@@ -83,6 +98,7 @@ export function SobonBerechnungDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'isASobonBerechnung': json['isASobonBerechnung'] == null ? undefined : json['isASobonBerechnung'],
         'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'versorgungsquoteHortSobon': json['versorgungsquoteHortSobon'] == null ? undefined : json['versorgungsquoteHortSobon'],
     };
 }
 
@@ -100,6 +116,7 @@ export function SobonBerechnungDtoToJSONTyped(value?: SobonBerechnungDto | null,
         'isASobonBerechnung': value['isASobonBerechnung'],
         'sobonFoerdermix': FoerdermixDtoToJSON(value['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'versorgungsquoteHortSobon': value['versorgungsquoteHortSobon'],
     };
 }
 

@@ -20,9 +20,9 @@ Name | Type
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
 `infrastruktureinrichtungTyp` | string
-`resultType` | string
-`bauvorhabenName` | string
 `verortungPointJson` | [VerortungPoint](VerortungPoint.md)
+`bauvorhabenName` | string
+`resultType` | string
 `adresseJson` | [Adresse](Adresse.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
@@ -47,9 +47,9 @@ const example = {
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
   "infrastruktureinrichtungTyp": null,
-  "resultType": null,
-  "bauvorhabenName": null,
   "verortungPointJson": null,
+  "bauvorhabenName": null,
+  "resultType": null,
   "adresseJson": null,
   "links": null,
 } satisfies EntityModelInfrastruktureinrichtung
