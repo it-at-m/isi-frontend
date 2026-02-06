@@ -50,6 +50,8 @@
           <v-chip
             v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipKitaplanungsbereiche(index)"
           >
             {{ kitaplanungsbereich.kitaPlbT }}
           </v-chip>
@@ -94,6 +96,8 @@
           <v-chip
             v-for="(grundschulsprengelItem, index) in grundschulsprengel"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipGrundschulsprengel(index)"
           >
             {{ grundschulsprengelItem.nummer }}
           </v-chip>
@@ -138,6 +142,8 @@
           <v-chip
             v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipMittelschulsprengel(index)"
           >
             {{ mittelschulsprengelItem.nummer }}
           </v-chip>
@@ -216,7 +222,10 @@ import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 interface Props {
   context?: Context;
   lookAt?: AdresseDto;
+  isEditable?: boolean;
 }
+
+const emit = defineEmits(["form-changed"]);
 
 const geoJsonOptions = {
   // Farbe des Multipolygons
@@ -254,7 +263,7 @@ const { formChanged } = useSaveLeave();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const geoApi = useGeodataEaiApi();
-const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED });
+const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: true });
 const verortungModel = defineModel<VerortungMultiPolygonModel | undefined>();
 // Repräsentiert das Multipolygon je Flurstück.
 const geoJson = computed(() => flurstueckeToGeoJsonFeature(Array.from(selectedFlurstuecke.value.values())));
@@ -574,5 +583,27 @@ function flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<F
       },
     };
   });
+}
+
+function removeChipGrundschulsprengel(index: number) {
+  const grundschulSprengel = _.clone(Array.from(verortungModel.value?.grundschulsprengel ?? []));
+  _.pullAt(grundschulSprengel, [index]);
+  verortungModel.value!.grundschulsprengel = new Set(grundschulSprengel);
+  console.log(verortungModel.value!.grundschulsprengel);
+  emit("form-changed");
+}
+
+function removeChipKitaplanungsbereiche(index: number) {
+  const kitaplanungsbereiche = _.clone(Array.from(verortungModel.value?.kitaplanungsbereiche ?? []));
+  _.pullAt(kitaplanungsbereiche, [index]);
+  verortungModel.value!.kitaplanungsbereiche = new Set(kitaplanungsbereiche);
+  emit("form-changed");
+}
+
+function removeChipMittelschulsprengel(index: number) {
+  const mittelschulSprengel = _.clone(Array.from(verortungModel.value?.mittelschulsprengel ?? []));
+  _.pullAt(mittelschulSprengel, [index]);
+  verortungModel.value!.mittelschulsprengel = new Set(mittelschulSprengel);
+  emit("form-changed");
 }
 </script>

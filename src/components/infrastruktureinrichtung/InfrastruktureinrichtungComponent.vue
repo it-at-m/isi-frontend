@@ -28,6 +28,7 @@
       v-model="infrastruktureinrichtung.verortung"
       :adresse="infrastruktureinrichtung.adresse"
       :is-editable="isEditable"
+      @form-changed="formChanged"
     />
     <field-group-card>
       <v-row justify="center">
@@ -127,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   type BauvorhabenSearchResultDto,
   InfrastruktureinrichtungDtoStatusEnum,
@@ -145,7 +146,6 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
-import type AdresseModel from "@/types/model/common/AdresseModel";
 
 interface Props {
   isEditable?: boolean;
@@ -156,7 +156,8 @@ const lookupStore = useLookupStore();
 const { searchForEntities } = useSearchApi();
 withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
-const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
+const emit = defineEmits(["update:modelValue"]);
+flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 
@@ -165,6 +166,14 @@ onMounted(() => fetchBauvorhaben());
 function isFertigstellungsjahrRequired(): boolean {
   return infrastruktureinrichtung.value.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand;
 }
+
+watch(
+  () => infrastruktureinrichtung.value.verortung,
+  () => {
+    emit("update:modelValue", infrastruktureinrichtung.value);
+  },
+  { immediate: true, deep: true },
+);
 
 /**
  * Holt alle Bauvorhaben vom Backend.

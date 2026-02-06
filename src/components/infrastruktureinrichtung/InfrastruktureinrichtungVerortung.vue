@@ -60,6 +60,8 @@
           <v-chip
             v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipKitaplanungsbereiche(index)"
           >
             {{ kitaplanungsbereich.kitaPlbT }}
           </v-chip>
@@ -104,6 +106,8 @@
           <v-chip
             v-for="(grundschulsprengelItem, index) in grundschulsprengel"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipGrundschulsprengel(index)"
           >
             {{ grundschulsprengelItem.nummer }}
           </v-chip>
@@ -148,6 +152,8 @@
           <v-chip
             v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
             :key="index"
+            :closable="isEditable"
+            @click:close="removeChipMittelschulsprengel(index)"
           >
             {{ mittelschulsprengelItem.nummer }}
           </v-chip>
@@ -201,6 +207,8 @@ interface Props {
   adresse?: AdresseDto;
   isEditable?: boolean;
 }
+
+const emit = defineEmits(["form-changed"]);
 
 const { formChanged } = useSaveLeave();
 const geoApi = useGeodataEaiApi();
@@ -299,11 +307,16 @@ function getPointGeometry(): PointGeometryDto | undefined {
   return undefined;
 }
 
-function createVerortung(point: PointGeometryDto | undefined): void {
+async function createVerortung(point: PointGeometryDto | undefined): void {
   if (!_.isNil(point)) {
-    createVerortungPointDtoFromSelectedPoint(point).then((verortung: VerortungPointDto | undefined) => {
-      verortungModel.value = verortung;
-    });
+    const verortung = await createVerortungPointDtoFromSelectedPoint(point);
+    if (!_.isNil(verortung)) {
+      verortungModel.value = await new VerortungPointModel(verortung);
+      formChanged();
+      console.log(verortungModel.value);
+    } else {
+      verortungModel.value = undefined;
+    }
   } else {
     verortungModel.value = undefined;
   }
@@ -602,5 +615,26 @@ function mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
       multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
     };
   });
+}
+
+function removeChipGrundschulsprengel(index: number) {
+  const grundschulSprengel = _.clone(Array.from(verortungModel.value?.grundschulsprengel ?? []));
+  _.pullAt(grundschulSprengel, [index]);
+  verortungModel.value!.grundschulsprengel = new Set(grundschulSprengel);
+  emit("form-changed");
+}
+
+function removeChipKitaplanungsbereiche(index: number) {
+  const kitaplanungsbereiche = _.clone(Array.from(verortungModel.value?.kitaplanungsbereiche ?? []));
+  _.pullAt(kitaplanungsbereiche, [index]);
+  verortungModel.value!.kitaplanungsbereiche = new Set(kitaplanungsbereiche);
+  emit("form-changed");
+}
+
+function removeChipMittelschulsprengel(index: number) {
+  const mittelschulSprengel = _.clone(Array.from(verortungModel.value?.mittelschulsprengel ?? []));
+  _.pullAt(mittelschulSprengel, [index]);
+  verortungModel.value!.mittelschulsprengel = new Set(mittelschulSprengel);
+  emit("form-changed");
 }
 </script>

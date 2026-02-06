@@ -77,6 +77,8 @@
       v-model="bauvorhaben.verortung"
       :context="Context.BAUVORHABEN"
       :look-at="bauvorhaben.adresse"
+      :is-editable="!isEditable"
+      @form-changed="formChanged"
     />
     <field-group-card card-title="Allgemeine Informationen zum Bauvorhaben">
       <v-row>
@@ -382,6 +384,16 @@ watch(
       bauvorhaben.value.artFnpFreieEingabe = undefined;
       artFnpFreieEingabeVisible.value = false;
     }
+  },
+  { immediate: true, deep: true },
+);
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => bauvorhaben.value.verortung,
+  () => {
+    emit("update:modelValue", bauvorhaben.value);
   },
   { immediate: true, deep: true },
 );
