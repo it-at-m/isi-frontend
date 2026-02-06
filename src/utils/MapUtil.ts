@@ -3,7 +3,7 @@ import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
-// import "@/types/common/Leaflet";
+import RequestUtils from "@/utils/RequestUtils";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
 export const DEFAULT_ICON_OPTIONS = {
@@ -36,22 +36,90 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
+
 export class OverlayUrlMapping {
+  static readonly BASIS_URL_PART = "basis";
+  static readonly BILDUNG_UND_SOZIALES_URL_PART = "Bildung_und_Soziales";
+  static readonly FIS_URL_PART = "FIS2_FS_ISI";
+
   displayName: String;
   internalName: String;
   urlPart: String;
+  authentification: Boolean;
 }
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
-  { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
-  { displayName: "Bezirksteile", internalName: "Bezirksteile", urlPart: "basis" },
-  { displayName: "Stadtbezirke", internalName: "Stadtbezirke", urlPart: "basis" },
-  { displayName: "Kitaplanungsbereiche", internalName: "Kitaplanungsbereiche", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Grundschulsprengel", internalName: "Grundschulsprengel", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Mittelschulsprengel", internalName: "Mittelschulsprengel", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
-  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis" },
+  {
+    displayName: "Gemarkungen",
+    internalName: "Gemarkungen",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Stadtviertel",
+    internalName: "Stadtviertel",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Stadtviertel",
+    internalName: "Stadtviertel",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Bezirksteile",
+    internalName: "Bezirksteile",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Stadtbezirke",
+    internalName: "Stadtbezirke",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Kitaplanungsbereiche",
+    internalName: "Kitaplanungsbereiche",
+    urlPart: OverlayUrlMapping.BILDUNG_UND_SOZIALES_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Grundschulsprengel",
+    internalName: "Grundschulsprengel",
+    urlPart: OverlayUrlMapping.BILDUNG_UND_SOZIALES_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Mittelschulsprengel",
+    internalName: "Mittelschulsprengel",
+    urlPart: OverlayUrlMapping.BILDUNG_UND_SOZIALES_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Baublöcke",
+    internalName: "Baublöcke",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "Umgriffe Bebauungspläne",
+    internalName: "BB-Umgriff",
+    urlPart: OverlayUrlMapping.BASIS_URL_PART,
+    authentification: false,
+  },
+  {
+    displayName: "FIS Status Baurecht vorhanden",
+    internalName: "FIS Status Baurecht vorhanden",
+    urlPart: OverlayUrlMapping.FIS_URL_PART,
+    authentification: true,
+  },
+  {
+    displayName: "FIS Status Potenziale",
+    internalName: "FIS Status Potenziale",
+    urlPart: OverlayUrlMapping.FIS_URL_PART,
+    authentification: true,
+  },
 ];
 
 /**
@@ -90,14 +158,21 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
       transparent: true,
       ...LAYER_OPTIONS,
     });
+
+    if (overlay.authentification) {
+      //layer.setUrl(RequestUtils.getBasicFetchConfigurationForBackend().basePath + "/layer/" + btoa(layer.getUrl())); // hier weitermachen
+    }
     layers[overlay.displayName] = layer;
   }
-
   return layers;
 }
 
 export function getArcgisUrl(service: string): string {
   return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
+}
+
+export function getGeodataEaiUrl(layerUrl: string): string {
+  return (import.meta.env.VITE_GEODATA_EAI_URL as string).replace("{1}", layerUrl);
 }
 
 export function getBackgroundMapUrl(): string {

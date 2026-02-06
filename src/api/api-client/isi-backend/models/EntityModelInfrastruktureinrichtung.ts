@@ -133,25 +133,25 @@ export interface EntityModelInfrastruktureinrichtung {
      * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
+    bauvorhabenName?: string;
     /**
      * 
      * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    bauvorhabenName?: string;
-    /**
-     * 
-     * @type {VerortungPoint}
-     * @memberof EntityModelInfrastruktureinrichtung
-     */
-    verortungPointJson?: VerortungPoint;
+    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
     /**
      * 
      * @type {Adresse}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {VerortungPoint}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
+    verortungPointJson?: VerortungPoint;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -235,10 +235,10 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
         'bauvorhabenName': !exists(json, 'bauvorhabenName') ? undefined : json['bauvorhabenName'],
-        'verortungPointJson': !exists(json, 'verortungPointJson') ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
         'adresseJson': !exists(json, 'adresseJson') ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungPointJson': !exists(json, 'verortungPointJson') ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -266,10 +266,10 @@ export function EntityModelInfrastruktureinrichtungToJSON(value?: EntityModelInf
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
         'idKibigWeb': value.idKibigWeb,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-        'resultType': value.resultType,
         'bauvorhabenName': value.bauvorhabenName,
-        'verortungPointJson': VerortungPointToJSON(value.verortungPointJson),
+        'resultType': value.resultType,
         'adresseJson': AdresseToJSON(value.adresseJson),
+        'verortungPointJson': VerortungPointToJSON(value.verortungPointJson),
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }

@@ -139,25 +139,25 @@ export interface InfrastruktureinrichtungRequestBody {
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
+    bauvorhabenName?: string;
     /**
      * 
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    bauvorhabenName?: string;
-    /**
-     * 
-     * @type {VerortungPoint}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
-    verortungPointJson?: VerortungPoint;
+    resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
     /**
      * 
      * @type {Adresse}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {VerortungPoint}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    verortungPointJson?: VerortungPoint;
 }
 
 
@@ -237,10 +237,10 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheTeilgrundstueck': !exists(json, 'flaecheTeilgrundstueck') ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': !exists(json, 'idKibigWeb') ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': !exists(json, 'infrastruktureinrichtungTyp') ? undefined : json['infrastruktureinrichtungTyp'],
-        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
         'bauvorhabenName': !exists(json, 'bauvorhabenName') ? undefined : json['bauvorhabenName'],
-        'verortungPointJson': !exists(json, 'verortungPointJson') ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
         'adresseJson': !exists(json, 'adresseJson') ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungPointJson': !exists(json, 'verortungPointJson') ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
     };
 }
 
@@ -269,10 +269,10 @@ export function InfrastruktureinrichtungRequestBodyToJSON(value?: Infrastrukture
         'flaecheTeilgrundstueck': value.flaecheTeilgrundstueck,
         'idKibigWeb': value.idKibigWeb,
         'infrastruktureinrichtungTyp': value.infrastruktureinrichtungTyp,
-        'resultType': value.resultType,
         'bauvorhabenName': value.bauvorhabenName,
-        'verortungPointJson': VerortungPointToJSON(value.verortungPointJson),
+        'resultType': value.resultType,
         'adresseJson': AdresseToJSON(value.adresseJson),
+        'verortungPointJson': VerortungPointToJSON(value.verortungPointJson),
     };
 }
 
