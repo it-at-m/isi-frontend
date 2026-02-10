@@ -51,7 +51,9 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Grundschulsprengel", internalName: "Grundschulsprengel", urlPart: "Bildung_und_Soziales" },
   { displayName: "Mittelschulsprengel", internalName: "Mittelschulsprengel", urlPart: "Bildung_und_Soziales" },
   { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
-  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis" },
+  { displayName: "Bebauungspläne rechtskräftig", internalName: "BAUG_UMGRIFF", urlPart: "basis" },
+  { displayName: "Bebauungspläne in Aufstellung", internalName: "BAUG_UMGRIFF", urlPart: "basis" },
+  { displayName: "Bauliniengefüge", internalName: "BAUG_LINIE", urlPart: "basis" },
 ];
 
 /**
