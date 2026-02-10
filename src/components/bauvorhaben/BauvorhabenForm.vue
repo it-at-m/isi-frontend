@@ -77,7 +77,7 @@
       v-model="bauvorhaben.verortung"
       :context="Context.BAUVORHABEN"
       :look-at="bauvorhaben.adresse"
-      :is-editable="!isEditable"
+      :is-editable="isEditable"
       @form-changed="formChanged"
     />
     <field-group-card card-title="Allgemeine Informationen zum Bauvorhaben">
