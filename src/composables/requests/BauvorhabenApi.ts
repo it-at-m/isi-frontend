@@ -14,6 +14,7 @@ import { BauvorhabenApi, InformationResponseDtoFromJSON, ResponseError } from "@
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
 import RequestUtils from "@/utils/RequestUtils";
+import { toBackendJson } from "@/utils/SerializationUtils";
 
 // eslint-disable-next-line
 export function useBauvorhabenApi() {
@@ -66,7 +67,7 @@ export function useBauvorhabenApi() {
     datenuebernahmeAbfrageId: string | undefined,
   ): Promise<BauvorhabenDto> {
     const requestObject: CreateBauvorhabenRequest = {
-      bauvorhabenDto: bauvorhabenDto,
+      bauvorhabenDto: toBackendJson(bauvorhabenDto) as BauvorhabenDto,
       abfrageId: datenuebernahmeAbfrageId,
     };
 
@@ -80,7 +81,7 @@ export function useBauvorhabenApi() {
   }
 
   async function putBauvorhaben(bauvorhabenDto: BauvorhabenDto): Promise<BauvorhabenDto> {
-    const requestObject: UpdateBauvorhabenRequest = { bauvorhabenDto };
+    const requestObject: UpdateBauvorhabenRequest = { bauvorhabenDto: toBackendJson(bauvorhabenDto) as BauvorhabenDto };
 
     try {
       const response = await bauvorhabenApi.updateBauvorhaben(requestObject, RequestUtils.getPUTConfig());

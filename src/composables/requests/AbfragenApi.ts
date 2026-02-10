@@ -26,6 +26,7 @@ import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-back
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
+import { toBackendJson } from "@/utils/SerializationUtils";
 
 // eslint-disable-next-line
 export function useAbfragenApi() {
@@ -46,7 +47,7 @@ export function useAbfragenApi() {
     }
 
     const requestObject: SaveOperationRequest = {
-      saveRequest: dtoTyped,
+      saveRequest: toBackendJson(dtoTyped) as typeof dtoTyped,
     };
 
     try {
@@ -72,7 +73,7 @@ export function useAbfragenApi() {
     }
 
     const requestObject: PatchAngelegtRequest = {
-      saveRequest: dtoTyped,
+      saveRequest: toBackendJson(dtoTyped) as typeof dtoTyped,
       id: id,
     };
 
@@ -104,7 +105,7 @@ export function useAbfragenApi() {
     }
 
     const requestObject: PatchStartBearbeitungOperationRequest = {
-      patchStartBearbeitungRequest: dtoTyped,
+      patchStartBearbeitungRequest: toBackendJson(dtoTyped) as typeof dtoTyped,
       id: id,
     };
     try {
@@ -135,7 +136,7 @@ export function useAbfragenApi() {
     }
 
     const requestObject: PatchEinpflegenBedarfsmeldungOperationRequest = {
-      patchEinpflegenBedarfsmeldungRequest: dtoTyped,
+      patchEinpflegenBedarfsmeldungRequest: toBackendJson(dtoTyped) as typeof dtoTyped,
       id: id,
     };
     try {
@@ -166,7 +167,7 @@ export function useAbfragenApi() {
     }
 
     const requestObject: PatchEinplanungBedarfeOperationRequest = {
-      patchEinplanungBedarfeRequest: dtoTyped,
+      patchEinplanungBedarfeRequest: toBackendJson(dtoTyped) as typeof dtoTyped,
       id: id,
     };
     try {
