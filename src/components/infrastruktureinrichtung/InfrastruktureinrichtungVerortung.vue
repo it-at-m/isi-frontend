@@ -59,9 +59,9 @@
         >
           <v-chip
             v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
-            :key="index"
+            :key="kitaplanungsbereich.kitaPlbT"
             :closable="isEditable"
-            @click:close="removeChipKitaplanungsbereiche(index)"
+            @click:close.stop="removeChipKitaplanungsbereiche(kitaplanungsbereich.kitaPlbT)"
           >
             {{ kitaplanungsbereich.kitaPlbT }}
           </v-chip>
@@ -105,9 +105,9 @@
         >
           <v-chip
             v-for="(grundschulsprengelItem, index) in grundschulsprengel"
-            :key="index"
+            :key="grundschulsprengelItem.nummer"
             :closable="isEditable"
-            @click:close="removeChipGrundschulsprengel(index)"
+            @click:close.stop="removeChipGrundschulsprengel(grundschulsprengelItem.nummer)"
           >
             {{ grundschulsprengelItem.nummer }}
           </v-chip>
@@ -151,9 +151,9 @@
         >
           <v-chip
             v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
-            :key="index"
+            :key="mittelschulsprengelItem.nummer"
             :closable="isEditable"
-            @click:close="removeChipMittelschulsprengel(index)"
+            @click:close.stop="removeChipMittelschulsprengel(mittelschulsprengelItem.nummer)"
           >
             {{ mittelschulsprengelItem.nummer }}
           </v-chip>
@@ -617,24 +617,24 @@ function mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
   });
 }
 
-function removeChipGrundschulsprengel(index: number) {
-  const grundschulSprengel = _.clone(Array.from(verortungModel.value?.grundschulsprengel ?? []));
-  _.pullAt(grundschulSprengel, [index]);
-  verortungModel.value!.grundschulsprengel = new Set(grundschulSprengel);
+function removeChipGrundschulsprengel(nummer: number | undefined) {
+  const grundschulSprengel = Array.from(verortungModel.value?.grundschulsprengel ?? []);
+  const filteredGrundschulSprengel = grundschulSprengel.filter((x) => x.nummer !== nummer);
+  verortungModel.value!.grundschulsprengel = new Set(filteredGrundschulSprengel);
   emit("form-changed");
 }
 
-function removeChipKitaplanungsbereiche(index: number) {
-  const kitaplanungsbereiche = _.clone(Array.from(verortungModel.value?.kitaplanungsbereiche ?? []));
-  _.pullAt(kitaplanungsbereiche, [index]);
-  verortungModel.value!.kitaplanungsbereiche = new Set(kitaplanungsbereiche);
+function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
+  const kitaplanungsbereiche = Array.from(verortungModel.value?.kitaplanungsbereiche ?? []);
+  const filteredKitaplanungsbereiche = kitaplanungsbereiche.filter((x) => x.kitaPlbT !== kitaPlbT);
+  verortungModel.value!.kitaplanungsbereiche = new Set(filteredKitaplanungsbereiche);
   emit("form-changed");
 }
 
-function removeChipMittelschulsprengel(index: number) {
-  const mittelschulSprengel = _.clone(Array.from(verortungModel.value?.mittelschulsprengel ?? []));
-  _.pullAt(mittelschulSprengel, [index]);
-  verortungModel.value!.mittelschulsprengel = new Set(mittelschulSprengel);
+function removeChipMittelschulsprengel(nummer: number | undefined) {
+  const mittelschulsprengel = Array.from(verortungModel.value?.mittelschulsprengel ?? []);
+  const filteredMittelschulSprengel = mittelschulsprengel.filter((x) => x.nummer !== nummer);
+  verortungModel.value!.mittelschulsprengel = new Set(filteredMittelschulSprengel);
   emit("form-changed");
 }
 </script>
