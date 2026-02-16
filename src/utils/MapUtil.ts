@@ -53,7 +53,7 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
   { displayName: "Bebauungspläne rechtskräftig", internalName: "BB_rechtskräftig", urlPart: "basis" },
   { displayName: "Bebauungspläne in Aufstellung", internalName: "BB-Umgriff_in_Aufstellung", urlPart: "basis" },
-  { displayName: "Bauliniengefüge", internalName: "Bauliniengefüge ", urlPart: "basis" },
+  { displayName: "Bauliniengefüge", internalName: "Bauliniengefüge", urlPart: "basis" },
 ];
 
 /**
