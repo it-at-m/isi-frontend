@@ -4,6 +4,7 @@ import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 import RequestUtils from "@/utils/RequestUtils";
+import { ControllerFrDasLesenVonLayernApi } from "@/api/api-client/isi-geodata-eai";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
 export const DEFAULT_ICON_OPTIONS = {
@@ -153,15 +154,22 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   }
 
   for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
-    const layer = L.nonTiledLayer.wms(getArcgisUrl(overlay.urlPart), {
-      layers: overlay.internalName,
-      transparent: true,
-      ...LAYER_OPTIONS,
-    });
-
+    var layer = undefined;
     if (overlay.authentification) {
-      //layer.setUrl(RequestUtils.getBasicFetchConfigurationForBackend().basePath + "/layer/" + btoa(layer.getUrl())); // hier weitermachen
+      layer = L.nonTiledLayer.wms(getGeodataEaiUr(), {
+        urlPart: overlay.urlPart,
+        layers: overlay.internalName,
+        transparent: true,
+        ...LAYER_OPTIONS,
+      });
+    } else {
+      layer = L.nonTiledLayer.wms(getArcgisUrl(overlay.urlPart), {
+        layers: overlay.internalName,
+        transparent: true,
+        ...LAYER_OPTIONS,
+      });
     }
+
     layers[overlay.displayName] = layer;
   }
   return layers;
@@ -171,8 +179,8 @@ export function getArcgisUrl(service: string): string {
   return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
 }
 
-export function getGeodataEaiUrl(layerUrl: string): string {
-  return (import.meta.env.VITE_GEODATA_EAI_URL as string).replace("{1}", layerUrl);
+export function getGeodataEaiUr() {
+  return RequestUtils.getBaseGeodataUrl() + `/layer`;
 }
 
 export function getBackgroundMapUrl(): string {

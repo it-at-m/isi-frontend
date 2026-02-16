@@ -8,6 +8,7 @@
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
+    { "name": "Controller für das Lesen von Layern", "description": "API für das Lesen von Layern" },
     {
       "name": "Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)",
       "description": "API für geometriespezifische Operationen."
@@ -502,6 +503,31 @@
             "content": {
               "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
             }
+          }
+        }
+      }
+    },
+    "/layer": {
+      "get": {
+        "tags": ["Controller für das Lesen von Layern"],
+        "summary": "Ermittelt einen Layer",
+        "operationId": "getLayer",
+        "parameters": [
+          {
+            "name": "arg0",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "object", "additionalProperties": { "type": "string" } }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Das Lesen des Layers war erfolgreich",
+            "content": { "image/png": { "schema": { "type": "string", "format": "byte" } } }
+          },
+          "500": {
+            "description": "Beim Lesen des Layers ist ein Fehler aufgetreten.",
+            "content": { "image/png": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }

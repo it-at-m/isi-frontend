@@ -97,7 +97,7 @@ export interface EntityModelAbfrage {
      * @type {string}
      * @memberof EntityModelAbfrage
      */
-    artAbfrage?: EntityModelAbfrageArtAbfrageEnum;
+    bauvorhabenUuid?: string;
     /**
      * 
      * @type {string}
@@ -109,7 +109,7 @@ export interface EntityModelAbfrage {
      * @type {string}
      * @memberof EntityModelAbfrage
      */
-    bauvorhabenUuid?: string;
+    artAbfrage?: EntityModelAbfrageArtAbfrageEnum;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -122,6 +122,16 @@ export interface EntityModelAbfrage {
 /**
  * @export
  */
+export const EntityModelAbfrageResultTypeEnum = {
+    Bauvorhaben: 'BAUVORHABEN',
+    Abfrage: 'ABFRAGE',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+} as const;
+export type EntityModelAbfrageResultTypeEnum = typeof EntityModelAbfrageResultTypeEnum[keyof typeof EntityModelAbfrageResultTypeEnum];
+
+/**
+ * @export
+ */
 export const EntityModelAbfrageArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
@@ -129,16 +139,6 @@ export const EntityModelAbfrageArtAbfrageEnum = {
     WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type EntityModelAbfrageArtAbfrageEnum = typeof EntityModelAbfrageArtAbfrageEnum[keyof typeof EntityModelAbfrageArtAbfrageEnum];
-
-/**
- * @export
- */
-export const EntityModelAbfrageResultTypeEnum = {
-    Bauvorhaben: 'BAUVORHABEN',
-    Abfrage: 'ABFRAGE',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
-} as const;
-export type EntityModelAbfrageResultTypeEnum = typeof EntityModelAbfrageResultTypeEnum[keyof typeof EntityModelAbfrageResultTypeEnum];
 
 
 /**
@@ -169,9 +169,9 @@ export function EntityModelAbfrageFromJSONTyped(json: any, ignoreDiscriminator: 
         'sub': !exists(json, 'sub') ? undefined : json['sub'],
         'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
         'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
-        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
         'bauvorhabenUuid': !exists(json, 'bauvorhabenUuid') ? undefined : json['bauvorhabenUuid'],
+        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
+        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
         'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -194,9 +194,9 @@ export function EntityModelAbfrageToJSON(value?: EntityModelAbfrage | null): any
         'sub': value.sub,
         'linkEakte': value.linkEakte,
         'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieToJSON)),
-        'artAbfrage': value.artAbfrage,
-        'resultType': value.resultType,
         'bauvorhabenUuid': value.bauvorhabenUuid,
+        'resultType': value.resultType,
+        'artAbfrage': value.artAbfrage,
         '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
     };
 }
