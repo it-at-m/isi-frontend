@@ -99,21 +99,20 @@ watch(() => foerdermix, watchFoerdermix, { immediate: true, deep: true });
 
 function watchFoerdermix(): void {
   stammdaten = stammdatenStore.foerdermixStammdaten;
-  const stammdatumMatchingWithFoerdermix = stammdaten.find(
+  const matchedDatum = findMatchingStammdatum();
+  selectedItem.value = matchedDatum || createFoerdermixStammDto();
+}
+
+function findMatchingStammdatum(): FoerdermixStammModel | undefined {
+  return stammdaten.find(
     (stammdatum) =>
-      _.isEqual(stammdatum.foerdermix.bezeichnung, foerdermix.value.bezeichnung) &&
-      _.isEqual(stammdatum.foerdermix.bezeichnungJahr, foerdermix.value.bezeichnungJahr),
+      stammdatum.foerdermix.bezeichnung === foerdermix.value.bezeichnung &&
+      stammdatum.foerdermix.bezeichnungJahr === foerdermix.value.bezeichnungJahr,
   );
-  if (_.isNil(stammdatumMatchingWithFoerdermix)) {
-    selectedItem.value = createFoerdermixStammDto();
-  } else {
-    selectedItem.value = stammdatumMatchingWithFoerdermix;
-  }
 }
 
 const gesamtsumme = computed(() => {
-  const sum: number = addiereAnteile(foerdermix.value);
-  return sum;
+  return addiereAnteile(foerdermix.value);
 });
 
 const isFreieEingabe = computed(() => {
@@ -127,7 +126,30 @@ function foerdermixSelected(item: FoerdermixStammModel): void {
 
 function setGroupedStammdatenList(): void {
   stammdaten = stammdatenStore.foerdermixStammdaten;
-  groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
-  selectedItem.value.foerdermix.bezeichnung = foerdermix.value.bezeichnung;
+  groupedStammdaten.value = getFilteredAndSortedStammdaten();
+
+  handleOldEntries();
+}
+
+function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
+  return _.sortBy(
+    stammdaten.filter(
+      (stammdatum) =>
+        stammdatum.foerdermix.bezeichnung !== "40% Beschluss" &&
+        stammdatum.foerdermix.bezeichnung !== "Befreiung (§31 BauBG)",
+    ),
+    ["foerdermix.bezeichnungJahr"],
+  );
+}
+
+function handleOldEntries(): void {
+  if (isOldEntry()) {
+    const matchedDatum = findMatchingStammdatum();
+    selectedItem.value = matchedDatum || createFoerdermixStammDto();
+  }
+}
+
+function isOldEntry(): boolean {
+  return ["40% Beschluss", "Befreiung (§31 BauBG)"].includes(foerdermix.value.bezeichnung);
 }
 </script>
