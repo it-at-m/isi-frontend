@@ -22,6 +22,25 @@
         md="6"
       >
         <v-select
+          id="sobon_berechnung_versorgungsquote_hort_sobon"
+          v-model="sobonBerechnung.versorgungsquoteHortSobon"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="versorgungsquoteHortSobon"
+          label="SoBoN-ursächliche Versorgungsquote Hort"
+          variant="underlined"
+          item-value="key"
+          item-title="value"
+          @update:model-value="formChanged"
+        />
+      </v-col>
+    </v-expand-transition>
+    <v-expand-transition>
+      <v-col
+        v-if="sobonBerechnung.isASobonBerechnung"
+        cols="12"
+        md="6"
+      >
+        <v-select
           id="sobon_berechnung_foerdermix_stammdaten_dropdown"
           v-model="sobonFoerdermix"
           :disabled="!isEditableBySachbearbeitung"
@@ -95,12 +114,14 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
+import { useLookupStore } from "@/stores/LookupStore";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
 const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 const stammdatenStore = useStammdatenStore();
+const lookupStore = useLookupStore();
 
 onMounted(() => {
   setGroupedStammdatenList();
@@ -141,6 +162,8 @@ const gesamtsumme = computed(() => {
   return 0;
 });
 
+const versorgungsquoteHortSobon = computed(() => lookupStore.versorgungsquoteHortSobon);
+
 function setGroupedStammdatenList(): void {
   let stammdaten = stammdatenStore.foerdermixStammdaten;
   stammdaten = stammdaten.filter((fm: FoerdermixStammDto) => {
@@ -156,6 +179,7 @@ function sobonBerechnungChanged(): void {
   formChanged();
   if (!sobonBerechnung.value.isASobonBerechnung) {
     sobonBerechnung.value.sobonFoerdermix = undefined;
+    sobonBerechnung.value.versorgungsquoteHortSobon = undefined;
   }
 }
 </script>

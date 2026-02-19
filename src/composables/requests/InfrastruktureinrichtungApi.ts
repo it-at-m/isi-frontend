@@ -10,6 +10,7 @@ import {
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
 import { useSaveLeave } from "../SaveLeave";
+import { toBackendJson } from "@/utils/SerializationUtils";
 
 // eslint-disable-next-line
 export function useInfrastruktureinrichtungApi() {
@@ -38,7 +39,7 @@ export function useInfrastruktureinrichtungApi() {
     dto: InfrastruktureinrichtungDto,
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: CreateInfrastruktureinrichtungRequest = {
-      updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtung(
@@ -56,7 +57,7 @@ export function useInfrastruktureinrichtungApi() {
     dto: InfrastruktureinrichtungDto,
   ): Promise<InfrastruktureinrichtungDto> {
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
-      updateInfrastruktureinrichtungRequest: dto as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtung(

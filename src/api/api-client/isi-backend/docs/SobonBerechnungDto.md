@@ -9,6 +9,7 @@ Name | Type
 `isASobonBerechnung` | boolean
 `sobonFoerdermix` | [FoerdermixDto](FoerdermixDto.md)
 `sobonOrientierungswertJahrSobonUrsaechlich` | string
+`versorgungsquoteHortSobon` | string
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "isASobonBerechnung": null,
   "sobonFoerdermix": null,
   "sobonOrientierungswertJahrSobonUrsaechlich": null,
+  "versorgungsquoteHortSobon": null,
 } satisfies SobonBerechnungDto
 
 console.log(example)
