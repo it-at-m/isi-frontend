@@ -98,7 +98,6 @@ export function SobonBerechnungFromJSONTyped(json: any, ignoreDiscriminator: boo
         'isASobonBerechnung': json['isASobonBerechnung'] == null ? undefined : json['isASobonBerechnung'],
         'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
-        'versorgungsquoteHortSobon': json['versorgungsquoteHortSobon'] == null ? undefined : json['versorgungsquoteHortSobon'],
     };
 }
 
@@ -116,7 +115,6 @@ export function SobonBerechnungToJSONTyped(value?: SobonBerechnung | null, ignor
         'isASobonBerechnung': value['isASobonBerechnung'],
         'sobonFoerdermix': FoerdermixToJSON(value['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
-        'versorgungsquoteHortSobon': value['versorgungsquoteHortSobon'],
     };
 }
 
