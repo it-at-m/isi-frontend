@@ -45,12 +45,6 @@ export interface SobonBerechnungDto {
      * @memberof SobonBerechnungDto
      */
     sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof SobonBerechnungDto
-     */
-    versorgungsquoteHortSobon?: SobonBerechnungDtoVersorgungsquoteHortSobonEnum;
 }
 
 
@@ -67,15 +61,6 @@ export const SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = 
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum];
-
-/**
- * @export
- */
-export const SobonBerechnungDtoVersorgungsquoteHortSobonEnum = {
-    FuenfundfuenfzigProzent: 'FUENFUNDFUENFZIG_PROZENT',
-    NeunzigProzent: 'NEUNZIG_PROZENT'
-} as const;
-export type SobonBerechnungDtoVersorgungsquoteHortSobonEnum = typeof SobonBerechnungDtoVersorgungsquoteHortSobonEnum[keyof typeof SobonBerechnungDtoVersorgungsquoteHortSobonEnum];
 
 
 /**
