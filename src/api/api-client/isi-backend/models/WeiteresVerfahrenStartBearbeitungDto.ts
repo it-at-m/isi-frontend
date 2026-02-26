@@ -12,34 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { AbfrageStartBearbeitungDto } from './AbfrageStartBearbeitungDto';
-import {
-    AbfrageStartBearbeitungDtoFromJSON,
-    AbfrageStartBearbeitungDtoFromJSONTyped,
-    AbfrageStartBearbeitungDtoToJSON,
-} from './AbfrageStartBearbeitungDto';
-import type { AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto';
-import {
-    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoFromJSON,
-    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoFromJSONTyped,
-    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoToJSON,
-} from './AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto';
-import type { AbfragevarianteWeiteresVerfahrenStartBearbeitungDto } from './AbfragevarianteWeiteresVerfahrenStartBearbeitungDto';
-import {
-    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSON,
-    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSONTyped,
-    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSON,
-} from './AbfragevarianteWeiteresVerfahrenStartBearbeitungDto';
+import { mapValues } from '../runtime';
 import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
     VerortungMultiPolygonDtoFromJSON,
     VerortungMultiPolygonDtoFromJSONTyped,
     VerortungMultiPolygonDtoToJSON,
+    VerortungMultiPolygonDtoToJSONTyped,
 } from './VerortungMultiPolygonDto';
-
+import type { AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto } from './AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto';
 import {
-} from './';
+    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoFromJSON,
+    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoFromJSONTyped,
+    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoToJSON,
+    AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoToJSONTyped,
+} from './AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto';
+import type { AbfrageStartBearbeitungDto } from './AbfrageStartBearbeitungDto';
+import {
+    AbfrageStartBearbeitungDtoFromJSON,
+    AbfrageStartBearbeitungDtoFromJSONTyped,
+    AbfrageStartBearbeitungDtoToJSON,
+    AbfrageStartBearbeitungDtoToJSONTyped,
+} from './AbfrageStartBearbeitungDto';
+import type { AbfragevarianteWeiteresVerfahrenStartBearbeitungDto } from './AbfragevarianteWeiteresVerfahrenStartBearbeitungDto';
+import {
+    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSON,
+    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSONTyped,
+    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSON,
+    AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSONTyped,
+} from './AbfragevarianteWeiteresVerfahrenStartBearbeitungDto';
 
 /**
  * 
@@ -72,12 +73,10 @@ export interface WeiteresVerfahrenStartBearbeitungDto extends AbfrageStartBearbe
 /**
  * Check if a given object implements the WeiteresVerfahrenStartBearbeitungDto interface.
  */
-export function instanceOfWeiteresVerfahrenStartBearbeitungDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "abfragevariantenWeiteresVerfahren" in value;
-    isInstance = isInstance && "abfragevariantenSachbearbeitungWeiteresVerfahren" in value;
-
-    return isInstance;
+export function instanceOfWeiteresVerfahrenStartBearbeitungDto(value: object): value is WeiteresVerfahrenStartBearbeitungDto {
+    if (!('abfragevariantenWeiteresVerfahren' in value) || value['abfragevariantenWeiteresVerfahren'] === undefined) return false;
+    if (!('abfragevariantenSachbearbeitungWeiteresVerfahren' in value) || value['abfragevariantenSachbearbeitungWeiteresVerfahren'] === undefined) return false;
+    return true;
 }
 
 export function WeiteresVerfahrenStartBearbeitungDtoFromJSON(json: any): WeiteresVerfahrenStartBearbeitungDto {
@@ -85,31 +84,44 @@ export function WeiteresVerfahrenStartBearbeitungDtoFromJSON(json: any): Weitere
 }
 
 export function WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WeiteresVerfahrenStartBearbeitungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
+            return WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true);
+        }
+
     }
     return {
-        ...AbfrageStartBearbeitungDtoFromJSONTyped(json, ignoreDiscriminator),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        ...AbfrageStartBearbeitungDtoFromJSONTyped(json, true),
+        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoFromJSON)),
         'abfragevariantenSachbearbeitungWeiteresVerfahren': ((json['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSON)),
     };
 }
 
-export function WeiteresVerfahrenStartBearbeitungDtoToJSON(value?: WeiteresVerfahrenStartBearbeitungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WeiteresVerfahrenStartBearbeitungDtoToJSON(json: any): WeiteresVerfahrenStartBearbeitungDto {
+    return WeiteresVerfahrenStartBearbeitungDtoToJSONTyped(json, false);
+}
+
+export function WeiteresVerfahrenStartBearbeitungDtoToJSONTyped(value?: WeiteresVerfahrenStartBearbeitungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...AbfrageStartBearbeitungDtoToJSON(value),
-        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
-        'abfragevariantenWeiteresVerfahren': ((value.abfragevariantenWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoToJSON)),
-        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value.abfragevariantenSachbearbeitungWeiteresVerfahren as Array<any>).map(AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSON)),
+        ...AbfrageStartBearbeitungDtoToJSONTyped(value, true),
+        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
+        'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoToJSON)),
+        'abfragevariantenSachbearbeitungWeiteresVerfahren': ((value['abfragevariantenSachbearbeitungWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSON)),
     };
 }
 

@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BezirksteilDto } from './BezirksteilDto';
 import {
     BezirksteilDtoFromJSON,
     BezirksteilDtoFromJSONTyped,
     BezirksteilDtoToJSON,
+    BezirksteilDtoToJSONTyped,
 } from './BezirksteilDto';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
+    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 
 /**
@@ -55,10 +57,8 @@ export interface FeatureDtoBezirksteilDto {
 /**
  * Check if a given object implements the FeatureDtoBezirksteilDto interface.
  */
-export function instanceOfFeatureDtoBezirksteilDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureDtoBezirksteilDto(value: object): value is FeatureDtoBezirksteilDto {
+    return true;
 }
 
 export function FeatureDtoBezirksteilDtoFromJSON(json: any): FeatureDtoBezirksteilDto {
@@ -66,29 +66,31 @@ export function FeatureDtoBezirksteilDtoFromJSON(json: any): FeatureDtoBezirkste
 }
 
 export function FeatureDtoBezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoBezirksteilDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : BezirksteilDtoFromJSON(json['properties']),
+        'type': json['type'] == null ? undefined : json['type'],
+        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': json['properties'] == null ? undefined : BezirksteilDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoBezirksteilDtoToJSON(value?: FeatureDtoBezirksteilDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureDtoBezirksteilDtoToJSON(json: any): FeatureDtoBezirksteilDto {
+    return FeatureDtoBezirksteilDtoToJSONTyped(json, false);
+}
+
+export function FeatureDtoBezirksteilDtoToJSONTyped(value?: FeatureDtoBezirksteilDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': BezirksteilDtoToJSON(value.properties),
+        'type': value['type'],
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
+        'properties': BezirksteilDtoToJSON(value['properties']),
     };
 }
 

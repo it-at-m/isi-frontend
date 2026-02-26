@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureDtoViertelDtoGeometry } from './FeatureDtoViertelDtoGeometry';
 import {
     FeatureDtoViertelDtoGeometryFromJSON,
     FeatureDtoViertelDtoGeometryFromJSONTyped,
     FeatureDtoViertelDtoGeometryToJSON,
+    FeatureDtoViertelDtoGeometryToJSONTyped,
 } from './FeatureDtoViertelDtoGeometry';
 import type { GrundschulsprengelDto } from './GrundschulsprengelDto';
 import {
     GrundschulsprengelDtoFromJSON,
     GrundschulsprengelDtoFromJSONTyped,
     GrundschulsprengelDtoToJSON,
+    GrundschulsprengelDtoToJSONTyped,
 } from './GrundschulsprengelDto';
 
 /**
@@ -55,10 +57,8 @@ export interface FeatureDtoGrundschulsprengelDto {
 /**
  * Check if a given object implements the FeatureDtoGrundschulsprengelDto interface.
  */
-export function instanceOfFeatureDtoGrundschulsprengelDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFeatureDtoGrundschulsprengelDto(value: object): value is FeatureDtoGrundschulsprengelDto {
+    return true;
 }
 
 export function FeatureDtoGrundschulsprengelDtoFromJSON(json: any): FeatureDtoGrundschulsprengelDto {
@@ -66,29 +66,31 @@ export function FeatureDtoGrundschulsprengelDtoFromJSON(json: any): FeatureDtoGr
 }
 
 export function FeatureDtoGrundschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureDtoGrundschulsprengelDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'geometry': !exists(json, 'geometry') ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
-        'properties': !exists(json, 'properties') ? undefined : GrundschulsprengelDtoFromJSON(json['properties']),
+        'type': json['type'] == null ? undefined : json['type'],
+        'geometry': json['geometry'] == null ? undefined : FeatureDtoViertelDtoGeometryFromJSON(json['geometry']),
+        'properties': json['properties'] == null ? undefined : GrundschulsprengelDtoFromJSON(json['properties']),
     };
 }
 
-export function FeatureDtoGrundschulsprengelDtoToJSON(value?: FeatureDtoGrundschulsprengelDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureDtoGrundschulsprengelDtoToJSON(json: any): FeatureDtoGrundschulsprengelDto {
+    return FeatureDtoGrundschulsprengelDtoToJSONTyped(json, false);
+}
+
+export function FeatureDtoGrundschulsprengelDtoToJSONTyped(value?: FeatureDtoGrundschulsprengelDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'geometry': FeatureDtoViertelDtoGeometryToJSON(value.geometry),
-        'properties': GrundschulsprengelDtoToJSON(value.properties),
+        'type': value['type'],
+        'geometry': FeatureDtoViertelDtoGeometryToJSON(value['geometry']),
+        'properties': GrundschulsprengelDtoToJSON(value['properties']),
     };
 }
 

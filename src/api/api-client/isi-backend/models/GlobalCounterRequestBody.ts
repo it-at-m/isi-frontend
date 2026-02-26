@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -70,10 +70,8 @@ export type GlobalCounterRequestBodyCounterTypeEnum = typeof GlobalCounterReques
 /**
  * Check if a given object implements the GlobalCounterRequestBody interface.
  */
-export function instanceOfGlobalCounterRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGlobalCounterRequestBody(value: object): value is GlobalCounterRequestBody {
+    return true;
 }
 
 export function GlobalCounterRequestBodyFromJSON(json: any): GlobalCounterRequestBody {
@@ -81,35 +79,37 @@ export function GlobalCounterRequestBodyFromJSON(json: any): GlobalCounterReques
 }
 
 export function GlobalCounterRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): GlobalCounterRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'counterType': !exists(json, 'counterType') ? undefined : json['counterType'],
-        'counter': !exists(json, 'counter') ? undefined : json['counter'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'counterType': json['counterType'] == null ? undefined : json['counterType'],
+        'counter': json['counter'] == null ? undefined : json['counter'],
     };
 }
 
-export function GlobalCounterRequestBodyToJSON(value?: GlobalCounterRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GlobalCounterRequestBodyToJSON(json: any): GlobalCounterRequestBody {
+    return GlobalCounterRequestBodyToJSONTyped(json, false);
+}
+
+export function GlobalCounterRequestBodyToJSONTyped(value?: GlobalCounterRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'counterType': value.counterType,
-        'counter': value.counter,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'counterType': value['counterType'],
+        'counter': value['counter'],
     };
 }
 

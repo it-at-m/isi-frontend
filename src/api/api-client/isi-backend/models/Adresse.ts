@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Utm } from './Utm';
-import {
-    UtmFromJSON,
-    UtmFromJSONTyped,
-    UtmToJSON,
-} from './Utm';
+import { mapValues } from '../runtime';
 import type { Wgs84 } from './Wgs84';
 import {
     Wgs84FromJSON,
     Wgs84FromJSONTyped,
     Wgs84ToJSON,
+    Wgs84ToJSONTyped,
 } from './Wgs84';
+import type { Utm } from './Utm';
+import {
+    UtmFromJSON,
+    UtmFromJSONTyped,
+    UtmToJSON,
+    UtmToJSONTyped,
+} from './Utm';
 
 /**
  * 
@@ -79,10 +81,8 @@ export interface Adresse {
 /**
  * Check if a given object implements the Adresse interface.
  */
-export function instanceOfAdresse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAdresse(value: object): value is Adresse {
+    return true;
 }
 
 export function AdresseFromJSON(json: any): Adresse {
@@ -90,37 +90,39 @@ export function AdresseFromJSON(json: any): Adresse {
 }
 
 export function AdresseFromJSONTyped(json: any, ignoreDiscriminator: boolean): Adresse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'strasse': !exists(json, 'strasse') ? undefined : json['strasse'],
-        'hausnummer': !exists(json, 'hausnummer') ? undefined : json['hausnummer'],
-        'plz': !exists(json, 'plz') ? undefined : json['plz'],
-        'ort': !exists(json, 'ort') ? undefined : json['ort'],
-        'coordinate': !exists(json, 'coordinate') ? undefined : Wgs84FromJSON(json['coordinate']),
-        'coordinateUtm': !exists(json, 'coordinateUtm') ? undefined : UtmFromJSON(json['coordinateUtm']),
-        'angabeLageErgaenzendeAdressinformation': !exists(json, 'angabeLageErgaenzendeAdressinformation') ? undefined : json['angabeLageErgaenzendeAdressinformation'],
+        'strasse': json['strasse'] == null ? undefined : json['strasse'],
+        'hausnummer': json['hausnummer'] == null ? undefined : json['hausnummer'],
+        'plz': json['plz'] == null ? undefined : json['plz'],
+        'ort': json['ort'] == null ? undefined : json['ort'],
+        'coordinate': json['coordinate'] == null ? undefined : Wgs84FromJSON(json['coordinate']),
+        'coordinateUtm': json['coordinateUtm'] == null ? undefined : UtmFromJSON(json['coordinateUtm']),
+        'angabeLageErgaenzendeAdressinformation': json['angabeLageErgaenzendeAdressinformation'] == null ? undefined : json['angabeLageErgaenzendeAdressinformation'],
     };
 }
 
-export function AdresseToJSON(value?: Adresse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AdresseToJSON(json: any): Adresse {
+    return AdresseToJSONTyped(json, false);
+}
+
+export function AdresseToJSONTyped(value?: Adresse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'strasse': value.strasse,
-        'hausnummer': value.hausnummer,
-        'plz': value.plz,
-        'ort': value.ort,
-        'coordinate': Wgs84ToJSON(value.coordinate),
-        'coordinateUtm': UtmToJSON(value.coordinateUtm),
-        'angabeLageErgaenzendeAdressinformation': value.angabeLageErgaenzendeAdressinformation,
+        'strasse': value['strasse'],
+        'hausnummer': value['hausnummer'],
+        'plz': value['plz'],
+        'ort': value['ort'],
+        'coordinate': Wgs84ToJSON(value['coordinate']),
+        'coordinateUtm': UtmToJSON(value['coordinateUtm']),
+        'angabeLageErgaenzendeAdressinformation': value['angabeLageErgaenzendeAdressinformation'],
     };
 }
 

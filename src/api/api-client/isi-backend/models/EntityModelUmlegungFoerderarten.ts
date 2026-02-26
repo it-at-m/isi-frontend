@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 import type { Umlegungsschluessel } from './Umlegungsschluessel';
 import {
     UmlegungsschluesselFromJSON,
     UmlegungsschluesselFromJSONTyped,
     UmlegungsschluesselToJSON,
+    UmlegungsschluesselToJSONTyped,
 } from './Umlegungsschluessel';
 
 /**
@@ -79,10 +81,8 @@ export interface EntityModelUmlegungFoerderarten {
 /**
  * Check if a given object implements the EntityModelUmlegungFoerderarten interface.
  */
-export function instanceOfEntityModelUmlegungFoerderarten(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelUmlegungFoerderarten(value: object): value is EntityModelUmlegungFoerderarten {
+    return true;
 }
 
 export function EntityModelUmlegungFoerderartenFromJSON(json: any): EntityModelUmlegungFoerderarten {
@@ -90,37 +90,39 @@ export function EntityModelUmlegungFoerderartenFromJSON(json: any): EntityModelU
 }
 
 export function EntityModelUmlegungFoerderartenFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelUmlegungFoerderarten {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'bezeichnung': !exists(json, 'bezeichnung') ? undefined : json['bezeichnung'],
-        'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
-        'umlegungsschluessel': !exists(json, 'umlegungsschluessel') ? undefined : UmlegungsschluesselFromJSON(json['umlegungsschluessel']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'bezeichnung': json['bezeichnung'] == null ? undefined : json['bezeichnung'],
+        'gueltigAb': json['gueltigAb'] == null ? undefined : (new Date(json['gueltigAb'])),
+        'umlegungsschluessel': json['umlegungsschluessel'] == null ? undefined : UmlegungsschluesselFromJSON(json['umlegungsschluessel']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelUmlegungFoerderartenToJSON(value?: EntityModelUmlegungFoerderarten | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelUmlegungFoerderartenToJSON(json: any): EntityModelUmlegungFoerderarten {
+    return EntityModelUmlegungFoerderartenToJSONTyped(json, false);
+}
+
+export function EntityModelUmlegungFoerderartenToJSONTyped(value?: EntityModelUmlegungFoerderarten | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'bezeichnung': value.bezeichnung,
-        'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
-        'umlegungsschluessel': UmlegungsschluesselToJSON(value.umlegungsschluessel),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'bezeichnung': value['bezeichnung'],
+        'gueltigAb': value['gueltigAb'] == null ? value['gueltigAb'] : value['gueltigAb'].toISOString().substring(0,10),
+        'umlegungsschluessel': UmlegungsschluesselToJSON(value['umlegungsschluessel']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

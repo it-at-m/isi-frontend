@@ -12,52 +12,56 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
+import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
+import {
+    VerortungMultiPolygonDtoFromJSON,
+    VerortungMultiPolygonDtoFromJSONTyped,
+    VerortungMultiPolygonDtoToJSON,
+    VerortungMultiPolygonDtoToJSONTyped,
+} from './VerortungMultiPolygonDto';
+import type { StatusAbfrage } from './StatusAbfrage';
+import {
+    StatusAbfrageFromJSON,
+    StatusAbfrageFromJSONTyped,
+    StatusAbfrageToJSON,
+    StatusAbfrageToJSONTyped,
+} from './StatusAbfrage';
 import type { AbfrageDto } from './AbfrageDto';
 import {
     AbfrageDtoFromJSON,
     AbfrageDtoFromJSONTyped,
     AbfrageDtoToJSON,
+    AbfrageDtoToJSONTyped,
 } from './AbfrageDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+    DokumentDtoToJSONTyped,
+} from './DokumentDto';
 import type { AbfragevarianteBaugenehmigungsverfahrenDto } from './AbfragevarianteBaugenehmigungsverfahrenDto';
 import {
     AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped,
     AbfragevarianteBaugenehmigungsverfahrenDtoToJSON,
+    AbfragevarianteBaugenehmigungsverfahrenDtoToJSONTyped,
 } from './AbfragevarianteBaugenehmigungsverfahrenDto';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
     AdresseDtoFromJSONTyped,
     AdresseDtoToJSON,
+    AdresseDtoToJSONTyped,
 } from './AdresseDto';
 import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
 import {
     BearbeitungshistorieDtoFromJSON,
     BearbeitungshistorieDtoFromJSONTyped,
     BearbeitungshistorieDtoToJSON,
+    BearbeitungshistorieDtoToJSONTyped,
 } from './BearbeitungshistorieDto';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-} from './DokumentDto';
-import type { StatusAbfrage } from './StatusAbfrage';
-import {
-    StatusAbfrageFromJSON,
-    StatusAbfrageFromJSONTyped,
-    StatusAbfrageToJSON,
-} from './StatusAbfrage';
-import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
-import {
-    VerortungMultiPolygonDtoFromJSON,
-    VerortungMultiPolygonDtoFromJSONTyped,
-    VerortungMultiPolygonDtoToJSON,
-} from './VerortungMultiPolygonDto';
-
-import {
-} from './';
 
 /**
  * 
@@ -158,10 +162,8 @@ export type BaugenehmigungsverfahrenDtoStandVerfahrenEnum = typeof Baugenehmigun
 /**
  * Check if a given object implements the BaugenehmigungsverfahrenDto interface.
  */
-export function instanceOfBaugenehmigungsverfahrenDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfBaugenehmigungsverfahrenDto(value: object): value is BaugenehmigungsverfahrenDto {
+    return true;
 }
 
 export function BaugenehmigungsverfahrenDtoFromJSON(json: any): BaugenehmigungsverfahrenDto {
@@ -169,45 +171,58 @@ export function BaugenehmigungsverfahrenDtoFromJSON(json: any): Baugenehmigungsv
 }
 
 export function BaugenehmigungsverfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BaugenehmigungsverfahrenDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
+            return BaugenehmigungsverfahrenDtoFromJSONTyped(json, true);
+        }
+
     }
     return {
-        ...AbfrageDtoFromJSONTyped(json, ignoreDiscriminator),
-        'aktenzeichenProLbk': !exists(json, 'aktenzeichenProLbk') ? undefined : json['aktenzeichenProLbk'],
-        'bebauungsplannummer': !exists(json, 'bebauungsplannummer') ? undefined : json['bebauungsplannummer'],
-        'standVerfahren': !exists(json, 'standVerfahren') ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': !exists(json, 'standVerfahrenFreieEingabe') ? undefined : json['standVerfahrenFreieEingabe'],
-        'adresse': !exists(json, 'adresse') ? undefined : AdresseDtoFromJSON(json['adresse']),
-        'verortung': !exists(json, 'verortung') ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
-        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': !exists(json, 'fristBearbeitung') ? undefined : (new Date(json['fristBearbeitung'])),
-        'abfragevariantenBaugenehmigungsverfahren': !exists(json, 'abfragevariantenBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': !exists(json, 'abfragevariantenSachbearbeitungBaugenehmigungsverfahren') ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
+        ...AbfrageDtoFromJSONTyped(json, true),
+        'aktenzeichenProLbk': json['aktenzeichenProLbk'] == null ? undefined : json['aktenzeichenProLbk'],
+        'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
+        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
+        'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
+        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
+        'abfragevariantenBaugenehmigungsverfahren': json['abfragevariantenBaugenehmigungsverfahren'] == null ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] == null ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
     };
 }
 
-export function BaugenehmigungsverfahrenDtoToJSON(value?: BaugenehmigungsverfahrenDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BaugenehmigungsverfahrenDtoToJSON(json: any): BaugenehmigungsverfahrenDto {
+    return BaugenehmigungsverfahrenDtoToJSONTyped(json, false);
+}
+
+export function BaugenehmigungsverfahrenDtoToJSONTyped(value?: BaugenehmigungsverfahrenDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...AbfrageDtoToJSON(value),
-        'aktenzeichenProLbk': value.aktenzeichenProLbk,
-        'bebauungsplannummer': value.bebauungsplannummer,
-        'standVerfahren': value.standVerfahren,
-        'standVerfahrenFreieEingabe': value.standVerfahrenFreieEingabe,
-        'adresse': AdresseDtoToJSON(value.adresse),
-        'verortung': VerortungMultiPolygonDtoToJSON(value.verortung),
-        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value.fristBearbeitung === undefined ? undefined : (value.fristBearbeitung.toISOString().substr(0,10)),
-        'abfragevariantenBaugenehmigungsverfahren': value.abfragevariantenBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
-        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren === undefined ? undefined : ((value.abfragevariantenSachbearbeitungBaugenehmigungsverfahren as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
+        ...AbfrageDtoToJSONTyped(value, true),
+        'aktenzeichenProLbk': value['aktenzeichenProLbk'],
+        'bebauungsplannummer': value['bebauungsplannummer'],
+        'standVerfahren': value['standVerfahren'],
+        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'adresse': AdresseDtoToJSON(value['adresse']),
+        'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
+        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
+        'abfragevariantenBaugenehmigungsverfahren': value['abfragevariantenBaugenehmigungsverfahren'] == null ? undefined : ((value['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
+        'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] == null ? undefined : ((value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
     };
 }
 

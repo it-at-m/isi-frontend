@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DokumentResponse } from './DokumentResponse';
 import {
     DokumentResponseFromJSON,
     DokumentResponseFromJSONTyped,
     DokumentResponseToJSON,
+    DokumentResponseToJSONTyped,
 } from './DokumentResponse';
 
 /**
@@ -37,10 +38,8 @@ export interface CollectionModelDokumentEmbedded {
 /**
  * Check if a given object implements the CollectionModelDokumentEmbedded interface.
  */
-export function instanceOfCollectionModelDokumentEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfCollectionModelDokumentEmbedded(value: object): value is CollectionModelDokumentEmbedded {
+    return true;
 }
 
 export function CollectionModelDokumentEmbeddedFromJSON(json: any): CollectionModelDokumentEmbedded {
@@ -48,25 +47,27 @@ export function CollectionModelDokumentEmbeddedFromJSON(json: any): CollectionMo
 }
 
 export function CollectionModelDokumentEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): CollectionModelDokumentEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'dokuments': !exists(json, 'dokuments') ? undefined : ((json['dokuments'] as Array<any>).map(DokumentResponseFromJSON)),
+        'dokuments': json['dokuments'] == null ? undefined : ((json['dokuments'] as Array<any>).map(DokumentResponseFromJSON)),
     };
 }
 
-export function CollectionModelDokumentEmbeddedToJSON(value?: CollectionModelDokumentEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CollectionModelDokumentEmbeddedToJSON(json: any): CollectionModelDokumentEmbedded {
+    return CollectionModelDokumentEmbeddedToJSONTyped(json, false);
+}
+
+export function CollectionModelDokumentEmbeddedToJSONTyped(value?: CollectionModelDokumentEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'dokuments': value.dokuments === undefined ? undefined : ((value.dokuments as Array<any>).map(DokumentResponseToJSON)),
+        'dokuments': value['dokuments'] == null ? undefined : ((value['dokuments'] as Array<any>).map(DokumentResponseToJSON)),
     };
 }
 

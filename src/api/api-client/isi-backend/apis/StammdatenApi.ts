@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
-} from '../models';
+} from '../models/index';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest {
     file: Blob;
@@ -39,8 +39,11 @@ export class StammdatenApi extends runtime.BaseAPI {
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
     async importSoBoNOrientierungswerteSozialeInfrastrukturRaw(requestParameters: ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.file === null || requestParameters.file === undefined) {
-            throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importSoBoNOrientierungswerteSozialeInfrastruktur.');
+        if (requestParameters['file'] == null) {
+            throw new runtime.RequiredError(
+                'file',
+                'Required parameter "file" was null or undefined when calling importSoBoNOrientierungswerteSozialeInfrastruktur().'
+            );
         }
 
         const queryParameters: any = {};
@@ -63,12 +66,15 @@ export class StammdatenApi extends runtime.BaseAPI {
             formParams = new URLSearchParams();
         }
 
-        if (requestParameters.file !== undefined) {
-            formParams.append('file', requestParameters.file as any);
+        if (requestParameters['file'] != null) {
+            formParams.append('file', requestParameters['file'] as any);
         }
 
+
+        let urlPath = `/stammdaten/sobon-orientierungswerte-soziale-infrastruktur/import`;
+
         const response = await this.request({
-            path: `/stammdaten/sobon-orientierungswerte-soziale-infrastruktur/import`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -89,8 +95,11 @@ export class StammdatenApi extends runtime.BaseAPI {
      * Importiert die CSV-Datei und persistiert die Einträge in der Datenbank.
      */
     async importStaedtebaulicheOrientierungswerteRaw(requestParameters: ImportStaedtebaulicheOrientierungswerteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.file === null || requestParameters.file === undefined) {
-            throw new runtime.RequiredError('file','Required parameter requestParameters.file was null or undefined when calling importStaedtebaulicheOrientierungswerte.');
+        if (requestParameters['file'] == null) {
+            throw new runtime.RequiredError(
+                'file',
+                'Required parameter "file" was null or undefined when calling importStaedtebaulicheOrientierungswerte().'
+            );
         }
 
         const queryParameters: any = {};
@@ -113,12 +122,15 @@ export class StammdatenApi extends runtime.BaseAPI {
             formParams = new URLSearchParams();
         }
 
-        if (requestParameters.file !== undefined) {
-            formParams.append('file', requestParameters.file as any);
+        if (requestParameters['file'] != null) {
+            formParams.append('file', requestParameters['file'] as any);
         }
 
+
+        let urlPath = `/stammdaten/staedtebauliche-orientierungswerte/import`;
+
         const response = await this.request({
-            path: `/stammdaten/staedtebauliche-orientierungswerte/import`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
