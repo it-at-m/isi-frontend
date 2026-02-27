@@ -83,6 +83,7 @@ import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { BedarfsmeldungTitle } from "@/utils/Factories";
 import _ from "lodash";
+import { getAbfragevariantenNrForContextAnzeigeAbfragevariante } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;
@@ -95,9 +96,10 @@ const { isBedarfsmeldungEditableByAbfrageerstellung, isEditableByBedarfsmeldung 
 const { formChanged } = useSaveLeave();
 
 const headline = computed(() => {
-  const headline = `Abfragevariante ${new AbfragevarianteBauleitplanverfahrenModel(
-    abfragevariante.value,
-  ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(props.anzeigeContextAbfragevariante)} - `;
+  const headline = `Abfragevariante ${getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+    new AbfragevarianteBauleitplanverfahrenModel(abfragevariante.value),
+    props.anzeigeContextAbfragevariante,
+  )} - `;
   return headline.concat(`${abfragevariante.value.name}`);
 });
 
