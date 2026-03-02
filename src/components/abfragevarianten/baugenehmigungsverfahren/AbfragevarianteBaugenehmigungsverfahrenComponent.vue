@@ -96,7 +96,7 @@ const { formChanged } = useSaveLeave();
 
 const headline = computed(() => {
   const headline = `Abfragevariante ${getAbfragevariantenNrForContextAnzeigeAbfragevariante(
-    new AbfragevarianteBaugenehmigungsverfahrenModel(abfragevariante.value),
+    abfragevariante.value,
     props.anzeigeContextAbfragevariante,
   )} - `;
   return headline.concat(`${abfragevariante.value.name}`);

@@ -1,5 +1,4 @@
-import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
-import AnyAbfragevarianteModel from "@/types/common/Abfrage";
+import { AnzeigeContextAbfragevariante, type AnyAbfragevarianteModel } from "@/types/common/Abfrage";
 
 export function getAbfragevariantenNrForContextAnzeigeAbfragevariante(
   abfragevarianteModel: AnyAbfragevarianteModel,
