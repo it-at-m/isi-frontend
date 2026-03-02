@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -180,10 +181,8 @@ export type EntityModelSobonOrientierungswertSozialeInfrastrukturAltersklasseEnu
 /**
  * Check if a given object implements the EntityModelSobonOrientierungswertSozialeInfrastruktur interface.
  */
-export function instanceOfEntityModelSobonOrientierungswertSozialeInfrastruktur(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelSobonOrientierungswertSozialeInfrastruktur(value: object): value is EntityModelSobonOrientierungswertSozialeInfrastruktur {
+    return true;
 }
 
 export function EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(json: any): EntityModelSobonOrientierungswertSozialeInfrastruktur {
@@ -191,63 +190,65 @@ export function EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(js
 }
 
 export function EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelSobonOrientierungswertSozialeInfrastruktur {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'gueltigAb': !exists(json, 'gueltigAb') ? undefined : (new Date(json['gueltigAb'])),
-        'jahrBezeichnung': !exists(json, 'jahrBezeichnung') ? undefined : json['jahrBezeichnung'],
-        'einrichtungstyp': !exists(json, 'einrichtungstyp') ? undefined : json['einrichtungstyp'],
-        'altersklasse': !exists(json, 'altersklasse') ? undefined : json['altersklasse'],
-        'foerderartBezeichnung': !exists(json, 'foerderartBezeichnung') ? undefined : json['foerderartBezeichnung'],
-        'einwohnerJahr1NachErsterstellung': !exists(json, 'einwohnerJahr1NachErsterstellung') ? undefined : json['einwohnerJahr1NachErsterstellung'],
-        'einwohnerJahr2NachErsterstellung': !exists(json, 'einwohnerJahr2NachErsterstellung') ? undefined : json['einwohnerJahr2NachErsterstellung'],
-        'einwohnerJahr3NachErsterstellung': !exists(json, 'einwohnerJahr3NachErsterstellung') ? undefined : json['einwohnerJahr3NachErsterstellung'],
-        'einwohnerJahr4NachErsterstellung': !exists(json, 'einwohnerJahr4NachErsterstellung') ? undefined : json['einwohnerJahr4NachErsterstellung'],
-        'einwohnerJahr5NachErsterstellung': !exists(json, 'einwohnerJahr5NachErsterstellung') ? undefined : json['einwohnerJahr5NachErsterstellung'],
-        'einwohnerJahr6NachErsterstellung': !exists(json, 'einwohnerJahr6NachErsterstellung') ? undefined : json['einwohnerJahr6NachErsterstellung'],
-        'einwohnerJahr7NachErsterstellung': !exists(json, 'einwohnerJahr7NachErsterstellung') ? undefined : json['einwohnerJahr7NachErsterstellung'],
-        'einwohnerJahr8NachErsterstellung': !exists(json, 'einwohnerJahr8NachErsterstellung') ? undefined : json['einwohnerJahr8NachErsterstellung'],
-        'einwohnerJahr9NachErsterstellung': !exists(json, 'einwohnerJahr9NachErsterstellung') ? undefined : json['einwohnerJahr9NachErsterstellung'],
-        'einwohnerJahr10NachErsterstellung': !exists(json, 'einwohnerJahr10NachErsterstellung') ? undefined : json['einwohnerJahr10NachErsterstellung'],
-        'stammwertArbeitsgruppe': !exists(json, 'stammwertArbeitsgruppe') ? undefined : json['stammwertArbeitsgruppe'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'gueltigAb': json['gueltigAb'] == null ? undefined : (new Date(json['gueltigAb'])),
+        'jahrBezeichnung': json['jahrBezeichnung'] == null ? undefined : json['jahrBezeichnung'],
+        'einrichtungstyp': json['einrichtungstyp'] == null ? undefined : json['einrichtungstyp'],
+        'altersklasse': json['altersklasse'] == null ? undefined : json['altersklasse'],
+        'foerderartBezeichnung': json['foerderartBezeichnung'] == null ? undefined : json['foerderartBezeichnung'],
+        'einwohnerJahr1NachErsterstellung': json['einwohnerJahr1NachErsterstellung'] == null ? undefined : json['einwohnerJahr1NachErsterstellung'],
+        'einwohnerJahr2NachErsterstellung': json['einwohnerJahr2NachErsterstellung'] == null ? undefined : json['einwohnerJahr2NachErsterstellung'],
+        'einwohnerJahr3NachErsterstellung': json['einwohnerJahr3NachErsterstellung'] == null ? undefined : json['einwohnerJahr3NachErsterstellung'],
+        'einwohnerJahr4NachErsterstellung': json['einwohnerJahr4NachErsterstellung'] == null ? undefined : json['einwohnerJahr4NachErsterstellung'],
+        'einwohnerJahr5NachErsterstellung': json['einwohnerJahr5NachErsterstellung'] == null ? undefined : json['einwohnerJahr5NachErsterstellung'],
+        'einwohnerJahr6NachErsterstellung': json['einwohnerJahr6NachErsterstellung'] == null ? undefined : json['einwohnerJahr6NachErsterstellung'],
+        'einwohnerJahr7NachErsterstellung': json['einwohnerJahr7NachErsterstellung'] == null ? undefined : json['einwohnerJahr7NachErsterstellung'],
+        'einwohnerJahr8NachErsterstellung': json['einwohnerJahr8NachErsterstellung'] == null ? undefined : json['einwohnerJahr8NachErsterstellung'],
+        'einwohnerJahr9NachErsterstellung': json['einwohnerJahr9NachErsterstellung'] == null ? undefined : json['einwohnerJahr9NachErsterstellung'],
+        'einwohnerJahr10NachErsterstellung': json['einwohnerJahr10NachErsterstellung'] == null ? undefined : json['einwohnerJahr10NachErsterstellung'],
+        'stammwertArbeitsgruppe': json['stammwertArbeitsgruppe'] == null ? undefined : json['stammwertArbeitsgruppe'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelSobonOrientierungswertSozialeInfrastrukturToJSON(value?: EntityModelSobonOrientierungswertSozialeInfrastruktur | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelSobonOrientierungswertSozialeInfrastrukturToJSON(json: any): EntityModelSobonOrientierungswertSozialeInfrastruktur {
+    return EntityModelSobonOrientierungswertSozialeInfrastrukturToJSONTyped(json, false);
+}
+
+export function EntityModelSobonOrientierungswertSozialeInfrastrukturToJSONTyped(value?: EntityModelSobonOrientierungswertSozialeInfrastruktur | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'gueltigAb': value.gueltigAb === undefined ? undefined : (value.gueltigAb.toISOString().substr(0,10)),
-        'jahrBezeichnung': value.jahrBezeichnung,
-        'einrichtungstyp': value.einrichtungstyp,
-        'altersklasse': value.altersklasse,
-        'foerderartBezeichnung': value.foerderartBezeichnung,
-        'einwohnerJahr1NachErsterstellung': value.einwohnerJahr1NachErsterstellung,
-        'einwohnerJahr2NachErsterstellung': value.einwohnerJahr2NachErsterstellung,
-        'einwohnerJahr3NachErsterstellung': value.einwohnerJahr3NachErsterstellung,
-        'einwohnerJahr4NachErsterstellung': value.einwohnerJahr4NachErsterstellung,
-        'einwohnerJahr5NachErsterstellung': value.einwohnerJahr5NachErsterstellung,
-        'einwohnerJahr6NachErsterstellung': value.einwohnerJahr6NachErsterstellung,
-        'einwohnerJahr7NachErsterstellung': value.einwohnerJahr7NachErsterstellung,
-        'einwohnerJahr8NachErsterstellung': value.einwohnerJahr8NachErsterstellung,
-        'einwohnerJahr9NachErsterstellung': value.einwohnerJahr9NachErsterstellung,
-        'einwohnerJahr10NachErsterstellung': value.einwohnerJahr10NachErsterstellung,
-        'stammwertArbeitsgruppe': value.stammwertArbeitsgruppe,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'gueltigAb': value['gueltigAb'] == null ? value['gueltigAb'] : value['gueltigAb'].toISOString().substring(0,10),
+        'jahrBezeichnung': value['jahrBezeichnung'],
+        'einrichtungstyp': value['einrichtungstyp'],
+        'altersklasse': value['altersklasse'],
+        'foerderartBezeichnung': value['foerderartBezeichnung'],
+        'einwohnerJahr1NachErsterstellung': value['einwohnerJahr1NachErsterstellung'],
+        'einwohnerJahr2NachErsterstellung': value['einwohnerJahr2NachErsterstellung'],
+        'einwohnerJahr3NachErsterstellung': value['einwohnerJahr3NachErsterstellung'],
+        'einwohnerJahr4NachErsterstellung': value['einwohnerJahr4NachErsterstellung'],
+        'einwohnerJahr5NachErsterstellung': value['einwohnerJahr5NachErsterstellung'],
+        'einwohnerJahr6NachErsterstellung': value['einwohnerJahr6NachErsterstellung'],
+        'einwohnerJahr7NachErsterstellung': value['einwohnerJahr7NachErsterstellung'],
+        'einwohnerJahr8NachErsterstellung': value['einwohnerJahr8NachErsterstellung'],
+        'einwohnerJahr9NachErsterstellung': value['einwohnerJahr9NachErsterstellung'],
+        'einwohnerJahr10NachErsterstellung': value['einwohnerJahr10NachErsterstellung'],
+        'stammwertArbeitsgruppe': value['stammwertArbeitsgruppe'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelInfrastruktureinrichtung } from './EntityModelInfrastruktureinrichtung';
 import {
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungFromJSONTyped,
     EntityModelInfrastruktureinrichtungToJSON,
+    EntityModelInfrastruktureinrichtungToJSONTyped,
 } from './EntityModelInfrastruktureinrichtung';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelInfrastruktureinrichtungEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelInfrastruktureinrichtungEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelInfrastruktureinrichtungEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelInfrastruktureinrichtungEmbedded(value: object): value is PagedModelEntityModelInfrastruktureinrichtungEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSON(json: any): PagedModelEntityModelInfrastruktureinrichtungEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSON(js
 }
 
 export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelInfrastruktureinrichtungEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'infrastruktureinrichtungs': !exists(json, 'infrastruktureinrichtungs') ? undefined : ((json['infrastruktureinrichtungs'] as Array<any>).map(EntityModelInfrastruktureinrichtungFromJSON)),
+        'infrastruktureinrichtungs': json['infrastruktureinrichtungs'] == null ? undefined : ((json['infrastruktureinrichtungs'] as Array<any>).map(EntityModelInfrastruktureinrichtungFromJSON)),
     };
 }
 
-export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSON(value?: PagedModelEntityModelInfrastruktureinrichtungEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSON(json: any): PagedModelEntityModelInfrastruktureinrichtungEmbedded {
+    return PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelInfrastruktureinrichtungEmbeddedToJSONTyped(value?: PagedModelEntityModelInfrastruktureinrichtungEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'infrastruktureinrichtungs': value.infrastruktureinrichtungs === undefined ? undefined : ((value.infrastruktureinrichtungs as Array<any>).map(EntityModelInfrastruktureinrichtungToJSON)),
+        'infrastruktureinrichtungs': value['infrastruktureinrichtungs'] == null ? undefined : ((value['infrastruktureinrichtungs'] as Array<any>).map(EntityModelInfrastruktureinrichtungToJSON)),
     };
 }
 

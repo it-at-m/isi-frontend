@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { MuenchenAdresseDto } from './MuenchenAdresseDto';
 import {
     MuenchenAdresseDtoFromJSON,
     MuenchenAdresseDtoFromJSONTyped,
     MuenchenAdresseDtoToJSON,
+    MuenchenAdresseDtoToJSONTyped,
 } from './MuenchenAdresseDto';
 
 /**
@@ -37,10 +38,8 @@ export interface MuenchenAdressenDto {
 /**
  * Check if a given object implements the MuenchenAdressenDto interface.
  */
-export function instanceOfMuenchenAdressenDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfMuenchenAdressenDto(value: object): value is MuenchenAdressenDto {
+    return true;
 }
 
 export function MuenchenAdressenDtoFromJSON(json: any): MuenchenAdressenDto {
@@ -48,25 +47,27 @@ export function MuenchenAdressenDtoFromJSON(json: any): MuenchenAdressenDto {
 }
 
 export function MuenchenAdressenDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MuenchenAdressenDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'adressen': !exists(json, 'adressen') ? undefined : ((json['adressen'] as Array<any>).map(MuenchenAdresseDtoFromJSON)),
+        'adressen': json['adressen'] == null ? undefined : ((json['adressen'] as Array<any>).map(MuenchenAdresseDtoFromJSON)),
     };
 }
 
-export function MuenchenAdressenDtoToJSON(value?: MuenchenAdressenDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MuenchenAdressenDtoToJSON(json: any): MuenchenAdressenDto {
+    return MuenchenAdressenDtoToJSONTyped(json, false);
+}
+
+export function MuenchenAdressenDtoToJSONTyped(value?: MuenchenAdressenDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'adressen': value.adressen === undefined ? undefined : ((value.adressen as Array<any>).map(MuenchenAdresseDtoToJSON)),
+        'adressen': value['adressen'] == null ? undefined : ((value['adressen'] as Array<any>).map(MuenchenAdresseDtoToJSON)),
     };
 }
 

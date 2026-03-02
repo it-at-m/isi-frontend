@@ -18,7 +18,7 @@ import type {
   FilepathDto,
   InformationResponseDto,
   PresignedUrlDto,
-} from '../models';
+} from '../models/index';
 import {
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
@@ -26,7 +26,7 @@ import {
     InformationResponseDtoToJSON,
     PresignedUrlDtoFromJSON,
     PresignedUrlDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface GetFileRequest {
     pathToFile: string;
@@ -46,20 +46,26 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
      */
     async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-        if (requestParameters.pathToFile === null || requestParameters.pathToFile === undefined) {
-            throw new runtime.RequiredError('pathToFile','Required parameter requestParameters.pathToFile was null or undefined when calling getFile.');
+        if (requestParameters['pathToFile'] == null) {
+            throw new runtime.RequiredError(
+                'pathToFile',
+                'Required parameter "pathToFile" was null or undefined when calling getFile().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.pathToFile !== undefined) {
-            queryParameters['pathToFile'] = requestParameters.pathToFile;
+        if (requestParameters['pathToFile'] != null) {
+            queryParameters['pathToFile'] = requestParameters['pathToFile'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/presigned-url`;
+
         const response = await this.request({
-            path: `/presigned-url`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -82,8 +88,11 @@ export class DateihandlingApi extends runtime.BaseAPI {
      * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
      */
     async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
-        if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
-            throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling saveFile.');
+        if (requestParameters['filepathDto'] == null) {
+            throw new runtime.RequiredError(
+                'filepathDto',
+                'Required parameter "filepathDto" was null or undefined when calling saveFile().'
+            );
         }
 
         const queryParameters: any = {};
@@ -92,12 +101,15 @@ export class DateihandlingApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/presigned-url`;
+
         const response = await this.request({
-            path: `/presigned-url`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FilepathDtoToJSON(requestParameters.filepathDto),
+            body: FilepathDtoToJSON(requestParameters['filepathDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));

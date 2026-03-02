@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
+import { mapValues } from '../runtime';
 import type { PageMetadata } from './PageMetadata';
 import {
     PageMetadataFromJSON,
     PageMetadataFromJSONTyped,
     PageMetadataToJSON,
+    PageMetadataToJSONTyped,
 } from './PageMetadata';
 import type { PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded } from './PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded';
 import {
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSON,
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSONTyped,
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSON,
+    PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSONTyped,
 } from './PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbedded';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -61,10 +64,8 @@ export interface PagedModelEntityModelVersorgungsquoteGruppenstaerke {
 /**
  * Check if a given object implements the PagedModelEntityModelVersorgungsquoteGruppenstaerke interface.
  */
-export function instanceOfPagedModelEntityModelVersorgungsquoteGruppenstaerke(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelVersorgungsquoteGruppenstaerke(value: object): value is PagedModelEntityModelVersorgungsquoteGruppenstaerke {
+    return true;
 }
 
 export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeFromJSON(json: any): PagedModelEntityModelVersorgungsquoteGruppenstaerke {
@@ -72,29 +73,31 @@ export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeFromJSON(json
 }
 
 export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelVersorgungsquoteGruppenstaerke {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'embedded': !exists(json, '_embedded') ? undefined : PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSON(json['_embedded']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': !exists(json, 'page') ? undefined : PageMetadataFromJSON(json['page']),
+        'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedFromJSON(json['_embedded']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
     };
 }
 
-export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSON(value?: PagedModelEntityModelVersorgungsquoteGruppenstaerke | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSON(json: any): PagedModelEntityModelVersorgungsquoteGruppenstaerke {
+    return PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSONTyped(value?: PagedModelEntityModelVersorgungsquoteGruppenstaerke | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        '_embedded': PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSON(value.embedded),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
-        'page': PageMetadataToJSON(value.page),
+        '_embedded': PagedModelEntityModelVersorgungsquoteGruppenstaerkeEmbeddedToJSON(value['embedded']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
+        'page': PageMetadataToJSON(value['page']),
     };
 }
 

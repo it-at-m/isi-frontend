@@ -1,0 +1,40 @@
+
+# GemarkungDto
+
+
+## Properties
+
+Name | Type
+------------ | -------------
+`nummer` | number
+`name` | string
+`flurstuecke` | [Set&lt;FlurstueckDto&gt;](FlurstueckDto.md)
+`multiPolygon` | [MultiPolygonGeometryDto](MultiPolygonGeometryDto.md)
+
+## Example
+
+```typescript
+import type { GemarkungDto } from ''
+
+// TODO: Update the object below with actual values
+const example = {
+  "nummer": null,
+  "name": null,
+  "flurstuecke": null,
+  "multiPolygon": null,
+} satisfies GemarkungDto
+
+console.log(example)
+
+// Convert the instance to a JSON string
+const exampleJSON: string = JSON.stringify(example)
+console.log(exampleJSON)
+
+// Parse the JSON string back to an object
+const exampleParsed = JSON.parse(exampleJSON) as GemarkungDto
+console.log(exampleParsed)
+```
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

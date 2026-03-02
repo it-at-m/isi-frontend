@@ -12,32 +12,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto } from './BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
-import {
-    BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSON,
-    BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
-    BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON,
-} from './BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
-import type { BauleitplanverfahrenEinpflegenBedarfsmeldungDto } from './BauleitplanverfahrenEinpflegenBedarfsmeldungDto';
-import {
-    BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSON,
-    BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
-    BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON,
-} from './BauleitplanverfahrenEinpflegenBedarfsmeldungDto';
-import type { WeiteresVerfahrenEinpflegenBedarfsmeldungDto } from './WeiteresVerfahrenEinpflegenBedarfsmeldungDto';
-import {
-    WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSON,
-    WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
-    WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON,
-} from './WeiteresVerfahrenEinpflegenBedarfsmeldungDto';
+import { mapValues } from '../runtime';
 
-import {
-     BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
-     BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped,
-     WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped
-} from './';
-
+import { type BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto, BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped, BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSON, BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped } from './BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto';
+import { type BauleitplanverfahrenEinpflegenBedarfsmeldungDto, BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped, BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSON, BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped } from './BauleitplanverfahrenEinpflegenBedarfsmeldungDto';
+import { type WeiteresVerfahrenEinpflegenBedarfsmeldungDto, WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped, WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSON, WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped } from './WeiteresVerfahrenEinpflegenBedarfsmeldungDto';
 /**
  * AbfrageEinpflegenBedarfsmeldungDto
  * @export
@@ -74,10 +53,8 @@ export type AbfrageEinpflegenBedarfsmeldungDtoArtAbfrageEnum = typeof AbfrageEin
 /**
  * Check if a given object implements the AbfrageEinpflegenBedarfsmeldungDto interface.
  */
-export function instanceOfAbfrageEinpflegenBedarfsmeldungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAbfrageEinpflegenBedarfsmeldungDto(value: object): value is AbfrageEinpflegenBedarfsmeldungDto {
+    return true;
 }
 
 export function AbfrageEinpflegenBedarfsmeldungDtoFromJSON(json: any): AbfrageEinpflegenBedarfsmeldungDto {
@@ -85,38 +62,54 @@ export function AbfrageEinpflegenBedarfsmeldungDtoFromJSON(json: any): AbfrageEi
 }
 
 export function AbfrageEinpflegenBedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageEinpflegenBedarfsmeldungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
-            return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true);
+            return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
-            return BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true);
+            return BauleitplanverfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
-            return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, true);
+            return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
+
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
     };
 }
 
-export function AbfrageEinpflegenBedarfsmeldungDtoToJSON(value?: AbfrageEinpflegenBedarfsmeldungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfrageEinpflegenBedarfsmeldungDtoToJSON(json: any): AbfrageEinpflegenBedarfsmeldungDto {
+    return AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped(json, false);
+}
+
+export function AbfrageEinpflegenBedarfsmeldungDtoToJSONTyped(value?: AbfrageEinpflegenBedarfsmeldungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            case 'BAUGENEHMIGUNGSVERFAHREN':
+                return BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value as BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto, ignoreDiscriminator);
+            case 'BAULEITPLANVERFAHREN':
+                return BauleitplanverfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value as BauleitplanverfahrenEinpflegenBedarfsmeldungDto, ignoreDiscriminator);
+            case 'WEITERES_VERFAHREN':
+                return WeiteresVerfahrenEinpflegenBedarfsmeldungDtoToJSONTyped(value as WeiteresVerfahrenEinpflegenBedarfsmeldungDto, ignoreDiscriminator);
+            default:
+                return value;
+        }
     }
+
     return {
         
-        'version': value.version,
-        'artAbfrage': value.artAbfrage,
+        'version': value['version'],
+        'artAbfrage': value['artAbfrage'],
     };
 }
 

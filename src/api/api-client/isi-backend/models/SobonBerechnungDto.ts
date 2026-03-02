@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FoerdermixDto } from './FoerdermixDto';
 import {
     FoerdermixDtoFromJSON,
     FoerdermixDtoFromJSONTyped,
     FoerdermixDtoToJSON,
+    FoerdermixDtoToJSONTyped,
 } from './FoerdermixDto';
 
 /**
@@ -65,10 +66,8 @@ export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = t
 /**
  * Check if a given object implements the SobonBerechnungDto interface.
  */
-export function instanceOfSobonBerechnungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSobonBerechnungDto(value: object): value is SobonBerechnungDto {
+    return true;
 }
 
 export function SobonBerechnungDtoFromJSON(json: any): SobonBerechnungDto {
@@ -76,29 +75,31 @@ export function SobonBerechnungDtoFromJSON(json: any): SobonBerechnungDto {
 }
 
 export function SobonBerechnungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SobonBerechnungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'isASobonBerechnung': !exists(json, 'isASobonBerechnung') ? undefined : json['isASobonBerechnung'],
-        'sobonFoerdermix': !exists(json, 'sobonFoerdermix') ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
-        'sobonOrientierungswertJahrSobonUrsaechlich': !exists(json, 'sobonOrientierungswertJahrSobonUrsaechlich') ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'isASobonBerechnung': json['isASobonBerechnung'] == null ? undefined : json['isASobonBerechnung'],
+        'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
+        'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
     };
 }
 
-export function SobonBerechnungDtoToJSON(value?: SobonBerechnungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SobonBerechnungDtoToJSON(json: any): SobonBerechnungDto {
+    return SobonBerechnungDtoToJSONTyped(json, false);
+}
+
+export function SobonBerechnungDtoToJSONTyped(value?: SobonBerechnungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'isASobonBerechnung': value.isASobonBerechnung,
-        'sobonFoerdermix': FoerdermixDtoToJSON(value.sobonFoerdermix),
-        'sobonOrientierungswertJahrSobonUrsaechlich': value.sobonOrientierungswertJahrSobonUrsaechlich,
+        'isASobonBerechnung': value['isASobonBerechnung'],
+        'sobonFoerdermix': FoerdermixDtoToJSON(value['sobonFoerdermix']),
+        'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
     };
 }
 

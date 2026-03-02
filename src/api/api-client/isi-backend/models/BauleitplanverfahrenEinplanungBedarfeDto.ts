@@ -12,22 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
-import {
-    AbfrageEinplanungBedarfeDtoFromJSON,
-    AbfrageEinplanungBedarfeDtoFromJSONTyped,
-    AbfrageEinplanungBedarfeDtoToJSON,
-} from './AbfrageEinplanungBedarfeDto';
+import { mapValues } from '../runtime';
 import type { AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto } from './AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto';
 import {
     AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoFromJSON,
     AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped,
     AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSON,
+    AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSONTyped,
 } from './AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto';
-
+import type { AbfrageEinplanungBedarfeDto } from './AbfrageEinplanungBedarfeDto';
 import {
-} from './';
+    AbfrageEinplanungBedarfeDtoFromJSON,
+    AbfrageEinplanungBedarfeDtoFromJSONTyped,
+    AbfrageEinplanungBedarfeDtoToJSON,
+    AbfrageEinplanungBedarfeDtoToJSONTyped,
+} from './AbfrageEinplanungBedarfeDto';
 
 /**
  * 
@@ -54,12 +53,10 @@ export interface BauleitplanverfahrenEinplanungBedarfeDto extends AbfrageEinplan
 /**
  * Check if a given object implements the BauleitplanverfahrenEinplanungBedarfeDto interface.
  */
-export function instanceOfBauleitplanverfahrenEinplanungBedarfeDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "abfragevariantenBauleitplanverfahren" in value;
-    isInstance = isInstance && "abfragevariantenSachbearbeitungBauleitplanverfahren" in value;
-
-    return isInstance;
+export function instanceOfBauleitplanverfahrenEinplanungBedarfeDto(value: object): value is BauleitplanverfahrenEinplanungBedarfeDto {
+    if (!('abfragevariantenBauleitplanverfahren' in value) || value['abfragevariantenBauleitplanverfahren'] === undefined) return false;
+    if (!('abfragevariantenSachbearbeitungBauleitplanverfahren' in value) || value['abfragevariantenSachbearbeitungBauleitplanverfahren'] === undefined) return false;
+    return true;
 }
 
 export function BauleitplanverfahrenEinplanungBedarfeDtoFromJSON(json: any): BauleitplanverfahrenEinplanungBedarfeDto {
@@ -67,29 +64,42 @@ export function BauleitplanverfahrenEinplanungBedarfeDtoFromJSON(json: any): Bau
 }
 
 export function BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): BauleitplanverfahrenEinplanungBedarfeDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
+            return BauleitplanverfahrenEinplanungBedarfeDtoFromJSONTyped(json, true);
+        }
+
     }
     return {
-        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, ignoreDiscriminator),
+        ...AbfrageEinplanungBedarfeDtoFromJSONTyped(json, true),
         'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoFromJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoFromJSON)),
     };
 }
 
-export function BauleitplanverfahrenEinplanungBedarfeDtoToJSON(value?: BauleitplanverfahrenEinplanungBedarfeDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BauleitplanverfahrenEinplanungBedarfeDtoToJSON(json: any): BauleitplanverfahrenEinplanungBedarfeDto {
+    return BauleitplanverfahrenEinplanungBedarfeDtoToJSONTyped(json, false);
+}
+
+export function BauleitplanverfahrenEinplanungBedarfeDtoToJSONTyped(value?: BauleitplanverfahrenEinplanungBedarfeDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...AbfrageEinplanungBedarfeDtoToJSON(value),
-        'abfragevariantenBauleitplanverfahren': ((value.abfragevariantenBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSON)),
-        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value.abfragevariantenSachbearbeitungBauleitplanverfahren as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSON)),
+        ...AbfrageEinplanungBedarfeDtoToJSONTyped(value, true),
+        'abfragevariantenBauleitplanverfahren': ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSON)),
+        'abfragevariantenSachbearbeitungBauleitplanverfahren': ((value['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDtoToJSON)),
     };
 }
 

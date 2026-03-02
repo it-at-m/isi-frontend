@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,10 +72,8 @@ export interface MetabaseReportingDto {
 /**
  * Check if a given object implements the MetabaseReportingDto interface.
  */
-export function instanceOfMetabaseReportingDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfMetabaseReportingDto(value: object): value is MetabaseReportingDto {
+    return true;
 }
 
 export function MetabaseReportingDtoFromJSON(json: any): MetabaseReportingDto {
@@ -83,39 +81,41 @@ export function MetabaseReportingDtoFromJSON(json: any): MetabaseReportingDto {
 }
 
 export function MetabaseReportingDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetabaseReportingDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'url': !exists(json, 'url') ? undefined : json['url'],
-        'reportErgebnissePlanungsursaechlich': !exists(json, 'reportErgebnissePlanungsursaechlich') ? undefined : json['reportErgebnissePlanungsursaechlich'],
-        'reportErgebnisseSobonUrsaechlich': !exists(json, 'reportErgebnisseSobonUrsaechlich') ? undefined : json['reportErgebnisseSobonUrsaechlich'],
-        'reportWohneinheiten': !exists(json, 'reportWohneinheiten') ? undefined : json['reportWohneinheiten'],
-        'reportBauratendatei': !exists(json, 'reportBauratendatei') ? undefined : json['reportBauratendatei'],
-        'reportKitaplanungsbereichKrippe': !exists(json, 'reportKitaplanungsbereichKrippe') ? undefined : json['reportKitaplanungsbereichKrippe'],
-        'reportKitaplanungsbereichKiga': !exists(json, 'reportKitaplanungsbereichKiga') ? undefined : json['reportKitaplanungsbereichKiga'],
-        'reportAndere': !exists(json, 'reportAndere') ? undefined : json['reportAndere'],
+        'url': json['url'] == null ? undefined : json['url'],
+        'reportErgebnissePlanungsursaechlich': json['reportErgebnissePlanungsursaechlich'] == null ? undefined : json['reportErgebnissePlanungsursaechlich'],
+        'reportErgebnisseSobonUrsaechlich': json['reportErgebnisseSobonUrsaechlich'] == null ? undefined : json['reportErgebnisseSobonUrsaechlich'],
+        'reportWohneinheiten': json['reportWohneinheiten'] == null ? undefined : json['reportWohneinheiten'],
+        'reportBauratendatei': json['reportBauratendatei'] == null ? undefined : json['reportBauratendatei'],
+        'reportKitaplanungsbereichKrippe': json['reportKitaplanungsbereichKrippe'] == null ? undefined : json['reportKitaplanungsbereichKrippe'],
+        'reportKitaplanungsbereichKiga': json['reportKitaplanungsbereichKiga'] == null ? undefined : json['reportKitaplanungsbereichKiga'],
+        'reportAndere': json['reportAndere'] == null ? undefined : json['reportAndere'],
     };
 }
 
-export function MetabaseReportingDtoToJSON(value?: MetabaseReportingDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MetabaseReportingDtoToJSON(json: any): MetabaseReportingDto {
+    return MetabaseReportingDtoToJSONTyped(json, false);
+}
+
+export function MetabaseReportingDtoToJSONTyped(value?: MetabaseReportingDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'url': value.url,
-        'reportErgebnissePlanungsursaechlich': value.reportErgebnissePlanungsursaechlich,
-        'reportErgebnisseSobonUrsaechlich': value.reportErgebnisseSobonUrsaechlich,
-        'reportWohneinheiten': value.reportWohneinheiten,
-        'reportBauratendatei': value.reportBauratendatei,
-        'reportKitaplanungsbereichKrippe': value.reportKitaplanungsbereichKrippe,
-        'reportKitaplanungsbereichKiga': value.reportKitaplanungsbereichKiga,
-        'reportAndere': value.reportAndere,
+        'url': value['url'],
+        'reportErgebnissePlanungsursaechlich': value['reportErgebnissePlanungsursaechlich'],
+        'reportErgebnisseSobonUrsaechlich': value['reportErgebnisseSobonUrsaechlich'],
+        'reportWohneinheiten': value['reportWohneinheiten'],
+        'reportBauratendatei': value['reportBauratendatei'],
+        'reportKitaplanungsbereichKrippe': value['reportKitaplanungsbereichKrippe'],
+        'reportKitaplanungsbereichKiga': value['reportKitaplanungsbereichKiga'],
+        'reportAndere': value['reportAndere'],
     };
 }
 

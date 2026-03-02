@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -79,10 +79,8 @@ export type AbfragevarianteRequestBodyArtAbfragevarianteEnum = typeof Abfragevar
 /**
  * Check if a given object implements the AbfragevarianteRequestBody interface.
  */
-export function instanceOfAbfragevarianteRequestBody(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAbfragevarianteRequestBody(value: object): value is AbfragevarianteRequestBody {
+    return true;
 }
 
 export function AbfragevarianteRequestBodyFromJSON(json: any): AbfragevarianteRequestBody {
@@ -90,37 +88,39 @@ export function AbfragevarianteRequestBodyFromJSON(json: any): AbfragevarianteRe
 }
 
 export function AbfragevarianteRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfragevarianteRequestBody {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'abfragevariantenNr': !exists(json, 'abfragevariantenNr') ? undefined : json['abfragevariantenNr'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'artAbfragevariante': !exists(json, 'artAbfragevariante') ? undefined : json['artAbfragevariante'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'abfragevariantenNr': json['abfragevariantenNr'] == null ? undefined : json['abfragevariantenNr'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
     };
 }
 
-export function AbfragevarianteRequestBodyToJSON(value?: AbfragevarianteRequestBody | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfragevarianteRequestBodyToJSON(json: any): AbfragevarianteRequestBody {
+    return AbfragevarianteRequestBodyToJSONTyped(json, false);
+}
+
+export function AbfragevarianteRequestBodyToJSONTyped(value?: AbfragevarianteRequestBody | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'abfragevariantenNr': value.abfragevariantenNr,
-        'name': value.name,
-        'artAbfragevariante': value.artAbfragevariante,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'abfragevariantenNr': value['abfragevariantenNr'],
+        'name': value['name'],
+        'artAbfragevariante': value['artAbfragevariante'],
     };
 }
 
