@@ -37,9 +37,9 @@ export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
 export class OverlayUrlMapping {
-  displayName: String;
-  internalName: String;
-  urlPart: String;
+  displayName: string = "";
+  internalName: string = "";
+  urlPart: string = "";
 }
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
