@@ -3,6 +3,7 @@ import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { HTTPBody, HTTPHeaders, HTTPMethod } from "@/api/api-client/isi-master-eai";
 // import "@/types/common/Leaflet";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
@@ -36,11 +37,7 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
-export class OverlayUrlMapping {
-  displayName: string = "";
-  internalName: string = "";
-  urlPart: string = "";
-}
+export type OverlayUrlMapping = { displayName: string; internalName: string; urlPart: string };
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
   { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
