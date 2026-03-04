@@ -157,7 +157,7 @@ const { searchForEntities } = useSearchApi();
 withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
 const emit = defineEmits(["update:modelValue"]);
-flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
+const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 

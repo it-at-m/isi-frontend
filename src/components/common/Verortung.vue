@@ -97,7 +97,7 @@
             v-for="(grundschulsprengelItem, index) in grundschulsprengel"
             :key="grundschulsprengelItem.nummer"
             :closable="isEditable"
-            @click:closes.stop="removeChipGrundschulsprengel(grundschulsprengelItem.nummer)"
+            @click:close.stop="removeChipGrundschulsprengel(grundschulsprengelItem.nummer)"
           >
             {{ grundschulsprengelItem.nummer }}
           </v-chip>
@@ -222,7 +222,6 @@ import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 interface Props {
   context?: Context;
   lookAt?: AdresseDto;
-  isEditable?: boolean;
 }
 
 const emit = defineEmits(["form-changed"]);
@@ -263,7 +262,7 @@ const { formChanged } = useSaveLeave();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const geoApi = useGeodataEaiApi();
-const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: true });
+const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED });
 const verortungModel = defineModel<VerortungMultiPolygonModel | undefined>();
 // Repräsentiert das Multipolygon je Flurstück.
 const geoJson = computed(() => flurstueckeToGeoJsonFeature(Array.from(selectedFlurstuecke.value.values())));
