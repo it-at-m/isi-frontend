@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -29,6 +29,7 @@ import type {
   AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto,
   AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto,
   AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
@@ -41,6 +42,7 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 import { createSobonBerechnungBauleitplanverfahren } from "./Factories";
 import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
+import { useSecurity } from "@/composables/security/Security";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
@@ -718,9 +720,27 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
   const copy = _.cloneDeep(value);
+  if (!_.isNil(value as AnyAbfrageDto)) {
+    sanitzeAbfragevarianteSachbearbeitung(copy);
+  }
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
+}
+/*
+ * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Nr. 1.x) übernommen werden
+ */
+function sanitzeAbfragevarianteSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
+  if (value.statusAbfrage === StatusAbfrage.StartBearbeitung) {
+    if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      (value as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+      (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren = [];
+    }
+  }
+  return value;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
