@@ -22,10 +22,10 @@ Name | Type
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
 `infrastruktureinrichtungTyp` | string
-`verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 `bauvorhabenName` | string
 `resultType` | string
 `adresseJson` | [Adresse](Adresse.md)
+`verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 
 ## Example
 
@@ -50,10 +50,10 @@ const example = {
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
   "infrastruktureinrichtungTyp": null,
-  "verortungPointJson": null,
   "bauvorhabenName": null,
   "resultType": null,
   "adresseJson": null,
+  "verortungPointJson": null,
 } satisfies InfrastruktureinrichtungRequestBody
 
 console.log(example)

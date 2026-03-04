@@ -9,7 +9,7 @@ Name | Type
 `isASobonBerechnung` | boolean
 `sobonFoerdermix` | [Foerdermix](Foerdermix.md)
 `sobonOrientierungswertJahrSobonUrsaechlich` | string
-`versorgungsquoteHortSobon` | string
+`versorgungsquoteHortSobon` | number
 
 ## Example
 

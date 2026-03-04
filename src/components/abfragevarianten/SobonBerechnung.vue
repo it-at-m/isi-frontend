@@ -25,11 +25,11 @@
           id="sobon_berechnung_versorgungsquote_hort_sobon"
           v-model="sobonBerechnung.versorgungsquoteHortSobon"
           :disabled="!isEditableBySachbearbeitung"
-          :items="versorgungsquoteHortSobon"
+          :items="versorungsquoteHortSobon"
           label="SoBoN-ursächliche Versorgungsquote Hort"
           variant="underlined"
-          item-value="key"
-          item-title="value"
+          item-value="versorgungsquoteSobon"
+          item-title="beschreibung"
           @update:model-value="formChanged"
         />
       </v-col>
@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
@@ -114,17 +114,20 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
-import { useLookupStore } from "@/stores/LookupStore";
+import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
+import { VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
 const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 const stammdatenStore = useStammdatenStore();
-const lookupStore = useLookupStore();
+const { getVersorungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
+const versorungsquoteHortSobon = ref<VersorgungsquoteSobonHortDto[] | undefined>(undefined);
 
 onMounted(() => {
   setGroupedStammdatenList();
+  loadVersorungsquoteHortSobon();
 });
 
 const sobonFoerdermix = computed({
@@ -162,8 +165,6 @@ const gesamtsumme = computed(() => {
   return 0;
 });
 
-const versorgungsquoteHortSobon = computed(() => lookupStore.versorgungsquoteHortSobon);
-
 function setGroupedStammdatenList(): void {
   let stammdaten = stammdatenStore.foerdermixStammdaten;
   stammdaten = stammdaten.filter((fm: FoerdermixStammDto) => {
@@ -181,6 +182,10 @@ function sobonBerechnungChanged(): void {
     sobonBerechnung.value.sobonFoerdermix = undefined;
     sobonBerechnung.value.versorgungsquoteHortSobon = undefined;
   }
+}
+
+async function loadVersorungsquoteHortSobon(): Promise<void> {
+  versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
 }
 </script>
 

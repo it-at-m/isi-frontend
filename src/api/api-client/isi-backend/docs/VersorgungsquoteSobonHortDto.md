@@ -1,28 +1,32 @@
 
-# SobonBerechnungDto
+# VersorgungsquoteSobonHortDto
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`isASobonBerechnung` | boolean
-`sobonFoerdermix` | [FoerdermixDto](FoerdermixDto.md)
-`sobonOrientierungswertJahrSobonUrsaechlich` | string
-`versorgungsquoteHortSobon` | number
+`id` | string
+`version` | number
+`createdDateTime` | Date
+`lastModifiedDateTime` | Date
+`beschreibung` | string
+`versorgungsquoteSobon` | number
 
 ## Example
 
 ```typescript
-import type { SobonBerechnungDto } from ''
+import type { VersorgungsquoteSobonHortDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "isASobonBerechnung": null,
-  "sobonFoerdermix": null,
-  "sobonOrientierungswertJahrSobonUrsaechlich": null,
-  "versorgungsquoteHortSobon": null,
-} satisfies SobonBerechnungDto
+  "id": null,
+  "version": null,
+  "createdDateTime": null,
+  "lastModifiedDateTime": null,
+  "beschreibung": null,
+  "versorgungsquoteSobon": null,
+} satisfies VersorgungsquoteSobonHortDto
 
 console.log(example)
 
@@ -31,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SobonBerechnungDto
+const exampleParsed = JSON.parse(exampleJSON) as VersorgungsquoteSobonHortDto
 console.log(exampleParsed)
 ```
 

@@ -25,7 +25,6 @@ interface State {
   artGsNachmittagBetreuung: LookupEntryDto[];
   sobonOrientierungswertJahr: LookupEntryDto[];
   sobonOrientierungswertJahrWithoutStandortabfrage: LookupEntryDto[];
-  versorgungsquoteHortSobon: LookupEntryDto[];
 }
 
 export const useLookupStore = defineStore("lookup", {
@@ -52,7 +51,6 @@ export const useLookupStore = defineStore("lookup", {
       artGsNachmittagBetreuung: [],
       sobonOrientierungswertJahr: [],
       sobonOrientierungswertJahrWithoutStandortabfrage: [],
-      versorgungsquoteHortSobon: [],
     }) as State,
   getters: {},
   actions: {
@@ -86,7 +84,6 @@ export const useLookupStore = defineStore("lookup", {
         this.setSobonOrientierungswertJahrWithoutStandortabfrage(
           lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage,
         );
-        this.setVersorgungsquoteHortSobon(lookupLists.versorgungsquoteHortSobon);
       });
     },
     setUncertainBoolean(payload: LookupListDto | undefined): void {
@@ -185,11 +182,6 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.sobonOrientierungswertJahrWithoutStandortabfrage = payload?.list)
         : (this.sobonOrientierungswertJahrWithoutStandortabfrage = []);
-    },
-    setVersorgungsquoteHortSobon(payload: LookupListDto | undefined): void {
-      !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.versorgungsquoteHortSobon = payload?.list)
-        : (this.versorgungsquoteHortSobon = []);
     },
   },
 });
