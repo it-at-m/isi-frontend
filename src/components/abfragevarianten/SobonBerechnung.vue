@@ -129,7 +129,7 @@ const { handleError } = useErrorHandler();
 
 onMounted(() => {
   setGroupedStammdatenList();
-  if (isEditableBySachbearbeitung) {
+  if (!isEditableBySachbearbeitung) {
     loadVersorungsquoteHortSobon();
   }
 });
