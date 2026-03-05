@@ -131,9 +131,9 @@ onMounted(() => {
 });
 
 watch(
-  () => sobonBerechnung.value.versorgungsquoteHortSobon,
+  () => sobonBerechnung.value,
   (versorgungsquoteHortSobon) => {
-    console.log(`Versorgung ist: ${versorgungsquoteHortSobon}`);
+    console.log(`Sobon Value: ${versorgungsquoteHortSobon}`);
   },
 );
 

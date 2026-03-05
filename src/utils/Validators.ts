@@ -275,12 +275,12 @@ export function findFaultInAbfragevarianteMarkedSobonBerechnung(
       ) {
         return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
       }
+      // eslint-disable-next-line
+      console.log(`Validator: ${abfragevarianteSobon.sobonBerechnung}`);
       if (
         abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon == null ||
         abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon === 0
       ) {
-        // eslint-disable-next-line
-        console.log(abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon);
         return "Bitte geben Sie eine SoBoN-ursächliche Versorgungsquote Hort an";
       }
       if (

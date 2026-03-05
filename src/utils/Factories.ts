@@ -424,7 +424,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
-    versorgungsquoteHortSobon: Number.NaN,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
@@ -434,7 +434,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
-    versorgungsquoteHortSobon: Number.NaN,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
