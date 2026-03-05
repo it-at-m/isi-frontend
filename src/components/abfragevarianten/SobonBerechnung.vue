@@ -130,13 +130,6 @@ onMounted(() => {
   loadVersorungsquoteHortSobon();
 });
 
-watch(
-  () => sobonBerechnung.value.versorgungsquoteHortSobon,
-  (versorgungsquoteHortSobon) => {
-    console.log("SobonBerechnung: ", sobonBerechnung.value);
-  },
-);
-
 const sobonFoerdermix = computed({
   get() {
     if (!_.isNil(sobonBerechnung.value.sobonFoerdermix?.bezeichnung)) {
