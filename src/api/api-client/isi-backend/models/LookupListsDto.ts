@@ -153,12 +153,6 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     sobonOrientierungswertJahrWithoutStandortabfrage?: LookupListDto;
-    /**
-     * 
-     * @type {LookupListDto}
-     * @memberof LookupListsDto
-     */
-    versorgungsquoteHortSobon?: LookupListDto;
 }
 
 /**

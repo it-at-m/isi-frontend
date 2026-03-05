@@ -116,6 +116,7 @@ import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
 import { VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
+import { useErrorHandler } from "@/composables/requests/ErrorHandler";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
@@ -124,6 +125,7 @@ const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 const stammdatenStore = useStammdatenStore();
 const { getVersorungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
 const versorungsquoteHortSobon = ref<VersorgungsquoteSobonHortDto[] | undefined>(undefined);
+const { handleError } = useErrorHandler();
 
 onMounted(() => {
   setGroupedStammdatenList();
@@ -185,7 +187,11 @@ function sobonBerechnungChanged(): void {
 }
 
 async function loadVersorungsquoteHortSobon(): Promise<void> {
-  versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
+  try {
+    versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
+  } catch (error) {
+    throw handleError(error);
+  }
 }
 </script>
 

@@ -28,7 +28,7 @@ import {
 export class VersorgungsquoteApi extends runtime.BaseAPI {
 
     /**
-     * Lade alle Versorungsquoten für den Hort
+     * Lade alle SObon Versorgungsquoten für den Hort
      */
     async getVersorungsquoteSobonHortRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<VersorgungsquoteSobonHortDto>>> {
         const queryParameters: any = {};
@@ -36,7 +36,7 @@ export class VersorgungsquoteApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/stammdaten/versorungsquote`;
+        let urlPath = `/stammdaten/versorgungsquote`;
 
         const response = await this.request({
             path: urlPath,
@@ -49,7 +49,7 @@ export class VersorgungsquoteApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lade alle Versorungsquoten für den Hort
+     * Lade alle SObon Versorgungsquoten für den Hort
      */
     async getVersorungsquoteSobonHort(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VersorgungsquoteSobonHortDto>> {
         const response = await this.getVersorungsquoteSobonHortRaw(initOverrides);
