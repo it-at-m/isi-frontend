@@ -27,7 +27,6 @@ Name | Type
 `artGsNachmittagBetreuung` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahr` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahrWithoutStandortabfrage` | [LookupListDto](LookupListDto.md)
-`versorgungsquoteHortSobon` | [LookupListDto](LookupListDto.md)
 
 ## Example
 
@@ -57,7 +56,6 @@ const example = {
   "artGsNachmittagBetreuung": null,
   "sobonOrientierungswertJahr": null,
   "sobonOrientierungswertJahrWithoutStandortabfrage": null,
-  "versorgungsquoteHortSobon": null,
 } satisfies LookupListsDto
 
 console.log(example)
