@@ -129,9 +129,7 @@ const { handleError } = useErrorHandler();
 
 onMounted(() => {
   setGroupedStammdatenList();
-  if (isEditableBySachbearbeitung.value) {
-    loadVersorungsquoteHortSobon();
-  }
+  loadVersorungsquoteHortSobon();
 });
 
 const sobonFoerdermix = computed({
