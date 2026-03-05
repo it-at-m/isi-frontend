@@ -42,7 +42,6 @@ import FoerdermixModel from "@/types/model/bauraten/FoerdermixModel";
 import _ from "lodash";
 import { createSobonBerechnungBauleitplanverfahren } from "./Factories";
 import { AnyAbfrageDto, AnyAbfragevarianteDto } from "@/types/common/Abfrage";
-import { useSecurity } from "@/composables/security/Security";
 
 type GroupedStammdaten = Array<{ header: string } | FoerdermixStammModel>;
 
