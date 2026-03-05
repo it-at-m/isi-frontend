@@ -275,9 +275,6 @@ export function findFaultInAbfragevarianteMarkedSobonBerechnung(
       ) {
         return "Bitte geben Sie einen Fördermix an für die SoBoN-Berechnung";
       }
-      if (_.isNil(abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon)) {
-        return "Bitte geben Sie eine SoBoN-ursächliche Versorgungsquote Hort an";
-      }
       if (
         _.isNil(abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich) ||
         abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich ==

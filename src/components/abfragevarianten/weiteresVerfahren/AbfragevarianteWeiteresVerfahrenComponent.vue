@@ -82,6 +82,7 @@ import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { AnzeigeContextAbfragevariante } from "@/types/common/Abfrage";
 import AbfragevarianteWeiteresVerfahrenModel from "@/types/model/abfragevariante/AbfragevarianteWeiteresVerfahrenModel";
 import { BedarfsmeldungTitle } from "@/utils/Factories";
+import { getAbfragevariantenNrForContextAnzeigeAbfragevariante } from "@/utils/AbfragevarianteUtil";
 import _ from "lodash";
 
 interface Props {
@@ -95,9 +96,10 @@ const { isBedarfsmeldungEditableByAbfrageerstellung, isEditableByBedarfsmeldung 
 const { formChanged } = useSaveLeave();
 
 const headline = computed(() => {
-  const headline = `Abfragevariante ${new AbfragevarianteWeiteresVerfahrenModel(
+  const headline = `Abfragevariante ${getAbfragevariantenNrForContextAnzeigeAbfragevariante(
     abfragevariante.value,
-  ).getAbfragevariantenNrForContextAnzeigeAbfragevariante(props.anzeigeContextAbfragevariante)} - `;
+    props.anzeigeContextAbfragevariante,
+  )} - `;
   return headline.concat(`${abfragevariante.value.name}`);
 });
 

@@ -399,6 +399,7 @@ import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { useStatusUebergangApi } from "@/composables/requests/StatusUebergangApi";
 import { useBauratenApi } from "@/composables/requests/BauratenApi";
 import { useCommonStore } from "@/stores/CommonStore";
+import { getAbfragevariantenNrForContextAnzeigeAbfragevariante } from "@/utils/AbfragevarianteUtil";
 
 const {
   saveLeaveDialog,
@@ -513,11 +514,11 @@ const deleteAbfragevarianteDialogText = computed(() => {
   if (item) {
     let name: string | undefined;
     if (isAbfragevarianteBaugenehmigungsverfahren(item, item.value)) {
-      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+      name = getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.value, item.context);
     } else if (isAbfragevarianteBauleitplanverfahren(item, item.value)) {
-      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+      name = getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.value, item.context);
     } else if (isAbfragevarianteWeiteresVerfahren(item, item.value)) {
-      name = item.value.getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.context);
+      name = getAbfragevariantenNrForContextAnzeigeAbfragevariante(item.value, item.context);
     }
     if (name) {
       return `Hiermit wird die Abfragevariante Nr. ${name} und alle dazugehörigen Angaben unwiderruflich gelöscht.`;
