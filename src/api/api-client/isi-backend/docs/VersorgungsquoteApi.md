@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost:39146*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getVersorungsquoteSobonHort**](VersorgungsquoteApi.md#getversorungsquotesobonhort) | **GET** /stammdaten/versorgungsquote | Lade alle SObon Versorgungsquoten für den Hort |
+| [**getVersorungsquoteSobonHort**](VersorgungsquoteApi.md#getversorungsquotesobonhort) | **GET** /stammdaten/versorgungsquote | Lade alle Sobon Versorgungsquoten für den Hort |
 
 
 
@@ -12,7 +12,7 @@ All URIs are relative to *http://localhost:39146*
 
 > Array&lt;VersorgungsquoteSobonHortDto&gt; getVersorungsquoteSobonHort()
 
-Lade alle SObon Versorgungsquoten für den Hort
+Lade alle Sobon Versorgungsquoten für den Hort
 
 ### Example
 
