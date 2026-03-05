@@ -720,17 +720,18 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
   const copy = _.cloneDeep(value);
-  if (!_.isNil(value as AnyAbfrageDto)) {
-    sanitzeAbfragevarianteSachbearbeitung(copy);
+  if ("statusAbfrage" in value && "artAbfrage" in value) {
+    sanitzeAbfragevariantenSachbearbeitung(copy);
   }
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
 }
 /*
- * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Nr. 1.x) übernommen werden
+ * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Abfragevariante Nr. 1.x) übernommen werden,
+ * nicht aber die der Sachbearbeitung (Abfragevariante Nr. 2.x)
  */
-function sanitzeAbfragevarianteSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
+function sanitzeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
   if (value.statusAbfrage === StatusAbfrage.StartBearbeitung) {
     if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
       (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = [];
