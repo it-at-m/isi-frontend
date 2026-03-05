@@ -1,16 +1,11 @@
-export function toBackendJson<T>(value: T): T {
-  const normalize = (v: unknown): unknown => {
-    if (v instanceof Date) return v;
-    if (v instanceof Set) return Array.from(v, normalize);
-    if (v instanceof Map) {
-      return Object.fromEntries(Array.from(v.entries(), ([k, val]) => [k, normalize(val)]));
-    }
-    if (Array.isArray(v)) return v.map(normalize);
-    if (v && typeof v === "object") {
-      return Object.fromEntries(Object.entries(v).map(([k, val]) => [k, normalize(val)]));
-    }
-    return v;
-  };
+export type BackendJson = string | number | boolean | null | BackendJson[] | { [k: string]: BackendJson };
 
-  return normalize(value) as T;
+export function toBackendJson<T>(value: T): BackendJson {
+  return JSON.parse(
+    JSON.stringify(value, (_k, v) => {
+      if (v instanceof Set) return Array.from(v);
+      if (v instanceof Map) return Object.fromEntries(v);
+      return v;
+    }),
+  ) as BackendJson;
 }
