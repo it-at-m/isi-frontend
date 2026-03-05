@@ -129,7 +129,7 @@ const { handleError } = useErrorHandler();
 
 onMounted(() => {
   setGroupedStammdatenList();
-  loadVersorungsquoteHortSobon();
+  void loadVersorungsquoteHortSobon();
 });
 
 const sobonFoerdermix = computed({
@@ -190,7 +190,8 @@ async function loadVersorungsquoteHortSobon(): Promise<void> {
   try {
     versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
+    versorungsquoteHortSobon.value = [];
   }
 }
 </script>
