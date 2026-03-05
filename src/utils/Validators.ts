@@ -279,6 +279,8 @@ export function findFaultInAbfragevarianteMarkedSobonBerechnung(
         abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon == null ||
         abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon === 0
       ) {
+        // eslint-disable-next-line
+        console.log(abfragevarianteSobon.sobonBerechnung.versorgungsquoteHortSobon);
         return "Bitte geben Sie eine SoBoN-ursächliche Versorgungsquote Hort an";
       }
       if (

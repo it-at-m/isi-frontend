@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
@@ -129,6 +129,13 @@ onMounted(() => {
   setGroupedStammdatenList();
   loadVersorungsquoteHortSobon();
 });
+
+watch(
+  () => sobonBerechnung.value.versorgungsquoteHortSobon,
+  (versorgungsquoteHortSobon) => {
+    console.log(`Versorgung ist: ${versorgungsquoteHortSobon}`);
+  },
+);
 
 const sobonFoerdermix = computed({
   get() {
