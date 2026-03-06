@@ -8,6 +8,7 @@
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
+    { "name": "Controller für das Lesen von Layern", "description": "API für das Lesen von Layern" },
     {
       "name": "Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)",
       "description": "API für geometriespezifische Operationen."
@@ -505,6 +506,31 @@
           }
         }
       }
+    },
+    "/layer": {
+      "get": {
+        "tags": ["Controller für das Lesen von Layern"],
+        "summary": "Ermittelt einen Layer",
+        "operationId": "getLayer",
+        "parameters": [
+          {
+            "name": "arg0",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "object", "additionalProperties": { "type": "string" } }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Das Lesen des Layers war erfolgreich",
+            "content": { "image/png": { "schema": { "type": "string", "format": "byte" } } }
+          },
+          "500": {
+            "description": "Beim Lesen des Layers ist ein Fehler aufgetreten.",
+            "content": { "image/png": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -622,8 +648,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "viertelNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
@@ -653,8 +679,8 @@
           "stadtbezirkNummer": { "type": "string" },
           "name": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
@@ -730,8 +756,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto": {
@@ -792,8 +818,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoGemarkungDto": {
@@ -873,8 +899,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "bezirksteilNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoBezirksteilDto": {
