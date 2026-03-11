@@ -25,7 +25,7 @@ import type {
   FeatureCollectionDtoFeatureDtoViertelDto,
   InformationResponseDto,
   PointGeometryDto,
-} from '../models';
+} from '../models/index';
 import {
     FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoToJSON,
@@ -47,7 +47,7 @@ import {
     InformationResponseDtoToJSON,
     PointGeometryDtoFromJSON,
     PointGeometryDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface GetBezirksteile1Request {
     pointGeometryDto: PointGeometryDto;
@@ -90,8 +90,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Bezirksteile die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getBezirksteile1Raw(requestParameters: GetBezirksteile1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBezirksteilDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getBezirksteile1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBezirksteile1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -100,12 +103,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/bezirksteile`;
+
         const response = await this.request({
-            path: `/point/bezirksteile`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON(jsonValue));
@@ -123,8 +129,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getFlurstuecke1Raw(requestParameters: GetFlurstuecke1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getFlurstuecke1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getFlurstuecke1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -133,12 +142,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/flurstuecke`;
+
         const response = await this.request({
-            path: `/point/flurstuecke`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON(jsonValue));
@@ -156,8 +168,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGemarkungen1Raw(requestParameters: GetGemarkungen1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getGemarkungen1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getGemarkungen1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -166,12 +181,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/gemarkungen`;
+
         const response = await this.request({
-            path: `/point/gemarkungen`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(jsonValue));
@@ -189,8 +207,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Grundschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getGrundschulsprengel1Raw(requestParameters: GetGrundschulsprengel1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGrundschulsprengelDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getGrundschulsprengel1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getGrundschulsprengel1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -199,12 +220,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/grundschulsprengel`;
+
         const response = await this.request({
-            path: `/point/grundschulsprengel`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON(jsonValue));
@@ -222,8 +246,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Kitaplanungsbereiche die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getKitaplanungsbereiche1Raw(requestParameters: GetKitaplanungsbereiche1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getKitaplanungsbereiche1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getKitaplanungsbereiche1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -232,12 +259,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/kitaplanungsbereiche`;
+
         const response = await this.request({
-            path: `/point/kitaplanungsbereiche`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON(jsonValue));
@@ -255,8 +285,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Mittelschulsprengel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getMittelschulsprengel1Raw(requestParameters: GetMittelschulsprengel1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getMittelschulsprengel1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getMittelschulsprengel1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -265,12 +298,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/mittelschulsprengel`;
+
         const response = await this.request({
-            path: `/point/mittelschulsprengel`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoFromJSON(jsonValue));
@@ -288,8 +324,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getStadtbezirke1Raw(requestParameters: GetStadtbezirke1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getStadtbezirke1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getStadtbezirke1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -298,12 +337,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/stadtbezirke`;
+
         const response = await this.request({
-            path: `/point/stadtbezirke`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(jsonValue));
@@ -321,8 +363,11 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
      * Holt die Viertel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
     async getViertel1Raw(requestParameters: GetViertel1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoViertelDto>> {
-        if (requestParameters.pointGeometryDto === null || requestParameters.pointGeometryDto === undefined) {
-            throw new runtime.RequiredError('pointGeometryDto','Required parameter requestParameters.pointGeometryDto was null or undefined when calling getViertel1.');
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getViertel1().'
+            );
         }
 
         const queryParameters: any = {};
@@ -331,12 +376,15 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/point/viertel`;
+
         const response = await this.request({
-            path: `/point/viertel`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PointGeometryDtoToJSON(requestParameters.pointGeometryDto),
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoViertelDtoFromJSON(jsonValue));

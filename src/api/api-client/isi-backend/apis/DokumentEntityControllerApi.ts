@@ -18,7 +18,7 @@ import type {
   DokumentRequestBody,
   EntityModelDokument,
   PagedModelEntityModelDokument,
-} from '../models';
+} from '../models/index';
 import {
     DokumentRequestBodyFromJSON,
     DokumentRequestBodyToJSON,
@@ -26,7 +26,7 @@ import {
     EntityModelDokumentToJSON,
     PagedModelEntityModelDokumentFromJSON,
     PagedModelEntityModelDokumentToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteItemResourceDokumentDeleteRequest {
     id: string;
@@ -65,16 +65,23 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
      * delete-dokument
      */
     async deleteItemResourceDokumentDeleteRaw(requestParameters: DeleteItemResourceDokumentDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteItemResourceDokumentDelete.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteItemResourceDokumentDelete().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/dokuments/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/dokuments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -96,22 +103,25 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
     async getCollectionResourceDokumentGetRaw(requestParameters: GetCollectionResourceDokumentGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelDokument>> {
         const queryParameters: any = {};
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sort) {
-            queryParameters['sort'] = requestParameters.sort;
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/dokuments`;
+
         const response = await this.request({
-            path: `/dokuments`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -132,16 +142,23 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
      * get-dokument
      */
     async getItemResourceDokumentGetRaw(requestParameters: GetItemResourceDokumentGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getItemResourceDokumentGet.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getItemResourceDokumentGet().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/dokuments/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/dokuments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -162,12 +179,18 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
      * patch-dokument
      */
     async patchItemResourceDokumentPatchRaw(requestParameters: PatchItemResourceDokumentPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchItemResourceDokumentPatch.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling patchItemResourceDokumentPatch().'
+            );
         }
 
-        if (requestParameters.dokumentRequestBody === null || requestParameters.dokumentRequestBody === undefined) {
-            throw new runtime.RequiredError('dokumentRequestBody','Required parameter requestParameters.dokumentRequestBody was null or undefined when calling patchItemResourceDokumentPatch.');
+        if (requestParameters['dokumentRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'dokumentRequestBody',
+                'Required parameter "dokumentRequestBody" was null or undefined when calling patchItemResourceDokumentPatch().'
+            );
         }
 
         const queryParameters: any = {};
@@ -176,12 +199,16 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/dokuments/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/dokuments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: DokumentRequestBodyToJSON(requestParameters.dokumentRequestBody),
+            body: DokumentRequestBodyToJSON(requestParameters['dokumentRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelDokumentFromJSON(jsonValue));
@@ -190,17 +217,27 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
     /**
      * patch-dokument
      */
-    async patchItemResourceDokumentPatch(requestParameters: PatchItemResourceDokumentPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelDokument> {
+    async patchItemResourceDokumentPatch(requestParameters: PatchItemResourceDokumentPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelDokument | null | undefined > {
         const response = await this.patchItemResourceDokumentPatchRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
     /**
      * create-dokument
      */
     async postCollectionResourceDokumentPostRaw(requestParameters: PostCollectionResourceDokumentPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelDokument>> {
-        if (requestParameters.dokumentRequestBody === null || requestParameters.dokumentRequestBody === undefined) {
-            throw new runtime.RequiredError('dokumentRequestBody','Required parameter requestParameters.dokumentRequestBody was null or undefined when calling postCollectionResourceDokumentPost.');
+        if (requestParameters['dokumentRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'dokumentRequestBody',
+                'Required parameter "dokumentRequestBody" was null or undefined when calling postCollectionResourceDokumentPost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -209,12 +246,15 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/dokuments`;
+
         const response = await this.request({
-            path: `/dokuments`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DokumentRequestBodyToJSON(requestParameters.dokumentRequestBody),
+            body: DokumentRequestBodyToJSON(requestParameters['dokumentRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelDokumentFromJSON(jsonValue));
@@ -232,12 +272,18 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
      * update-dokument
      */
     async putItemResourceDokumentPutRaw(requestParameters: PutItemResourceDokumentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelDokument>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling putItemResourceDokumentPut.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling putItemResourceDokumentPut().'
+            );
         }
 
-        if (requestParameters.dokumentRequestBody === null || requestParameters.dokumentRequestBody === undefined) {
-            throw new runtime.RequiredError('dokumentRequestBody','Required parameter requestParameters.dokumentRequestBody was null or undefined when calling putItemResourceDokumentPut.');
+        if (requestParameters['dokumentRequestBody'] == null) {
+            throw new runtime.RequiredError(
+                'dokumentRequestBody',
+                'Required parameter "dokumentRequestBody" was null or undefined when calling putItemResourceDokumentPut().'
+            );
         }
 
         const queryParameters: any = {};
@@ -246,12 +292,16 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/dokuments/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
         const response = await this.request({
-            path: `/dokuments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: DokumentRequestBodyToJSON(requestParameters.dokumentRequestBody),
+            body: DokumentRequestBodyToJSON(requestParameters['dokumentRequestBody']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelDokumentFromJSON(jsonValue));
@@ -260,9 +310,18 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
     /**
      * update-dokument
      */
-    async putItemResourceDokumentPut(requestParameters: PutItemResourceDokumentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelDokument> {
+    async putItemResourceDokumentPut(requestParameters: PutItemResourceDokumentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelDokument | null | undefined > {
         const response = await this.putItemResourceDokumentPutRaw(requestParameters, initOverrides);
-        return await response.value();
+        switch (response.raw.status) {
+            case 200:
+                return await response.value();
+            case 201:
+                return await response.value();
+            case 204:
+                return null;
+            default:
+                return await response.value();
+        }
     }
 
 }

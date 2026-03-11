@@ -43,10 +43,10 @@ export class OverlayUrlMapping {
   static readonly BILDUNG_UND_SOZIALES_URL_PART = "Bildung_und_Soziales";
   static readonly FIS_URL_PART = "FIS2_FS_ISI";
 
-  displayName: String;
-  internalName: String;
-  urlPart: String;
-  authentification: Boolean;
+  displayName: string = "";
+  internalName: string = "";
+  urlPart: string = "";
+  authentification: boolean = false;
 }
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   {

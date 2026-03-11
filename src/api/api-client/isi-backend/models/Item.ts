@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AbstractJsonSchemaPropertyObject } from './AbstractJsonSchemaPropertyObject';
 import {
     AbstractJsonSchemaPropertyObjectFromJSON,
     AbstractJsonSchemaPropertyObjectFromJSONTyped,
     AbstractJsonSchemaPropertyObjectToJSON,
+    AbstractJsonSchemaPropertyObjectToJSONTyped,
 } from './AbstractJsonSchemaPropertyObject';
 
 /**
@@ -49,10 +50,8 @@ export interface Item {
 /**
  * Check if a given object implements the Item interface.
  */
-export function instanceOfItem(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfItem(value: object): value is Item {
+    return true;
 }
 
 export function ItemFromJSON(json: any): Item {
@@ -60,29 +59,31 @@ export function ItemFromJSON(json: any): Item {
 }
 
 export function ItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): Item {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'properties': !exists(json, 'properties') ? undefined : (mapValues(json['properties'], AbstractJsonSchemaPropertyObjectFromJSON)),
-        'requiredProperties': !exists(json, 'requiredProperties') ? undefined : json['requiredProperties'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'properties': json['properties'] == null ? undefined : (mapValues(json['properties'], AbstractJsonSchemaPropertyObjectFromJSON)),
+        'requiredProperties': json['requiredProperties'] == null ? undefined : json['requiredProperties'],
     };
 }
 
-export function ItemToJSON(value?: Item | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ItemToJSON(json: any): Item {
+    return ItemToJSONTyped(json, false);
+}
+
+export function ItemToJSONTyped(value?: Item | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': value.type,
-        'properties': value.properties === undefined ? undefined : (mapValues(value.properties, AbstractJsonSchemaPropertyObjectToJSON)),
-        'requiredProperties': value.requiredProperties,
+        'type': value['type'],
+        'properties': value['properties'] == null ? undefined : (mapValues(value['properties'], AbstractJsonSchemaPropertyObjectToJSON)),
+        'requiredProperties': value['requiredProperties'],
     };
 }
 

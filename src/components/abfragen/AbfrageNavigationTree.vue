@@ -68,6 +68,7 @@ import {
   AbfrageFormType,
 } from "@/types/common/Abfrage";
 import AbfrageListItem from "./AbfrageListItem.vue";
+import { getAbfragevariantenNrForContextAnzeigeAbfragevariante } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   abfrage: BauleitplanverfahrenDto;
@@ -475,7 +476,8 @@ function getAbfragevarianteName(
   conextAnzeigeAbfragevariante: AnzeigeContextAbfragevariante,
 ): string {
   const abfragevarianteModel = createAbfragevarianteModel(abfragevariante);
-  return `${abfragevarianteModel.getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+  return `${getAbfragevariantenNrForContextAnzeigeAbfragevariante(
+    abfragevarianteModel,
     conextAnzeigeAbfragevariante,
   )}\xa0-\xa0${_.isNil(abfragevariante.name) ? DEFAULT_NAME : abfragevariante.name}`;
 }

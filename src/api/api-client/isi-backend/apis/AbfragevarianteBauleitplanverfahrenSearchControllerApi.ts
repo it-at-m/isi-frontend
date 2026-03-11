@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelAbfragevarianteBauleitplanverfahren,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelAbfragevarianteBauleitplanverfahrenFromJSON,
     EntityModelAbfragevarianteBauleitplanverfahrenToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ExecuteSearchAbfragevariantebauleitplanverfahrenGetRequest {
     id?: string;
@@ -40,14 +40,17 @@ export class AbfragevarianteBauleitplanverfahrenSearchControllerApi extends runt
     async executeSearchAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: ExecuteSearchAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
         const queryParameters: any = {};
 
-        if (requestParameters.id !== undefined) {
-            queryParameters['id'] = requestParameters.id;
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteById`;
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteById`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -68,14 +71,17 @@ export class AbfragevarianteBauleitplanverfahrenSearchControllerApi extends runt
     async executeSearchAbfragevariantebauleitplanverfahrenGet1Raw(requestParameters: ExecuteSearchAbfragevariantebauleitplanverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
         const queryParameters: any = {};
 
-        if (requestParameters.id !== undefined) {
-            queryParameters['id'] = requestParameters.id;
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById`;
+
         const response = await this.request({
-            path: `/abfragevarianteBauleitplanverfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

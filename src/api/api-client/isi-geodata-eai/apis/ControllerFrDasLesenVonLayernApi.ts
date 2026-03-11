@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   InformationResponseDto,
-} from '../models';
+} from '../models/index';
 import {
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface GetLayerRequest {
     arg0: { [key: string]: string; };
@@ -35,20 +35,28 @@ export class ControllerFrDasLesenVonLayernApi extends runtime.BaseAPI {
      * Ermittelt einen Layer
      */
     async getLayerRaw(requestParameters: GetLayerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters.arg0 === null || requestParameters.arg0 === undefined) {
-            throw new runtime.RequiredError('arg0','Required parameter requestParameters.arg0 was null or undefined when calling getLayer.');
+        if (requestParameters['arg0'] == null) {
+            throw new runtime.RequiredError(
+                'arg0',
+                'Required parameter "arg0" was null or undefined when calling getLayer().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.arg0 !== undefined) {
-            queryParameters['arg0'] = requestParameters.arg0;
+        if (requestParameters['arg0'] != null) {
+            for (let key of Object.keys(requestParameters['arg0'])) {
+                queryParameters[key] = requestParameters['arg0'][key];
+            }
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/layer`;
+
         const response = await this.request({
-            path: `/layer`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

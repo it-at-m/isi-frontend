@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Filepath } from './Filepath';
 import {
     FilepathFromJSON,
     FilepathFromJSONTyped,
     FilepathToJSON,
+    FilepathToJSONTyped,
 } from './Filepath';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -97,10 +99,8 @@ export type EntityModelDokumentArtDokumentEnum = typeof EntityModelDokumentArtDo
 /**
  * Check if a given object implements the EntityModelDokument interface.
  */
-export function instanceOfEntityModelDokument(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelDokument(value: object): value is EntityModelDokument {
+    return true;
 }
 
 export function EntityModelDokumentFromJSON(json: any): EntityModelDokument {
@@ -108,35 +108,37 @@ export function EntityModelDokumentFromJSON(json: any): EntityModelDokument {
 }
 
 export function EntityModelDokumentFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelDokument {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'filePath': !exists(json, 'filePath') ? undefined : FilepathFromJSON(json['filePath']),
-        'artDokument': !exists(json, 'artDokument') ? undefined : json['artDokument'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'filePath': json['filePath'] == null ? undefined : FilepathFromJSON(json['filePath']),
+        'artDokument': json['artDokument'] == null ? undefined : json['artDokument'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelDokumentToJSON(value?: EntityModelDokument | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelDokumentToJSON(json: any): EntityModelDokument {
+    return EntityModelDokumentToJSONTyped(json, false);
+}
+
+export function EntityModelDokumentToJSONTyped(value?: EntityModelDokument | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'filePath': FilepathToJSON(value.filePath),
-        'artDokument': value.artDokument,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'filePath': FilepathToJSON(value['filePath']),
+        'artDokument': value['artDokument'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 
