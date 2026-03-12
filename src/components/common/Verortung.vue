@@ -602,7 +602,6 @@ function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
   if (kitaPlbT === undefined) {
     return;
   }
-  console.log(kitaplanungsbereiche.length);
 
   if (kitaplanungsbereiche.length === 1) {
     return;
