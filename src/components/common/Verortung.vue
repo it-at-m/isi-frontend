@@ -49,8 +49,8 @@
         >
           <v-chip
             v-for="(kitaplanungsbereich, index) in kitaplanungsbereiche"
-            :key="kitaplanungsbereich.kitaPlbT"
-            :closable="isEditable"
+            :key="kitaplanungsbereich.kitaPlbT ?? `kitaPlb-${index}`"
+            :closable="isEditable && kitaplanungsbereiche.length > 1"
             @click:close.stop="removeChipKitaplanungsbereiche(kitaplanungsbereich.kitaPlbT)"
           >
             {{ kitaplanungsbereich.kitaPlbT }}
@@ -95,8 +95,8 @@
         >
           <v-chip
             v-for="(grundschulsprengelItem, index) in grundschulsprengel"
-            :key="grundschulsprengelItem.nummer"
-            :closable="isEditable"
+            :key="grundschulsprengelItem.nummer ?? `grundschulsprengel-${index}`"
+            :closable="isEditable && grundschulsprengel.length > 1"
             @click:close.stop="removeChipGrundschulsprengel(grundschulsprengelItem.nummer)"
           >
             {{ grundschulsprengelItem.nummer }}
@@ -141,8 +141,8 @@
         >
           <v-chip
             v-for="(mittelschulsprengelItem, index) in mittelschulsprengel"
-            :key="mittelschulsprengelItem.nummer"
-            :closable="isEditable"
+            :key="mittelschulsprengelItem.nummer ?? `mittelschulSprengel-${index}`"
+            :closable="isEditable && mittelschulsprengel.length > 1"
             @click:close.stop="removeChipMittelschulsprengel(mittelschulsprengelItem.nummer)"
           >
             {{ mittelschulsprengelItem.nummer }}
@@ -586,6 +586,9 @@ function flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<F
 
 function removeChipGrundschulsprengel(nummer: number | undefined) {
   const grundschulSprengel = Array.from(verortungModel.value?.grundschulsprengel ?? []);
+  if (nummer === undefined) {
+    return;
+  }
   if (grundschulSprengel.length <= 1) {
     return;
   }
@@ -596,7 +599,12 @@ function removeChipGrundschulsprengel(nummer: number | undefined) {
 
 function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
   const kitaplanungsbereiche = Array.from(verortungModel.value?.kitaplanungsbereiche ?? []);
-  if (kitaplanungsbereiche.length <= 1) {
+  if (kitaPlbT === undefined) {
+    return;
+  }
+  console.log(kitaplanungsbereiche.length);
+
+  if (kitaplanungsbereiche.length === 1) {
     return;
   }
   const filteredKitaplanungsbereiche = kitaplanungsbereiche.filter((x) => x.kitaPlbT !== kitaPlbT);
@@ -606,6 +614,9 @@ function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
 
 function removeChipMittelschulsprengel(nummer: number | undefined) {
   const mittelschulsprengel = Array.from(verortungModel.value?.mittelschulsprengel ?? []);
+  if (nummer === undefined) {
+    return;
+  }
   if (mittelschulsprengel.length <= 1) {
     return;
   }
