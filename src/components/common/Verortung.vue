@@ -586,6 +586,9 @@ function flurstueckeToGeoJsonFeature(flurstuecke: Array<FlurstueckDto>): Array<F
 
 function removeChipGrundschulsprengel(nummer: number | undefined) {
   const grundschulSprengel = Array.from(verortungModel.value?.grundschulsprengel ?? []);
+  if (grundschulSprengel.length <= 1) {
+    return;
+  }
   const filteredGrundschulSprengel = grundschulSprengel.filter((x) => x.nummer !== nummer);
   verortungModel.value!.grundschulsprengel = new Set(filteredGrundschulSprengel);
   emit("form-changed");
@@ -593,6 +596,9 @@ function removeChipGrundschulsprengel(nummer: number | undefined) {
 
 function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
   const kitaplanungsbereiche = Array.from(verortungModel.value?.kitaplanungsbereiche ?? []);
+  if (kitaplanungsbereiche.length <= 1) {
+    return;
+  }
   const filteredKitaplanungsbereiche = kitaplanungsbereiche.filter((x) => x.kitaPlbT !== kitaPlbT);
   verortungModel.value!.kitaplanungsbereiche = new Set(filteredKitaplanungsbereiche);
   emit("form-changed");
@@ -600,6 +606,9 @@ function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
 
 function removeChipMittelschulsprengel(nummer: number | undefined) {
   const mittelschulsprengel = Array.from(verortungModel.value?.mittelschulsprengel ?? []);
+  if (mittelschulsprengel.length <= 1) {
+    return;
+  }
   const filteredMittelschulSprengel = mittelschulsprengel.filter((x) => x.nummer !== nummer);
   verortungModel.value!.mittelschulsprengel = new Set(filteredMittelschulSprengel);
   emit("form-changed");
