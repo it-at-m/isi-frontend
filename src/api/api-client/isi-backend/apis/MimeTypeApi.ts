@@ -18,7 +18,7 @@ import type {
   FilepathDto,
   InformationResponseDto,
   MimeTypeInformationDto,
-} from '../models';
+} from '../models/index';
 import {
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
@@ -26,7 +26,7 @@ import {
     InformationResponseDtoToJSON,
     MimeTypeInformationDtoFromJSON,
     MimeTypeInformationDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ExtractMediaTypeInformationForAllowedMediaTypeRequest {
     filepathDto: FilepathDto;
@@ -42,8 +42,11 @@ export class MimeTypeApi extends runtime.BaseAPI {
      * Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.
      */
     async extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MimeTypeInformationDto>> {
-        if (requestParameters.filepathDto === null || requestParameters.filepathDto === undefined) {
-            throw new runtime.RequiredError('filepathDto','Required parameter requestParameters.filepathDto was null or undefined when calling extractMediaTypeInformationForAllowedMediaType.');
+        if (requestParameters['filepathDto'] == null) {
+            throw new runtime.RequiredError(
+                'filepathDto',
+                'Required parameter "filepathDto" was null or undefined when calling extractMediaTypeInformationForAllowedMediaType().'
+            );
         }
 
         const queryParameters: any = {};
@@ -52,12 +55,15 @@ export class MimeTypeApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+
+        let urlPath = `/mime-type`;
+
         const response = await this.request({
-            path: `/mime-type`,
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FilepathDtoToJSON(requestParameters.filepathDto),
+            body: FilepathDtoToJSON(requestParameters['filepathDto']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MimeTypeInformationDtoFromJSON(jsonValue));

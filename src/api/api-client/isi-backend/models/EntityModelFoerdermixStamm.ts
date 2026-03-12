@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Foerdermix } from './Foerdermix';
 import {
     FoerdermixFromJSON,
     FoerdermixFromJSONTyped,
     FoerdermixToJSON,
+    FoerdermixToJSONTyped,
 } from './Foerdermix';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -67,10 +69,8 @@ export interface EntityModelFoerdermixStamm {
 /**
  * Check if a given object implements the EntityModelFoerdermixStamm interface.
  */
-export function instanceOfEntityModelFoerdermixStamm(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelFoerdermixStamm(value: object): value is EntityModelFoerdermixStamm {
+    return true;
 }
 
 export function EntityModelFoerdermixStammFromJSON(json: any): EntityModelFoerdermixStamm {
@@ -78,33 +78,35 @@ export function EntityModelFoerdermixStammFromJSON(json: any): EntityModelFoerde
 }
 
 export function EntityModelFoerdermixStammFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelFoerdermixStamm {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'foerdermix': !exists(json, 'foerdermix') ? undefined : FoerdermixFromJSON(json['foerdermix']),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'foerdermix': json['foerdermix'] == null ? undefined : FoerdermixFromJSON(json['foerdermix']),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelFoerdermixStammToJSON(value?: EntityModelFoerdermixStamm | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelFoerdermixStammToJSON(json: any): EntityModelFoerdermixStamm {
+    return EntityModelFoerdermixStammToJSONTyped(json, false);
+}
+
+export function EntityModelFoerdermixStammToJSONTyped(value?: EntityModelFoerdermixStamm | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'foerdermix': FoerdermixToJSON(value.foerdermix),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'foerdermix': FoerdermixToJSON(value['foerdermix']),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Bearbeitungshistorie } from './Bearbeitungshistorie';
 import {
     BearbeitungshistorieFromJSON,
     BearbeitungshistorieFromJSONTyped,
     BearbeitungshistorieToJSON,
+    BearbeitungshistorieToJSONTyped,
 } from './Bearbeitungshistorie';
-import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
+    StatusAbfrageToJSONTyped,
 } from './StatusAbfrage';
+import type { Link } from './Link';
+import {
+    LinkFromJSON,
+    LinkFromJSONTyped,
+    LinkToJSON,
+    LinkToJSONTyped,
+} from './Link';
 
 /**
  * 
@@ -144,10 +147,8 @@ export type EntityModelAbfrageResultTypeEnum = typeof EntityModelAbfrageResultTy
 /**
  * Check if a given object implements the EntityModelAbfrage interface.
  */
-export function instanceOfEntityModelAbfrage(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelAbfrage(value: object): value is EntityModelAbfrage {
+    return true;
 }
 
 export function EntityModelAbfrageFromJSON(json: any): EntityModelAbfrage {
@@ -155,49 +156,51 @@ export function EntityModelAbfrageFromJSON(json: any): EntityModelAbfrage {
 }
 
 export function EntityModelAbfrageFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelAbfrage {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'statusAbfrage': !exists(json, 'statusAbfrage') ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
-        'anmerkung': !exists(json, 'anmerkung') ? undefined : json['anmerkung'],
-        'sub': !exists(json, 'sub') ? undefined : json['sub'],
-        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
-        'bearbeitungshistorie': !exists(json, 'bearbeitungshistorie') ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
-        'resultType': !exists(json, 'resultType') ? undefined : json['resultType'],
-        'bauvorhabenUuid': !exists(json, 'bauvorhabenUuid') ? undefined : json['bauvorhabenUuid'],
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'name': json['name'] == null ? undefined : json['name'],
+        'statusAbfrage': json['statusAbfrage'] == null ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
+        'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
+        'sub': json['sub'] == null ? undefined : json['sub'],
+        'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
+        'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'bauvorhabenUuid': json['bauvorhabenUuid'] == null ? undefined : json['bauvorhabenUuid'],
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelAbfrageToJSON(value?: EntityModelAbfrage | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelAbfrageToJSON(json: any): EntityModelAbfrage {
+    return EntityModelAbfrageToJSONTyped(json, false);
+}
+
+export function EntityModelAbfrageToJSONTyped(value?: EntityModelAbfrage | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'name': value.name,
-        'statusAbfrage': StatusAbfrageToJSON(value.statusAbfrage),
-        'anmerkung': value.anmerkung,
-        'sub': value.sub,
-        'linkEakte': value.linkEakte,
-        'bearbeitungshistorie': value.bearbeitungshistorie === undefined ? undefined : ((value.bearbeitungshistorie as Array<any>).map(BearbeitungshistorieToJSON)),
-        'artAbfrage': value.artAbfrage,
-        'resultType': value.resultType,
-        'bauvorhabenUuid': value.bauvorhabenUuid,
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'name': value['name'],
+        'statusAbfrage': StatusAbfrageToJSON(value['statusAbfrage']),
+        'anmerkung': value['anmerkung'],
+        'sub': value['sub'],
+        'linkEakte': value['linkEakte'],
+        'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieToJSON)),
+        'artAbfrage': value['artAbfrage'],
+        'resultType': value['resultType'],
+        'bauvorhabenUuid': value['bauvorhabenUuid'],
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

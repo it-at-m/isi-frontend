@@ -12,32 +12,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { BaugenehmigungsverfahrenStartBearbeitungDto } from './BaugenehmigungsverfahrenStartBearbeitungDto';
-import {
-    BaugenehmigungsverfahrenStartBearbeitungDtoFromJSON,
-    BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped,
-    BaugenehmigungsverfahrenStartBearbeitungDtoToJSON,
-} from './BaugenehmigungsverfahrenStartBearbeitungDto';
-import type { BauleitplanverfahrenStartBearbeitungDto } from './BauleitplanverfahrenStartBearbeitungDto';
-import {
-    BauleitplanverfahrenStartBearbeitungDtoFromJSON,
-    BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped,
-    BauleitplanverfahrenStartBearbeitungDtoToJSON,
-} from './BauleitplanverfahrenStartBearbeitungDto';
-import type { WeiteresVerfahrenStartBearbeitungDto } from './WeiteresVerfahrenStartBearbeitungDto';
-import {
-    WeiteresVerfahrenStartBearbeitungDtoFromJSON,
-    WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped,
-    WeiteresVerfahrenStartBearbeitungDtoToJSON,
-} from './WeiteresVerfahrenStartBearbeitungDto';
+import { mapValues } from '../runtime';
 
-import {
-     BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped,
-     BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped,
-     WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped
-} from './';
-
+import { type BaugenehmigungsverfahrenStartBearbeitungDto, BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped, BaugenehmigungsverfahrenStartBearbeitungDtoToJSON, BaugenehmigungsverfahrenStartBearbeitungDtoToJSONTyped } from './BaugenehmigungsverfahrenStartBearbeitungDto';
+import { type BauleitplanverfahrenStartBearbeitungDto, BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped, BauleitplanverfahrenStartBearbeitungDtoToJSON, BauleitplanverfahrenStartBearbeitungDtoToJSONTyped } from './BauleitplanverfahrenStartBearbeitungDto';
+import { type WeiteresVerfahrenStartBearbeitungDto, WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped, WeiteresVerfahrenStartBearbeitungDtoToJSON, WeiteresVerfahrenStartBearbeitungDtoToJSONTyped } from './WeiteresVerfahrenStartBearbeitungDto';
 /**
  * AbfrageStartBearbeitungDto
  * @export
@@ -86,10 +65,8 @@ export type AbfrageStartBearbeitungDtoArtAbfrageEnum = typeof AbfrageStartBearbe
 /**
  * Check if a given object implements the AbfrageStartBearbeitungDto interface.
  */
-export function instanceOfAbfrageStartBearbeitungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAbfrageStartBearbeitungDto(value: object): value is AbfrageStartBearbeitungDto {
+    return true;
 }
 
 export function AbfrageStartBearbeitungDtoFromJSON(json: any): AbfrageStartBearbeitungDto {
@@ -97,42 +74,58 @@ export function AbfrageStartBearbeitungDtoFromJSON(json: any): AbfrageStartBearb
 }
 
 export function AbfrageStartBearbeitungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AbfrageStartBearbeitungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
         if (json['artAbfrage'] === 'BAUGENEHMIGUNGSVERFAHREN') {
-            return BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped(json, true);
+            return BaugenehmigungsverfahrenStartBearbeitungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'BAULEITPLANVERFAHREN') {
-            return BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json, true);
+            return BauleitplanverfahrenStartBearbeitungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
         if (json['artAbfrage'] === 'WEITERES_VERFAHREN') {
-            return WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, true);
+            return WeiteresVerfahrenStartBearbeitungDtoFromJSONTyped(json, ignoreDiscriminator);
         }
+
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'artAbfrage': !exists(json, 'artAbfrage') ? undefined : json['artAbfrage'],
-        'bauvorhaben': !exists(json, 'bauvorhaben') ? undefined : json['bauvorhaben'],
-        'linkEakte': !exists(json, 'linkEakte') ? undefined : json['linkEakte'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
+        'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
+        'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
     };
 }
 
-export function AbfrageStartBearbeitungDtoToJSON(value?: AbfrageStartBearbeitungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AbfrageStartBearbeitungDtoToJSON(json: any): AbfrageStartBearbeitungDto {
+    return AbfrageStartBearbeitungDtoToJSONTyped(json, false);
+}
+
+export function AbfrageStartBearbeitungDtoToJSONTyped(value?: AbfrageStartBearbeitungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['artAbfrage']) {
+            case 'BAUGENEHMIGUNGSVERFAHREN':
+                return BaugenehmigungsverfahrenStartBearbeitungDtoToJSONTyped(value as BaugenehmigungsverfahrenStartBearbeitungDto, ignoreDiscriminator);
+            case 'BAULEITPLANVERFAHREN':
+                return BauleitplanverfahrenStartBearbeitungDtoToJSONTyped(value as BauleitplanverfahrenStartBearbeitungDto, ignoreDiscriminator);
+            case 'WEITERES_VERFAHREN':
+                return WeiteresVerfahrenStartBearbeitungDtoToJSONTyped(value as WeiteresVerfahrenStartBearbeitungDto, ignoreDiscriminator);
+            default:
+                return value;
+        }
     }
+
     return {
         
-        'version': value.version,
-        'artAbfrage': value.artAbfrage,
-        'bauvorhaben': value.bauvorhaben,
-        'linkEakte': value.linkEakte,
+        'version': value['version'],
+        'artAbfrage': value['artAbfrage'],
+        'bauvorhaben': value['bauvorhaben'],
+        'linkEakte': value['linkEakte'],
     };
 }
 

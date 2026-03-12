@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface Jahresrate {
 /**
  * Check if a given object implements the Jahresrate interface.
  */
-export function instanceOfJahresrate(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfJahresrate(value: object): value is Jahresrate {
+    return true;
 }
 
 export function JahresrateFromJSON(json: any): Jahresrate {
@@ -47,27 +45,29 @@ export function JahresrateFromJSON(json: any): Jahresrate {
 }
 
 export function JahresrateFromJSONTyped(json: any, ignoreDiscriminator: boolean): Jahresrate {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'jahr': !exists(json, 'jahr') ? undefined : json['jahr'],
-        'rate': !exists(json, 'rate') ? undefined : json['rate'],
+        'jahr': json['jahr'] == null ? undefined : json['jahr'],
+        'rate': json['rate'] == null ? undefined : json['rate'],
     };
 }
 
-export function JahresrateToJSON(value?: Jahresrate | null): any {
-    if (value === undefined) {
-        return undefined;
+export function JahresrateToJSON(json: any): Jahresrate {
+    return JahresrateToJSONTyped(json, false);
+}
+
+export function JahresrateToJSONTyped(value?: Jahresrate | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'jahr': value.jahr,
-        'rate': value.rate,
+        'jahr': value['jahr'],
+        'rate': value['rate'],
     };
 }
 

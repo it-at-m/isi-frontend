@@ -12,16 +12,14 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GeometryDto } from './GeometryDto';
 import {
     GeometryDtoFromJSON,
     GeometryDtoFromJSONTyped,
     GeometryDtoToJSON,
+    GeometryDtoToJSONTyped,
 } from './GeometryDto';
-
-import {
-} from './';
 
 /**
  * Die GEOJSON-Repräsentation einer Punktkoordinate.
@@ -40,11 +38,9 @@ export interface PointGeometryDto extends GeometryDto {
 /**
  * Check if a given object implements the PointGeometryDto interface.
  */
-export function instanceOfPointGeometryDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "coordinates" in value;
-
-    return isInstance;
+export function instanceOfPointGeometryDto(value: object): value is PointGeometryDto {
+    if (!('coordinates' in value) || value['coordinates'] === undefined) return false;
+    return true;
 }
 
 export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
@@ -52,27 +48,40 @@ export function PointGeometryDtoFromJSON(json: any): PointGeometryDto {
 }
 
 export function PointGeometryDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PointGeometryDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     if (!ignoreDiscriminator) {
+        if (json['type'] === 'Point') {
+            return PointGeometryDtoFromJSONTyped(json, true);
+        }
+
     }
     return {
-        ...GeometryDtoFromJSONTyped(json, ignoreDiscriminator),
+        ...GeometryDtoFromJSONTyped(json, true),
         'coordinates': json['coordinates'],
     };
 }
 
-export function PointGeometryDtoToJSON(value?: PointGeometryDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PointGeometryDtoToJSON(json: any): PointGeometryDto {
+    return PointGeometryDtoToJSONTyped(json, false);
+}
+
+export function PointGeometryDtoToJSONTyped(value?: PointGeometryDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
+
+    if (!ignoreDiscriminator) {
+        switch (value['type']) {
+            default:
+                return value;
+        }
     }
+
     return {
-        ...GeometryDtoToJSON(value),
-        'coordinates': value.coordinates,
+        ...GeometryDtoToJSONTyped(value, true),
+        'coordinates': value['coordinates'],
     };
 }
 

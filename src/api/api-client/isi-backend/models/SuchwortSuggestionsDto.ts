@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,10 +30,8 @@ export interface SuchwortSuggestionsDto {
 /**
  * Check if a given object implements the SuchwortSuggestionsDto interface.
  */
-export function instanceOfSuchwortSuggestionsDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSuchwortSuggestionsDto(value: object): value is SuchwortSuggestionsDto {
+    return true;
 }
 
 export function SuchwortSuggestionsDtoFromJSON(json: any): SuchwortSuggestionsDto {
@@ -41,25 +39,27 @@ export function SuchwortSuggestionsDtoFromJSON(json: any): SuchwortSuggestionsDt
 }
 
 export function SuchwortSuggestionsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SuchwortSuggestionsDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'suchwortSuggestions': !exists(json, 'suchwortSuggestions') ? undefined : json['suchwortSuggestions'],
+        'suchwortSuggestions': json['suchwortSuggestions'] == null ? undefined : json['suchwortSuggestions'],
     };
 }
 
-export function SuchwortSuggestionsDtoToJSON(value?: SuchwortSuggestionsDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SuchwortSuggestionsDtoToJSON(json: any): SuchwortSuggestionsDto {
+    return SuchwortSuggestionsDtoToJSONTyped(json, false);
+}
+
+export function SuchwortSuggestionsDtoToJSONTyped(value?: SuchwortSuggestionsDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'suchwortSuggestions': value.suchwortSuggestions,
+        'suchwortSuggestions': value['suchwortSuggestions'],
     };
 }
 

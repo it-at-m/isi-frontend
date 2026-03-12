@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelAbfragevarianteWeiteresVerfahren } from './EntityModelAbfragevarianteWeiteresVerfahren';
 import {
     EntityModelAbfragevarianteWeiteresVerfahrenFromJSON,
     EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped,
     EntityModelAbfragevarianteWeiteresVerfahrenToJSON,
+    EntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped,
 } from './EntityModelAbfragevarianteWeiteresVerfahren';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded(value: object): value is PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSON(json: any): PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFro
 }
 
 export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'abfragevarianteWeiteresVerfahrens': !exists(json, 'abfragevarianteWeiteresVerfahrens') ? undefined : ((json['abfragevarianteWeiteresVerfahrens'] as Array<any>).map(EntityModelAbfragevarianteWeiteresVerfahrenFromJSON)),
+        'abfragevarianteWeiteresVerfahrens': json['abfragevarianteWeiteresVerfahrens'] == null ? undefined : ((json['abfragevarianteWeiteresVerfahrens'] as Array<any>).map(EntityModelAbfragevarianteWeiteresVerfahrenFromJSON)),
     };
 }
 
-export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSON(value?: PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSON(json: any): PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded {
+    return PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbeddedToJSONTyped(value?: PagedModelEntityModelAbfragevarianteWeiteresVerfahrenEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'abfragevarianteWeiteresVerfahrens': value.abfragevarianteWeiteresVerfahrens === undefined ? undefined : ((value.abfragevarianteWeiteresVerfahrens as Array<any>).map(EntityModelAbfragevarianteWeiteresVerfahrenToJSON)),
+        'abfragevarianteWeiteresVerfahrens': value['abfragevarianteWeiteresVerfahrens'] == null ? undefined : ((value['abfragevarianteWeiteresVerfahrens'] as Array<any>).map(EntityModelAbfragevarianteWeiteresVerfahrenToJSON)),
     };
 }
 

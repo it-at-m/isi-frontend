@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface Wgs84Dto {
 /**
  * Check if a given object implements the Wgs84Dto interface.
  */
-export function instanceOfWgs84Dto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "latitude" in value;
-    isInstance = isInstance && "longitude" in value;
-
-    return isInstance;
+export function instanceOfWgs84Dto(value: object): value is Wgs84Dto {
+    if (!('latitude' in value) || value['latitude'] === undefined) return false;
+    if (!('longitude' in value) || value['longitude'] === undefined) return false;
+    return true;
 }
 
 export function Wgs84DtoFromJSON(json: any): Wgs84Dto {
@@ -49,7 +47,7 @@ export function Wgs84DtoFromJSON(json: any): Wgs84Dto {
 }
 
 export function Wgs84DtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wgs84Dto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function Wgs84DtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function Wgs84DtoToJSON(value?: Wgs84Dto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function Wgs84DtoToJSON(json: any): Wgs84Dto {
+    return Wgs84DtoToJSONTyped(json, false);
+}
+
+export function Wgs84DtoToJSONTyped(value?: Wgs84Dto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'latitude': value.latitude,
-        'longitude': value.longitude,
+        'latitude': value['latitude'],
+        'longitude': value['longitude'],
     };
 }
 

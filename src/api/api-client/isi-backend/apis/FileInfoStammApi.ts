@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   FileInformationDto,
-} from '../models';
+} from '../models/index';
 import {
     FileInformationDtoFromJSON,
     FileInformationDtoToJSON,
-} from '../models';
+} from '../models/index';
 
 /**
  * 
@@ -35,8 +35,11 @@ export class FileInfoStammApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/stammdaten/file-information`;
+
         const response = await this.request({
-            path: `/stammdaten/file-information`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

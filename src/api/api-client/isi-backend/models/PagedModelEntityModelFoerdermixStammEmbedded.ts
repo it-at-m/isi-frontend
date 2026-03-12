@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelFoerdermixStamm } from './EntityModelFoerdermixStamm';
 import {
     EntityModelFoerdermixStammFromJSON,
     EntityModelFoerdermixStammFromJSONTyped,
     EntityModelFoerdermixStammToJSON,
+    EntityModelFoerdermixStammToJSONTyped,
 } from './EntityModelFoerdermixStamm';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelFoerdermixStammEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelFoerdermixStammEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelFoerdermixStammEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelFoerdermixStammEmbedded(value: object): value is PagedModelEntityModelFoerdermixStammEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelFoerdermixStammEmbeddedFromJSON(json: any): PagedModelEntityModelFoerdermixStammEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelFoerdermixStammEmbeddedFromJSON(json: any):
 }
 
 export function PagedModelEntityModelFoerdermixStammEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelFoerdermixStammEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'foerdermixStamms': !exists(json, 'foerdermixStamms') ? undefined : ((json['foerdermixStamms'] as Array<any>).map(EntityModelFoerdermixStammFromJSON)),
+        'foerdermixStamms': json['foerdermixStamms'] == null ? undefined : ((json['foerdermixStamms'] as Array<any>).map(EntityModelFoerdermixStammFromJSON)),
     };
 }
 
-export function PagedModelEntityModelFoerdermixStammEmbeddedToJSON(value?: PagedModelEntityModelFoerdermixStammEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelFoerdermixStammEmbeddedToJSON(json: any): PagedModelEntityModelFoerdermixStammEmbedded {
+    return PagedModelEntityModelFoerdermixStammEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelFoerdermixStammEmbeddedToJSONTyped(value?: PagedModelEntityModelFoerdermixStammEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'foerdermixStamms': value.foerdermixStamms === undefined ? undefined : ((value.foerdermixStamms as Array<any>).map(EntityModelFoerdermixStammToJSON)),
+        'foerdermixStamms': value['foerdermixStamms'] == null ? undefined : ((value['foerdermixStamms'] as Array<any>).map(EntityModelFoerdermixStammToJSON)),
     };
 }
 

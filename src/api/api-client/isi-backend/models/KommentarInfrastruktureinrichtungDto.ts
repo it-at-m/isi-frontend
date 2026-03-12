@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
     DokumentDtoFromJSONTyped,
     DokumentDtoToJSON,
+    DokumentDtoToJSONTyped,
 } from './DokumentDto';
 
 /**
@@ -79,10 +80,8 @@ export interface KommentarInfrastruktureinrichtungDto {
 /**
  * Check if a given object implements the KommentarInfrastruktureinrichtungDto interface.
  */
-export function instanceOfKommentarInfrastruktureinrichtungDto(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfKommentarInfrastruktureinrichtungDto(value: object): value is KommentarInfrastruktureinrichtungDto {
+    return true;
 }
 
 export function KommentarInfrastruktureinrichtungDtoFromJSON(json: any): KommentarInfrastruktureinrichtungDto {
@@ -90,39 +89,41 @@ export function KommentarInfrastruktureinrichtungDtoFromJSON(json: any): Komment
 }
 
 export function KommentarInfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): KommentarInfrastruktureinrichtungDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': !exists(json, 'datum') ? undefined : json['datum'],
-        'text': !exists(json, 'text') ? undefined : json['text'],
-        'dokumente': !exists(json, 'dokumente') ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'infrastruktureinrichtung': !exists(json, 'infrastruktureinrichtung') ? undefined : json['infrastruktureinrichtung'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'datum': json['datum'] == null ? undefined : json['datum'],
+        'text': json['text'] == null ? undefined : json['text'],
+        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'infrastruktureinrichtung': json['infrastruktureinrichtung'] == null ? undefined : json['infrastruktureinrichtung'],
     };
 }
 
-export function KommentarInfrastruktureinrichtungDtoToJSON(value?: KommentarInfrastruktureinrichtungDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function KommentarInfrastruktureinrichtungDtoToJSON(json: any): KommentarInfrastruktureinrichtungDto {
+    return KommentarInfrastruktureinrichtungDtoToJSONTyped(json, false);
+}
+
+export function KommentarInfrastruktureinrichtungDtoToJSONTyped(value?: KommentarInfrastruktureinrichtungDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'datum': value.datum,
-        'text': value.text,
-        'dokumente': value.dokumente === undefined ? undefined : ((value.dokumente as Array<any>).map(DokumentDtoToJSON)),
-        'infrastruktureinrichtung': value.infrastruktureinrichtung,
+        'id': value['id'],
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'datum': value['datum'],
+        'text': value['text'],
+        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'infrastruktureinrichtung': value['infrastruktureinrichtung'],
     };
 }
 

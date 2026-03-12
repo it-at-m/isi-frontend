@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
     StatusAbfrageFromJSONTyped,
     StatusAbfrageToJSON,
+    StatusAbfrageToJSONTyped,
 } from './StatusAbfrage';
 import type { UncertainBoolean } from './UncertainBoolean';
 import {
     UncertainBooleanFromJSON,
     UncertainBooleanFromJSONTyped,
     UncertainBooleanToJSON,
+    UncertainBooleanToJSONTyped,
 } from './UncertainBoolean';
 
 /**
@@ -280,23 +282,21 @@ export type SearchQueryAndSortingDtoSortOrderEnum = typeof SearchQueryAndSorting
 /**
  * Check if a given object implements the SearchQueryAndSortingDto interface.
  */
-export function instanceOfSearchQueryAndSortingDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "searchQuery" in value;
-    isInstance = isInstance && "selectBauleitplanverfahren" in value;
-    isInstance = isInstance && "selectBaugenehmigungsverfahren" in value;
-    isInstance = isInstance && "selectWeiteresVerfahren" in value;
-    isInstance = isInstance && "selectBauvorhaben" in value;
-    isInstance = isInstance && "selectGrundschule" in value;
-    isInstance = isInstance && "selectGsNachmittagBetreuung" in value;
-    isInstance = isInstance && "selectHausFuerKinder" in value;
-    isInstance = isInstance && "selectKindergarten" in value;
-    isInstance = isInstance && "selectKinderkrippe" in value;
-    isInstance = isInstance && "selectMittelschule" in value;
-    isInstance = isInstance && "sortBy" in value;
-    isInstance = isInstance && "sortOrder" in value;
-
-    return isInstance;
+export function instanceOfSearchQueryAndSortingDto(value: object): value is SearchQueryAndSortingDto {
+    if (!('searchQuery' in value) || value['searchQuery'] === undefined) return false;
+    if (!('selectBauleitplanverfahren' in value) || value['selectBauleitplanverfahren'] === undefined) return false;
+    if (!('selectBaugenehmigungsverfahren' in value) || value['selectBaugenehmigungsverfahren'] === undefined) return false;
+    if (!('selectWeiteresVerfahren' in value) || value['selectWeiteresVerfahren'] === undefined) return false;
+    if (!('selectBauvorhaben' in value) || value['selectBauvorhaben'] === undefined) return false;
+    if (!('selectGrundschule' in value) || value['selectGrundschule'] === undefined) return false;
+    if (!('selectGsNachmittagBetreuung' in value) || value['selectGsNachmittagBetreuung'] === undefined) return false;
+    if (!('selectHausFuerKinder' in value) || value['selectHausFuerKinder'] === undefined) return false;
+    if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
+    if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
+    if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('sortBy' in value) || value['sortBy'] === undefined) return false;
+    if (!('sortOrder' in value) || value['sortOrder'] === undefined) return false;
+    return true;
 }
 
 export function SearchQueryAndSortingDtoFromJSON(json: any): SearchQueryAndSortingDto {
@@ -304,7 +304,7 @@ export function SearchQueryAndSortingDtoFromJSON(json: any): SearchQueryAndSorti
 }
 
 export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchQueryAndSortingDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -320,67 +320,69 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
-        'filterStadtbezirkNummer': !exists(json, 'filterStadtbezirkNummer') ? undefined : json['filterStadtbezirkNummer'],
-        'filterKitaplanungsbereichKitaPlbT': !exists(json, 'filterKitaplanungsbereichKitaPlbT') ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
-        'filterGrundschulsprengelNummer': !exists(json, 'filterGrundschulsprengelNummer') ? undefined : json['filterGrundschulsprengelNummer'],
-        'filterMittelschulsprengelNummer': !exists(json, 'filterMittelschulsprengelNummer') ? undefined : json['filterMittelschulsprengelNummer'],
-        'filterRealisierungsbeginnVon': !exists(json, 'filterRealisierungsbeginnVon') ? undefined : json['filterRealisierungsbeginnVon'],
-        'filterRealisierungsbeginnBis': !exists(json, 'filterRealisierungsbeginnBis') ? undefined : json['filterRealisierungsbeginnBis'],
-        'filterNurEigeneAbfragen': !exists(json, 'filterNurEigeneAbfragen') ? undefined : json['filterNurEigeneAbfragen'],
-        'filterStatusAbfrage': !exists(json, 'filterStatusAbfrage') ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
-        'filterSobonRelevant': !exists(json, 'filterSobonRelevant') ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
-        'filterWeGesamtVon': !exists(json, 'filterWeGesamtVon') ? undefined : json['filterWeGesamtVon'],
-        'filterWeGesamtBis': !exists(json, 'filterWeGesamtBis') ? undefined : json['filterWeGesamtBis'],
-        'filterGfWohnenGeplantVon': !exists(json, 'filterGfWohnenGeplantVon') ? undefined : json['filterGfWohnenGeplantVon'],
-        'filterGfWohnenGeplantBis': !exists(json, 'filterGfWohnenGeplantBis') ? undefined : json['filterGfWohnenGeplantBis'],
-        'filterStandVerfahren': !exists(json, 'filterStandVerfahren') ? undefined : json['filterStandVerfahren'],
-        'filterInfrastruktureinrichtungStatus': !exists(json, 'filterInfrastruktureinrichtungStatus') ? undefined : json['filterInfrastruktureinrichtungStatus'],
-        'page': !exists(json, 'page') ? undefined : json['page'],
-        'pageSize': !exists(json, 'pageSize') ? undefined : json['pageSize'],
+        'filterStadtbezirkNummer': json['filterStadtbezirkNummer'] == null ? undefined : json['filterStadtbezirkNummer'],
+        'filterKitaplanungsbereichKitaPlbT': json['filterKitaplanungsbereichKitaPlbT'] == null ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
+        'filterGrundschulsprengelNummer': json['filterGrundschulsprengelNummer'] == null ? undefined : json['filterGrundschulsprengelNummer'],
+        'filterMittelschulsprengelNummer': json['filterMittelschulsprengelNummer'] == null ? undefined : json['filterMittelschulsprengelNummer'],
+        'filterRealisierungsbeginnVon': json['filterRealisierungsbeginnVon'] == null ? undefined : json['filterRealisierungsbeginnVon'],
+        'filterRealisierungsbeginnBis': json['filterRealisierungsbeginnBis'] == null ? undefined : json['filterRealisierungsbeginnBis'],
+        'filterNurEigeneAbfragen': json['filterNurEigeneAbfragen'] == null ? undefined : json['filterNurEigeneAbfragen'],
+        'filterStatusAbfrage': json['filterStatusAbfrage'] == null ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
+        'filterSobonRelevant': json['filterSobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
+        'filterWeGesamtVon': json['filterWeGesamtVon'] == null ? undefined : json['filterWeGesamtVon'],
+        'filterWeGesamtBis': json['filterWeGesamtBis'] == null ? undefined : json['filterWeGesamtBis'],
+        'filterGfWohnenGeplantVon': json['filterGfWohnenGeplantVon'] == null ? undefined : json['filterGfWohnenGeplantVon'],
+        'filterGfWohnenGeplantBis': json['filterGfWohnenGeplantBis'] == null ? undefined : json['filterGfWohnenGeplantBis'],
+        'filterStandVerfahren': json['filterStandVerfahren'] == null ? undefined : json['filterStandVerfahren'],
+        'filterInfrastruktureinrichtungStatus': json['filterInfrastruktureinrichtungStatus'] == null ? undefined : json['filterInfrastruktureinrichtungStatus'],
+        'page': json['page'] == null ? undefined : json['page'],
+        'pageSize': json['pageSize'] == null ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
     };
 }
 
-export function SearchQueryAndSortingDtoToJSON(value?: SearchQueryAndSortingDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SearchQueryAndSortingDtoToJSON(json: any): SearchQueryAndSortingDto {
+    return SearchQueryAndSortingDtoToJSONTyped(json, false);
+}
+
+export function SearchQueryAndSortingDtoToJSONTyped(value?: SearchQueryAndSortingDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'searchQuery': value.searchQuery,
-        'selectBauleitplanverfahren': value.selectBauleitplanverfahren,
-        'selectBaugenehmigungsverfahren': value.selectBaugenehmigungsverfahren,
-        'selectWeiteresVerfahren': value.selectWeiteresVerfahren,
-        'selectBauvorhaben': value.selectBauvorhaben,
-        'selectGrundschule': value.selectGrundschule,
-        'selectGsNachmittagBetreuung': value.selectGsNachmittagBetreuung,
-        'selectHausFuerKinder': value.selectHausFuerKinder,
-        'selectKindergarten': value.selectKindergarten,
-        'selectKinderkrippe': value.selectKinderkrippe,
-        'selectMittelschule': value.selectMittelschule,
-        'filterStadtbezirkNummer': value.filterStadtbezirkNummer,
-        'filterKitaplanungsbereichKitaPlbT': value.filterKitaplanungsbereichKitaPlbT,
-        'filterGrundschulsprengelNummer': value.filterGrundschulsprengelNummer,
-        'filterMittelschulsprengelNummer': value.filterMittelschulsprengelNummer,
-        'filterRealisierungsbeginnVon': value.filterRealisierungsbeginnVon,
-        'filterRealisierungsbeginnBis': value.filterRealisierungsbeginnBis,
-        'filterNurEigeneAbfragen': value.filterNurEigeneAbfragen,
-        'filterStatusAbfrage': value.filterStatusAbfrage === undefined ? undefined : ((value.filterStatusAbfrage as Array<any>).map(StatusAbfrageToJSON)),
-        'filterSobonRelevant': UncertainBooleanToJSON(value.filterSobonRelevant),
-        'filterWeGesamtVon': value.filterWeGesamtVon,
-        'filterWeGesamtBis': value.filterWeGesamtBis,
-        'filterGfWohnenGeplantVon': value.filterGfWohnenGeplantVon,
-        'filterGfWohnenGeplantBis': value.filterGfWohnenGeplantBis,
-        'filterStandVerfahren': value.filterStandVerfahren,
-        'filterInfrastruktureinrichtungStatus': value.filterInfrastruktureinrichtungStatus,
-        'page': value.page,
-        'pageSize': value.pageSize,
-        'sortBy': value.sortBy,
-        'sortOrder': value.sortOrder,
+        'searchQuery': value['searchQuery'],
+        'selectBauleitplanverfahren': value['selectBauleitplanverfahren'],
+        'selectBaugenehmigungsverfahren': value['selectBaugenehmigungsverfahren'],
+        'selectWeiteresVerfahren': value['selectWeiteresVerfahren'],
+        'selectBauvorhaben': value['selectBauvorhaben'],
+        'selectGrundschule': value['selectGrundschule'],
+        'selectGsNachmittagBetreuung': value['selectGsNachmittagBetreuung'],
+        'selectHausFuerKinder': value['selectHausFuerKinder'],
+        'selectKindergarten': value['selectKindergarten'],
+        'selectKinderkrippe': value['selectKinderkrippe'],
+        'selectMittelschule': value['selectMittelschule'],
+        'filterStadtbezirkNummer': value['filterStadtbezirkNummer'],
+        'filterKitaplanungsbereichKitaPlbT': value['filterKitaplanungsbereichKitaPlbT'],
+        'filterGrundschulsprengelNummer': value['filterGrundschulsprengelNummer'],
+        'filterMittelschulsprengelNummer': value['filterMittelschulsprengelNummer'],
+        'filterRealisierungsbeginnVon': value['filterRealisierungsbeginnVon'],
+        'filterRealisierungsbeginnBis': value['filterRealisierungsbeginnBis'],
+        'filterNurEigeneAbfragen': value['filterNurEigeneAbfragen'],
+        'filterStatusAbfrage': value['filterStatusAbfrage'] == null ? undefined : ((value['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageToJSON)),
+        'filterSobonRelevant': UncertainBooleanToJSON(value['filterSobonRelevant']),
+        'filterWeGesamtVon': value['filterWeGesamtVon'],
+        'filterWeGesamtBis': value['filterWeGesamtBis'],
+        'filterGfWohnenGeplantVon': value['filterGfWohnenGeplantVon'],
+        'filterGfWohnenGeplantBis': value['filterGfWohnenGeplantBis'],
+        'filterStandVerfahren': value['filterStandVerfahren'],
+        'filterInfrastruktureinrichtungStatus': value['filterInfrastruktureinrichtungStatus'],
+        'page': value['page'],
+        'pageSize': value['pageSize'],
+        'sortBy': value['sortBy'],
+        'sortOrder': value['sortOrder'],
     };
 }
 

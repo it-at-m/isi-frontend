@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Jahresrate } from './Jahresrate';
 import {
     JahresrateFromJSON,
     JahresrateFromJSONTyped,
     JahresrateToJSON,
+    JahresrateToJSONTyped,
 } from './Jahresrate';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
     LinkFromJSONTyped,
     LinkToJSON,
+    LinkToJSONTyped,
 } from './Link';
 
 /**
@@ -96,10 +98,8 @@ export type EntityModelIdealtypischeBaurateTypEnum = typeof EntityModelIdealtypi
 /**
  * Check if a given object implements the EntityModelIdealtypischeBaurate interface.
  */
-export function instanceOfEntityModelIdealtypischeBaurate(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfEntityModelIdealtypischeBaurate(value: object): value is EntityModelIdealtypischeBaurate {
+    return true;
 }
 
 export function EntityModelIdealtypischeBaurateFromJSON(json: any): EntityModelIdealtypischeBaurate {
@@ -107,39 +107,41 @@ export function EntityModelIdealtypischeBaurateFromJSON(json: any): EntityModelI
 }
 
 export function EntityModelIdealtypischeBaurateFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityModelIdealtypischeBaurate {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'createdDateTime': !exists(json, 'createdDateTime') ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': !exists(json, 'lastModifiedDateTime') ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'von': !exists(json, 'von') ? undefined : json['von'],
-        'bisExklusiv': !exists(json, 'bisExklusiv') ? undefined : json['bisExklusiv'],
-        'typ': !exists(json, 'typ') ? undefined : json['typ'],
-        'jahresraten': !exists(json, 'jahresraten') ? undefined : ((json['jahresraten'] as Array<any>).map(JahresrateFromJSON)),
-        'links': !exists(json, '_links') ? undefined : (mapValues(json['_links'], LinkFromJSON)),
+        'version': json['version'] == null ? undefined : json['version'],
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'von': json['von'] == null ? undefined : json['von'],
+        'bisExklusiv': json['bisExklusiv'] == null ? undefined : json['bisExklusiv'],
+        'typ': json['typ'] == null ? undefined : json['typ'],
+        'jahresraten': json['jahresraten'] == null ? undefined : ((json['jahresraten'] as Array<any>).map(JahresrateFromJSON)),
+        'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
 
-export function EntityModelIdealtypischeBaurateToJSON(value?: EntityModelIdealtypischeBaurate | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityModelIdealtypischeBaurateToJSON(json: any): EntityModelIdealtypischeBaurate {
+    return EntityModelIdealtypischeBaurateToJSONTyped(json, false);
+}
+
+export function EntityModelIdealtypischeBaurateToJSONTyped(value?: EntityModelIdealtypischeBaurate | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'createdDateTime': value.createdDateTime === undefined ? undefined : (value.createdDateTime.toISOString()),
-        'lastModifiedDateTime': value.lastModifiedDateTime === undefined ? undefined : (value.lastModifiedDateTime.toISOString()),
-        'von': value.von,
-        'bisExklusiv': value.bisExklusiv,
-        'typ': value.typ,
-        'jahresraten': value.jahresraten === undefined ? undefined : ((value.jahresraten as Array<any>).map(JahresrateToJSON)),
-        '_links': value.links === undefined ? undefined : (mapValues(value.links, LinkToJSON)),
+        'version': value['version'],
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'von': value['von'],
+        'bisExklusiv': value['bisExklusiv'],
+        'typ': value['typ'],
+        'jahresraten': value['jahresraten'] == null ? undefined : ((value['jahresraten'] as Array<any>).map(JahresrateToJSON)),
+        '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
 

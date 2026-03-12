@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityModelDokument } from './EntityModelDokument';
 import {
     EntityModelDokumentFromJSON,
     EntityModelDokumentFromJSONTyped,
     EntityModelDokumentToJSON,
+    EntityModelDokumentToJSONTyped,
 } from './EntityModelDokument';
 
 /**
@@ -37,10 +38,8 @@ export interface PagedModelEntityModelDokumentEmbedded {
 /**
  * Check if a given object implements the PagedModelEntityModelDokumentEmbedded interface.
  */
-export function instanceOfPagedModelEntityModelDokumentEmbedded(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPagedModelEntityModelDokumentEmbedded(value: object): value is PagedModelEntityModelDokumentEmbedded {
+    return true;
 }
 
 export function PagedModelEntityModelDokumentEmbeddedFromJSON(json: any): PagedModelEntityModelDokumentEmbedded {
@@ -48,25 +47,27 @@ export function PagedModelEntityModelDokumentEmbeddedFromJSON(json: any): PagedM
 }
 
 export function PagedModelEntityModelDokumentEmbeddedFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagedModelEntityModelDokumentEmbedded {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'dokuments': !exists(json, 'dokuments') ? undefined : ((json['dokuments'] as Array<any>).map(EntityModelDokumentFromJSON)),
+        'dokuments': json['dokuments'] == null ? undefined : ((json['dokuments'] as Array<any>).map(EntityModelDokumentFromJSON)),
     };
 }
 
-export function PagedModelEntityModelDokumentEmbeddedToJSON(value?: PagedModelEntityModelDokumentEmbedded | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PagedModelEntityModelDokumentEmbeddedToJSON(json: any): PagedModelEntityModelDokumentEmbedded {
+    return PagedModelEntityModelDokumentEmbeddedToJSONTyped(json, false);
+}
+
+export function PagedModelEntityModelDokumentEmbeddedToJSONTyped(value?: PagedModelEntityModelDokumentEmbedded | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'dokuments': value.dokuments === undefined ? undefined : ((value.dokuments as Array<any>).map(EntityModelDokumentToJSON)),
+        'dokuments': value['dokuments'] == null ? undefined : ((value['dokuments'] as Array<any>).map(EntityModelDokumentToJSON)),
     };
 }
 

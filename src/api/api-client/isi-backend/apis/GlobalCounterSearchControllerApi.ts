@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityModelGlobalCounter,
-} from '../models';
+} from '../models/index';
 import {
     EntityModelGlobalCounterFromJSON,
     EntityModelGlobalCounterToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ExecuteSearchGlobalcounterGetRequest {
     counterType?: ExecuteSearchGlobalcounterGetCounterTypeEnum;
@@ -36,14 +36,17 @@ export class GlobalCounterSearchControllerApi extends runtime.BaseAPI {
     async executeSearchGlobalcounterGetRaw(requestParameters: ExecuteSearchGlobalcounterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
         const queryParameters: any = {};
 
-        if (requestParameters.counterType !== undefined) {
-            queryParameters['counterType'] = requestParameters.counterType;
+        if (requestParameters['counterType'] != null) {
+            queryParameters['counterType'] = requestParameters['counterType'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+
+        let urlPath = `/globalCounters/search/findByCounterType`;
+
         const response = await this.request({
-            path: `/globalCounters/search/findByCounterType`,
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
