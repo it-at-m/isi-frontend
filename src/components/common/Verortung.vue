@@ -224,8 +224,6 @@ interface Props {
   lookAt?: AdresseDto;
 }
 
-const emit = defineEmits(["form-changed"]);
-
 const geoJsonOptions = {
   // Farbe des Multipolygons
   style: function () {
@@ -594,7 +592,7 @@ function removeChipGrundschulsprengel(nummer: number | undefined) {
   }
   const filteredGrundschulSprengel = grundschulSprengel.filter((x) => x.nummer !== nummer);
   verortungModel.value!.grundschulsprengel = new Set(filteredGrundschulSprengel);
-  emit("form-changed");
+  formChanged();
 }
 
 function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
@@ -608,7 +606,7 @@ function removeChipKitaplanungsbereiche(kitaPlbT: string | undefined) {
   }
   const filteredKitaplanungsbereiche = kitaplanungsbereiche.filter((x) => x.kitaPlbT !== kitaPlbT);
   verortungModel.value!.kitaplanungsbereiche = new Set(filteredKitaplanungsbereiche);
-  emit("form-changed");
+  formChanged();
 }
 
 function removeChipMittelschulsprengel(nummer: number | undefined) {
@@ -621,6 +619,6 @@ function removeChipMittelschulsprengel(nummer: number | undefined) {
   }
   const filteredMittelschulSprengel = mittelschulsprengel.filter((x) => x.nummer !== nummer);
   verortungModel.value!.mittelschulsprengel = new Set(filteredMittelschulSprengel);
-  emit("form-changed");
+  formChanged();
 }
 </script>
