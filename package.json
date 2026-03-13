@@ -40,7 +40,7 @@
     "eslint-plugin-vue": "^10.6.2",
     "eslint-plugin-vuetify": "^2.5.3",
     "husky": "9.1.7",
-    "jsdom": "^27.3.0",
+    "jsdom": "^28.0.0",
     "lint-staged": "^16.2.7",
     "prettier": "3.6",
     "prettier-plugin-java": "2.7",
