@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Dokument } from './Dokument';
+import {
+    DokumentFromJSON,
+    DokumentFromJSONTyped,
+    DokumentToJSON,
+    DokumentToJSONTyped,
+} from './Dokument';
+
 /**
  * 
  * @export
@@ -79,6 +87,12 @@ export interface Bedarfsmeldung {
      * @memberof Bedarfsmeldung
      */
     anzahlGrundschulzuege?: number;
+    /**
+     * 
+     * @type {Array<Dokument>}
+     * @memberof Bedarfsmeldung
+     */
+    dokumente?: Array<Dokument>;
 }
 
 
@@ -124,6 +138,7 @@ export function BedarfsmeldungFromJSONTyped(json: any, ignoreDiscriminator: bool
         'anzahlKindergartengruppen': json['anzahlKindergartengruppen'] == null ? undefined : json['anzahlKindergartengruppen'],
         'anzahlHortgruppen': json['anzahlHortgruppen'] == null ? undefined : json['anzahlHortgruppen'],
         'anzahlGrundschulzuege': json['anzahlGrundschulzuege'] == null ? undefined : json['anzahlGrundschulzuege'],
+        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentFromJSON)),
     };
 }
 
@@ -148,6 +163,7 @@ export function BedarfsmeldungToJSONTyped(value?: Bedarfsmeldung | null, ignoreD
         'anzahlKindergartengruppen': value['anzahlKindergartengruppen'],
         'anzahlHortgruppen': value['anzahlHortgruppen'],
         'anzahlGrundschulzuege': value['anzahlGrundschulzuege'],
+        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentToJSON)),
     };
 }
 
