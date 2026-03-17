@@ -447,6 +447,7 @@ export function createBedarfsmeldungDto(): BedarfsmeldungDto {
     anzahlKindergartengruppen: undefined,
     anzahlHortgruppen: undefined,
     anzahlGrundschulzuege: undefined,
+    dokumente: [],
   };
 }
 

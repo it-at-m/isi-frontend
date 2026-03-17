@@ -174,6 +174,14 @@
           />
         </v-col>
       </v-row>
+      <dokumente
+        id="dokumente_component"
+        ref="dokumenteComponent"
+        v-model="currentBedarfsmeldung.dokumente"
+        :name-root-folder="nameRootFolder"
+        :is-dokumente-editable="isEditable"
+        @change="formChanged"
+      />
     </field-group-card>
     <bedarfsmeldung-dialog
       id="bedarfsmeldung_dialog"
@@ -197,6 +205,8 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
+import { Context } from "@/utils/Context";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 
 interface Props {
   bedarfsmeldungTitle: BedarfsmeldungTitle;
@@ -233,6 +243,7 @@ let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 let selectedItemIndex = -1;
 const lookupStore = useLookupStore();
 const { formChanged } = useSaveLeave();
+const nameRootFolder = "bedarfsmeldung";
 
 watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
 function watchBedarfsmeldungSelection(): void {
