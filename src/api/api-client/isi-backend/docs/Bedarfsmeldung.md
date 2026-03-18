@@ -16,7 +16,6 @@ Name | Type
 `anzahlKindergartengruppen` | number
 `anzahlHortgruppen` | number
 `anzahlGrundschulzuege` | number
-`dokumente` | [Array&lt;Dokument&gt;](Dokument.md)
 
 ## Example
 
@@ -35,7 +34,6 @@ const example = {
   "anzahlKindergartengruppen": null,
   "anzahlHortgruppen": null,
   "anzahlGrundschulzuege": null,
-  "dokumente": null,
 } satisfies Bedarfsmeldung
 
 console.log(example)

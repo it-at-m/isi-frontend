@@ -13,14 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
-} from './DokumentDto';
-
 /**
  * 
  * @export
@@ -87,12 +79,6 @@ export interface BedarfsmeldungDto {
      * @memberof BedarfsmeldungDto
      */
     anzahlGrundschulzuege?: number;
-    /**
-     * 
-     * @type {Array<DokumentDto>}
-     * @memberof BedarfsmeldungDto
-     */
-    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -138,7 +124,6 @@ export function BedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'anzahlKindergartengruppen': json['anzahlKindergartengruppen'] == null ? undefined : json['anzahlKindergartengruppen'],
         'anzahlHortgruppen': json['anzahlHortgruppen'] == null ? undefined : json['anzahlHortgruppen'],
         'anzahlGrundschulzuege': json['anzahlGrundschulzuege'] == null ? undefined : json['anzahlGrundschulzuege'],
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -163,7 +148,6 @@ export function BedarfsmeldungDtoToJSONTyped(value?: BedarfsmeldungDto | null, i
         'anzahlKindergartengruppen': value['anzahlKindergartengruppen'],
         'anzahlHortgruppen': value['anzahlHortgruppen'],
         'anzahlGrundschulzuege': value['anzahlGrundschulzuege'],
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

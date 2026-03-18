@@ -65,7 +65,6 @@ export * from './CollectionModelDokument';
 export * from './CollectionModelDokumentEmbedded';
 export * from './CollectionModelObject';
 export * from './CollectionModelObjectEmbedded';
-export * from './Dokument';
 export * from './DokumentDto';
 export * from './DokumentRequestBody';
 export * from './DokumentResponse';
