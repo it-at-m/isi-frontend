@@ -177,7 +177,7 @@
       <dokumente
         id="dokumente_component"
         ref="dokumenteComponent"
-        v-model="currentBedarfsmeldung.dokumente"
+        v-model="dokumente"
         :name-root-folder="nameRootFolder"
         :is-dokumente-editable="isEditable"
         @change="formChanged"
@@ -205,7 +205,6 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
-import { Context } from "@/utils/Context";
 import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 
 interface Props {
@@ -224,6 +223,10 @@ const bedarfsmeldungTitle = computed(() => {
   return "";
 });
 
+const nameRootFolder = computed(() => {
+  return props.isFachreferat ? "bedmeld_fachref" : "bedmeld_abfrerst";
+});
+
 const isEditable = computed(() => props.isEditable);
 
 const bedarfsmeldungenHeaders = ref<any[]>([
@@ -236,6 +239,7 @@ const bedarfsmeldungenHeaders = ref<any[]>([
   { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
 ]);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[] | undefined>([]);
+const dokumente = ref<DokumentDto[] | undefined>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
 const anmerkung = ref<string | undefined>(undefined);
@@ -243,7 +247,6 @@ let displayModeBedarfsmeldung = DisplayMode.UNDEFINED;
 let selectedItemIndex = -1;
 const lookupStore = useLookupStore();
 const { formChanged } = useSaveLeave();
-const nameRootFolder = "bedarfsmeldung";
 
 watch(() => abfragevariante, watchBedarfsmeldungSelection, { immediate: true, deep: true });
 function watchBedarfsmeldungSelection(): void {
@@ -254,6 +257,10 @@ function watchBedarfsmeldungSelection(): void {
   anmerkung.value = props.isFachreferat
     ? abfragevariante.value.anmerkungFachreferate
     : abfragevariante.value.anmerkungAbfrageersteller;
+
+  dokumente.value = props.isFachreferat
+    ? abfragevariante.value.bedarfsmeldungDokumenteFachreferate
+    : abfragevariante.value.bedarfsmeldungDokumenteAbfrageersteller;
 }
 
 watch(() => anmerkung, watchAnmerkung, { immediate: true, deep: true });
@@ -262,6 +269,15 @@ function watchAnmerkung(): void {
     abfragevariante.value.anmerkungFachreferate = anmerkung.value;
   } else {
     abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
+  }
+}
+
+watch(() => dokumente, watchDokumente, { immediate: true, deep: true });
+function watchDokumente(): void {
+  if (props.isFachreferat) {
+    abfragevariante.value.bedarfsmeldungDokumenteFachreferate = dokumente.value;
+  } else {
+    abfragevariante.value.bedarfsmeldungDokumenteAbfrageersteller = dokumente.value;
   }
 }
 
