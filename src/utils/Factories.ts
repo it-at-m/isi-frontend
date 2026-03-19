@@ -307,6 +307,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -358,6 +360,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -412,6 +416,8 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -447,7 +453,6 @@ export function createBedarfsmeldungDto(): BedarfsmeldungDto {
     anzahlKindergartengruppen: undefined,
     anzahlHortgruppen: undefined,
     anzahlGrundschulzuege: undefined,
-    dokumente: [],
   };
 }
 
