@@ -136,7 +136,7 @@ function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
     stammdaten.filter(
       (stammdatum) =>
         stammdatum.foerdermix.bezeichnung !== "40% Beschluss" &&
-        stammdatum.foerdermix.bezeichnung !== "Befreiung (§31 BauBG)",
+        stammdatum.foerdermix.bezeichnung !== "Befreiung (§31 BauGB)",
     ),
     ["foerdermix.bezeichnungJahr"],
   );
