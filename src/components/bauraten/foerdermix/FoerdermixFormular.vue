@@ -150,6 +150,6 @@ function handleOldEntries(): void {
 }
 
 function isOldEntry(): boolean {
-  return ["40% Beschluss", "Befreiung (§31 BauBG)"].includes(foerdermix.value.bezeichnung);
+  return ["40% Beschluss", "Befreiung (§31 BauGB)"].includes(foerdermix.value.bezeichnung);
 }
 </script>
