@@ -313,7 +313,6 @@ async function createVerortung(point: PointGeometryDto | undefined): void {
     if (!_.isNil(verortung)) {
       verortungModel.value = await new VerortungPointModel(verortung);
       formChanged();
-      console.log(verortungModel.value);
     } else {
       verortungModel.value = undefined;
     }
