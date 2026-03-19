@@ -21,8 +21,8 @@ Name | Type
 `idKibigWeb` | string
 `adresseJson` | [Adresse](Adresse.md)
 `infrastruktureinrichtungTyp` | string
-`resultType` | string
 `bauvorhabenName` | string
+`resultType` | string
 `verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
@@ -48,8 +48,8 @@ const example = {
   "idKibigWeb": null,
   "adresseJson": null,
   "infrastruktureinrichtungTyp": null,
-  "resultType": null,
   "bauvorhabenName": null,
+  "resultType": null,
   "verortungPointJson": null,
   "links": null,
 } satisfies EntityModelInfrastruktureinrichtung

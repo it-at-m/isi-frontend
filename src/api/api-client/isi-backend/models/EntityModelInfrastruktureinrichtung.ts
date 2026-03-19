@@ -143,13 +143,13 @@ export interface EntityModelInfrastruktureinrichtung {
      * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
+    bauvorhabenName?: string;
     /**
      * 
      * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    bauvorhabenName?: string;
+    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
     /**
      * 
      * @type {VerortungPoint}
@@ -238,8 +238,8 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -271,8 +271,8 @@ export function EntityModelInfrastruktureinrichtungToJSONTyped(value?: EntityMod
         'idKibigWeb': value['idKibigWeb'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'resultType': value['resultType'],
         'bauvorhabenName': value['bauvorhabenName'],
+        'resultType': value['resultType'],
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
