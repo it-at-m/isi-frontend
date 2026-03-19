@@ -51,5 +51,7 @@ export * from './StammdatenApi';
 export * from './SucheApi';
 export * from './UmlegungFoerderartenEntityControllerApi';
 export * from './UmlegungFoerderartenSearchControllerApi';
+export * from './VersorgungsquoteApi';
 export * from './VersorgungsquoteGruppenstaerkeEntityControllerApi';
 export * from './VersorgungsquoteGruppenstaerkeSearchControllerApi';
+export * from './VersorgungsquoteSobonHortEntityControllerApi';

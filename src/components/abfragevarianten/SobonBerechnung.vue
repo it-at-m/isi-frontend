@@ -22,6 +22,25 @@
         md="6"
       >
         <v-select
+          id="sobon_berechnung_versorgungsquote_hort_sobon"
+          v-model="sobonBerechnung.versorgungsquoteHortSobon"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="versorungsquoteHortSobon"
+          label="SoBoN-ursächliche Versorgungsquote Hort"
+          variant="underlined"
+          item-value="versorgungsquoteSobon"
+          item-title="beschreibung"
+          @update:model-value="formChanged"
+        />
+      </v-col>
+    </v-expand-transition>
+    <v-expand-transition>
+      <v-col
+        v-if="sobonBerechnung.isASobonBerechnung"
+        cols="12"
+        md="6"
+      >
+        <v-select
           id="sobon_berechnung_foerdermix_stammdaten_dropdown"
           v-model="sobonFoerdermix"
           :disabled="!isEditableBySachbearbeitung"
@@ -95,15 +114,22 @@ import NumField from "@/components/common/NumField.vue";
 import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
+import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
+import { VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
+import { useErrorHandler } from "@/composables/requests/ErrorHandler";
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
 const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 const stammdatenStore = useStammdatenStore();
+const { getVersorungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
+const versorungsquoteHortSobon = ref<VersorgungsquoteSobonHortDto[] | undefined>(undefined);
+const { handleError } = useErrorHandler();
 
 onMounted(() => {
   setGroupedStammdatenList();
+  void loadVersorungsquoteHortSobon();
 });
 
 const sobonFoerdermix = computed({
@@ -156,6 +182,16 @@ function sobonBerechnungChanged(): void {
   formChanged();
   if (!sobonBerechnung.value.isASobonBerechnung) {
     sobonBerechnung.value.sobonFoerdermix = undefined;
+    sobonBerechnung.value.versorgungsquoteHortSobon = undefined;
+  }
+}
+
+async function loadVersorungsquoteHortSobon(): Promise<void> {
+  try {
+    versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
+  } catch (error) {
+    handleError(error);
+    versorungsquoteHortSobon.value = [];
   }
 }
 </script>

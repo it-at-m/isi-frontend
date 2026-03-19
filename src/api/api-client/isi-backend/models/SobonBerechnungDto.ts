@@ -45,6 +45,12 @@ export interface SobonBerechnungDto {
      * @memberof SobonBerechnungDto
      */
     sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof SobonBerechnungDto
+     */
+    versorgungsquoteHortSobon?: number;
 }
 
 
@@ -83,6 +89,7 @@ export function SobonBerechnungDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'isASobonBerechnung': json['isASobonBerechnung'] == null ? undefined : json['isASobonBerechnung'],
         'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'versorgungsquoteHortSobon': json['versorgungsquoteHortSobon'] == null ? undefined : json['versorgungsquoteHortSobon'],
     };
 }
 
@@ -100,6 +107,7 @@ export function SobonBerechnungDtoToJSONTyped(value?: SobonBerechnungDto | null,
         'isASobonBerechnung': value['isASobonBerechnung'],
         'sobonFoerdermix': FoerdermixDtoToJSON(value['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
+        'versorgungsquoteHortSobon': value['versorgungsquoteHortSobon'],
     };
 }
 
