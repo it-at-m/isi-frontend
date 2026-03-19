@@ -280,6 +280,37 @@ export class ProfileControllerApi extends runtime.BaseAPI {
 
     /**
      */
+    async descriptor16Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/profile/versorgungsquoteSobonHorts`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async descriptor16(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.descriptor16Raw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async descriptor2Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
         const queryParameters: any = {};
 
