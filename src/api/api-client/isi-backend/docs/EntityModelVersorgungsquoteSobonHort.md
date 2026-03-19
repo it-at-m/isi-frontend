@@ -1,5 +1,5 @@
 
-# EntityModelAbfrage
+# EntityModelVersorgungsquoteSobonHort
 
 
 ## Properties
@@ -9,38 +9,24 @@ Name | Type
 `version` | number
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
-`name` | string
-`statusAbfrage` | [StatusAbfrage](StatusAbfrage.md)
-`anmerkung` | string
-`sub` | string
-`linkEakte` | string
-`bearbeitungshistorie` | [Array&lt;Bearbeitungshistorie&gt;](Bearbeitungshistorie.md)
-`resultType` | string
-`artAbfrage` | string
-`bauvorhabenUuid` | string
+`beschreibung` | string
+`versorgungsquoteSobon` | number
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
 
 ```typescript
-import type { EntityModelAbfrage } from ''
+import type { EntityModelVersorgungsquoteSobonHort } from ''
 
 // TODO: Update the object below with actual values
 const example = {
   "version": null,
   "createdDateTime": null,
   "lastModifiedDateTime": null,
-  "name": null,
-  "statusAbfrage": null,
-  "anmerkung": null,
-  "sub": null,
-  "linkEakte": null,
-  "bearbeitungshistorie": null,
-  "resultType": null,
-  "artAbfrage": null,
-  "bauvorhabenUuid": null,
+  "beschreibung": null,
+  "versorgungsquoteSobon": null,
   "links": null,
-} satisfies EntityModelAbfrage
+} satisfies EntityModelVersorgungsquoteSobonHort
 
 console.log(example)
 
@@ -49,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as EntityModelAbfrage
+const exampleParsed = JSON.parse(exampleJSON) as EntityModelVersorgungsquoteSobonHort
 console.log(exampleParsed)
 ```
 

@@ -424,6 +424,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
@@ -433,6 +434,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
@@ -512,8 +514,6 @@ export function createDokumentDto(): DokumentDto {
     lastModifiedDateTime: undefined,
     filePath: createFilepathDto(),
     artDokument: DokumentDtoArtDokumentEnum.Unspecified,
-    sizeInBytes: 0,
-    typDokument: "",
   };
 }
 

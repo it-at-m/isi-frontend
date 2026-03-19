@@ -1,28 +1,22 @@
 
-# SobonBerechnungDto
+# PagedModelEntityModelVersorgungsquoteSobonHortEmbedded
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`isASobonBerechnung` | boolean
-`sobonFoerdermix` | [FoerdermixDto](FoerdermixDto.md)
-`sobonOrientierungswertJahrSobonUrsaechlich` | string
-`versorgungsquoteHortSobon` | number
+`versorgungsquoteSobonHorts` | [Array&lt;EntityModelVersorgungsquoteSobonHort&gt;](EntityModelVersorgungsquoteSobonHort.md)
 
 ## Example
 
 ```typescript
-import type { SobonBerechnungDto } from ''
+import type { PagedModelEntityModelVersorgungsquoteSobonHortEmbedded } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "isASobonBerechnung": null,
-  "sobonFoerdermix": null,
-  "sobonOrientierungswertJahrSobonUrsaechlich": null,
-  "versorgungsquoteHortSobon": null,
-} satisfies SobonBerechnungDto
+  "versorgungsquoteSobonHorts": null,
+} satisfies PagedModelEntityModelVersorgungsquoteSobonHortEmbedded
 
 console.log(example)
 
@@ -31,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SobonBerechnungDto
+const exampleParsed = JSON.parse(exampleJSON) as PagedModelEntityModelVersorgungsquoteSobonHortEmbedded
 console.log(exampleParsed)
 ```
 

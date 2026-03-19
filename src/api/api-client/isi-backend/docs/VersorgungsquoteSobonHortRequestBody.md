@@ -1,5 +1,5 @@
 
-# AbfrageRequestBody
+# VersorgungsquoteSobonHortRequestBody
 
 
 ## Properties
@@ -10,21 +10,13 @@ Name | Type
 `version` | number
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
-`name` | string
-`statusAbfrage` | [StatusAbfrage](StatusAbfrage.md)
-`anmerkung` | string
-`bauvorhaben` | string
-`sub` | string
-`linkEakte` | string
-`bearbeitungshistorie` | [Array&lt;Bearbeitungshistorie&gt;](Bearbeitungshistorie.md)
-`resultType` | string
-`artAbfrage` | string
-`bauvorhabenUuid` | string
+`beschreibung` | string
+`versorgungsquoteSobon` | number
 
 ## Example
 
 ```typescript
-import type { AbfrageRequestBody } from ''
+import type { VersorgungsquoteSobonHortRequestBody } from ''
 
 // TODO: Update the object below with actual values
 const example = {
@@ -32,17 +24,9 @@ const example = {
   "version": null,
   "createdDateTime": null,
   "lastModifiedDateTime": null,
-  "name": null,
-  "statusAbfrage": null,
-  "anmerkung": null,
-  "bauvorhaben": null,
-  "sub": null,
-  "linkEakte": null,
-  "bearbeitungshistorie": null,
-  "resultType": null,
-  "artAbfrage": null,
-  "bauvorhabenUuid": null,
-} satisfies AbfrageRequestBody
+  "beschreibung": null,
+  "versorgungsquoteSobon": null,
+} satisfies VersorgungsquoteSobonHortRequestBody
 
 console.log(example)
 
@@ -51,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as AbfrageRequestBody
+const exampleParsed = JSON.parse(exampleJSON) as VersorgungsquoteSobonHortRequestBody
 console.log(exampleParsed)
 ```
 
