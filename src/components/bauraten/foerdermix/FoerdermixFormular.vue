@@ -135,8 +135,8 @@ function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
   return _.sortBy(
     stammdaten.filter(
       (stammdatum) =>
-        stammdatum.foerdermix.bezeichnung !== "40% Beschluss" &&
-        stammdatum.foerdermix.bezeichnung !== "Befreiung (§31 BauGB)",
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BESCHLUSS_40 &&
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BEFREIUNG_31_BAUGB,
     ),
     ["foerdermix.bezeichnungJahr"],
   );
@@ -150,6 +150,8 @@ function handleOldEntries(): void {
 }
 
 function isOldEntry(): boolean {
-  return ["40% Beschluss", "Befreiung (§31 BauGB)"].includes(foerdermix.value.bezeichnung);
+  return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
+    foerdermix.value.bezeichnung as FoerdermixStammdaten,
+  );
 }
 </script>
