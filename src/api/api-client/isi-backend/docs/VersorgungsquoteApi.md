@@ -4,13 +4,13 @@ All URIs are relative to *http://localhost:39146*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getVersorungsquoteSobonHort**](VersorgungsquoteApi.md#getversorungsquotesobonhort) | **GET** /stammdaten/versorgungsquote | Lade alle Sobon Versorgungsquoten für den Hort |
+| [**getVersorgungsquoteSobonHort**](VersorgungsquoteApi.md#getversorgungsquotesobonhort) | **GET** /stammdaten/versorgungsquote | Lade alle Sobon Versorgungsquoten für den Hort |
 
 
 
-## getVersorungsquoteSobonHort
+## getVersorgungsquoteSobonHort
 
-> Array&lt;VersorgungsquoteSobonHortDto&gt; getVersorungsquoteSobonHort()
+> Array&lt;VersorgungsquoteSobonHortDto&gt; getVersorgungsquoteSobonHort()
 
 Lade alle Sobon Versorgungsquoten für den Hort
 
@@ -21,14 +21,14 @@ import {
   Configuration,
   VersorgungsquoteApi,
 } from '';
-import type { GetVersorungsquoteSobonHortRequest } from '';
+import type { GetVersorgungsquoteSobonHortRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
   const api = new VersorgungsquoteApi();
 
   try {
-    const data = await api.getVersorungsquoteSobonHort();
+    const data = await api.getVersorgungsquoteSobonHort();
     console.log(data);
   } catch (error) {
     console.error(error);

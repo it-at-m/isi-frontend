@@ -30,7 +30,7 @@ export class VersorgungsquoteApi extends runtime.BaseAPI {
     /**
      * Lade alle Sobon Versorgungsquoten für den Hort
      */
-    async getVersorungsquoteSobonHortRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<VersorgungsquoteSobonHortDto>>> {
+    async getVersorgungsquoteSobonHortRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<VersorgungsquoteSobonHortDto>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -51,8 +51,8 @@ export class VersorgungsquoteApi extends runtime.BaseAPI {
     /**
      * Lade alle Sobon Versorgungsquoten für den Hort
      */
-    async getVersorungsquoteSobonHort(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VersorgungsquoteSobonHortDto>> {
-        const response = await this.getVersorungsquoteSobonHortRaw(initOverrides);
+    async getVersorgungsquoteSobonHort(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<VersorgungsquoteSobonHortDto>> {
+        const response = await this.getVersorgungsquoteSobonHortRaw(initOverrides);
         return await response.value();
     }
 
