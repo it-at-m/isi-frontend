@@ -151,16 +151,16 @@ export interface InfrastruktureinrichtungRequestBody {
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {Adresse}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
-    adresseJson?: Adresse;
-    /**
-     * 
      * @type {VerortungPoint}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     verortungPointJson?: VerortungPoint;
+    /**
+     * 
+     * @type {Adresse}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    adresseJson?: Adresse;
 }
 
 
@@ -240,8 +240,8 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
     };
 }
 
@@ -274,8 +274,8 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
     };
 }
 

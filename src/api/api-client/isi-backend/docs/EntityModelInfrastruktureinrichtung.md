@@ -22,8 +22,8 @@ Name | Type
 `bauvorhabenName` | string
 `resultType` | string
 `infrastruktureinrichtungTyp` | string
-`adresseJson` | [Adresse](Adresse.md)
 `verortungPointJson` | [VerortungPoint](VerortungPoint.md)
+`adresseJson` | [Adresse](Adresse.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -49,8 +49,8 @@ const example = {
   "bauvorhabenName": null,
   "resultType": null,
   "infrastruktureinrichtungTyp": null,
-  "adresseJson": null,
   "verortungPointJson": null,
+  "adresseJson": null,
   "links": null,
 } satisfies EntityModelInfrastruktureinrichtung
 

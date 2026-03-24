@@ -146,16 +146,16 @@ export interface EntityModelInfrastruktureinrichtung {
     infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {Adresse}
-     * @memberof EntityModelInfrastruktureinrichtung
-     */
-    adresseJson?: Adresse;
-    /**
-     * 
      * @type {VerortungPoint}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     verortungPointJson?: VerortungPoint;
+    /**
+     * 
+     * @type {Adresse}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
+    adresseJson?: Adresse;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -239,8 +239,8 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -272,8 +272,8 @@ export function EntityModelInfrastruktureinrichtungToJSONTyped(value?: EntityMod
         'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

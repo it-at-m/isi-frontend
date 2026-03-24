@@ -239,7 +239,7 @@ const bedarfsmeldungenHeaders = ref<any[]>([
   { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
 ]);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[] | undefined>([]);
-const dokumente = ref<DokumentDto[] | undefined>([]);
+const dokumente = ref<DokumentDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
 const anmerkung = ref<string | undefined>(undefined);
