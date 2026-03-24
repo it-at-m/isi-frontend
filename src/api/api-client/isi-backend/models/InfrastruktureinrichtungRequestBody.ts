@@ -136,12 +136,6 @@ export interface InfrastruktureinrichtungRequestBody {
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
     bauvorhabenName?: string;
     /**
      * 
@@ -151,16 +145,22 @@ export interface InfrastruktureinrichtungRequestBody {
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
     /**
      * 
-     * @type {VerortungPoint}
+     * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    verortungPointJson?: VerortungPoint;
+    infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
     /**
      * 
      * @type {Adresse}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {VerortungPoint}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    verortungPointJson?: VerortungPoint;
 }
 
 
@@ -183,6 +183,16 @@ export type InfrastruktureinrichtungRequestBodyStatusEnum = typeof Infrastruktur
 /**
  * @export
  */
+export const InfrastruktureinrichtungRequestBodyResultTypeEnum = {
+    Bauvorhaben: 'BAUVORHABEN',
+    Abfrage: 'ABFRAGE',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+} as const;
+export type InfrastruktureinrichtungRequestBodyResultTypeEnum = typeof InfrastruktureinrichtungRequestBodyResultTypeEnum[keyof typeof InfrastruktureinrichtungRequestBodyResultTypeEnum];
+
+/**
+ * @export
+ */
 export const InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum = {
     Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
@@ -193,16 +203,6 @@ export const InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum 
     Mittelschule: 'MITTELSCHULE'
 } as const;
 export type InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum];
-
-/**
- * @export
- */
-export const InfrastruktureinrichtungRequestBodyResultTypeEnum = {
-    Bauvorhaben: 'BAUVORHABEN',
-    Abfrage: 'ABFRAGE',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
-} as const;
-export type InfrastruktureinrichtungRequestBodyResultTypeEnum = typeof InfrastruktureinrichtungRequestBodyResultTypeEnum[keyof typeof InfrastruktureinrichtungRequestBodyResultTypeEnum];
 
 
 /**
@@ -237,11 +237,11 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
-        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
     };
 }
 
@@ -271,11 +271,11 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
-        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
-        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
+        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
     };
 }
 

@@ -194,16 +194,16 @@ export interface BauvorhabenRequestBody {
     resultType?: BauvorhabenRequestBodyResultTypeEnum;
     /**
      * 
-     * @type {Adresse}
-     * @memberof BauvorhabenRequestBody
-     */
-    adresseJson?: Adresse;
-    /**
-     * 
      * @type {VerortungMultiPolygon}
      * @memberof BauvorhabenRequestBody
      */
     verortungJson?: VerortungMultiPolygon;
+    /**
+     * 
+     * @type {Adresse}
+     * @memberof BauvorhabenRequestBody
+     */
+    adresseJson?: Adresse;
 }
 
 
@@ -332,8 +332,8 @@ export function BauvorhabenRequestBodyFromJSONTyped(json: any, ignoreDiscriminat
         'dokumente': json['dokumente'] == null ? undefined : json['dokumente'],
         'relevanteAbfragevariante': json['relevanteAbfragevariante'] == null ? undefined : json['relevanteAbfragevariante'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
     };
 }
 
@@ -372,8 +372,8 @@ export function BauvorhabenRequestBodyToJSONTyped(value?: BauvorhabenRequestBody
         'dokumente': value['dokumente'],
         'relevanteAbfragevariante': value['relevanteAbfragevariante'],
         'resultType': value['resultType'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
     };
 }
 
