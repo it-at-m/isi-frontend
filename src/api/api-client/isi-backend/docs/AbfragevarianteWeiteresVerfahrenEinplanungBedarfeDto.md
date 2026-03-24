@@ -10,7 +10,6 @@ Name | Type
 `version` | number
 `artAbfragevariante` | string
 `bedarfsmeldungAbfrageersteller` | [Array&lt;BedarfsmeldungDto&gt;](BedarfsmeldungDto.md)
-`bedarfsmeldungDokumenteAbfrageersteller` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `anmerkungAbfrageersteller` | string
 
 ## Example
@@ -24,7 +23,6 @@ const example = {
   "version": null,
   "artAbfragevariante": null,
   "bedarfsmeldungAbfrageersteller": null,
-  "bedarfsmeldungDokumenteAbfrageersteller": null,
   "anmerkungAbfrageersteller": null,
 } satisfies AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto
 

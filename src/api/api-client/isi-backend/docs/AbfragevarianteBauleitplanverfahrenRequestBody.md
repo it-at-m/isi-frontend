@@ -41,9 +41,7 @@ Name | Type
 `bauratendateiInputBasis` | [BauratendateiInput](BauratendateiInput.md)
 `bauratendateiInput` | [Array&lt;BauratendateiInput&gt;](BauratendateiInput.md)
 `bedarfsmeldungFachreferate` | [Array&lt;Bedarfsmeldung&gt;](Bedarfsmeldung.md)
-`bedarfsmeldungDokumenteFachreferate` | Array&lt;string&gt;
 `bedarfsmeldungAbfrageersteller` | [Array&lt;Bedarfsmeldung&gt;](Bedarfsmeldung.md)
-`bedarfsmeldungDokumenteAbfrageersteller` | Array&lt;string&gt;
 `bauabschnitte` | [Array&lt;Bauabschnitt&gt;](Bauabschnitt.md)
 `ausgeloesterBedarfImBaugebietBeruecksichtigenKita` | boolean
 `ausgeloesterBedarfMitversorgungImBplanKita` | boolean
@@ -100,9 +98,7 @@ const example = {
   "bauratendateiInputBasis": null,
   "bauratendateiInput": null,
   "bedarfsmeldungFachreferate": null,
-  "bedarfsmeldungDokumenteFachreferate": null,
   "bedarfsmeldungAbfrageersteller": null,
-  "bedarfsmeldungDokumenteAbfrageersteller": null,
   "bauabschnitte": null,
   "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": null,
   "ausgeloesterBedarfMitversorgungImBplanKita": null,

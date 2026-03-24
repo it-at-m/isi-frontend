@@ -10,7 +10,6 @@ Name | Type
 `version` | number
 `artAbfragevariante` | string
 `bedarfsmeldungFachreferate` | [Array&lt;BedarfsmeldungDto&gt;](BedarfsmeldungDto.md)
-`bedarfsmeldungDokumenteFachreferate` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `ausgeloesterBedarfImBaugebietBeruecksichtigenKita` | boolean
 `ausgeloesterBedarfMitversorgungImBplanKita` | boolean
 `ausgeloesterBedarfMitversorgungInBestEinrichtungenKita` | boolean
@@ -32,7 +31,6 @@ const example = {
   "version": null,
   "artAbfragevariante": null,
   "bedarfsmeldungFachreferate": null,
-  "bedarfsmeldungDokumenteFachreferate": null,
   "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": null,
   "ausgeloesterBedarfMitversorgungImBplanKita": null,
   "ausgeloesterBedarfMitversorgungInBestEinrichtungenKita": null,
