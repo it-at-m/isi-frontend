@@ -195,7 +195,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import type { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import type { DokumentDto, BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
