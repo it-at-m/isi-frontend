@@ -6,13 +6,13 @@ export function useVersorgungsquoteSobonHortApi() {
   const versorgungsquoteSobonHortDtoApi = new VersorgungsquoteApi(RequestUtils.getBasicFetchConfigurationForBackend());
   const { handleError } = useErrorHandler();
 
-  async function getVersorungsquoteHortSobon(): Promise<VersorgungsquoteSobonHortDto[]> {
+  async function getVersorgungsquoteHortSobon(): Promise<VersorgungsquoteSobonHortDto[]> {
     try {
-      return await versorgungsquoteSobonHortDtoApi.getVersorungsquoteSobonHort();
+      return await versorgungsquoteSobonHortDtoApi.getVersorgungsquoteSobonHort();
     } catch (error) {
       throw handleError(error);
     }
   }
 
-  return { getVersorungsquoteHortSobon };
+  return { getVersorgungsquoteHortSobon };
 }
