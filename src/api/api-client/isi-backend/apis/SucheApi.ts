@@ -48,9 +48,9 @@ export interface SearchForSearchwordSuggestionRequest {
 export class SucheApi extends runtime.BaseAPI {
 
     /**
-     * Suche nach Entitäten für die im Request-Body gegebene Suchanfrage.
+     * Creates request options for searchForEntities without sending the request
      */
-    async searchForEntitiesRaw(requestParameters: SearchForEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchResultsDto>> {
+    async searchForEntitiesRequestOpts(requestParameters: SearchForEntitiesRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['searchQueryAndSortingDto'] == null) {
             throw new runtime.RequiredError(
                 'searchQueryAndSortingDto',
@@ -67,13 +67,21 @@ export class SucheApi extends runtime.BaseAPI {
 
         let urlPath = `/search/entities`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: SearchQueryAndSortingDtoToJSON(requestParameters['searchQueryAndSortingDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Suche nach Entitäten für die im Request-Body gegebene Suchanfrage.
+     */
+    async searchForEntitiesRaw(requestParameters: SearchForEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchResultsDto>> {
+        const requestOptions = await this.searchForEntitiesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SearchResultsDtoFromJSON(jsonValue));
     }
@@ -87,9 +95,9 @@ export class SucheApi extends runtime.BaseAPI {
     }
 
     /**
-     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.
+     * Creates request options for searchForSearchwordSuggestion without sending the request
      */
-    async searchForSearchwordSuggestionRaw(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuchwortSuggestionsDto>> {
+    async searchForSearchwordSuggestionRequestOpts(requestParameters: SearchForSearchwordSuggestionRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['searchQueryDto'] == null) {
             throw new runtime.RequiredError(
                 'searchQueryDto',
@@ -106,13 +114,21 @@ export class SucheApi extends runtime.BaseAPI {
 
         let urlPath = `/search/searchword-suggestion`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: SearchQueryDtoToJSON(requestParameters['searchQueryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Suche nach Suchwortvorschläge für das im Request-Body gegebene Suchanfrage.
+     */
+    async searchForSearchwordSuggestionRaw(requestParameters: SearchForSearchwordSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuchwortSuggestionsDto>> {
+        const requestOptions = await this.searchForSearchwordSuggestionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuchwortSuggestionsDtoFromJSON(jsonValue));
     }

@@ -59,13 +59,13 @@ export interface EntityModelSobonOrientierungswertSozialeInfrastruktur {
     jahrBezeichnung?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum}
      * @memberof EntityModelSobonOrientierungswertSozialeInfrastruktur
      */
     einrichtungstyp?: EntityModelSobonOrientierungswertSozialeInfrastrukturEinrichtungstypEnum;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelSobonOrientierungswertSozialeInfrastrukturAltersklasseEnum}
      * @memberof EntityModelSobonOrientierungswertSozialeInfrastruktur
      */
     altersklasse?: EntityModelSobonOrientierungswertSozialeInfrastrukturAltersklasseEnum;

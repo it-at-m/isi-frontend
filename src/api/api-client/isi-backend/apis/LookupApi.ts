@@ -28,9 +28,9 @@ import {
 export class LookupApi extends runtime.BaseAPI {
 
     /**
-     * Gibt die Lookuplisten zurück.
+     * Creates request options for getLookupLists without sending the request
      */
-    async getLookupListsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LookupListsDto>> {
+    async getLookupListsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -38,12 +38,20 @@ export class LookupApi extends runtime.BaseAPI {
 
         let urlPath = `/lookup-lists`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gibt die Lookuplisten zurück.
+     */
+    async getLookupListsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LookupListsDto>> {
+        const requestOptions = await this.getLookupListsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => LookupListsDtoFromJSON(jsonValue));
     }

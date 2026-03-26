@@ -59,9 +59,9 @@ export interface FollowPropertyReferenceAbfrageGet1Request {
 export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
 
     /**
-     * patch-bauvorhaben-by-abfrage-Id
+     * Creates request options for createPropertyReferenceAbfragePatch without sending the request
      */
-    async createPropertyReferenceAbfragePatchRaw(requestParameters: CreatePropertyReferenceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceAbfragePatchRequestOpts(requestParameters: CreatePropertyReferenceAbfragePatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -86,13 +86,21 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-bauvorhaben-by-abfrage-Id
+     */
+    async createPropertyReferenceAbfragePatchRaw(requestParameters: CreatePropertyReferenceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceAbfragePatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -113,9 +121,9 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-bauvorhaben-by-abfrage-Id
+     * Creates request options for createPropertyReferenceAbfragePut without sending the request
      */
-    async createPropertyReferenceAbfragePutRaw(requestParameters: CreatePropertyReferenceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceAbfragePutRequestOpts(requestParameters: CreatePropertyReferenceAbfragePutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -140,13 +148,21 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-bauvorhaben-by-abfrage-Id
+     */
+    async createPropertyReferenceAbfragePutRaw(requestParameters: CreatePropertyReferenceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceAbfragePutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -169,9 +185,9 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-bauvorhaben-by-abfrage-Id
+     * Creates request options for deletePropertyReferenceAbfrageDelete without sending the request
      */
-    async deletePropertyReferenceAbfrageDeleteRaw(requestParameters: DeletePropertyReferenceAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceAbfrageDeleteRequestOpts(requestParameters: DeletePropertyReferenceAbfrageDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -187,12 +203,20 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-abfrage-Id
+     */
+    async deletePropertyReferenceAbfrageDeleteRaw(requestParameters: DeletePropertyReferenceAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceAbfrageDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -205,9 +229,9 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-bauvorhaben-by-abfrage-Id
+     * Creates request options for deletePropertyReferenceIdAbfrageDelete without sending the request
      */
-    async deletePropertyReferenceIdAbfrageDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdAbfrageDeleteRequestOpts(requestParameters: DeletePropertyReferenceIdAbfrageDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -231,12 +255,20 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-abfrage-Id
+     */
+    async deletePropertyReferenceIdAbfrageDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdAbfrageDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -249,9 +281,9 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben-by-abfrage-Id
+     * Creates request options for followPropertyReferenceAbfrageGet without sending the request
      */
-    async followPropertyReferenceAbfrageGetRaw(requestParameters: FollowPropertyReferenceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceAbfrageGetRequestOpts(requestParameters: FollowPropertyReferenceAbfrageGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -267,12 +299,20 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-abfrage-Id
+     */
+    async followPropertyReferenceAbfrageGetRaw(requestParameters: FollowPropertyReferenceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceAbfrageGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -286,9 +326,9 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben-by-abfrage-Id
+     * Creates request options for followPropertyReferenceAbfrageGet1 without sending the request
      */
-    async followPropertyReferenceAbfrageGet1Raw(requestParameters: FollowPropertyReferenceAbfrageGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceAbfrageGet1RequestOpts(requestParameters: FollowPropertyReferenceAbfrageGet1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -312,12 +352,20 @@ export class AbfragePropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-abfrage-Id
+     */
+    async followPropertyReferenceAbfrageGet1Raw(requestParameters: FollowPropertyReferenceAbfrageGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceAbfrageGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }

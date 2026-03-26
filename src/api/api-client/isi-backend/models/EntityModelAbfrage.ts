@@ -97,13 +97,13 @@ export interface EntityModelAbfrage {
     bearbeitungshistorie?: Array<Bearbeitungshistorie>;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfrageResultTypeEnum}
      * @memberof EntityModelAbfrage
      */
     resultType?: EntityModelAbfrageResultTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfrageArtAbfrageEnum}
      * @memberof EntityModelAbfrage
      */
     artAbfrage?: EntityModelAbfrageArtAbfrageEnum;

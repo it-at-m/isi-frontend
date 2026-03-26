@@ -33,8 +33,9 @@ export interface ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest {
 export class VersorgungsquoteGruppenstaerkeSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchVersorgungsquotegruppenstaerkeGet without sending the request
      */
-    async executeSearchVersorgungsquotegruppenstaerkeGetRaw(requestParameters: ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+    async executeSearchVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters: ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['infrastruktureinrichtungTyp'] != null) {
@@ -50,12 +51,19 @@ export class VersorgungsquoteGruppenstaerkeSearchControllerApi extends runtime.B
 
         let urlPath = `/versorgungsquoteGruppenstaerkes/search/findFirstByInfrastruktureinrichtungTypAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchVersorgungsquotegruppenstaerkeGetRaw(requestParameters: ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.executeSearchVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }

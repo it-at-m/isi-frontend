@@ -180,13 +180,13 @@ export interface SearchQueryAndSortingDto {
     filterGfWohnenGeplantBis?: number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>}
      * @memberof SearchQueryAndSortingDto
      */
     filterStandVerfahren?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>}
      * @memberof SearchQueryAndSortingDto
      */
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>;
@@ -204,13 +204,13 @@ export interface SearchQueryAndSortingDto {
     pageSize?: number;
     /**
      * 
-     * @type {string}
+     * @type {SearchQueryAndSortingDtoSortByEnum}
      * @memberof SearchQueryAndSortingDto
      */
     sortBy: SearchQueryAndSortingDtoSortByEnum;
     /**
      * 
-     * @type {string}
+     * @type {SearchQueryAndSortingDtoSortOrderEnum}
      * @memberof SearchQueryAndSortingDto
      */
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum;

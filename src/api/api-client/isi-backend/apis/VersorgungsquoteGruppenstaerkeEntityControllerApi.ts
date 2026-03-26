@@ -62,9 +62,9 @@ export interface PutItemResourceVersorgungsquotegruppenstaerkePutRequest {
 export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-versorgungsquotegruppenstaerke
+     * Creates request options for deleteItemResourceVersorgungsquotegruppenstaerkeDelete without sending the request
      */
-    async deleteItemResourceVersorgungsquotegruppenstaerkeDeleteRaw(requestParameters: DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequestOpts(requestParameters: DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-versorgungsquotegruppenstaerke
+     */
+    async deleteItemResourceVersorgungsquotegruppenstaerkeDeleteRaw(requestParameters: DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     }
 
     /**
-     * get-versorgungsquotegruppenstaerke
+     * Creates request options for getCollectionResourceVersorgungsquotegruppenstaerkeGet without sending the request
      */
-    async getCollectionResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetCollectionResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelVersorgungsquoteGruppenstaerke>> {
+    async getCollectionResourceVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters: GetCollectionResourceVersorgungsquotegruppenstaerkeGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
         let urlPath = `/versorgungsquoteGruppenstaerkes`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-versorgungsquotegruppenstaerke
+     */
+    async getCollectionResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetCollectionResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.getCollectionResourceVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     }
 
     /**
-     * get-versorgungsquotegruppenstaerke
+     * Creates request options for getItemResourceVersorgungsquotegruppenstaerkeGet without sending the request
      */
-    async getItemResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetItemResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+    async getItemResourceVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters: GetItemResourceVersorgungsquotegruppenstaerkeGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-versorgungsquotegruppenstaerke
+     */
+    async getItemResourceVersorgungsquotegruppenstaerkeGetRaw(requestParameters: GetItemResourceVersorgungsquotegruppenstaerkeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.getItemResourceVersorgungsquotegruppenstaerkeGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     }
 
     /**
-     * patch-versorgungsquotegruppenstaerke
+     * Creates request options for patchItemResourceVersorgungsquotegruppenstaerkePatch without sending the request
      */
-    async patchItemResourceVersorgungsquotegruppenstaerkePatchRaw(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+    async patchItemResourceVersorgungsquotegruppenstaerkePatchRequestOpts(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-versorgungsquotegruppenstaerke
+     */
+    async patchItemResourceVersorgungsquotegruppenstaerkePatchRaw(requestParameters: PatchItemResourceVersorgungsquotegruppenstaerkePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.patchItemResourceVersorgungsquotegruppenstaerkePatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     }
 
     /**
-     * create-versorgungsquotegruppenstaerke
+     * Creates request options for postCollectionResourceVersorgungsquotegruppenstaerkePost without sending the request
      */
-    async postCollectionResourceVersorgungsquotegruppenstaerkePostRaw(requestParameters: PostCollectionResourceVersorgungsquotegruppenstaerkePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+    async postCollectionResourceVersorgungsquotegruppenstaerkePostRequestOpts(requestParameters: PostCollectionResourceVersorgungsquotegruppenstaerkePostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['versorgungsquoteGruppenstaerkeRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'versorgungsquoteGruppenstaerkeRequestBody',
@@ -249,13 +281,21 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
         let urlPath = `/versorgungsquoteGruppenstaerkes`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-versorgungsquotegruppenstaerke
+     */
+    async postCollectionResourceVersorgungsquotegruppenstaerkePostRaw(requestParameters: PostCollectionResourceVersorgungsquotegruppenstaerkePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.postCollectionResourceVersorgungsquotegruppenstaerkePostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
     }
 
     /**
-     * update-versorgungsquotegruppenstaerke
+     * Creates request options for putItemResourceVersorgungsquotegruppenstaerkePut without sending the request
      */
-    async putItemResourceVersorgungsquotegruppenstaerkePutRaw(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+    async putItemResourceVersorgungsquotegruppenstaerkePutRequestOpts(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteGruppenstaerkeRequestBodyToJSON(requestParameters['versorgungsquoteGruppenstaerkeRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-versorgungsquotegruppenstaerke
+     */
+    async putItemResourceVersorgungsquotegruppenstaerkePutRaw(requestParameters: PutItemResourceVersorgungsquotegruppenstaerkePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteGruppenstaerke>> {
+        const requestOptions = await this.putItemResourceVersorgungsquotegruppenstaerkePutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteGruppenstaerkeFromJSON(jsonValue));
     }

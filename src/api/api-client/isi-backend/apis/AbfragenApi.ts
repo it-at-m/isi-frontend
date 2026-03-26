@@ -75,9 +75,9 @@ export interface SaveOperationRequest {
 export class AbfragenApi extends runtime.BaseAPI {
 
     /**
-     * Löschen einer Abfrage
+     * Creates request options for deleteById without sending the request
      */
-    async deleteByIdRaw(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteByIdRequestOpts(requestParameters: DeleteByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -93,12 +93,20 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Löschen einer Abfrage
+     */
+    async deleteByIdRaw(requestParameters: DeleteByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -111,9 +119,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lesen einer Abfrage.
+     * Creates request options for getById without sending the request
      */
-    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async getByIdRequestOpts(requestParameters: GetByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -129,12 +137,20 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lesen einer Abfrage.
+     */
+    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.getByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
@@ -148,9 +164,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status ANGELEGT.
+     * Creates request options for patchAngelegt without sending the request
      */
-    async patchAngelegtRaw(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchAngelegtRequestOpts(requestParameters: PatchAngelegtRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -175,13 +191,21 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/angelegt/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: SaveRequestToJSON(requestParameters['saveRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status ANGELEGT.
+     */
+    async patchAngelegtRaw(requestParameters: PatchAngelegtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.patchAngelegtRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
@@ -195,9 +219,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status EINPFLEGEN_BEDARFSMELDUNG.
+     * Creates request options for patchEinpflegenBedarfsmeldung without sending the request
      */
-    async patchEinpflegenBedarfsmeldungRaw(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchEinpflegenBedarfsmeldungRequestOpts(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -222,13 +246,21 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/in-bearbeitung-fachreferate/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: PatchEinpflegenBedarfsmeldungRequestToJSON(requestParameters['patchEinpflegenBedarfsmeldungRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status EINPFLEGEN_BEDARFSMELDUNG.
+     */
+    async patchEinpflegenBedarfsmeldungRaw(requestParameters: PatchEinpflegenBedarfsmeldungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.patchEinpflegenBedarfsmeldungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
@@ -242,9 +274,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE.
+     * Creates request options for patchEinplanungBedarfe without sending the request
      */
-    async patchEinplanungBedarfeRaw(requestParameters: PatchEinplanungBedarfeOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchEinplanungBedarfeRequestOpts(requestParameters: PatchEinplanungBedarfeOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -269,13 +301,21 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/bedarfsmeldung-erfolgt/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: PatchEinplanungBedarfeRequestToJSON(requestParameters['patchEinplanungBedarfeRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE.
+     */
+    async patchEinplanungBedarfeRaw(requestParameters: PatchEinplanungBedarfeOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.patchEinplanungBedarfeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
@@ -289,9 +329,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Abfrage im Status START_BEARBEITUNG.
+     * Creates request options for patchStartBearbeitung without sending the request
      */
-    async patchStartBearbeitungRaw(requestParameters: PatchStartBearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async patchStartBearbeitungRequestOpts(requestParameters: PatchStartBearbeitungOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -316,13 +356,21 @@ export class AbfragenApi extends runtime.BaseAPI {
         let urlPath = `/abfrage/in-bearbeitung-sachbearbeitung/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: PatchStartBearbeitungRequestToJSON(requestParameters['patchStartBearbeitungRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung einer Abfrage im Status START_BEARBEITUNG.
+     */
+    async patchStartBearbeitungRaw(requestParameters: PatchStartBearbeitungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.patchStartBearbeitungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }
@@ -336,9 +384,9 @@ export class AbfragenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Anlegen einer neuen Abfrage
+     * Creates request options for save without sending the request
      */
-    async saveRaw(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+    async saveRequestOpts(requestParameters: SaveOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['saveRequest'] == null) {
             throw new runtime.RequiredError(
                 'saveRequest',
@@ -355,13 +403,21 @@ export class AbfragenApi extends runtime.BaseAPI {
 
         let urlPath = `/abfrage`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: SaveRequestToJSON(requestParameters['saveRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Anlegen einer neuen Abfrage
+     */
+    async saveRaw(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.saveRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
     }

@@ -74,7 +74,7 @@ export interface BauvorhabenSearchResultDto extends SearchResultDto {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenSearchResultDtoStandVerfahrenEnum}
      * @memberof BauvorhabenSearchResultDto
      */
     standVerfahren?: BauvorhabenSearchResultDtoStandVerfahrenEnum;

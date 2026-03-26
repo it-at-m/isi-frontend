@@ -62,9 +62,9 @@ export interface PutItemResourceSobonorientierungswertsozialeinfrastrukturPutReq
 export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for deleteItemResourceSobonorientierungswertsozialeinfrastrukturDelete without sending the request
      */
-    async deleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRaw(requestParameters: DeleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequestOpts(requestParameters: DeleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-sobonorientierungswertsozialeinfrastruktur
+     */
+    async deleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRaw(requestParameters: DeleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
     }
 
     /**
-     * get-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for getCollectionResourceSobonorientierungswertsozialeinfrastrukturGet without sending the request
      */
-    async getCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: GetCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async getCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters: GetCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-sobonorientierungswertsozialeinfrastruktur
+     */
+    async getCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: GetCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.getCollectionResourceSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
     }
 
     /**
-     * get-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for getItemResourceSobonorientierungswertsozialeinfrastrukturGet without sending the request
      */
-    async getItemResourceSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: GetItemResourceSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async getItemResourceSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters: GetItemResourceSobonorientierungswertsozialeinfrastrukturGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-sobonorientierungswertsozialeinfrastruktur
+     */
+    async getItemResourceSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: GetItemResourceSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.getItemResourceSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
     }
 
     /**
-     * patch-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for patchItemResourceSobonorientierungswertsozialeinfrastrukturPatch without sending the request
      */
-    async patchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRaw(requestParameters: PatchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async patchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRequestOpts(requestParameters: PatchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: SobonOrientierungswertSozialeInfrastrukturRequestBodyToJSON(requestParameters['sobonOrientierungswertSozialeInfrastrukturRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-sobonorientierungswertsozialeinfrastruktur
+     */
+    async patchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRaw(requestParameters: PatchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.patchItemResourceSobonorientierungswertsozialeinfrastrukturPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
     }
 
     /**
-     * create-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for postCollectionResourceSobonorientierungswertsozialeinfrastrukturPost without sending the request
      */
-    async postCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRaw(requestParameters: PostCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async postCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRequestOpts(requestParameters: PostCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['sobonOrientierungswertSozialeInfrastrukturRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'sobonOrientierungswertSozialeInfrastrukturRequestBody',
@@ -249,13 +281,21 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: SobonOrientierungswertSozialeInfrastrukturRequestBodyToJSON(requestParameters['sobonOrientierungswertSozialeInfrastrukturRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-sobonorientierungswertsozialeinfrastruktur
+     */
+    async postCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRaw(requestParameters: PostCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.postCollectionResourceSobonorientierungswertsozialeinfrastrukturPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
     }
 
     /**
-     * update-sobonorientierungswertsozialeinfrastruktur
+     * Creates request options for putItemResourceSobonorientierungswertsozialeinfrastrukturPut without sending the request
      */
-    async putItemResourceSobonorientierungswertsozialeinfrastrukturPutRaw(requestParameters: PutItemResourceSobonorientierungswertsozialeinfrastrukturPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async putItemResourceSobonorientierungswertsozialeinfrastrukturPutRequestOpts(requestParameters: PutItemResourceSobonorientierungswertsozialeinfrastrukturPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: SobonOrientierungswertSozialeInfrastrukturRequestBodyToJSON(requestParameters['sobonOrientierungswertSozialeInfrastrukturRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-sobonorientierungswertsozialeinfrastruktur
+     */
+    async putItemResourceSobonorientierungswertsozialeinfrastrukturPutRaw(requestParameters: PutItemResourceSobonorientierungswertsozialeinfrastrukturPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.putItemResourceSobonorientierungswertsozialeinfrastrukturPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }

@@ -102,13 +102,13 @@ export interface AbfrageRequestBody {
     bearbeitungshistorie?: Array<Bearbeitungshistorie>;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageRequestBodyResultTypeEnum}
      * @memberof AbfrageRequestBody
      */
     resultType?: AbfrageRequestBodyResultTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageRequestBodyArtAbfrageEnum}
      * @memberof AbfrageRequestBody
      */
     artAbfrage?: AbfrageRequestBodyArtAbfrageEnum;

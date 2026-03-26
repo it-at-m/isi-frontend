@@ -32,7 +32,7 @@ import { type InfrastruktureinrichtungSearchResultDto, InfrastruktureinrichtungS
 export interface SearchResultDto {
     /**
      * 
-     * @type {string}
+     * @type {SearchResultDtoTypeEnum}
      * @memberof SearchResultDto
      */
     type?: SearchResultDtoTypeEnum;

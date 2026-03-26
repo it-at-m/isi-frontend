@@ -59,9 +59,9 @@ export interface FollowPropertyReferenceInfrastruktureinrichtungGet1Request {
 export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runtime.BaseAPI {
 
     /**
-     * patch-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for createPropertyReferenceInfrastruktureinrichtungPatch without sending the request
      */
-    async createPropertyReferenceInfrastruktureinrichtungPatchRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceInfrastruktureinrichtungPatchRequestOpts(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -86,13 +86,21 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async createPropertyReferenceInfrastruktureinrichtungPatchRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceInfrastruktureinrichtungPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -113,9 +121,9 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     }
 
     /**
-     * update-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for createPropertyReferenceInfrastruktureinrichtungPut without sending the request
      */
-    async createPropertyReferenceInfrastruktureinrichtungPutRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceInfrastruktureinrichtungPutRequestOpts(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -140,13 +148,21 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async createPropertyReferenceInfrastruktureinrichtungPutRaw(requestParameters: CreatePropertyReferenceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceInfrastruktureinrichtungPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -169,9 +185,9 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     }
 
     /**
-     * delete-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for deletePropertyReferenceIdInfrastruktureinrichtungDelete without sending the request
      */
-    async deletePropertyReferenceIdInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceIdInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdInfrastruktureinrichtungDeleteRequestOpts(requestParameters: DeletePropertyReferenceIdInfrastruktureinrichtungDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -195,12 +211,20 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async deletePropertyReferenceIdInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceIdInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdInfrastruktureinrichtungDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -213,9 +237,9 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     }
 
     /**
-     * delete-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for deletePropertyReferenceInfrastruktureinrichtungDelete without sending the request
      */
-    async deletePropertyReferenceInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceInfrastruktureinrichtungDeleteRequestOpts(requestParameters: DeletePropertyReferenceInfrastruktureinrichtungDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -231,12 +255,20 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async deletePropertyReferenceInfrastruktureinrichtungDeleteRaw(requestParameters: DeletePropertyReferenceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceInfrastruktureinrichtungDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -249,9 +281,9 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     }
 
     /**
-     * get-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for followPropertyReferenceInfrastruktureinrichtungGet without sending the request
      */
-    async followPropertyReferenceInfrastruktureinrichtungGetRaw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceInfrastruktureinrichtungGetRequestOpts(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -267,12 +299,20 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async followPropertyReferenceInfrastruktureinrichtungGetRaw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceInfrastruktureinrichtungGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -286,9 +326,9 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
     }
 
     /**
-     * get-bauvorhaben-by-infrastruktureinrichtung-Id
+     * Creates request options for followPropertyReferenceInfrastruktureinrichtungGet1 without sending the request
      */
-    async followPropertyReferenceInfrastruktureinrichtungGet1Raw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceInfrastruktureinrichtungGet1RequestOpts(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGet1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -312,12 +352,20 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-infrastruktureinrichtung-Id
+     */
+    async followPropertyReferenceInfrastruktureinrichtungGet1Raw(requestParameters: FollowPropertyReferenceInfrastruktureinrichtungGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceInfrastruktureinrichtungGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }

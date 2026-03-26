@@ -41,7 +41,7 @@ export interface AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum;

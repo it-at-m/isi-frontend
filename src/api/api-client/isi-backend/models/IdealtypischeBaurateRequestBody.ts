@@ -65,7 +65,7 @@ export interface IdealtypischeBaurateRequestBody {
     bisExklusiv?: number;
     /**
      * 
-     * @type {string}
+     * @type {IdealtypischeBaurateRequestBodyTypEnum}
      * @memberof IdealtypischeBaurateRequestBody
      */
     typ?: IdealtypischeBaurateRequestBodyTypEnum;

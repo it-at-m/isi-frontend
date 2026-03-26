@@ -36,8 +36,9 @@ export interface ExecuteSearchAbfrageGet1Request {
 export class AbfrageSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchAbfrageGet without sending the request
      */
-    async executeSearchAbfrageGetRaw(requestParameters: ExecuteSearchAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async executeSearchAbfrageGetRequestOpts(requestParameters: ExecuteSearchAbfrageGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -49,12 +50,19 @@ export class AbfrageSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/abfrages/search/findAllByBauvorhabenId`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchAbfrageGetRaw(requestParameters: ExecuteSearchAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.executeSearchAbfrageGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }
@@ -67,8 +75,9 @@ export class AbfrageSearchControllerApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for executeSearchAbfrageGet1 without sending the request
      */
-    async executeSearchAbfrageGet1Raw(requestParameters: ExecuteSearchAbfrageGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async executeSearchAbfrageGet1RequestOpts(requestParameters: ExecuteSearchAbfrageGet1Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -80,12 +89,19 @@ export class AbfrageSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/abfrages/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchAbfrageGet1Raw(requestParameters: ExecuteSearchAbfrageGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.executeSearchAbfrageGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }

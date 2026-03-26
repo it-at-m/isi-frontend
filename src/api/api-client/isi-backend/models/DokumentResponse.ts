@@ -53,7 +53,7 @@ export interface DokumentResponse {
     filePath?: Filepath;
     /**
      * 
-     * @type {string}
+     * @type {DokumentResponseArtDokumentEnum}
      * @memberof DokumentResponse
      */
     artDokument?: DokumentResponseArtDokumentEnum;

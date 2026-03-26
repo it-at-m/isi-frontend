@@ -41,7 +41,7 @@ export interface AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum;

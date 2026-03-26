@@ -93,7 +93,7 @@ export interface EntityModelBauvorhaben {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelBauvorhabenStandVerfahrenEnum}
      * @memberof EntityModelBauvorhaben
      */
     standVerfahren?: EntityModelBauvorhabenStandVerfahrenEnum;
@@ -147,13 +147,13 @@ export interface EntityModelBauvorhaben {
     sobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelBauvorhabenSobonJahrEnum}
      * @memberof EntityModelBauvorhaben
      */
     sobonJahr?: EntityModelBauvorhabenSobonJahrEnum;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum>}
      * @memberof EntityModelBauvorhaben
      */
     wesentlicheRechtsgrundlage?: Array<EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum>;
@@ -165,7 +165,7 @@ export interface EntityModelBauvorhaben {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelBauvorhabenArtFnpEnum>}
      * @memberof EntityModelBauvorhaben
      */
     artFnp?: Array<EntityModelBauvorhabenArtFnpEnum>;
@@ -177,10 +177,10 @@ export interface EntityModelBauvorhaben {
     artFnpFreieEingabe?: string;
     /**
      * 
-     * @type {Adresse}
+     * @type {EntityModelBauvorhabenResultTypeEnum}
      * @memberof EntityModelBauvorhaben
      */
-    adresseJson?: Adresse;
+    resultType?: EntityModelBauvorhabenResultTypeEnum;
     /**
      * 
      * @type {VerortungMultiPolygon}
@@ -189,10 +189,10 @@ export interface EntityModelBauvorhaben {
     verortungJson?: VerortungMultiPolygon;
     /**
      * 
-     * @type {string}
+     * @type {Adresse}
      * @memberof EntityModelBauvorhaben
      */
-    resultType?: EntityModelBauvorhabenResultTypeEnum;
+    adresseJson?: Adresse;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -323,9 +323,9 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
-        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -361,9 +361,9 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
-        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'resultType': value['resultType'],
+        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

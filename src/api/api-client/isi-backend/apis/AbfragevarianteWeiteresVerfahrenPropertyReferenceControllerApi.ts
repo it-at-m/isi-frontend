@@ -59,9 +59,9 @@ export interface FollowPropertyReferenceAbfragevarianteweiteresverfahrenGet1Requ
 export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
     /**
-     * patch-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for createPropertyReferenceAbfragevarianteweiteresverfahrenPatch without sending the request
      */
-    async createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRequestOpts(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -86,13 +86,21 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceAbfragevarianteweiteresverfahrenPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -113,9 +121,9 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     }
 
     /**
-     * update-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for createPropertyReferenceAbfragevarianteweiteresverfahrenPut without sending the request
      */
-    async createPropertyReferenceAbfragevarianteweiteresverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPutRequestOpts(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -140,13 +148,21 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async createPropertyReferenceAbfragevarianteweiteresverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevarianteweiteresverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceAbfragevarianteweiteresverfahrenPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -169,9 +185,9 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     }
 
     /**
-     * delete-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for deletePropertyReferenceAbfragevarianteweiteresverfahrenDelete without sending the request
      */
-    async deletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequestOpts(requestParameters: DeletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -187,12 +203,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async deletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceAbfragevarianteweiteresverfahrenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -205,9 +229,9 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     }
 
     /**
-     * delete-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDelete without sending the request
      */
-    async deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequestOpts(requestParameters: DeletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -231,12 +255,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdAbfragevarianteweiteresverfahrenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -249,9 +281,9 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     }
 
     /**
-     * get-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for followPropertyReferenceAbfragevarianteweiteresverfahrenGet without sending the request
      */
-    async followPropertyReferenceAbfragevarianteweiteresverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceAbfragevarianteweiteresverfahrenGetRequestOpts(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -267,12 +299,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async followPropertyReferenceAbfragevarianteweiteresverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceAbfragevarianteweiteresverfahrenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -286,9 +326,9 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
     }
 
     /**
-     * get-dokument-by-abfragevarianteweiteresverfahren-Id
+     * Creates request options for followPropertyReferenceAbfragevarianteweiteresverfahrenGet1 without sending the request
      */
-    async followPropertyReferenceAbfragevarianteweiteresverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceAbfragevarianteweiteresverfahrenGet1RequestOpts(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGet1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -312,12 +352,20 @@ export class AbfragevarianteWeiteresVerfahrenPropertyReferenceControllerApi exte
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-abfragevarianteweiteresverfahren-Id
+     */
+    async followPropertyReferenceAbfragevarianteweiteresverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevarianteweiteresverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceAbfragevarianteweiteresverfahrenGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }

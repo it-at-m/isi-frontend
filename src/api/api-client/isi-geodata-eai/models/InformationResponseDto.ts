@@ -21,7 +21,7 @@ import { mapValues } from '../runtime';
 export interface InformationResponseDto {
     /**
      * 
-     * @type {string}
+     * @type {InformationResponseDtoTypeEnum}
      * @memberof InformationResponseDto
      */
     type?: InformationResponseDtoTypeEnum;

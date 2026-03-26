@@ -104,7 +104,7 @@ export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
     wohnungsnaheHortPlaetze?: number;
     /**
      * 
-     * @type {string}
+     * @type {HausFuerKinderDtoEinrichtungstraegerEnum}
      * @memberof HausFuerKinderDto
      */
     einrichtungstraeger?: HausFuerKinderDtoEinrichtungstraegerEnum;

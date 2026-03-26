@@ -57,13 +57,13 @@ export interface SobonOrientierungswertSozialeInfrastrukturRequestBody {
     jahrBezeichnung?: string;
     /**
      * 
-     * @type {string}
+     * @type {SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum}
      * @memberof SobonOrientierungswertSozialeInfrastrukturRequestBody
      */
     einrichtungstyp?: SobonOrientierungswertSozialeInfrastrukturRequestBodyEinrichtungstypEnum;
     /**
      * 
-     * @type {string}
+     * @type {SobonOrientierungswertSozialeInfrastrukturRequestBodyAltersklasseEnum}
      * @memberof SobonOrientierungswertSozialeInfrastrukturRequestBody
      */
     altersklasse?: SobonOrientierungswertSozialeInfrastrukturRequestBodyAltersklasseEnum;
