@@ -25,7 +25,7 @@
     "vue-currency-input": "^3.2.1",
     "vue-router": "^4.6.4",
     "vue-toastification": "^2.0.0-rc.5",
-    "vuetify": "^3.11.4"
+    "vuetify": "^4.0.0"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
