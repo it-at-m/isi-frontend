@@ -92,7 +92,7 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
     wesentlicheRechtsgrundlage?: Array<AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum>;
@@ -230,7 +230,7 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenRequestBodySobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteWeiteresVerfahrenRequestBodySobonOrientierungswertJahrPlanungsursaechlichEnum;
@@ -362,7 +362,7 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
     dokumente?: Array<string>;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenRequestBodyArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenRequestBody
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenRequestBodyArtAbfragevarianteEnum;

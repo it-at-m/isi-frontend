@@ -92,7 +92,7 @@ export interface BauvorhabenRequestBody {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenRequestBodyStandVerfahrenEnum}
      * @memberof BauvorhabenRequestBody
      */
     standVerfahren?: BauvorhabenRequestBodyStandVerfahrenEnum;
@@ -146,13 +146,13 @@ export interface BauvorhabenRequestBody {
     sobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenRequestBodySobonJahrEnum}
      * @memberof BauvorhabenRequestBody
      */
     sobonJahr?: BauvorhabenRequestBodySobonJahrEnum;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum>}
      * @memberof BauvorhabenRequestBody
      */
     wesentlicheRechtsgrundlage?: Array<BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum>;
@@ -164,7 +164,7 @@ export interface BauvorhabenRequestBody {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<BauvorhabenRequestBodyArtFnpEnum>}
      * @memberof BauvorhabenRequestBody
      */
     artFnp?: Array<BauvorhabenRequestBodyArtFnpEnum>;
@@ -188,7 +188,7 @@ export interface BauvorhabenRequestBody {
     relevanteAbfragevariante?: string;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenRequestBodyResultTypeEnum}
      * @memberof BauvorhabenRequestBody
      */
     resultType?: BauvorhabenRequestBodyResultTypeEnum;

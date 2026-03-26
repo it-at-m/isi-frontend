@@ -50,7 +50,7 @@ import {
 export interface GsNachmittagBetreuungDto extends InfrastruktureinrichtungDto {
     /**
      * 
-     * @type {string}
+     * @type {GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum}
      * @memberof GsNachmittagBetreuungDto
      */
     artGsNachmittagBetreuung?: GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum;
@@ -74,7 +74,7 @@ export interface GsNachmittagBetreuungDto extends InfrastruktureinrichtungDto {
     wohnungsnaheHortPlaetze?: number;
     /**
      * 
-     * @type {string}
+     * @type {GsNachmittagBetreuungDtoEinrichtungstraegerEnum}
      * @memberof GsNachmittagBetreuungDto
      */
     einrichtungstraeger?: GsNachmittagBetreuungDtoEinrichtungstraegerEnum;

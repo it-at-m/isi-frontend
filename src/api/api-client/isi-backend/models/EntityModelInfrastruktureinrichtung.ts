@@ -104,7 +104,7 @@ export interface EntityModelInfrastruktureinrichtung {
     fertigstellungsjahr?: number;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelInfrastruktureinrichtungStatusEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     status?: EntityModelInfrastruktureinrichtungStatusEnum;
@@ -128,7 +128,7 @@ export interface EntityModelInfrastruktureinrichtung {
     idKibigWeb?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
@@ -140,7 +140,7 @@ export interface EntityModelInfrastruktureinrichtung {
     resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelInfrastruktureinrichtungResultTypeEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     bauvorhabenName?: string;

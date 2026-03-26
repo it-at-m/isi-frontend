@@ -33,8 +33,9 @@ export interface ExecuteSearchStaedtebaulicheorientierungswertGetRequest {
 export class StaedtebaulicheOrientierungswertSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchStaedtebaulicheorientierungswertGet without sending the request
      */
-    async executeSearchStaedtebaulicheorientierungswertGetRaw(requestParameters: ExecuteSearchStaedtebaulicheorientierungswertGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
+    async executeSearchStaedtebaulicheorientierungswertGetRequestOpts(requestParameters: ExecuteSearchStaedtebaulicheorientierungswertGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['foerderartBezeichnung'] != null) {
@@ -50,12 +51,19 @@ export class StaedtebaulicheOrientierungswertSearchControllerApi extends runtime
 
         let urlPath = `/staedtebaulicheOrientierungswerts/search/findFirstByFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchStaedtebaulicheorientierungswertGetRaw(requestParameters: ExecuteSearchStaedtebaulicheorientierungswertGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelStaedtebaulicheOrientierungswert>> {
+        const requestOptions = await this.executeSearchStaedtebaulicheorientierungswertGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelStaedtebaulicheOrientierungswertFromJSON(jsonValue));
     }

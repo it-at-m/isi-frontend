@@ -48,13 +48,13 @@ export interface AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBear
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

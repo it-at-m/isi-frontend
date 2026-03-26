@@ -62,9 +62,9 @@ export interface PutItemResourceKommentarPutRequest {
 export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-kommentar
+     * Creates request options for deleteItemResourceKommentarDelete without sending the request
      */
-    async deleteItemResourceKommentarDeleteRaw(requestParameters: DeleteItemResourceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceKommentarDeleteRequestOpts(requestParameters: DeleteItemResourceKommentarDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-kommentar
+     */
+    async deleteItemResourceKommentarDeleteRaw(requestParameters: DeleteItemResourceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceKommentarDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-kommentar
+     * Creates request options for getCollectionResourceKommentarGet without sending the request
      */
-    async getCollectionResourceKommentarGetRaw(requestParameters: GetCollectionResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelKommentar>> {
+    async getCollectionResourceKommentarGetRequestOpts(requestParameters: GetCollectionResourceKommentarGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-kommentar
+     */
+    async getCollectionResourceKommentarGetRaw(requestParameters: GetCollectionResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelKommentar>> {
+        const requestOptions = await this.getCollectionResourceKommentarGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelKommentarFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-kommentar
+     * Creates request options for getItemResourceKommentarGet without sending the request
      */
-    async getItemResourceKommentarGetRaw(requestParameters: GetItemResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async getItemResourceKommentarGetRequestOpts(requestParameters: GetItemResourceKommentarGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-kommentar
+     */
+    async getItemResourceKommentarGetRaw(requestParameters: GetItemResourceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.getItemResourceKommentarGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-kommentar
+     * Creates request options for patchItemResourceKommentarPatch without sending the request
      */
-    async patchItemResourceKommentarPatchRaw(requestParameters: PatchItemResourceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async patchItemResourceKommentarPatchRequestOpts(requestParameters: PatchItemResourceKommentarPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-kommentar
+     */
+    async patchItemResourceKommentarPatchRaw(requestParameters: PatchItemResourceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.patchItemResourceKommentarPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * create-kommentar
+     * Creates request options for postCollectionResourceKommentarPost without sending the request
      */
-    async postCollectionResourceKommentarPostRaw(requestParameters: PostCollectionResourceKommentarPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async postCollectionResourceKommentarPostRequestOpts(requestParameters: PostCollectionResourceKommentarPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['kommentarRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'kommentarRequestBody',
@@ -249,13 +281,21 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-kommentar
+     */
+    async postCollectionResourceKommentarPostRaw(requestParameters: PostCollectionResourceKommentarPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.postCollectionResourceKommentarPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-kommentar
+     * Creates request options for putItemResourceKommentarPut without sending the request
      */
-    async putItemResourceKommentarPutRaw(requestParameters: PutItemResourceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async putItemResourceKommentarPutRequestOpts(requestParameters: PutItemResourceKommentarPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: KommentarRequestBodyToJSON(requestParameters['kommentarRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-kommentar
+     */
+    async putItemResourceKommentarPutRaw(requestParameters: PutItemResourceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.putItemResourceKommentarPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }

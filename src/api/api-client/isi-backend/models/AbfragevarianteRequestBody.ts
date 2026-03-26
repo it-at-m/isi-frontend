@@ -57,7 +57,7 @@ export interface AbfragevarianteRequestBody {
     name?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteRequestBodyArtAbfragevarianteEnum}
      * @memberof AbfragevarianteRequestBody
      */
     artAbfragevariante?: AbfragevarianteRequestBodyArtAbfragevarianteEnum;

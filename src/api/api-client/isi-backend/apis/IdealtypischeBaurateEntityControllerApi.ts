@@ -62,9 +62,9 @@ export interface PutItemResourceIdealtypischebauratePutRequest {
 export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-idealtypischebaurate
+     * Creates request options for deleteItemResourceIdealtypischebaurateDelete without sending the request
      */
-    async deleteItemResourceIdealtypischebaurateDeleteRaw(requestParameters: DeleteItemResourceIdealtypischebaurateDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceIdealtypischebaurateDeleteRequestOpts(requestParameters: DeleteItemResourceIdealtypischebaurateDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/idealtypischeBaurates/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-idealtypischebaurate
+     */
+    async deleteItemResourceIdealtypischebaurateDeleteRaw(requestParameters: DeleteItemResourceIdealtypischebaurateDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceIdealtypischebaurateDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-idealtypischebaurate
+     * Creates request options for getCollectionResourceIdealtypischebaurateGet without sending the request
      */
-    async getCollectionResourceIdealtypischebaurateGetRaw(requestParameters: GetCollectionResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelIdealtypischeBaurate>> {
+    async getCollectionResourceIdealtypischebaurateGetRequestOpts(requestParameters: GetCollectionResourceIdealtypischebaurateGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/idealtypischeBaurates`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-idealtypischebaurate
+     */
+    async getCollectionResourceIdealtypischebaurateGetRaw(requestParameters: GetCollectionResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.getCollectionResourceIdealtypischebaurateGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-idealtypischebaurate
+     * Creates request options for getItemResourceIdealtypischebaurateGet without sending the request
      */
-    async getItemResourceIdealtypischebaurateGetRaw(requestParameters: GetItemResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+    async getItemResourceIdealtypischebaurateGetRequestOpts(requestParameters: GetItemResourceIdealtypischebaurateGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/idealtypischeBaurates/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-idealtypischebaurate
+     */
+    async getItemResourceIdealtypischebaurateGetRaw(requestParameters: GetItemResourceIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.getItemResourceIdealtypischebaurateGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-idealtypischebaurate
+     * Creates request options for patchItemResourceIdealtypischebauratePatch without sending the request
      */
-    async patchItemResourceIdealtypischebauratePatchRaw(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+    async patchItemResourceIdealtypischebauratePatchRequestOpts(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/idealtypischeBaurates/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-idealtypischebaurate
+     */
+    async patchItemResourceIdealtypischebauratePatchRaw(requestParameters: PatchItemResourceIdealtypischebauratePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.patchItemResourceIdealtypischebauratePatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * create-idealtypischebaurate
+     * Creates request options for postCollectionResourceIdealtypischebauratePost without sending the request
      */
-    async postCollectionResourceIdealtypischebauratePostRaw(requestParameters: PostCollectionResourceIdealtypischebauratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+    async postCollectionResourceIdealtypischebauratePostRequestOpts(requestParameters: PostCollectionResourceIdealtypischebauratePostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['idealtypischeBaurateRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'idealtypischeBaurateRequestBody',
@@ -249,13 +281,21 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/idealtypischeBaurates`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-idealtypischebaurate
+     */
+    async postCollectionResourceIdealtypischebauratePostRaw(requestParameters: PostCollectionResourceIdealtypischebauratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.postCollectionResourceIdealtypischebauratePostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-idealtypischebaurate
+     * Creates request options for putItemResourceIdealtypischebauratePut without sending the request
      */
-    async putItemResourceIdealtypischebauratePutRaw(requestParameters: PutItemResourceIdealtypischebauratePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+    async putItemResourceIdealtypischebauratePutRequestOpts(requestParameters: PutItemResourceIdealtypischebauratePutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/idealtypischeBaurates/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: IdealtypischeBaurateRequestBodyToJSON(requestParameters['idealtypischeBaurateRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-idealtypischebaurate
+     */
+    async putItemResourceIdealtypischebauratePutRaw(requestParameters: PutItemResourceIdealtypischebauratePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.putItemResourceIdealtypischebauratePutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }

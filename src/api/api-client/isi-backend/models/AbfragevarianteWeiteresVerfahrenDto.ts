@@ -87,7 +87,7 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     abfragevariantenNr?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum;
@@ -105,7 +105,7 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     wesentlicheRechtsgrundlage?: Array<AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum>;
@@ -243,7 +243,7 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

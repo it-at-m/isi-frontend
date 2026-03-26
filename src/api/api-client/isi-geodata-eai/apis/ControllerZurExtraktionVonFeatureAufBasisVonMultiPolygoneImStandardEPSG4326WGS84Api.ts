@@ -94,9 +94,9 @@ export interface GetViertelRequest {
 export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Holt die Bezirksteile die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getBezirksteile without sending the request
      */
-    async getBezirksteileRaw(requestParameters: GetBezirksteileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBezirksteilDto>> {
+    async getBezirksteileRequestOpts(requestParameters: GetBezirksteileRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -113,13 +113,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/bezirksteile`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Bezirksteile die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBezirksteileRaw(requestParameters: GetBezirksteileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBezirksteilDto>> {
+        const requestOptions = await this.getBezirksteileRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON(jsonValue));
     }
@@ -133,9 +141,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getFlurstuecke without sending the request
      */
-    async getFlurstueckeRaw(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
+    async getFlurstueckeRequestOpts(requestParameters: GetFlurstueckeRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -152,13 +160,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/flurstuecke`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getFlurstueckeRaw(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
+        const requestOptions = await this.getFlurstueckeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON(jsonValue));
     }
@@ -172,9 +188,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getGemarkungen without sending the request
      */
-    async getGemarkungenRaw(requestParameters: GetGemarkungenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
+    async getGemarkungenRequestOpts(requestParameters: GetGemarkungenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -191,13 +207,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/gemarkungen`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getGemarkungenRaw(requestParameters: GetGemarkungenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGemarkungDto>> {
+        const requestOptions = await this.getGemarkungenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON(jsonValue));
     }
@@ -211,9 +235,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Grundschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getGrundschulsprengel without sending the request
      */
-    async getGrundschulsprengelRaw(requestParameters: GetGrundschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGrundschulsprengelDto>> {
+    async getGrundschulsprengelRequestOpts(requestParameters: GetGrundschulsprengelRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -230,13 +254,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/grundschulsprengel`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Grundschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getGrundschulsprengelRaw(requestParameters: GetGrundschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoGrundschulsprengelDto>> {
+        const requestOptions = await this.getGrundschulsprengelRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON(jsonValue));
     }
@@ -250,9 +282,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Kitaplanungsbereiche die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getKitaplanungsbereiche without sending the request
      */
-    async getKitaplanungsbereicheRaw(requestParameters: GetKitaplanungsbereicheRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto>> {
+    async getKitaplanungsbereicheRequestOpts(requestParameters: GetKitaplanungsbereicheRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -269,13 +301,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/kitaplanungsbereiche`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Kitaplanungsbereiche die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getKitaplanungsbereicheRaw(requestParameters: GetKitaplanungsbereicheRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto>> {
+        const requestOptions = await this.getKitaplanungsbereicheRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON(jsonValue));
     }
@@ -289,9 +329,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Mittelschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getMittelschulsprengel without sending the request
      */
-    async getMittelschulsprengelRaw(requestParameters: GetMittelschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
+    async getMittelschulsprengelRequestOpts(requestParameters: GetMittelschulsprengelRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -308,13 +348,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/mittelschulsprengel`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Mittelschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getMittelschulsprengelRaw(requestParameters: GetMittelschulsprengelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoMittelschulsprengelDto>> {
+        const requestOptions = await this.getMittelschulsprengelRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoFromJSON(jsonValue));
     }
@@ -328,9 +376,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getSchulstandorte without sending the request
      */
-    async getSchulstandorteRaw(requestParameters: GetSchulstandorteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoSchulstandortDto>> {
+    async getSchulstandorteRequestOpts(requestParameters: GetSchulstandorteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -347,13 +395,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/schulstandorte`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Schulstandorte die sich mit dem Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getSchulstandorteRaw(requestParameters: GetSchulstandorteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoSchulstandortDto>> {
+        const requestOptions = await this.getSchulstandorteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON(jsonValue));
     }
@@ -367,9 +423,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getStadtbezirke without sending the request
      */
-    async getStadtbezirkeRaw(requestParameters: GetStadtbezirkeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
+    async getStadtbezirkeRequestOpts(requestParameters: GetStadtbezirkeRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -386,13 +442,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/stadtbezirke`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Stadtbezirke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getStadtbezirkeRaw(requestParameters: GetStadtbezirkeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoStadtbezirkDto>> {
+        const requestOptions = await this.getStadtbezirkeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON(jsonValue));
     }
@@ -406,9 +470,9 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
     }
 
     /**
-     * Holt die Viertel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     * Creates request options for getViertel without sending the request
      */
-    async getViertelRaw(requestParameters: GetViertelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoViertelDto>> {
+    async getViertelRequestOpts(requestParameters: GetViertelRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -425,13 +489,21 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
 
         let urlPath = `/polygon/viertel`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Viertel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getViertelRaw(requestParameters: GetViertelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoViertelDto>> {
+        const requestOptions = await this.getViertelRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoViertelDtoFromJSON(jsonValue));
     }

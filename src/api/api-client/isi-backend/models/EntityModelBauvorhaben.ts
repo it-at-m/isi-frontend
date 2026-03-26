@@ -93,7 +93,7 @@ export interface EntityModelBauvorhaben {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelBauvorhabenStandVerfahrenEnum}
      * @memberof EntityModelBauvorhaben
      */
     standVerfahren?: EntityModelBauvorhabenStandVerfahrenEnum;
@@ -147,13 +147,13 @@ export interface EntityModelBauvorhaben {
     sobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelBauvorhabenSobonJahrEnum}
      * @memberof EntityModelBauvorhaben
      */
     sobonJahr?: EntityModelBauvorhabenSobonJahrEnum;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum>}
      * @memberof EntityModelBauvorhaben
      */
     wesentlicheRechtsgrundlage?: Array<EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum>;
@@ -165,7 +165,7 @@ export interface EntityModelBauvorhaben {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelBauvorhabenArtFnpEnum>}
      * @memberof EntityModelBauvorhaben
      */
     artFnp?: Array<EntityModelBauvorhabenArtFnpEnum>;
@@ -177,7 +177,7 @@ export interface EntityModelBauvorhaben {
     artFnpFreieEingabe?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelBauvorhabenResultTypeEnum}
      * @memberof EntityModelBauvorhaben
      */
     resultType?: EntityModelBauvorhabenResultTypeEnum;

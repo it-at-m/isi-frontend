@@ -33,7 +33,7 @@ export interface SchuleDto {
     anzahlPlaetze: number;
     /**
      * 
-     * @type {string}
+     * @type {SchuleDtoEinrichtungstraegerEnum}
      * @memberof SchuleDto
      */
     einrichtungstraeger?: SchuleDtoEinrichtungstraegerEnum;

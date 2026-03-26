@@ -47,9 +47,9 @@ export interface UpdateFoerdermixStammRequest {
 export class FoerdermixStammApi extends runtime.BaseAPI {
 
     /**
-     * Löschen eines FoerdermixStamm
+     * Creates request options for deleteFoerdermixStammById without sending the request
      */
-    async deleteFoerdermixStammByIdRaw(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteFoerdermixStammByIdRequestOpts(requestParameters: DeleteFoerdermixStammByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -65,12 +65,20 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
         let urlPath = `/stammdaten/foerdermix/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Löschen eines FoerdermixStamm
+     */
+    async deleteFoerdermixStammByIdRaw(requestParameters: DeleteFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteFoerdermixStammByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -83,10 +91,9 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     }
 
     /**
-     * Das Ergebnis wird nach der Bezeichnung aufsteigend sortiert
-     * Lade alle Fördermix Stammdaten
+     * Creates request options for getFoerdermixStaemme without sending the request
      */
-    async getFoerdermixStaemmeRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FoerdermixStammDto>>> {
+    async getFoerdermixStaemmeRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -94,12 +101,21 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         let urlPath = `/stammdaten/foerdermix`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Das Ergebnis wird nach der Bezeichnung aufsteigend sortiert
+     * Lade alle Fördermix Stammdaten
+     */
+    async getFoerdermixStaemmeRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FoerdermixStammDto>>> {
+        const requestOptions = await this.getFoerdermixStaemmeRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FoerdermixStammDtoFromJSON));
     }
@@ -114,9 +130,9 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lesen eines FoerdermixStamm
+     * Creates request options for getFoerdermixStammById without sending the request
      */
-    async getFoerdermixStammByIdRaw(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async getFoerdermixStammByIdRequestOpts(requestParameters: GetFoerdermixStammByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -132,12 +148,20 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
         let urlPath = `/stammdaten/foerdermix/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lesen eines FoerdermixStamm
+     */
+    async getFoerdermixStammByIdRaw(requestParameters: GetFoerdermixStammByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+        const requestOptions = await this.getFoerdermixStammByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FoerdermixStammDtoFromJSON(jsonValue));
     }
@@ -151,9 +175,9 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     }
 
     /**
-     * Anlegen eines FoerdermixStamm
+     * Creates request options for saveFoerdermixStamm without sending the request
      */
-    async saveFoerdermixStammRaw(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async saveFoerdermixStammRequestOpts(requestParameters: SaveFoerdermixStammRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['foerdermixStammDto'] == null) {
             throw new runtime.RequiredError(
                 'foerdermixStammDto',
@@ -170,13 +194,21 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         let urlPath = `/stammdaten/foerdermix`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: FoerdermixStammDtoToJSON(requestParameters['foerdermixStammDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Anlegen eines FoerdermixStamm
+     */
+    async saveFoerdermixStammRaw(requestParameters: SaveFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+        const requestOptions = await this.saveFoerdermixStammRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FoerdermixStammDtoFromJSON(jsonValue));
     }
@@ -190,9 +222,9 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung eines FoerdermixStamm
+     * Creates request options for updateFoerdermixStamm without sending the request
      */
-    async updateFoerdermixStammRaw(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+    async updateFoerdermixStammRequestOpts(requestParameters: UpdateFoerdermixStammRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['foerdermixStammDto'] == null) {
             throw new runtime.RequiredError(
                 'foerdermixStammDto',
@@ -209,13 +241,21 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
         let urlPath = `/stammdaten/foerdermix`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: FoerdermixStammDtoToJSON(requestParameters['foerdermixStammDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung eines FoerdermixStamm
+     */
+    async updateFoerdermixStammRaw(requestParameters: UpdateFoerdermixStammRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FoerdermixStammDto>> {
+        const requestOptions = await this.updateFoerdermixStammRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FoerdermixStammDtoFromJSON(jsonValue));
     }

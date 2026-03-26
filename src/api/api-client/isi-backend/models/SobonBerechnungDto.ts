@@ -41,7 +41,7 @@ export interface SobonBerechnungDto {
     sobonFoerdermix?: FoerdermixDto;
     /**
      * 
-     * @type {string}
+     * @type {SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum}
      * @memberof SobonBerechnungDto
      */
     sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;

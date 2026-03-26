@@ -41,7 +41,7 @@ export interface AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDto 
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum;

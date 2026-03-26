@@ -76,13 +76,13 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
     sobonRelevant: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {BauleitplanverfahrenAngelegtDtoSobonJahrEnum}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
     sobonJahr?: BauleitplanverfahrenAngelegtDtoSobonJahrEnum;
     /**
      * 
-     * @type {string}
+     * @type {BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
     standVerfahren: BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum;

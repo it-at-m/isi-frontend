@@ -59,7 +59,7 @@ export interface BaugebietDto {
     bezeichnung: string;
     /**
      * 
-     * @type {string}
+     * @type {BaugebietDtoArtBaulicheNutzungEnum}
      * @memberof BaugebietDto
      */
     artBaulicheNutzung: BaugebietDtoArtBaulicheNutzungEnum;

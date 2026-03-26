@@ -48,7 +48,7 @@ export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto
     nameEinrichtung?: string;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum}
      * @memberof InfrastruktureinrichtungSearchResultDto
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum;

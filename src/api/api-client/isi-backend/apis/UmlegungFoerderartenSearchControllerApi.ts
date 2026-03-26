@@ -33,8 +33,9 @@ export interface ExecuteSearchUmlegungfoerderartenGetRequest {
 export class UmlegungFoerderartenSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchUmlegungfoerderartenGet without sending the request
      */
-    async executeSearchUmlegungfoerderartenGetRaw(requestParameters: ExecuteSearchUmlegungfoerderartenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
+    async executeSearchUmlegungfoerderartenGetRequestOpts(requestParameters: ExecuteSearchUmlegungfoerderartenGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['bezeichnung'] != null) {
@@ -50,12 +51,19 @@ export class UmlegungFoerderartenSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/umlegungFoerderartens/search/findFirstByBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchUmlegungfoerderartenGetRaw(requestParameters: ExecuteSearchUmlegungfoerderartenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelUmlegungFoerderarten>> {
+        const requestOptions = await this.executeSearchUmlegungfoerderartenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelUmlegungFoerderartenFromJSON(jsonValue));
     }

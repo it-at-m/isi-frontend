@@ -53,7 +53,7 @@ export interface EntityModelVersorgungsquoteGruppenstaerke {
     gueltigAb?: Date;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelVersorgungsquoteGruppenstaerkeInfrastruktureinrichtungTypEnum}
      * @memberof EntityModelVersorgungsquoteGruppenstaerke
      */
     infrastruktureinrichtungTyp?: EntityModelVersorgungsquoteGruppenstaerkeInfrastruktureinrichtungTypEnum;

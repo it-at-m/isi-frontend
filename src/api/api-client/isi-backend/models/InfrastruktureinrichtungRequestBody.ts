@@ -109,7 +109,7 @@ export interface InfrastruktureinrichtungRequestBody {
     fertigstellungsjahr?: number;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyStatusEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     status?: InfrastruktureinrichtungRequestBodyStatusEnum;
@@ -133,7 +133,7 @@ export interface InfrastruktureinrichtungRequestBody {
     idKibigWeb?: string;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
@@ -145,7 +145,7 @@ export interface InfrastruktureinrichtungRequestBody {
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     bauvorhabenName?: string;

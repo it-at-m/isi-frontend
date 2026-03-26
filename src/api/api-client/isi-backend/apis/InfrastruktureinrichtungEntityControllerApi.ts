@@ -62,9 +62,9 @@ export interface PutItemResourceInfrastruktureinrichtungPutRequest {
 export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-infrastruktureinrichtung
+     * Creates request options for deleteItemResourceInfrastruktureinrichtungDelete without sending the request
      */
-    async deleteItemResourceInfrastruktureinrichtungDeleteRaw(requestParameters: DeleteItemResourceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceInfrastruktureinrichtungDeleteRequestOpts(requestParameters: DeleteItemResourceInfrastruktureinrichtungDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
         let urlPath = `/infrastruktureinrichtungs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-infrastruktureinrichtung
+     */
+    async deleteItemResourceInfrastruktureinrichtungDeleteRaw(requestParameters: DeleteItemResourceInfrastruktureinrichtungDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceInfrastruktureinrichtungDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     }
 
     /**
-     * get-infrastruktureinrichtung
+     * Creates request options for getCollectionResourceInfrastruktureinrichtungGet without sending the request
      */
-    async getCollectionResourceInfrastruktureinrichtungGetRaw(requestParameters: GetCollectionResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelInfrastruktureinrichtung>> {
+    async getCollectionResourceInfrastruktureinrichtungGetRequestOpts(requestParameters: GetCollectionResourceInfrastruktureinrichtungGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
         let urlPath = `/infrastruktureinrichtungs`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-infrastruktureinrichtung
+     */
+    async getCollectionResourceInfrastruktureinrichtungGetRaw(requestParameters: GetCollectionResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.getCollectionResourceInfrastruktureinrichtungGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     }
 
     /**
-     * get-infrastruktureinrichtung
+     * Creates request options for getItemResourceInfrastruktureinrichtungGet without sending the request
      */
-    async getItemResourceInfrastruktureinrichtungGetRaw(requestParameters: GetItemResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async getItemResourceInfrastruktureinrichtungGetRequestOpts(requestParameters: GetItemResourceInfrastruktureinrichtungGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
         let urlPath = `/infrastruktureinrichtungs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-infrastruktureinrichtung
+     */
+    async getItemResourceInfrastruktureinrichtungGetRaw(requestParameters: GetItemResourceInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.getItemResourceInfrastruktureinrichtungGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     }
 
     /**
-     * patch-infrastruktureinrichtung
+     * Creates request options for patchItemResourceInfrastruktureinrichtungPatch without sending the request
      */
-    async patchItemResourceInfrastruktureinrichtungPatchRaw(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async patchItemResourceInfrastruktureinrichtungPatchRequestOpts(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
         let urlPath = `/infrastruktureinrichtungs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-infrastruktureinrichtung
+     */
+    async patchItemResourceInfrastruktureinrichtungPatchRaw(requestParameters: PatchItemResourceInfrastruktureinrichtungPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.patchItemResourceInfrastruktureinrichtungPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     }
 
     /**
-     * create-infrastruktureinrichtung
+     * Creates request options for postCollectionResourceInfrastruktureinrichtungPost without sending the request
      */
-    async postCollectionResourceInfrastruktureinrichtungPostRaw(requestParameters: PostCollectionResourceInfrastruktureinrichtungPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async postCollectionResourceInfrastruktureinrichtungPostRequestOpts(requestParameters: PostCollectionResourceInfrastruktureinrichtungPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['infrastruktureinrichtungRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'infrastruktureinrichtungRequestBody',
@@ -249,13 +281,21 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
         let urlPath = `/infrastruktureinrichtungs`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-infrastruktureinrichtung
+     */
+    async postCollectionResourceInfrastruktureinrichtungPostRaw(requestParameters: PostCollectionResourceInfrastruktureinrichtungPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.postCollectionResourceInfrastruktureinrichtungPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
     }
 
     /**
-     * update-infrastruktureinrichtung
+     * Creates request options for putItemResourceInfrastruktureinrichtungPut without sending the request
      */
-    async putItemResourceInfrastruktureinrichtungPutRaw(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async putItemResourceInfrastruktureinrichtungPutRequestOpts(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
         let urlPath = `/infrastruktureinrichtungs/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: InfrastruktureinrichtungRequestBodyToJSON(requestParameters['infrastruktureinrichtungRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-infrastruktureinrichtung
+     */
+    async putItemResourceInfrastruktureinrichtungPutRaw(requestParameters: PutItemResourceInfrastruktureinrichtungPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.putItemResourceInfrastruktureinrichtungPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }

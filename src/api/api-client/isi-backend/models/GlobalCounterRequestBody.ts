@@ -45,7 +45,7 @@ export interface GlobalCounterRequestBody {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {GlobalCounterRequestBodyCounterTypeEnum}
      * @memberof GlobalCounterRequestBody
      */
     counterType?: GlobalCounterRequestBodyCounterTypeEnum;
