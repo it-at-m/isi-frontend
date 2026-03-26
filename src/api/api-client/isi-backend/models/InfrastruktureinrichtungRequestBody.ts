@@ -109,7 +109,7 @@ export interface InfrastruktureinrichtungRequestBody {
     fertigstellungsjahr?: number;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyStatusEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     status?: InfrastruktureinrichtungRequestBodyStatusEnum;
@@ -133,7 +133,7 @@ export interface InfrastruktureinrichtungRequestBody {
     idKibigWeb?: string;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
@@ -142,25 +142,25 @@ export interface InfrastruktureinrichtungRequestBody {
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    bauvorhabenName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
     /**
      * 
-     * @type {VerortungPoint}
+     * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    verortungPointJson?: VerortungPoint;
+    bauvorhabenName?: string;
     /**
      * 
      * @type {Adresse}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {VerortungPoint}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    verortungPointJson?: VerortungPoint;
 }
 
 
@@ -238,10 +238,10 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
     };
 }
 
@@ -272,10 +272,10 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
-        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'bauvorhabenName': value['bauvorhabenName'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
+        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
     };
 }
 

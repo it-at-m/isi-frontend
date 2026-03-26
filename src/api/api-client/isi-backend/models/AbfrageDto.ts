@@ -63,7 +63,7 @@ export interface AbfrageDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageDtoArtAbfrageEnum}
      * @memberof AbfrageDto
      */
     artAbfrage?: AbfrageDtoArtAbfrageEnum;

@@ -87,7 +87,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     abfragevariantenNr?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum;
@@ -105,7 +105,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     wesentlicheRechtsgrundlage?: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>;
@@ -219,7 +219,7 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

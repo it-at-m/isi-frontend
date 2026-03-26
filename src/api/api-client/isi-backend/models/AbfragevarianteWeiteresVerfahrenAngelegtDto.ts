@@ -41,7 +41,7 @@ export interface AbfragevarianteWeiteresVerfahrenAngelegtDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenAngelegtDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenAngelegtDtoArtAbfragevarianteEnum;
@@ -65,7 +65,7 @@ export interface AbfragevarianteWeiteresVerfahrenAngelegtDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteWeiteresVerfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteWeiteresVerfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteWeiteresVerfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>;

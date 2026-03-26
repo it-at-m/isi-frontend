@@ -59,7 +59,7 @@ export interface Baugebiet {
     bezeichnung?: string;
     /**
      * 
-     * @type {string}
+     * @type {BaugebietArtBaulicheNutzungEnum}
      * @memberof Baugebiet
      */
     artBaulicheNutzung?: BaugebietArtBaulicheNutzungEnum;

@@ -31,7 +31,7 @@ export interface AbfrageAngelegtDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageAngelegtDtoArtAbfrageEnum}
      * @memberof AbfrageAngelegtDto
      */
     artAbfrage?: AbfrageAngelegtDtoArtAbfrageEnum;

@@ -34,8 +34,9 @@ export interface ExecuteSearchIdealtypischebaurateGetRequest {
 export class IdealtypischeBaurateSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchIdealtypischebaurateGet without sending the request
      */
-    async executeSearchIdealtypischebaurateGetRaw(requestParameters: ExecuteSearchIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+    async executeSearchIdealtypischebaurateGetRequestOpts(requestParameters: ExecuteSearchIdealtypischebaurateGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['typ'] != null) {
@@ -55,12 +56,19 @@ export class IdealtypischeBaurateSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/idealtypischeBaurates/search/findByTypAndVonLessThanEqualAndBisExklusivGreaterThan`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchIdealtypischebaurateGetRaw(requestParameters: ExecuteSearchIdealtypischebaurateGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelIdealtypischeBaurate>> {
+        const requestOptions = await this.executeSearchIdealtypischebaurateGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelIdealtypischeBaurateFromJSON(jsonValue));
     }

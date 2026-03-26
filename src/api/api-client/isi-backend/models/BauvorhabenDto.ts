@@ -99,7 +99,7 @@ export interface BauvorhabenDto {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenDtoStandVerfahrenEnum}
      * @memberof BauvorhabenDto
      */
     standVerfahren: BauvorhabenDtoStandVerfahrenEnum;
@@ -153,13 +153,13 @@ export interface BauvorhabenDto {
     sobonRelevant: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {BauvorhabenDtoSobonJahrEnum}
      * @memberof BauvorhabenDto
      */
     sobonJahr?: BauvorhabenDtoSobonJahrEnum;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof BauvorhabenDto
      */
     wesentlicheRechtsgrundlage: Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>;
@@ -171,7 +171,7 @@ export interface BauvorhabenDto {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<BauvorhabenDtoArtFnpEnum>}
      * @memberof BauvorhabenDto
      */
     artFnp: Array<BauvorhabenDtoArtFnpEnum>;

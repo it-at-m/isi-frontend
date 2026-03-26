@@ -51,7 +51,7 @@ export interface VersorgungsquoteGruppenstaerkeRequestBody {
     gueltigAb?: Date;
     /**
      * 
-     * @type {string}
+     * @type {VersorgungsquoteGruppenstaerkeRequestBodyInfrastruktureinrichtungTypEnum}
      * @memberof VersorgungsquoteGruppenstaerkeRequestBody
      */
     infrastruktureinrichtungTyp?: VersorgungsquoteGruppenstaerkeRequestBodyInfrastruktureinrichtungTypEnum;

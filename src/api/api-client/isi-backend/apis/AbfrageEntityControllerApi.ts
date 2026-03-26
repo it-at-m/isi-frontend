@@ -62,9 +62,9 @@ export interface PutItemResourceAbfragePutRequest {
 export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-abfrage
+     * Creates request options for deleteItemResourceAbfrageDelete without sending the request
      */
-    async deleteItemResourceAbfrageDeleteRaw(requestParameters: DeleteItemResourceAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceAbfrageDeleteRequestOpts(requestParameters: DeleteItemResourceAbfrageDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-abfrage
+     */
+    async deleteItemResourceAbfrageDeleteRaw(requestParameters: DeleteItemResourceAbfrageDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceAbfrageDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-abfrage
+     * Creates request options for getCollectionResourceAbfrageGet without sending the request
      */
-    async getCollectionResourceAbfrageGetRaw(requestParameters: GetCollectionResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelAbfrage>> {
+    async getCollectionResourceAbfrageGetRequestOpts(requestParameters: GetCollectionResourceAbfrageGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/abfrages`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-abfrage
+     */
+    async getCollectionResourceAbfrageGetRaw(requestParameters: GetCollectionResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelAbfrage>> {
+        const requestOptions = await this.getCollectionResourceAbfrageGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelAbfrageFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-abfrage
+     * Creates request options for getItemResourceAbfrageGet without sending the request
      */
-    async getItemResourceAbfrageGetRaw(requestParameters: GetItemResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async getItemResourceAbfrageGetRequestOpts(requestParameters: GetItemResourceAbfrageGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-abfrage
+     */
+    async getItemResourceAbfrageGetRaw(requestParameters: GetItemResourceAbfrageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.getItemResourceAbfrageGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-abfrage
+     * Creates request options for patchItemResourceAbfragePatch without sending the request
      */
-    async patchItemResourceAbfragePatchRaw(requestParameters: PatchItemResourceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async patchItemResourceAbfragePatchRequestOpts(requestParameters: PatchItemResourceAbfragePatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-abfrage
+     */
+    async patchItemResourceAbfragePatchRaw(requestParameters: PatchItemResourceAbfragePatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.patchItemResourceAbfragePatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * create-abfrage
+     * Creates request options for postCollectionResourceAbfragePost without sending the request
      */
-    async postCollectionResourceAbfragePostRaw(requestParameters: PostCollectionResourceAbfragePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async postCollectionResourceAbfragePostRequestOpts(requestParameters: PostCollectionResourceAbfragePostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['abfrageRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'abfrageRequestBody',
@@ -249,13 +281,21 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/abfrages`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-abfrage
+     */
+    async postCollectionResourceAbfragePostRaw(requestParameters: PostCollectionResourceAbfragePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.postCollectionResourceAbfragePostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-abfrage
+     * Creates request options for putItemResourceAbfragePut without sending the request
      */
-    async putItemResourceAbfragePutRaw(requestParameters: PutItemResourceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+    async putItemResourceAbfragePutRequestOpts(requestParameters: PutItemResourceAbfragePutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/abfrages/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: AbfrageRequestBodyToJSON(requestParameters['abfrageRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-abfrage
+     */
+    async putItemResourceAbfragePutRaw(requestParameters: PutItemResourceAbfragePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfrage>> {
+        const requestOptions = await this.putItemResourceAbfragePutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfrageFromJSON(jsonValue));
     }

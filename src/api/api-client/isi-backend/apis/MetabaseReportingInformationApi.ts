@@ -28,9 +28,9 @@ import {
 export class MetabaseReportingInformationApi extends runtime.BaseAPI {
 
     /**
-     * Gibt für die Anwendung notwendigen Informationen über Metabase Reporting zurück (z.B. URL und aufrufbare Reports)
+     * Creates request options for getMetabaseReporting without sending the request
      */
-    async getMetabaseReportingRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MetabaseReportingDto>> {
+    async getMetabaseReportingRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -38,12 +38,20 @@ export class MetabaseReportingInformationApi extends runtime.BaseAPI {
 
         let urlPath = `/stammdaten/metabase-reporting`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gibt für die Anwendung notwendigen Informationen über Metabase Reporting zurück (z.B. URL und aufrufbare Reports)
+     */
+    async getMetabaseReportingRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MetabaseReportingDto>> {
+        const requestOptions = await this.getMetabaseReportingRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MetabaseReportingDtoFromJSON(jsonValue));
     }

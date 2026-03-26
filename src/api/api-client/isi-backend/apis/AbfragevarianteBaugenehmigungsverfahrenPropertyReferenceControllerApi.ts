@@ -59,9 +59,9 @@ export interface FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenG
 export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
     /**
-     * patch-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatch without sending the request
      */
-    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRequestOpts(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -86,13 +86,21 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRaw(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -113,9 +121,9 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
     }
 
     /**
-     * update-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPut without sending the request
      */
-    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRequestOpts(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -140,13 +148,21 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRaw(requestParameters: CreatePropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceAbfragevariantebaugenehmigungsverfahrenPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -169,9 +185,9 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
     }
 
     /**
-     * delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for deletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDelete without sending the request
      */
-    async deletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRequestOpts(requestParameters: DeletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -187,12 +203,20 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async deletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceAbfragevariantebaugenehmigungsverfahrenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -205,9 +229,9 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
     }
 
     /**
-     * delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for deletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDelete without sending the request
      */
-    async deletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRequestOpts(requestParameters: DeletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -231,12 +255,20 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async deletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRaw(requestParameters: DeletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdAbfragevariantebaugenehmigungsverfahrenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -249,9 +281,9 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
     }
 
     /**
-     * get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet without sending the request
      */
-    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRequestOpts(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -267,12 +299,20 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRaw(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -286,9 +326,9 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
     }
 
     /**
-     * get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     * Creates request options for followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1 without sending the request
      */
-    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1RequestOpts(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -312,12 +352,20 @@ export class AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerA
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-abfragevariantebaugenehmigungsverfahren-Id
+     */
+    async followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1Raw(requestParameters: FollowPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceAbfragevariantebaugenehmigungsverfahrenGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }

@@ -62,9 +62,9 @@ export interface PutItemResourceBauvorhabenPutRequest {
 export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-bauvorhaben
+     * Creates request options for deleteItemResourceBauvorhabenDelete without sending the request
      */
-    async deleteItemResourceBauvorhabenDeleteRaw(requestParameters: DeleteItemResourceBauvorhabenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceBauvorhabenDeleteRequestOpts(requestParameters: DeleteItemResourceBauvorhabenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhabens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben
+     */
+    async deleteItemResourceBauvorhabenDeleteRaw(requestParameters: DeleteItemResourceBauvorhabenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceBauvorhabenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben
+     * Creates request options for getCollectionResourceBauvorhabenGet without sending the request
      */
-    async getCollectionResourceBauvorhabenGetRaw(requestParameters: GetCollectionResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelBauvorhaben>> {
+    async getCollectionResourceBauvorhabenGetRequestOpts(requestParameters: GetCollectionResourceBauvorhabenGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/bauvorhabens`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben
+     */
+    async getCollectionResourceBauvorhabenGetRaw(requestParameters: GetCollectionResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelBauvorhaben>> {
+        const requestOptions = await this.getCollectionResourceBauvorhabenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben
+     * Creates request options for getItemResourceBauvorhabenGet without sending the request
      */
-    async getItemResourceBauvorhabenGetRaw(requestParameters: GetItemResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async getItemResourceBauvorhabenGetRequestOpts(requestParameters: GetItemResourceBauvorhabenGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhabens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben
+     */
+    async getItemResourceBauvorhabenGetRaw(requestParameters: GetItemResourceBauvorhabenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.getItemResourceBauvorhabenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-bauvorhaben
+     * Creates request options for patchItemResourceBauvorhabenPatch without sending the request
      */
-    async patchItemResourceBauvorhabenPatchRaw(requestParameters: PatchItemResourceBauvorhabenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async patchItemResourceBauvorhabenPatchRequestOpts(requestParameters: PatchItemResourceBauvorhabenPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhabens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-bauvorhaben
+     */
+    async patchItemResourceBauvorhabenPatchRaw(requestParameters: PatchItemResourceBauvorhabenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.patchItemResourceBauvorhabenPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * create-bauvorhaben
+     * Creates request options for postCollectionResourceBauvorhabenPost without sending the request
      */
-    async postCollectionResourceBauvorhabenPostRaw(requestParameters: PostCollectionResourceBauvorhabenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async postCollectionResourceBauvorhabenPostRequestOpts(requestParameters: PostCollectionResourceBauvorhabenPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['bauvorhabenRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'bauvorhabenRequestBody',
@@ -249,13 +281,21 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/bauvorhabens`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-bauvorhaben
+     */
+    async postCollectionResourceBauvorhabenPostRaw(requestParameters: PostCollectionResourceBauvorhabenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.postCollectionResourceBauvorhabenPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-bauvorhaben
+     * Creates request options for putItemResourceBauvorhabenPut without sending the request
      */
-    async putItemResourceBauvorhabenPutRaw(requestParameters: PutItemResourceBauvorhabenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async putItemResourceBauvorhabenPutRequestOpts(requestParameters: PutItemResourceBauvorhabenPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhabens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: BauvorhabenRequestBodyToJSON(requestParameters['bauvorhabenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-bauvorhaben
+     */
+    async putItemResourceBauvorhabenPutRaw(requestParameters: PutItemResourceBauvorhabenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.putItemResourceBauvorhabenPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }

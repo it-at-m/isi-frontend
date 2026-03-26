@@ -93,7 +93,7 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum>}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
     wesentlicheRechtsgrundlage?: Array<EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum>;
@@ -231,7 +231,7 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: EntityModelAbfragevarianteWeiteresVerfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum;
@@ -357,7 +357,7 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     anmerkungAbfrageersteller?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfragevarianteWeiteresVerfahrenArtAbfragevarianteEnum}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
     artAbfragevariante?: EntityModelAbfragevarianteWeiteresVerfahrenArtAbfragevarianteEnum;

@@ -59,7 +59,7 @@ export interface DokumentDto {
     filePath: FilepathDto;
     /**
      * 
-     * @type {string}
+     * @type {DokumentDtoArtDokumentEnum}
      * @memberof DokumentDto
      */
     artDokument: DokumentDtoArtDokumentEnum;

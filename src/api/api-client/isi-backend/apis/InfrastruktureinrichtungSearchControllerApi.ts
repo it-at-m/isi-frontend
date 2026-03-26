@@ -32,8 +32,9 @@ export interface ExecuteSearchInfrastruktureinrichtungGetRequest {
 export class InfrastruktureinrichtungSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchInfrastruktureinrichtungGet without sending the request
      */
-    async executeSearchInfrastruktureinrichtungGetRaw(requestParameters: ExecuteSearchInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async executeSearchInfrastruktureinrichtungGetRequestOpts(requestParameters: ExecuteSearchInfrastruktureinrichtungGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -45,12 +46,19 @@ export class InfrastruktureinrichtungSearchControllerApi extends runtime.BaseAPI
 
         let urlPath = `/infrastruktureinrichtungs/search/findAllByBauvorhabenId`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchInfrastruktureinrichtungGetRaw(requestParameters: ExecuteSearchInfrastruktureinrichtungGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.executeSearchInfrastruktureinrichtungGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }

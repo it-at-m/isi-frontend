@@ -62,9 +62,9 @@ export interface PutItemResourceAbfragevariantebauleitplanverfahrenPutRequest {
 export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-abfragevariantebauleitplanverfahren
+     * Creates request options for deleteItemResourceAbfragevariantebauleitplanverfahrenDelete without sending the request
      */
-    async deleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRaw(requestParameters: DeleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRequestOpts(requestParameters: DeleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-abfragevariantebauleitplanverfahren
+     */
+    async deleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRaw(requestParameters: DeleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceAbfragevariantebauleitplanverfahrenDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
     }
 
     /**
-     * get-abfragevariantebauleitplanverfahren
+     * Creates request options for getCollectionResourceAbfragevariantebauleitplanverfahrenGet without sending the request
      */
-    async getCollectionResourceAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: GetCollectionResourceAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelAbfragevarianteBauleitplanverfahren>> {
+    async getCollectionResourceAbfragevariantebauleitplanverfahrenGetRequestOpts(requestParameters: GetCollectionResourceAbfragevariantebauleitplanverfahrenGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-abfragevariantebauleitplanverfahren
+     */
+    async getCollectionResourceAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: GetCollectionResourceAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelAbfragevarianteBauleitplanverfahren>> {
+        const requestOptions = await this.getCollectionResourceAbfragevariantebauleitplanverfahrenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelAbfragevarianteBauleitplanverfahrenFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
     }
 
     /**
-     * get-abfragevariantebauleitplanverfahren
+     * Creates request options for getItemResourceAbfragevariantebauleitplanverfahrenGet without sending the request
      */
-    async getItemResourceAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: GetItemResourceAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+    async getItemResourceAbfragevariantebauleitplanverfahrenGetRequestOpts(requestParameters: GetItemResourceAbfragevariantebauleitplanverfahrenGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-abfragevariantebauleitplanverfahren
+     */
+    async getItemResourceAbfragevariantebauleitplanverfahrenGetRaw(requestParameters: GetItemResourceAbfragevariantebauleitplanverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+        const requestOptions = await this.getItemResourceAbfragevariantebauleitplanverfahrenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteBauleitplanverfahrenFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
     }
 
     /**
-     * patch-abfragevariantebauleitplanverfahren
+     * Creates request options for patchItemResourceAbfragevariantebauleitplanverfahrenPatch without sending the request
      */
-    async patchItemResourceAbfragevariantebauleitplanverfahrenPatchRaw(requestParameters: PatchItemResourceAbfragevariantebauleitplanverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+    async patchItemResourceAbfragevariantebauleitplanverfahrenPatchRequestOpts(requestParameters: PatchItemResourceAbfragevariantebauleitplanverfahrenPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(requestParameters['abfragevarianteBauleitplanverfahrenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-abfragevariantebauleitplanverfahren
+     */
+    async patchItemResourceAbfragevariantebauleitplanverfahrenPatchRaw(requestParameters: PatchItemResourceAbfragevariantebauleitplanverfahrenPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+        const requestOptions = await this.patchItemResourceAbfragevariantebauleitplanverfahrenPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteBauleitplanverfahrenFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
     }
 
     /**
-     * create-abfragevariantebauleitplanverfahren
+     * Creates request options for postCollectionResourceAbfragevariantebauleitplanverfahrenPost without sending the request
      */
-    async postCollectionResourceAbfragevariantebauleitplanverfahrenPostRaw(requestParameters: PostCollectionResourceAbfragevariantebauleitplanverfahrenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+    async postCollectionResourceAbfragevariantebauleitplanverfahrenPostRequestOpts(requestParameters: PostCollectionResourceAbfragevariantebauleitplanverfahrenPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['abfragevarianteBauleitplanverfahrenRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'abfragevarianteBauleitplanverfahrenRequestBody',
@@ -249,13 +281,21 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(requestParameters['abfragevarianteBauleitplanverfahrenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-abfragevariantebauleitplanverfahren
+     */
+    async postCollectionResourceAbfragevariantebauleitplanverfahrenPostRaw(requestParameters: PostCollectionResourceAbfragevariantebauleitplanverfahrenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+        const requestOptions = await this.postCollectionResourceAbfragevariantebauleitplanverfahrenPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteBauleitplanverfahrenFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
     }
 
     /**
-     * update-abfragevariantebauleitplanverfahren
+     * Creates request options for putItemResourceAbfragevariantebauleitplanverfahrenPut without sending the request
      */
-    async putItemResourceAbfragevariantebauleitplanverfahrenPutRaw(requestParameters: PutItemResourceAbfragevariantebauleitplanverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+    async putItemResourceAbfragevariantebauleitplanverfahrenPutRequestOpts(requestParameters: PutItemResourceAbfragevariantebauleitplanverfahrenPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class AbfragevarianteBauleitplanverfahrenEntityControllerApi extends runt
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: AbfragevarianteBauleitplanverfahrenRequestBodyToJSON(requestParameters['abfragevarianteBauleitplanverfahrenRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-abfragevariantebauleitplanverfahren
+     */
+    async putItemResourceAbfragevariantebauleitplanverfahrenPutRaw(requestParameters: PutItemResourceAbfragevariantebauleitplanverfahrenPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteBauleitplanverfahren>> {
+        const requestOptions = await this.putItemResourceAbfragevariantebauleitplanverfahrenPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteBauleitplanverfahrenFromJSON(jsonValue));
     }
