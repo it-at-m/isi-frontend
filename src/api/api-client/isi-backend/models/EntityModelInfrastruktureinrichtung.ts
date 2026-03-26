@@ -128,10 +128,10 @@ export interface EntityModelInfrastruktureinrichtung {
     idKibigWeb?: string;
     /**
      * 
-     * @type {EntityModelInfrastruktureinrichtungResultTypeEnum}
+     * @type {EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
+    infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
     /**
      * 
      * @type {string}
@@ -140,22 +140,22 @@ export interface EntityModelInfrastruktureinrichtung {
     bauvorhabenName?: string;
     /**
      * 
-     * @type {EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum}
+     * @type {EntityModelInfrastruktureinrichtungResultTypeEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
-    infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
-    /**
-     * 
-     * @type {Adresse}
-     * @memberof EntityModelInfrastruktureinrichtung
-     */
-    adresseJson?: Adresse;
+    resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;
     /**
      * 
      * @type {VerortungPoint}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     verortungPointJson?: VerortungPoint;
+    /**
+     * 
+     * @type {Adresse}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
+    adresseJson?: Adresse;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -184,16 +184,6 @@ export type EntityModelInfrastruktureinrichtungStatusEnum = typeof EntityModelIn
 /**
  * @export
  */
-export const EntityModelInfrastruktureinrichtungResultTypeEnum = {
-    Bauvorhaben: 'BAUVORHABEN',
-    Abfrage: 'ABFRAGE',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
-} as const;
-export type EntityModelInfrastruktureinrichtungResultTypeEnum = typeof EntityModelInfrastruktureinrichtungResultTypeEnum[keyof typeof EntityModelInfrastruktureinrichtungResultTypeEnum];
-
-/**
- * @export
- */
 export const EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum = {
     Unspecified: 'UNSPECIFIED',
     Kinderkrippe: 'KINDERKRIPPE',
@@ -204,6 +194,16 @@ export const EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum 
     Mittelschule: 'MITTELSCHULE'
 } as const;
 export type EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum = typeof EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum[keyof typeof EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum];
+
+/**
+ * @export
+ */
+export const EntityModelInfrastruktureinrichtungResultTypeEnum = {
+    Bauvorhaben: 'BAUVORHABEN',
+    Abfrage: 'ABFRAGE',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+} as const;
+export type EntityModelInfrastruktureinrichtungResultTypeEnum = typeof EntityModelInfrastruktureinrichtungResultTypeEnum[keyof typeof EntityModelInfrastruktureinrichtungResultTypeEnum];
 
 
 /**
@@ -236,11 +236,11 @@ export function EntityModelInfrastruktureinrichtungFromJSONTyped(json: any, igno
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -269,11 +269,11 @@ export function EntityModelInfrastruktureinrichtungToJSONTyped(value?: EntityMod
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
-        'resultType': value['resultType'],
-        'bauvorhabenName': value['bauvorhabenName'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
+        'bauvorhabenName': value['bauvorhabenName'],
+        'resultType': value['resultType'],
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

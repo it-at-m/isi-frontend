@@ -123,7 +123,7 @@ const { formChanged } = useSaveLeave();
 const { isEditableBySachbearbeitung } = useAbfrageSecurity();
 const groupedStammdaten = ref<FoerdermixStammDto[]>([]);
 const stammdatenStore = useStammdatenStore();
-const { getVersorungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
+const { getVersorgungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
 const versorungsquoteHortSobon = ref<VersorgungsquoteSobonHortDto[] | undefined>(undefined);
 const { handleError } = useErrorHandler();
 
@@ -188,7 +188,7 @@ function sobonBerechnungChanged(): void {
 
 async function loadVersorungsquoteHortSobon(): Promise<void> {
   try {
-    versorungsquoteHortSobon.value = await getVersorungsquoteHortSobon();
+    versorungsquoteHortSobon.value = await getVersorgungsquoteHortSobon();
   } catch (error) {
     handleError(error);
     versorungsquoteHortSobon.value = [];
