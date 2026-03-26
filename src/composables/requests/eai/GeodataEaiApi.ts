@@ -178,7 +178,7 @@ export function useGeodataEaiApi() {
       const response = await polygonApi.getBezirksteile(request, RequestUtils.getPOSTConfig());
       return response.features ?? [];
     } catch (error) {
-      throw handleErhandleErrorInternalror(error);
+      throw handleErrorInternal(error);
     }
   }
 

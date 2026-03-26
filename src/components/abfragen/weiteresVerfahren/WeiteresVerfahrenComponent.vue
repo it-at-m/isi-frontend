@@ -25,6 +25,8 @@
       v-model="weiteresVerfahren.verortung"
       :context="Context.ABFRAGE"
       :look-at="weiteresVerfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
+      @form-changed="formChanged"
     />
     <allgemeine-informationen-zur-abfrage-weiteres-verfahren-component
       id="allgemeine_informationen_zur_abfrage_weiteres_verfahren-component"
@@ -47,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenWeiteresVerfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent from "@/components/abfragen/weiteresVerfahren/AllgemeineInformationenZurAbfrageWeiteresVerfahrenComponent.vue";
@@ -70,4 +73,14 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrag
 const weiteresVerfahren = defineModel<WeiteresVerfahrenModel>({ required: true });
 
 withDefaults(defineProps<Props>(), { isNew: false });
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => weiteresVerfahren.value.verortung,
+  () => {
+    emit("update:modelValue", weiteresVerfahren.value);
+  },
+  { immediate: true, deep: true },
+);
 </script>
