@@ -1,6 +1,6 @@
 # AbfragevarianteBaugenehmigungsverfahrenPropertyReferenceControllerApi
 
-All URIs are relative to *http://localhost:39146*
+All URIs are relative to *http://localhost:8089*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
