@@ -28,7 +28,6 @@
           label="Bauvorhaben suchen"
           prepend-inner-icon="mdi-magnify"
           @update:search="handleSearchInput"
-          @update:model-value="handleSelection"
           @keydown.enter.prevent="handleEnter"
           @click:clear="clearSearch"
         >
@@ -60,7 +59,7 @@
         <v-btn
           color="primary"
           variant="elevated"
-          :disabled="!selectedBauvorhabenId"
+          :disabled="!isResultSelected"
           @click="uebernehmen"
         >
           Übernehmen
@@ -108,11 +107,11 @@ let isComponentActive = true;
 
 /**
  * Führt Suchvorschläge und echte Bauvorhaben-Ergebnisse
- * zu einer gemeinsamen Liste für das Autocomplete-Feld zusammen.
+ * in einer gemeinsamen Liste für das Autocomplete-Feld zusammen.
  *
- * Die Liste enthält zwei Arten von Einträgen:
- * - Suchvorschläge, die nur den eingegebenen Suchtext ergänzen
- * - echte Bauvorhaben-Ergebnisse, die ausgewählt und übernommen werden können
+ * Die Liste enthält:
+ * - Suchvorschläge, die den Suchtext ergänzen
+ * - echte Bauvorhaben-Ergebnisse, die übernommen werden können
  *
  * Doppelte Einträge werden entfernt.
  */
@@ -135,10 +134,17 @@ const combinedItems = computed<AutocompleteItem[]>(() => {
 });
 
 /**
- * Erstellt die grundlegende Suchanfrage für die Suche nach Bauvorhaben.
+ * Prüft, ob aktuell ein echtes Bauvorhaben-Ergebnis ausgewählt ist.
  *
- * Der Filter ist fest auf Bauvorhaben gesetzt. Andere Objektarten
- * wie Verfahren oder Schulen werden hier bewusst ausgeschlossen.
+ * Suchvorschläge zählen dabei nicht als gültige Auswahl.
+ */
+const isResultSelected = computed<boolean>(() => selectedItem.value?.type === "result");
+
+/**
+ * Erstellt die grundlegende Suchanfrage für Bauvorhaben.
+ *
+ * Der Filter ist fest auf Bauvorhaben gesetzt.
+ * Andere Objektarten werden bewusst ausgeschlossen.
  *
  * @param searchText Der Text, nach dem gesucht werden soll.
  * @returns Eine Suchanfrage, die nur auf Bauvorhaben eingeschränkt ist.
@@ -165,10 +171,6 @@ function createQuery(searchText: string): SearchQueryDto {
  * Erstellt eine vollständige Suchanfrage für Bauvorhaben
  * inklusive Seitengröße und Sortierung.
  *
- * Zusätzlich zur normalen Suchanfrage wird hier festgelegt,
- * dass die Ergebnisse in Seiten geladen und nach dem letzten Änderungszeitpunkt
- * absteigend sortiert werden.
- *
  * @param searchText Der Text, nach dem gesucht werden soll.
  * @returns Eine vollständige Suchanfrage mit Paging und Sortierung.
  */
@@ -185,12 +187,9 @@ function createQueryFull(searchText: string) {
 /**
  * Lädt Suchvorschläge für den aktuell eingegebenen Suchtext.
  *
- * Suchvorschläge sind mögliche Ergänzungen oder Fortsetzungen
- * des aktuell eingegebenen Begriffs.
- *
- * Damit ältere, langsamer zurückkommende Server-Antworten keine neueren Ergebnisse
- * überschreiben, wird mit einer Request-ID gearbeitet:
- * Nur die zuletzt gestartete Anfrage darf das Ergebnis setzen.
+ * Suchvorschläge sind mögliche Ergänzungen des aktuell eingegebenen Begriffs.
+ * Damit langsame ältere Antworten keine neueren Ergebnisse überschreiben,
+ * wird mit einer Request-ID gearbeitet.
  *
  * @param query Der aktuelle Suchtext aus dem Eingabefeld.
  * @returns Ein Promise, das abgeschlossen ist, sobald die Vorschläge verarbeitet wurden.
@@ -223,13 +222,15 @@ async function suggest(query: string): Promise<void> {
 }
 
 /**
- * Lädt die tatsächlichen Bauvorhaben-Ergebnisse für den aktuell eingegebenen Suchtext.
+ * Lädt die tatsächlichen Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
  *
- * Im Unterschied zu den Suchvorschlägen werden hier echte Treffer geladen,
- * die später übernommen werden können.
+ * Zusätzlich zur Backend-Suche werden die Ergebnisse im Frontend
+ * noch einmal nach dem Namen des Bauvorhabens gefiltert.
+ * Dadurch werden nur Einträge angezeigt, deren Name den Suchtext
+ * tatsächlich enthält.
  *
- * Auch hier wird mit einer Request-ID sichergestellt,
- * dass nur die Antwort der zuletzt gestarteten Suche verwendet wird.
+ * Damit langsame ältere Antworten keine neueren Ergebnisse überschreiben,
+ * wird mit einer Request-ID gearbeitet.
  *
  * @param query Der aktuelle Suchtext aus dem Eingabefeld.
  * @returns Ein Promise, das abgeschlossen ist, sobald die Suchergebnisse verarbeitet wurden.
@@ -252,7 +253,12 @@ async function search(query: string): Promise<void> {
       return;
     }
 
-    bauvorhaben.value = result.searchResults?.map((entry) => entry as BauvorhabenSearchResultDto) ?? [];
+    const normalizedQuery = trimmedQuery.toLowerCase();
+
+    bauvorhaben.value =
+      result.searchResults
+        ?.map((entry) => entry as BauvorhabenSearchResultDto)
+        .filter((entry) => (entry.nameVorhaben ?? "").toLowerCase().includes(normalizedQuery)) ?? [];
   } finally {
     if (isComponentActive && requestId === currentSearchRequestId) {
       loading.value = false;
@@ -271,19 +277,18 @@ const debouncedSearch = _.debounce((query: string) => {
 /**
  * Reagiert auf Änderungen im Suchfeld.
  *
- * Wenn der Benutzer tippt, wird nicht bei jedem einzelnen Tastendruck sofort
- * eine Server-Anfrage ausgelöst. Stattdessen wird die Suche "verzögert gebündelt".
+ * Die Suchaufrufe werden nicht bei jedem einzelnen Tastendruck sofort ausgeführt,
+ * sondern zeitverzögert gesammelt.
  *
- * "Debounced" bedeutet in diesem Zusammenhang:
- * Eine Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
- * Tippt der Benutzer schnell weiter, wird der vorherige geplante Aufruf verworfen
- * und durch einen neuen ersetzt.
+ * "Debounced" bedeutet hier:
+ * Die Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
+ * Wenn der Benutzer schnell weitertippt, wird der vorherige geplante Aufruf
+ * verworfen und durch einen neuen ersetzt.
  *
- * Das verhindert unnötig viele Anfragen und verbessert die Performance.
+ * Das reduziert unnötige Server-Anfragen und verbessert die Performance.
  *
- * Diese Methode startet deshalb zeitverzögert:
- * - die Suche nach Suchvorschlägen
- * - die Suche nach echten Bauvorhaben-Ergebnissen
+ * Wenn zuvor ein echtes Ergebnis ausgewählt war und der Benutzer danach
+ * wieder frei tippt, wird diese Auswahl verworfen.
  *
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
@@ -295,51 +300,21 @@ function handleSearchInput(query: string): void {
     return;
   }
 
-  selectedBauvorhabenId.value = undefined;
+  if (selectedItem.value?.type === "result" && selectedItem.value.label !== query) {
+    selectedItem.value = null;
+  }
+
   debouncedSuggest(query);
   debouncedSearch(query);
 }
 
 /**
- * Verarbeitet die Auswahl eines Eintrags aus dem Autocomplete-Feld.
- *
- * Es wird zwischen zwei Fällen unterschieden:
- * - Ergebnis: Ein echtes Bauvorhaben wurde ausgewählt.
- *   In diesem Fall wird dessen ID gespeichert.
- * - Suchvorschlag: Es wurde nur ein vorgeschlagener Suchtext ausgewählt.
- *   In diesem Fall wird noch kein Bauvorhaben übernommen,
- *   sondern eine neue Suche mit diesem Text gestartet.
- *
- * @param item Der ausgewählte Eintrag aus dem Autocomplete-Feld.
- *             Kann auch null sein, wenn die Auswahl entfernt wurde.
- */
-function handleSelection(item: AutocompleteItem | null): void {
-  selectedItem.value = item;
-
-  if (_.isNil(item)) {
-    selectedBauvorhabenId.value = undefined;
-    return;
-  }
-
-  if (item.type === "result") {
-    selectedBauvorhabenId.value = item.value;
-    searchQuery.value = item.label;
-    return;
-  }
-
-  searchQuery.value = item.label;
-  selectedBauvorhabenId.value = undefined;
-  debouncedSuggest(item.label);
-  debouncedSearch(item.label);
-}
-
-/**
- * Reagiert auf das Drücken der Enter-Taste im Suchfeld.
+ * Reagiert auf das Drücken der Enter-Taste.
  *
  * Wenn bereits ein echtes Bauvorhaben ausgewählt wurde,
  * wird dieses direkt übernommen.
  *
- * Wenn noch nichts Konkretes ausgewählt wurde, aber Suchergebnisse vorhanden sind,
+ * Wenn noch nichts Konkretes ausgewählt wurde, aber Ergebnisse vorhanden sind,
  * wird automatisch das erste gefundene Bauvorhaben ausgewählt.
  */
 function handleEnter(): void {
@@ -354,24 +329,17 @@ function handleEnter(): void {
   }
 
   selectedItem.value = firstResult;
-  selectedBauvorhabenId.value = firstResult.value;
   searchQuery.value = firstResult.label;
 }
 
 /**
- * Setzt den gesamten Suchzustand der Komponente zurück.
+ * Setzt nur den internen Suchzustand der Komponente zurück.
  *
- * Dabei werden:
- * - laufende zeitverzögerte Funktionsaufrufe abgebrochen
- * - der Suchtext geleert
- * - die aktuelle Auswahl entfernt
- * - Vorschläge und Ergebnisse gelöscht
- * - Ladezustände zurückgesetzt
- *
- * Zusätzlich werden die internen Request-IDs erhöht,
- * damit verspätet eintreffende Antworten alter Suchanfragen ignoriert werden.
+ * Dabei bleiben bereits im Parent übernommene Daten erhalten.
+ * Diese Methode wird verwendet, wenn der Dialog geschlossen wird,
+ * ohne dass der bereits gespeicherte Parent-Wert gelöscht werden soll.
  */
-function clearSearch(): void {
+function resetSearchState(): void {
   debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
@@ -379,7 +347,6 @@ function clearSearch(): void {
   selectedItem.value = null;
   suggestions.value = [];
   bauvorhaben.value = [];
-  selectedBauvorhabenId.value = undefined;
   loading.value = false;
   loadingSuggestions.value = false;
 
@@ -388,10 +355,23 @@ function clearSearch(): void {
 }
 
 /**
+ * Setzt den kompletten Zustand der Suche zurück.
+ *
+ * Zusätzlich zum Suchzustand wird auch der an den Parent
+ * gebundene Bauvorhaben-Wert entfernt.
+ * Diese Methode wird verwendet, wenn die Auswahl bewusst verworfen werden soll,
+ * zum Beispiel beim Klick auf "Abbrechen" oder beim Leeren der Eingabe.
+ */
+function clearSearch(): void {
+  resetSearchState();
+  selectedBauvorhabenId.value = undefined;
+}
+
+/**
  * Bricht die Auswahl ab.
  *
- * Dabei wird zuerst der interne Zustand der Suche zurückgesetzt
- * und danach der Dialog geschlossen.
+ * Dabei wird der komplette Zustand zurückgesetzt
+ * und der Dialog anschließend geschlossen.
  */
 function abbrechen(): void {
   clearSearch();
@@ -400,26 +380,27 @@ function abbrechen(): void {
 
 /**
  * Übernimmt das aktuell ausgewählte Bauvorhaben
+ * in das an den Parent gebundene Modell
  * und schließt anschließend den Dialog.
  *
  * Ein Schließen erfolgt nur dann,
- * wenn tatsächlich eine Bauvorhaben-ID ausgewählt wurde.
+ * wenn tatsächlich ein echtes Bauvorhaben-Ergebnis ausgewählt wurde.
  */
 function uebernehmen(): void {
-  if (!selectedBauvorhabenId.value) {
+  if (selectedItem.value?.type !== "result") {
     return;
   }
+
+  selectedBauvorhabenId.value = selectedItem.value.value;
   dialogOpen.value = false;
 }
 
 /**
  * Beobachtet, ob der Dialog geöffnet oder geschlossen ist.
  *
- * Beim Öffnen wird das Suchfeld automatisch fokussiert,
- * damit der Benutzer direkt mit der Eingabe beginnen kann.
- *
- * Beim Schließen wird die Suche vollständig zurückgesetzt,
- * damit der Dialog beim nächsten Öffnen wieder in einem sauberen Zustand startet.
+ * Beim Öffnen wird das Suchfeld automatisch fokussiert.
+ * Beim Schließen wird nur der interne Suchzustand zurückgesetzt,
+ * der bereits übernommene Parent-Wert bleibt dabei erhalten.
  *
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
@@ -430,20 +411,20 @@ watch(dialogOpen, async (isOpen) => {
     return;
   }
 
-  clearSearch();
+  resetSearchState();
 });
 
 /**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
  *
- * Hier werden noch laufende, zeitverzögerte Suchaufrufe sowie der interne Zustand
+ * Hier werden laufende zeitverzögerte Suchaufrufe und der interne Zustand
  * sauber beendet bzw. zurückgesetzt.
  *
- * Das verhindert, dass verspätete Antworten oder nachträgliche Aufrufe
- * noch versuchen, auf eine bereits entfernte Komponente zuzugreifen.
+ * Das verhindert, dass verspätete Antworten noch versuchen,
+ * auf eine bereits entfernte Komponente zuzugreifen.
  */
 onBeforeUnmount(() => {
   isComponentActive = false;
-  clearSearch();
+  resetSearchState();
 });
 </script>
