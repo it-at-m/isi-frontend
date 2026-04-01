@@ -38,6 +38,14 @@
             </v-list-item>
           </template>
         </v-autocomplete>
+
+        <div
+          v-if="pendingSelectedBauvorhabenId"
+          class="mt-3 text-body-2"
+        >
+          Ausgewählt:
+          <strong>{{ pendingSelectedLabel }}</strong>
+        </div>
       </v-card-text>
 
       <v-card-actions class="px-6 pb-6 pt-4">
@@ -51,7 +59,7 @@
         <v-btn
           color="primary"
           variant="elevated"
-          :disabled="!isResultSelected"
+          :disabled="!pendingSelectedBauvorhabenId"
           @click="uebernehmen"
         >
           Übernehmen
@@ -87,6 +95,9 @@ const bauvorhabenSuchField = ref();
 const searchQuery = ref("");
 const selectedValue = ref<string | null>(null);
 
+const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
+const pendingSelectedLabel = ref<string>("");
+
 const suggestions = ref<string[]>([]);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
@@ -120,28 +131,6 @@ const combinedItems = computed<AutocompleteItem[]>(() => {
     }));
 
   return _.uniqBy([...suggestionItems, ...resultItems], (item) => item.value);
-});
-
-/**
- * Prüft, ob aktuell ein echtes Bauvorhaben-Ergebnis ausgewählt ist.
- */
-const isResultSelected = computed<boolean>(() => {
-  if (_.isEmpty(selectedValue.value)) {
-    return false;
-  }
-
-  return combinedItems.value.some((item) => item.value === selectedValue.value && item.type === "result");
-});
-
-/**
- * Ermittelt das aktuell ausgewählte echte Bauvorhaben-Ergebnis.
- */
-const selectedResultItem = computed<AutocompleteItem | undefined>(() => {
-  if (_.isEmpty(selectedValue.value)) {
-    return undefined;
-  }
-
-  return combinedItems.value.find((item) => item.value === selectedValue.value && item.type === "result");
 });
 
 /**
@@ -219,10 +208,10 @@ async function suggest(query: string): Promise<void> {
 }
 
 /**
- * Lädt die tatsächlichen Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
+ * Lädt Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
  *
  * Zusätzlich zur Backend-Suche werden die Ergebnisse im Frontend
- * noch einmal nach dem Namen des Bauvorhabens gefiltert.
+ * auf den Namen des Bauvorhabens eingegrenzt.
  *
  * @param query Der aktuelle Suchtext aus dem Eingabefeld.
  * @returns Ein Promise, das abgeschlossen ist, sobald die Suchergebnisse verarbeitet wurden.
@@ -271,7 +260,10 @@ const debouncedSearch = _.debounce((query: string) => {
  *
  * "Debounced" bedeutet hier:
  * Die Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
- * Wenn schnell weitergetippt wird, wird der vorherige geplante Aufruf verworfen.
+ * Wenn schnell weitergetippt wird, wird ein zuvor geplanter Aufruf verworfen.
+ *
+ * Wenn nach einer bestehenden Auswahl wieder frei getippt wird,
+ * wird die gemerkte Auswahl zurückgesetzt.
  *
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
@@ -282,11 +274,14 @@ function handleSearchInput(query: string): void {
     suggestions.value = [];
     bauvorhaben.value = [];
     selectedValue.value = null;
+    pendingSelectedBauvorhabenId.value = undefined;
+    pendingSelectedLabel.value = "";
     return;
   }
 
-  if (selectedResultItem.value && selectedResultItem.value.label !== query) {
-    selectedValue.value = null;
+  if (!_.isEmpty(pendingSelectedLabel.value) && pendingSelectedLabel.value !== query) {
+    pendingSelectedBauvorhabenId.value = undefined;
+    pendingSelectedLabel.value = "";
   }
 
   debouncedSuggest(query);
@@ -297,9 +292,11 @@ function handleSearchInput(query: string): void {
  * Verarbeitet die Auswahl eines Eintrags aus dem Autocomplete-Feld.
  *
  * Bei einem Suchvorschlag wird nur der Suchtext übernommen
- * und direkt eine neue Suche ausgelöst.
+ * und sofort eine neue Suche gestartet.
  *
- * Bei einem echten Ergebnis bleibt die ausgewählte ID in selectedValue erhalten.
+ * Bei einem echten Ergebnis wird die Bauvorhaben-ID stabil
+ * in einer separaten Variable gespeichert, damit sie nicht verloren geht,
+ * wenn das Autocomplete intern seine sichtbare Auswahl wieder ändert.
  *
  * @param value Der technische Wert des ausgewählten Eintrags.
  */
@@ -314,22 +311,31 @@ function handleSelection(value: string | null): void {
     const suggestionText = value.replace("suggestion::", "");
     searchQuery.value = suggestionText;
     selectedValue.value = null;
+    pendingSelectedBauvorhabenId.value = undefined;
+    pendingSelectedLabel.value = "";
     debouncedSuggest(suggestionText);
     debouncedSearch(suggestionText);
+    return;
   }
+
+  const selectedResult = combinedItems.value.find((item) => item.value === value && item.type === "result");
+  if (!selectedResult) {
+    return;
+  }
+
+  pendingSelectedBauvorhabenId.value = selectedResult.value;
+  pendingSelectedLabel.value = selectedResult.label;
+  searchQuery.value = selectedResult.label;
 }
 
 /**
  * Reagiert auf das Drücken der Enter-Taste.
  *
- * Wenn bereits ein echtes Bauvorhaben ausgewählt wurde,
- * wird dieses direkt übernommen.
- *
- * Wenn noch nichts Konkretes ausgewählt wurde, aber Ergebnisse vorhanden sind,
- * wird automatisch das erste gefundene Bauvorhaben ausgewählt.
+ * Wenn bereits ein Bauvorhaben gemerkt ist, wird dieses übernommen.
+ * Andernfalls wird das erste Suchergebnis ausgewählt.
  */
 function handleEnter(): void {
-  if (isResultSelected.value) {
+  if (pendingSelectedBauvorhabenId.value) {
     uebernehmen();
     return;
   }
@@ -339,16 +345,19 @@ function handleEnter(): void {
     return;
   }
 
+  pendingSelectedBauvorhabenId.value = firstResult.value;
+  pendingSelectedLabel.value = firstResult.label;
   selectedValue.value = firstResult.value;
   searchQuery.value = firstResult.label;
 }
 
 /**
- * Setzt nur den sichtbaren Suchzustand zurück.
+ * Setzt den vollständigen sichtbaren Zustand der Komponente zurück.
  *
- * Bereits übernommene Daten im Parent bleiben erhalten.
+ * Zusätzlich zum Suchzustand wird auch die aktuell gemerkte
+ * Bauvorhaben-Auswahl verworfen.
  */
-function resetVisibleSearchState(): void {
+function clearSearch(): void {
   debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
@@ -356,6 +365,8 @@ function resetVisibleSearchState(): void {
   selectedValue.value = null;
   suggestions.value = [];
   bauvorhaben.value = [];
+  pendingSelectedBauvorhabenId.value = undefined;
+  pendingSelectedLabel.value = "";
   loading.value = false;
   loadingSuggestions.value = false;
 
@@ -364,47 +375,36 @@ function resetVisibleSearchState(): void {
 }
 
 /**
- * Setzt den kompletten Zustand der Auswahl zurück.
- *
- * Zusätzlich zum sichtbaren Suchzustand wird auch
- * der an den Parent gebundene Bauvorhaben-Wert entfernt.
- */
-function clearSearch(): void {
-  resetVisibleSearchState();
-  selectedBauvorhabenId.value = undefined;
-}
-
-/**
  * Bricht die Auswahl ab.
  *
- * Dabei wird der komplette Zustand zurückgesetzt
- * und der Dialog geschlossen.
+ * Dabei wird der sichtbare Zustand zurückgesetzt,
+ * die Parent-Auswahl verworfen und der Dialog geschlossen.
  */
 function abbrechen(): void {
   clearSearch();
+  selectedBauvorhabenId.value = undefined;
   dialogOpen.value = false;
 }
 
 /**
- * Übernimmt das aktuell ausgewählte Bauvorhaben
+ * Übernimmt das aktuell gemerkte Bauvorhaben
  * in das an den Parent gebundene Modell
  * und schließt anschließend den Dialog.
  */
 function uebernehmen(): void {
-  if (!selectedResultItem.value) {
+  if (!pendingSelectedBauvorhabenId.value) {
     return;
   }
 
-  selectedBauvorhabenId.value = selectedResultItem.value.value;
+  selectedBauvorhabenId.value = pendingSelectedBauvorhabenId.value;
   dialogOpen.value = false;
 }
 
 /**
  * Beobachtet, ob der Dialog geöffnet ist.
  *
- * Beim Öffnen wird das Suchfeld fokussiert.
- * Beim Schließen wird bewusst kein Reset ausgeführt,
- * damit kein Konflikt mit laufenden Blur-/Unmount-Zyklen entsteht.
+ * Beim Öffnen wird das Suchfeld fokussiert und der sichtbare Zustand
+ * für eine neue Auswahl zurückgesetzt.
  *
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
@@ -413,6 +413,7 @@ watch(dialogOpen, async (isOpen) => {
     return;
   }
 
+  clearSearch();
   await nextTick();
   bauvorhabenSuchField.value?.focus?.();
 });
@@ -420,9 +421,8 @@ watch(dialogOpen, async (isOpen) => {
 /**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
  *
- * Hier werden nur noch laufende debounced Suchaufrufe beendet.
- * Es werden bewusst keine weiteren reaktiven Zustände mehr verändert,
- * um Konflikte beim Unmounting zu vermeiden.
+ * Hier werden nur laufende zeitverzögerte Suchaufrufe beendet,
+ * damit keine verspäteten Antworten mehr verarbeitet werden.
  */
 onBeforeUnmount(() => {
   isComponentActive = false;
