@@ -11,33 +11,58 @@
       <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Bauvorhaben verknüpfen </v-card-title>
 
       <v-card-text class="px-6 pb-2">
-        <v-autocomplete
+        <v-text-field
           ref="bauvorhabenSuchField"
-          v-model="selectedValue"
-          v-model:search="searchQuery"
-          :items="combinedItems"
-          :loading="loading || loadingSuggestions"
-          item-title="label"
-          item-value="value"
+          v-model="searchQuery"
           clearable
-          no-filter
           hide-details="auto"
           variant="outlined"
           density="comfortable"
           rounded="lg"
           label="Bauvorhaben suchen"
           prepend-inner-icon="mdi-magnify"
-          @update:search="handleSearchInput"
-          @update:model-value="handleSelection"
+          :loading="loading || loadingSuggestions"
+          @update:model-value="handleSearchInput"
           @keydown.enter.prevent="handleEnter"
           @click:clear="clearSearch"
+        />
+
+        <v-card
+          v-if="hasListContent"
+          class="mt-3 rounded-lg"
+          variant="outlined"
         >
-          <template #no-data>
-            <v-list-item>
-              <v-list-item-title>Keine Ergebnisse</v-list-item-title>
-            </v-list-item>
-          </template>
-        </v-autocomplete>
+          <v-list density="comfortable">
+            <template
+              v-if="suggestionItems.length > 0"
+              v-for="item in suggestionItems"
+              :key="item.value"
+            >
+              <v-list-item
+                :title="item.label"
+                subtitle="Suchvorschlag"
+                prepend-icon="mdi-magnify"
+                @click="selectSuggestion(item)"
+              />
+            </template>
+
+            <v-divider v-if="suggestionItems.length > 0 && resultItems.length > 0" />
+
+            <template
+              v-if="resultItems.length > 0"
+              v-for="item in resultItems"
+              :key="item.value"
+            >
+              <v-list-item
+                :active="pendingSelectedBauvorhabenId === item.value"
+                :title="item.label"
+                subtitle="Bauvorhaben"
+                prepend-icon="mdi-office-building"
+                @click="selectResult(item)"
+              />
+            </template>
+          </v-list>
+        </v-card>
 
         <div
           v-if="pendingSelectedBauvorhabenId"
@@ -80,10 +105,14 @@ import {
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 
-type AutocompleteItem = {
+type SuggestionItem = {
   label: string;
   value: string;
-  type: "suggestion" | "result";
+};
+
+type ResultItem = {
+  label: string;
+  value: string;
 };
 
 const dialogOpen = defineModel<boolean>({ required: true });
@@ -93,13 +122,12 @@ const { searchForEntities, searchForSearchwordSuggestion } = useSearchApi();
 
 const bauvorhabenSuchField = ref();
 const searchQuery = ref("");
-const selectedValue = ref<string | null>(null);
-
-const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
-const pendingSelectedLabel = ref<string>("");
 
 const suggestions = ref<string[]>([]);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+
+const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
+const pendingSelectedLabel = ref<string>("");
 
 const loading = ref(false);
 const loadingSuggestions = ref(false);
@@ -109,29 +137,31 @@ let currentSuggestionRequestId = 0;
 let isComponentActive = true;
 
 /**
- * Führt Suchvorschläge und echte Bauvorhaben-Ergebnisse
- * in einer gemeinsamen Liste für das Autocomplete-Feld zusammen.
- *
- * Suchvorschläge erhalten einen technischen Präfix,
- * damit sie nicht mit echten Bauvorhaben-IDs verwechselt werden.
+ * Bereitet die Suchvorschläge für die Anzeige in der Vorschlagsliste auf.
  */
-const combinedItems = computed<AutocompleteItem[]>(() => {
-  const suggestionItems: AutocompleteItem[] = suggestions.value.map((suggestion) => ({
-    label: `Suchvorschlag: ${suggestion}`,
-    value: `suggestion::${suggestion}`,
-    type: "suggestion",
-  }));
+const suggestionItems = computed<SuggestionItem[]>(() =>
+  suggestions.value.map((suggestion) => ({
+    label: suggestion,
+    value: suggestion,
+  })),
+);
 
-  const resultItems: AutocompleteItem[] = bauvorhaben.value
+/**
+ * Bereitet die Bauvorhaben-Ergebnisse für die Anzeige in der Ergebnisliste auf.
+ */
+const resultItems = computed<ResultItem[]>(() =>
+  bauvorhaben.value
     .filter((entry) => !_.isEmpty(entry.id) && !_.isEmpty(entry.nameVorhaben))
     .map((entry) => ({
       label: entry.nameVorhaben ?? "",
       value: entry.id ?? "",
-      type: "result",
-    }));
+    })),
+);
 
-  return _.uniqBy([...suggestionItems, ...resultItems], (item) => item.value);
-});
+/**
+ * Prüft, ob Vorschläge oder Ergebnisse angezeigt werden sollen.
+ */
+const hasListContent = computed<boolean>(() => suggestionItems.value.length > 0 || resultItems.value.length > 0);
 
 /**
  * Erstellt die grundlegende Suchanfrage für Bauvorhaben.
@@ -159,10 +189,10 @@ function createQuery(searchText: string): SearchQueryDto {
 
 /**
  * Erstellt eine vollständige Suchanfrage für Bauvorhaben
- * inklusive Seitengröße und Sortierung.
+ * inklusive Paging und Sortierung.
  *
  * @param searchText Der Text, nach dem gesucht werden soll.
- * @returns Eine vollständige Suchanfrage mit Paging und Sortierung.
+ * @returns Eine vollständige Suchanfrage.
  */
 function createQueryFull(searchText: string) {
   return {
@@ -175,9 +205,9 @@ function createQueryFull(searchText: string) {
 }
 
 /**
- * Lädt Suchvorschläge für den aktuell eingegebenen Suchtext.
+ * Lädt Suchvorschläge für den aktuellen Suchtext.
  *
- * @param query Der aktuelle Suchtext aus dem Eingabefeld.
+ * @param query Der aktuelle Suchtext.
  * @returns Ein Promise, das abgeschlossen ist, sobald die Vorschläge verarbeitet wurden.
  */
 async function suggest(query: string): Promise<void> {
@@ -210,11 +240,11 @@ async function suggest(query: string): Promise<void> {
 /**
  * Lädt Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
  *
- * Zusätzlich zur Backend-Suche werden die Ergebnisse im Frontend
+ * Zusätzlich werden die Ergebnisse im Frontend
  * auf den Namen des Bauvorhabens eingegrenzt.
  *
- * @param query Der aktuelle Suchtext aus dem Eingabefeld.
- * @returns Ein Promise, das abgeschlossen ist, sobald die Suchergebnisse verarbeitet wurden.
+ * @param query Der aktuelle Suchtext.
+ * @returns Ein Promise, das abgeschlossen ist, sobald die Ergebnisse verarbeitet wurden.
  */
 async function search(query: string): Promise<void> {
   const trimmedQuery = _.trim(query);
@@ -259,11 +289,8 @@ const debouncedSearch = _.debounce((query: string) => {
  * Reagiert auf Änderungen im Suchfeld.
  *
  * "Debounced" bedeutet hier:
- * Die Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
- * Wenn schnell weitergetippt wird, wird ein zuvor geplanter Aufruf verworfen.
- *
- * Wenn nach einer bestehenden Auswahl wieder frei getippt wird,
- * wird die gemerkte Auswahl zurückgesetzt.
+ * Die Suche wird erst kurz nach der letzten Eingabe ausgeführt.
+ * Wenn der Benutzer schnell weitertippt, wird ein zuvor geplanter Aufruf verworfen.
  *
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
@@ -273,7 +300,6 @@ function handleSearchInput(query: string): void {
   if (_.isEmpty(_.trim(query))) {
     suggestions.value = [];
     bauvorhaben.value = [];
-    selectedValue.value = null;
     pendingSelectedBauvorhabenId.value = undefined;
     pendingSelectedLabel.value = "";
     return;
@@ -289,50 +315,36 @@ function handleSearchInput(query: string): void {
 }
 
 /**
- * Verarbeitet die Auswahl eines Eintrags aus dem Autocomplete-Feld.
+ * Übernimmt einen Suchvorschlag in das Suchfeld
+ * und startet direkt eine neue Suche.
  *
- * Bei einem Suchvorschlag wird nur der Suchtext übernommen
- * und sofort eine neue Suche gestartet.
- *
- * Bei einem echten Ergebnis wird die Bauvorhaben-ID stabil
- * in einer separaten Variable gespeichert, damit sie nicht verloren geht,
- * wenn das Autocomplete intern seine sichtbare Auswahl wieder ändert.
- *
- * @param value Der technische Wert des ausgewählten Eintrags.
+ * @param item Der ausgewählte Suchvorschlag.
  */
-function handleSelection(value: string | null): void {
-  selectedValue.value = value;
+function selectSuggestion(item: SuggestionItem): void {
+  searchQuery.value = item.label;
+  pendingSelectedBauvorhabenId.value = undefined;
+  pendingSelectedLabel.value = "";
 
-  if (_.isEmpty(value)) {
-    return;
-  }
+  debouncedSuggest(item.label);
+  debouncedSearch(item.label);
+}
 
-  if (value.startsWith("suggestion::")) {
-    const suggestionText = value.replace("suggestion::", "");
-    searchQuery.value = suggestionText;
-    selectedValue.value = null;
-    pendingSelectedBauvorhabenId.value = undefined;
-    pendingSelectedLabel.value = "";
-    debouncedSuggest(suggestionText);
-    debouncedSearch(suggestionText);
-    return;
-  }
-
-  const selectedResult = combinedItems.value.find((item) => item.value === value && item.type === "result");
-  if (!selectedResult) {
-    return;
-  }
-
-  pendingSelectedBauvorhabenId.value = selectedResult.value;
-  pendingSelectedLabel.value = selectedResult.label;
-  searchQuery.value = selectedResult.label;
+/**
+ * Merkt ein ausgewähltes Bauvorhaben stabil für die spätere Übernahme.
+ *
+ * @param item Das ausgewählte Bauvorhaben.
+ */
+function selectResult(item: ResultItem): void {
+  pendingSelectedBauvorhabenId.value = item.value;
+  pendingSelectedLabel.value = item.label;
+  searchQuery.value = item.label;
 }
 
 /**
  * Reagiert auf das Drücken der Enter-Taste.
  *
- * Wenn bereits ein Bauvorhaben gemerkt ist, wird dieses übernommen.
- * Andernfalls wird das erste Suchergebnis ausgewählt.
+ * Wenn bereits ein Bauvorhaben ausgewählt wurde, wird es übernommen.
+ * Andernfalls wird das erste Ergebnis ausgewählt.
  */
 function handleEnter(): void {
   if (pendingSelectedBauvorhabenId.value) {
@@ -340,29 +352,24 @@ function handleEnter(): void {
     return;
   }
 
-  const firstResult = combinedItems.value.find((item) => item.type === "result");
+  const firstResult = resultItems.value[0];
   if (!firstResult) {
     return;
   }
 
   pendingSelectedBauvorhabenId.value = firstResult.value;
   pendingSelectedLabel.value = firstResult.label;
-  selectedValue.value = firstResult.value;
   searchQuery.value = firstResult.label;
 }
 
 /**
- * Setzt den vollständigen sichtbaren Zustand der Komponente zurück.
- *
- * Zusätzlich zum Suchzustand wird auch die aktuell gemerkte
- * Bauvorhaben-Auswahl verworfen.
+ * Setzt den sichtbaren Such- und Auswahlzustand zurück.
  */
 function clearSearch(): void {
   debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
   searchQuery.value = "";
-  selectedValue.value = null;
   suggestions.value = [];
   bauvorhaben.value = [];
   pendingSelectedBauvorhabenId.value = undefined;
@@ -389,7 +396,7 @@ function abbrechen(): void {
 /**
  * Übernimmt das aktuell gemerkte Bauvorhaben
  * in das an den Parent gebundene Modell
- * und schließt anschließend den Dialog.
+ * und schließt den Dialog.
  */
 function uebernehmen(): void {
   if (!pendingSelectedBauvorhabenId.value) {
@@ -401,10 +408,9 @@ function uebernehmen(): void {
 }
 
 /**
- * Beobachtet, ob der Dialog geöffnet ist.
+ * Beobachtet das Öffnen des Dialogs.
  *
- * Beim Öffnen wird das Suchfeld fokussiert und der sichtbare Zustand
- * für eine neue Auswahl zurückgesetzt.
+ * Beim Öffnen wird das Suchfeld fokussiert und der sichtbare Zustand zurückgesetzt.
  *
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
@@ -421,8 +427,7 @@ watch(dialogOpen, async (isOpen) => {
 /**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
  *
- * Hier werden nur laufende zeitverzögerte Suchaufrufe beendet,
- * damit keine verspäteten Antworten mehr verarbeitet werden.
+ * Hier werden nur laufende zeitverzögerte Suchaufrufe beendet.
  */
 onBeforeUnmount(() => {
   isComponentActive = false;

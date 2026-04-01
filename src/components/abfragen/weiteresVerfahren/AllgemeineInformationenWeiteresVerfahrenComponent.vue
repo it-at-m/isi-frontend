@@ -208,22 +208,18 @@ const nameBauvorhaben = computed(() => {
 
 watch(
   () => abfrage.value.bauvorhaben,
-  async (newValue, oldValue) => {
+  async () => {
     await getBauvorhaben();
-
-    if (newValue !== oldValue) {
-      formChanged();
-    }
   },
   { immediate: true },
 );
 
+/**
+ * Lädt das aktuell referenzierte Bauvorhaben anhand der gespeicherten ID
+ * und setzt es für die Anzeige im Formular.
+ */
 async function getBauvorhaben(): Promise<void> {
-  if (
-    !_.isNil(abfrage.value.bauvorhaben) &&
-    !_.isEmpty(abfrage.value.bauvorhaben) &&
-    abfrage.value.bauvorhaben != bauvorhaben.value.id
-  ) {
+  if (!_.isNil(abfrage.value.bauvorhaben) && !_.isEmpty(abfrage.value.bauvorhaben)) {
     bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
   } else {
     bauvorhaben.value = createBauvorhabenDto();
