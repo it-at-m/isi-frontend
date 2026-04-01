@@ -13,12 +13,12 @@
       <v-card-text class="px-6 pb-2">
         <v-autocomplete
           ref="bauvorhabenSuchField"
-          v-model="selectedItem"
+          v-model="selectedValue"
           v-model:search="searchQuery"
           :items="combinedItems"
           :loading="loading || loadingSuggestions"
           item-title="label"
-          return-object
+          item-value="value"
           clearable
           no-filter
           hide-details="auto"
@@ -28,15 +28,16 @@
           label="Bauvorhaben suchen"
           prepend-inner-icon="mdi-magnify"
           @update:search="handleSearchInput"
+          @update:model-value="handleSelection"
           @keydown.enter.prevent="handleEnter"
           @click:clear="clearSearch"
         >
           <template #item="{ props, item }">
             <v-list-item
               v-bind="props"
-              :prepend-icon="item.type === 'suggestion' ? 'mdi-magnify' : 'mdi-office-building'"
-              :subtitle="item.type === 'suggestion' ? 'Suchvorschlag' : 'Bauvorhaben'"
-              :title="item.label"
+              :prepend-icon="item.raw.type === 'suggestion' ? 'mdi-magnify' : 'mdi-office-building'"
+              :subtitle="item.raw.type === 'suggestion' ? 'Suchvorschlag' : 'Bauvorhaben'"
+              :title="item.raw.label"
             />
           </template>
 
@@ -93,7 +94,7 @@ const { searchForEntities, searchForSearchwordSuggestion } = useSearchApi();
 
 const bauvorhabenSuchField = ref();
 const searchQuery = ref("");
-const selectedItem = ref<AutocompleteItem | null>(null);
+const selectedValue = ref<string | null>(null);
 
 const suggestions = ref<string[]>([]);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
@@ -108,11 +109,14 @@ let isComponentActive = true;
 /**
  * Führt Suchvorschläge und echte Bauvorhaben-Ergebnisse
  * in einer gemeinsamen Liste für das Autocomplete-Feld zusammen.
+ *
+ * Für Suchvorschläge wird ein technischer Präfix im Wert verwendet,
+ * damit sie nicht mit echten Bauvorhaben-IDs verwechselt werden.
  */
 const combinedItems = computed<AutocompleteItem[]>(() => {
   const suggestionItems: AutocompleteItem[] = suggestions.value.map((suggestion) => ({
     label: suggestion,
-    value: suggestion,
+    value: `suggestion::${suggestion}`,
     type: "suggestion",
   }));
 
@@ -124,13 +128,30 @@ const combinedItems = computed<AutocompleteItem[]>(() => {
       type: "result",
     }));
 
-  return _.uniqBy([...suggestionItems, ...resultItems], (item) => `${item.type}-${item.value}`);
+  return _.uniqBy([...suggestionItems, ...resultItems], (item) => item.value);
 });
 
 /**
  * Prüft, ob aktuell ein echtes Bauvorhaben-Ergebnis ausgewählt ist.
  */
-const isResultSelected = computed<boolean>(() => selectedItem.value?.type === "result");
+const isResultSelected = computed<boolean>(() => {
+  if (_.isEmpty(selectedValue.value)) {
+    return false;
+  }
+
+  return combinedItems.value.some((item) => item.value === selectedValue.value && item.type === "result");
+});
+
+/**
+ * Ermittelt das aktuell ausgewählte echte Bauvorhaben-Ergebnis.
+ */
+const selectedResultItem = computed<AutocompleteItem | undefined>(() => {
+  if (_.isEmpty(selectedValue.value)) {
+    return undefined;
+  }
+
+  return combinedItems.value.find((item) => item.value === selectedValue.value && item.type === "result");
+});
 
 /**
  * Erstellt die grundlegende Suchanfrage für Bauvorhaben.
@@ -183,16 +204,8 @@ async function suggest(query: string): Promise<void> {
   const trimmedQuery = _.trim(query);
   const requestId = ++currentSuggestionRequestId;
 
-  console.log("[Dialog] suggest START", {
-    query,
-    trimmedQuery,
-    requestId,
-    currentSuggestionRequestId,
-  });
-
   if (_.isEmpty(trimmedQuery)) {
     suggestions.value = [];
-    console.log("[Dialog] suggest ABORT - empty query");
     return;
   }
 
@@ -201,43 +214,24 @@ async function suggest(query: string): Promise<void> {
   try {
     const result = await searchForSearchwordSuggestion(createQuery(trimmedQuery));
 
-    console.log("[Dialog] suggest RESPONSE", {
-      requestId,
-      currentSuggestionRequestId,
-      isComponentActive,
-      suchwortSuggestions: result.suchwortSuggestions,
-    });
-
     if (!isComponentActive || requestId !== currentSuggestionRequestId) {
-      console.log("[Dialog] suggest IGNORED", {
-        requestId,
-        currentSuggestionRequestId,
-        isComponentActive,
-      });
       return;
     }
 
     const foundSuggestions = _.toArray(result.suchwortSuggestions ?? []);
     suggestions.value = _.uniq([trimmedQuery, ...foundSuggestions]);
-
-    console.log("[Dialog] suggest APPLIED", {
-      suggestions: suggestions.value,
-    });
   } finally {
     if (isComponentActive && requestId === currentSuggestionRequestId) {
       loadingSuggestions.value = false;
     }
-
-    console.log("[Dialog] suggest END", {
-      loadingSuggestions: loadingSuggestions.value,
-      requestId,
-      currentSuggestionRequestId,
-    });
   }
 }
 
 /**
  * Lädt die tatsächlichen Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
+ *
+ * Zusätzlich zur Backend-Suche werden die Ergebnisse im Frontend
+ * noch einmal nach dem Namen des Bauvorhabens gefiltert.
  *
  * @param query Der aktuelle Suchtext aus dem Eingabefeld.
  * @returns Ein Promise, das abgeschlossen ist, sobald die Suchergebnisse verarbeitet wurden.
@@ -246,16 +240,8 @@ async function search(query: string): Promise<void> {
   const trimmedQuery = _.trim(query);
   const requestId = ++currentSearchRequestId;
 
-  console.log("[Dialog] search START", {
-    query,
-    trimmedQuery,
-    requestId,
-    currentSearchRequestId,
-  });
-
   if (_.isEmpty(trimmedQuery)) {
     bauvorhaben.value = [];
-    console.log("[Dialog] search ABORT - empty query");
     return;
   }
 
@@ -264,19 +250,7 @@ async function search(query: string): Promise<void> {
   try {
     const result = await searchForEntities(createQueryFull(trimmedQuery));
 
-    console.log("[Dialog] search RESPONSE", {
-      requestId,
-      currentSearchRequestId,
-      isComponentActive,
-      rawResults: result.searchResults,
-    });
-
     if (!isComponentActive || requestId !== currentSearchRequestId) {
-      console.log("[Dialog] search IGNORED", {
-        requestId,
-        currentSearchRequestId,
-        isComponentActive,
-      });
       return;
     }
 
@@ -286,122 +260,111 @@ async function search(query: string): Promise<void> {
       result.searchResults
         ?.map((entry) => entry as BauvorhabenSearchResultDto)
         .filter((entry) => (entry.nameVorhaben ?? "").toLowerCase().includes(normalizedQuery)) ?? [];
-
-    console.log("[Dialog] search APPLIED", {
-      normalizedQuery,
-      filteredResults: bauvorhaben.value,
-    });
   } finally {
     if (isComponentActive && requestId === currentSearchRequestId) {
       loading.value = false;
     }
-
-    console.log("[Dialog] search END", {
-      loading: loading.value,
-      requestId,
-      currentSearchRequestId,
-    });
   }
 }
 
 const debouncedSuggest = _.debounce((query: string) => {
-  console.log("[Dialog] debouncedSuggest FIRE", { query });
   void suggest(query);
 }, 200);
 
 const debouncedSearch = _.debounce((query: string) => {
-  console.log("[Dialog] debouncedSearch FIRE", { query });
   void search(query);
 }, 300);
 
 /**
  * Reagiert auf Änderungen im Suchfeld.
  *
+ * Die Suchaufrufe werden nicht bei jedem einzelnen Tastendruck sofort ausgeführt,
+ * sondern zeitverzögert gesammelt.
+ *
+ * "Debounced" bedeutet hier:
+ * Die Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
+ * Wenn der Benutzer schnell weitertippt, wird der vorherige geplante Aufruf
+ * verworfen und durch einen neuen ersetzt.
+ *
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
 function handleSearchInput(query: string): void {
-  console.log("[Dialog] handleSearchInput BEFORE", {
-    query,
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
-
   searchQuery.value = query;
 
   if (_.isEmpty(_.trim(query))) {
-    console.log("[Dialog] handleSearchInput -> clearSearch");
-    clearSearch();
+    resetSearchState();
     return;
   }
 
-  if (selectedItem.value?.type === "result" && selectedItem.value.label !== query) {
-    console.log("[Dialog] handleSearchInput reset selectedItem", {
-      previousSelectedItem: selectedItem.value,
-      reason: "query differs from selected result label",
-    });
-    selectedItem.value = null;
+  if (selectedResultItem.value && selectedResultItem.value.label !== query) {
+    selectedValue.value = null;
   }
 
   debouncedSuggest(query);
   debouncedSearch(query);
+}
 
-  console.log("[Dialog] handleSearchInput AFTER", {
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
+/**
+ * Verarbeitet die Auswahl eines Eintrags aus dem Autocomplete-Feld.
+ *
+ * Bei einem Suchvorschlag wird nur der Suchtext übernommen
+ * und direkt eine neue Suche ausgelöst.
+ *
+ * Bei einem echten Ergebnis bleibt die ausgewählte Bauvorhaben-ID stabil erhalten.
+ *
+ * @param value Der technische Wert des ausgewählten Eintrags.
+ */
+function handleSelection(value: string | null): void {
+  selectedValue.value = value;
+
+  if (_.isEmpty(value)) {
+    return;
+  }
+
+  if (value.startsWith("suggestion::")) {
+    const suggestionText = value.replace("suggestion::", "");
+    searchQuery.value = suggestionText;
+    selectedValue.value = null;
+    debouncedSuggest(suggestionText);
+    debouncedSearch(suggestionText);
+  }
 }
 
 /**
  * Reagiert auf das Drücken der Enter-Taste.
+ *
+ * Wenn bereits ein echtes Bauvorhaben ausgewählt wurde,
+ * wird dieses direkt übernommen.
+ *
+ * Wenn noch nichts Konkretes ausgewählt wurde, aber Ergebnisse vorhanden sind,
+ * wird automatisch das erste gefundene Bauvorhaben ausgewählt.
  */
 function handleEnter(): void {
-  console.log("[Dialog] handleEnter BEFORE", {
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    combinedItems: combinedItems.value,
-    searchQuery: searchQuery.value,
-  });
-
-  if (selectedItem.value?.type === "result") {
-    console.log("[Dialog] handleEnter -> uebernehmen existing result");
+  if (isResultSelected.value) {
     uebernehmen();
     return;
   }
 
   const firstResult = combinedItems.value.find((item) => item.type === "result");
   if (!firstResult) {
-    console.log("[Dialog] handleEnter ABORT - no result found");
     return;
   }
 
-  selectedItem.value = firstResult;
+  selectedValue.value = firstResult.value;
   searchQuery.value = firstResult.label;
-
-  console.log("[Dialog] handleEnter AFTER", {
-    selectedItem: selectedItem.value,
-    searchQuery: searchQuery.value,
-  });
 }
 
 /**
  * Setzt nur den internen Suchzustand der Komponente zurück.
+ *
+ * Dabei bleiben bereits im Parent übernommene Daten erhalten.
  */
 function resetSearchState(): void {
-  console.log("[Dialog] resetSearchState BEFORE", {
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    suggestions: suggestions.value,
-    bauvorhaben: bauvorhaben.value,
-  });
-
   debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
   searchQuery.value = "";
-  selectedItem.value = null;
+  selectedValue.value = null;
   suggestions.value = [];
   bauvorhaben.value = [];
   loading.value = false;
@@ -409,99 +372,57 @@ function resetSearchState(): void {
 
   currentSearchRequestId++;
   currentSuggestionRequestId++;
-
-  console.log("[Dialog] resetSearchState AFTER", {
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    currentSearchRequestId,
-    currentSuggestionRequestId,
-  });
 }
 
 /**
  * Setzt den kompletten Zustand der Suche zurück.
+ *
+ * Zusätzlich zum Suchzustand wird auch der an den Parent
+ * gebundene Bauvorhaben-Wert entfernt.
  */
 function clearSearch(): void {
-  console.log("[Dialog] clearSearch BEFORE", {
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
-
   resetSearchState();
   selectedBauvorhabenId.value = undefined;
-
-  console.log("[Dialog] clearSearch AFTER", {
-    searchQuery: searchQuery.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
 }
 
 /**
  * Bricht die Auswahl ab.
+ *
+ * Dabei wird der komplette Zustand zurückgesetzt
+ * und der Dialog anschließend geschlossen.
  */
 function abbrechen(): void {
-  console.log("[Dialog] abbrechen BEFORE", {
-    dialogOpen: dialogOpen.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
-
   clearSearch();
   dialogOpen.value = false;
-
-  console.log("[Dialog] abbrechen AFTER", {
-    dialogOpen: dialogOpen.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
 }
 
 /**
- * Übernimmt das aktuell ausgewählte Bauvorhaben.
+ * Übernimmt das aktuell ausgewählte Bauvorhaben
+ * in das an den Parent gebundene Modell
+ * und schließt anschließend den Dialog.
  */
 function uebernehmen(): void {
-  console.log("[Dialog] uebernehmen BEFORE", {
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    dialogOpen: dialogOpen.value,
-    searchQuery: searchQuery.value,
-  });
-
-  if (selectedItem.value?.type !== "result") {
-    console.log("[Dialog] uebernehmen ABORT - kein result ausgewählt");
+  if (!selectedResultItem.value) {
     return;
   }
 
-  selectedBauvorhabenId.value = selectedItem.value.value;
+  selectedBauvorhabenId.value = selectedResultItem.value.value;
   dialogOpen.value = false;
-
-  console.log("[Dialog] uebernehmen AFTER", {
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    dialogOpen: dialogOpen.value,
-  });
 }
 
 /**
  * Beobachtet, ob der Dialog geöffnet oder geschlossen ist.
  *
+ * Beim Öffnen wird das Suchfeld automatisch fokussiert.
+ * Beim Schließen wird nur der interne Suchzustand zurückgesetzt,
+ * der bereits übernommene Parent-Wert bleibt dabei erhalten.
+ *
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
 watch(dialogOpen, async (isOpen) => {
-  console.log("[Dialog] watch dialogOpen", {
-    isOpen,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    searchQuery: searchQuery.value,
-  });
-
   if (isOpen) {
     await nextTick();
     bauvorhabenSuchField.value?.focus?.();
-    console.log("[Dialog] watch dialogOpen -> focused search field");
     return;
   }
 
@@ -509,82 +430,13 @@ watch(dialogOpen, async (isOpen) => {
 });
 
 /**
- * Beobachtet die an den Parent gebundene Bauvorhaben-ID.
- *
- * @param newValue Neuer Wert.
- * @param oldValue Alter Wert.
- */
-watch(
-  () => selectedBauvorhabenId.value,
-  (newValue, oldValue) => {
-    console.log("[Dialog] watch selectedBauvorhabenId", {
-      oldValue,
-      newValue,
-      dialogOpen: dialogOpen.value,
-      selectedItem: selectedItem.value,
-    });
-  },
-);
-
-/**
- * Beobachtet das aktuell ausgewählte Autocomplete-Element.
- *
- * @param newValue Neuer Wert.
- * @param oldValue Alter Wert.
- */
-watch(
-  () => selectedItem.value,
-  (newValue, oldValue) => {
-    console.log("[Dialog] watch selectedItem", {
-      oldValue,
-      newValue,
-      dialogOpen: dialogOpen.value,
-      searchQuery: searchQuery.value,
-      selectedBauvorhabenId: selectedBauvorhabenId.value,
-    });
-  },
-  { deep: true },
-);
-
-/**
- * Beobachtet den Suchtext.
- *
- * @param newValue Neuer Wert.
- * @param oldValue Alter Wert.
- */
-watch(
-  () => searchQuery.value,
-  (newValue, oldValue) => {
-    console.log("[Dialog] watch searchQuery", {
-      oldValue,
-      newValue,
-      dialogOpen: dialogOpen.value,
-      selectedItem: selectedItem.value,
-      selectedBauvorhabenId: selectedBauvorhabenId.value,
-    });
-  },
-);
-
-/**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
+ *
+ * Hier werden laufende zeitverzögerte Suchaufrufe und der interne Zustand
+ * sauber beendet bzw. zurückgesetzt.
  */
 onBeforeUnmount(() => {
-  console.log("[Dialog] onBeforeUnmount BEFORE", {
-    dialogOpen: dialogOpen.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    searchQuery: searchQuery.value,
-  });
-
   isComponentActive = false;
   resetSearchState();
-
-  console.log("[Dialog] onBeforeUnmount AFTER", {
-    dialogOpen: dialogOpen.value,
-    selectedItem: selectedItem.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    searchQuery: searchQuery.value,
-    isComponentActive,
-  });
 });
 </script>
