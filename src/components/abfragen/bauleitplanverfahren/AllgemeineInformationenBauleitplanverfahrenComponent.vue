@@ -196,12 +196,12 @@ const nameBauvorhaben = computed(() => {
 
 watch(
   () => abfrage.value.bauvorhaben,
-  async (newValue, oldValue) => {
-    await getBauvorhaben();
-
-    if (newValue !== oldValue) {
-      formChanged();
-    }
+  (newValue, oldValue) => {
+    console.log("[Parent] abfrage.bauvorhaben changed", {
+      oldValue,
+      newValue,
+      dialogOpen: isAuswahlBauvorhabenDialogOpen.value,
+    });
   },
   { immediate: true },
 );
