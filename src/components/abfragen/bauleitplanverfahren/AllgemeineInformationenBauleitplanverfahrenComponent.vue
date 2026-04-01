@@ -145,8 +145,7 @@
   <auswahl-bauvorhaben-dialog
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
-    @bauvorhaben-uebernehmen="bauvorhabenUebernehmen"
-    @bauvorhaben-auswahl-abbrechen="isAuswahlBauvorhabenDialogOpen = false"
+    v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
   />
 </template>
 
@@ -197,8 +196,12 @@ const nameBauvorhaben = computed(() => {
 
 watch(
   () => abfrage.value.bauvorhaben,
-  async (value) => {
+  async (newValue, oldValue) => {
     await getBauvorhaben();
+
+    if (newValue !== oldValue) {
+      formChanged();
+    }
   },
   { immediate: true },
 );
@@ -242,12 +245,6 @@ watch(
   },
   { immediate: true },
 );
-
-function bauvorhabenUebernehmen(idBauvorhaben: string): void {
-  abfrage.value.bauvorhaben = idBauvorhaben;
-  isAuswahlBauvorhabenDialogOpen.value = false;
-  formChanged();
-}
 
 function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;

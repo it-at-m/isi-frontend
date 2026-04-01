@@ -2,146 +2,135 @@
   <v-dialog
     v-model="dialogOpen"
     persistent
-    width="60%"
+    max-width="720"
   >
-    <v-card class="overflow-x-hidden">
-      <v-card-title class="align-stretch">Mit Bauvorhaben verknüpfen</v-card-title>
+    <v-card
+      class="rounded-xl"
+      elevation="8"
+    >
+      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Bauvorhaben verknüpfen </v-card-title>
 
-      <v-row justify="center">
-        <v-col
-          cols="11"
-          md="9"
+      <v-card-text class="px-6 pb-2">
+        <v-autocomplete
+          ref="bauvorhabenSuchField"
+          v-model="selectedItem"
+          v-model:search="searchQuery"
+          :items="combinedItems"
+          :loading="loading || loadingSuggestions"
+          item-title="label"
+          return-object
+          clearable
+          no-filter
+          hide-details="auto"
+          variant="outlined"
+          density="comfortable"
+          rounded="lg"
+          label="Bauvorhaben suchen"
+          prepend-inner-icon="mdi-magnify"
+          @update:search="handleSearchInput"
+          @update:model-value="handleSelection"
+          @keydown.enter.prevent="handleEnter"
+          @click:clear="clearSearch"
         >
-          <v-text-field
-            id="bauvorhabenSuch_field"
-            ref="bauvorhabenSuchField"
-            v-model="bauvorhabenSearchModel"
-            label="Suche"
-            variant="underlined"
-            @keyup.enter="fetchBauvorhaben"
-          />
-        </v-col>
-        <v-col
-          cols="11"
-          md="2"
-          class="d-flex justify-end align-center"
-        >
-          <v-btn
-            id="bauvorhaben_suchen_button"
-            variant="outlined"
-            @click="fetchBauvorhaben"
-          >
-            Suchen
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="11"
-          md="11"
-        >
-          <v-select
-            id="bauvorhaben_auswahl_dropdown"
-            ref="bauvorhabenSelect"
-            v-model="selectedBauvorhabenSearchResult"
-            item-title="nameVorhaben"
-            :items="bauvorhaben"
-            item-value="id"
-            title="Bauvorhaben auswählen"
-            variant="underlined"
-          >
-          </v-select>
-        </v-col>
-      </v-row>
-      <v-card-actions class="d-flex justify-end">
+          <template #item="{ props, item }">
+            <v-list-item
+              v-bind="props"
+              :prepend-icon="item.type === 'suggestion' ? 'mdi-magnify' : 'mdi-office-building'"
+              :subtitle="item.type === 'suggestion' ? 'Suchvorschlag' : 'Bauvorhaben'"
+              :title="item.label"
+            />
+          </template>
+
+          <template #no-data>
+            <v-list-item>
+              <v-list-item-title>Keine Ergebnisse</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-autocomplete>
+      </v-card-text>
+
+      <v-card-actions class="px-6 pb-6 pt-4">
         <v-spacer />
         <v-btn
-          id="bauvorhaben_abbrechen_button"
-          @click="bauvorhabenAuswahlAbbrechen"
+          variant="text"
+          @click="abbrechen"
         >
           Abbrechen
         </v-btn>
         <v-btn
-          id="bauvorhaben_uebernehmen_button"
           color="primary"
           variant="elevated"
-          @click="bauvorhabenUebernehmen"
+          :disabled="!selectedBauvorhabenId"
+          @click="uebernehmen"
         >
           Übernehmen
         </v-btn>
       </v-card-actions>
     </v-card>
-    <v-dialog
-      v-model="loading"
-      max-width="360"
-      persistent
-    >
-      <v-list
-        class="py-3"
-        color="primary"
-        elevation="12"
-        rounded="lg"
-      >
-        <loading-progress-circular
-          icon="mdi-file-document-refresh"
-          text="Suche läuft..."
-        />
-      </v-list>
-    </v-dialog>
-    <v-dialog
-      v-model="loading"
-      max-width="360"
-      persistent
-    >
-      <v-list
-        class="py-3"
-        color="primary"
-        elevation="12"
-        rounded="lg"
-      >
-        <loading-progress-circular
-          icon="mdi-file-document-refresh"
-          text="Suche läuft..."
-        />
-      </v-list>
-    </v-dialog>
   </v-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+import _ from "lodash";
 import {
   type BauvorhabenSearchResultDto,
+  type SearchQueryDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
-import _ from "lodash";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
-import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
-import { VSelect } from "vuetify/components";
 
-interface Emits {
-  (event: "bauvorhabenUebernehmen", value: string): void;
+type AutocompleteItem = {
+  label: string;
+  value: string;
+  type: "suggestion" | "result";
+};
 
-  (event: "bauvorhabenAuswahlAbbrechen", value: void): void;
-}
-
-const { searchForEntities } = useSearchApi();
-const emit = defineEmits<Emits>();
 const dialogOpen = defineModel<boolean>({ required: true });
-const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
-const selectedBauvorhabenSearchResult = ref("");
-const bauvorhabenSearchModel = ref("");
-const loading = ref(false);
-const bauvorhabenSelect = ref();
+const selectedBauvorhabenId = defineModel<string | undefined>("selectedBauvorhabenId");
 
-async function fetchBauvorhaben(): Promise<void> {
-  const searchQueryAndSortingDto = {
-    searchQuery: "",
+const { searchForEntities, searchForSearchwordSuggestion } = useSearchApi();
+
+const bauvorhabenSuchField = ref();
+const searchQuery = ref("");
+const selectedItem = ref<AutocompleteItem | null>(null);
+
+const suggestions = ref<string[]>([]);
+const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
+
+const loading = ref(false);
+const loadingSuggestions = ref(false);
+
+let currentSearchRequestId = 0;
+let currentSuggestionRequestId = 0;
+let isComponentActive = true;
+
+const combinedItems = computed<AutocompleteItem[]>(() => {
+  const suggestionItems: AutocompleteItem[] = suggestions.value.map((suggestion) => ({
+    label: suggestion,
+    value: suggestion,
+    type: "suggestion",
+  }));
+
+  const resultItems: AutocompleteItem[] = bauvorhaben.value
+    .filter((entry) => !_.isEmpty(entry.id) && !_.isEmpty(entry.nameVorhaben))
+    .map((entry) => ({
+      label: entry.nameVorhaben ?? "",
+      value: entry.id ?? "",
+      type: "result",
+    }));
+
+  return _.uniqBy([...suggestionItems, ...resultItems], (item) => `${item.type}-${item.value}`);
+});
+
+function createQuery(searchText: string): SearchQueryDto {
+  return {
+    searchQuery: searchText,
+    selectBauvorhaben: true,
     selectBauleitplanverfahren: false,
     selectBaugenehmigungsverfahren: false,
     selectWeiteresVerfahren: false,
-    selectBauvorhaben: true,
     selectGrundschule: false,
     selectGsNachmittagBetreuung: false,
     selectHausFuerKinder: false,
@@ -150,32 +139,169 @@ async function fetchBauvorhaben(): Promise<void> {
     selectMittelschule: false,
     page: undefined,
     pageSize: undefined,
+  } as SearchQueryDto;
+}
+
+function createQueryFull(searchText: string) {
+  return {
+    ...createQuery(searchText),
+    page: 1,
+    pageSize: 20,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
-  if (!_.isEmpty(bauvorhabenSearchModel.value)) {
-    searchQueryAndSortingDto.searchQuery = bauvorhabenSearchModel.value;
-    loading.value = true;
-    const searchResults = await searchForEntities(searchQueryAndSortingDto);
-    bauvorhaben.value = searchResults.searchResults?.map(
-      (searchResults) => searchResults as BauvorhabenSearchResultDto,
-    ) as Array<BauvorhabenSearchResultDto>;
-    loading.value = false;
+}
+
+async function suggest(query: string): Promise<void> {
+  const trimmedQuery = _.trim(query);
+  const requestId = ++currentSuggestionRequestId;
+
+  if (_.isEmpty(trimmedQuery)) {
+    suggestions.value = [];
+    return;
   }
 
-  await nextTick();
-  if (bauvorhaben.value.length > 0 && bauvorhabenSelect.value) {
-    bauvorhabenSelect.value.menu = true;
+  loadingSuggestions.value = true;
+
+  try {
+    const result = await searchForSearchwordSuggestion(createQuery(trimmedQuery));
+
+    if (!isComponentActive || requestId !== currentSuggestionRequestId) {
+      return;
+    }
+
+    const foundSuggestions = _.toArray(result.suchwortSuggestions ?? []);
+    suggestions.value = _.uniq([trimmedQuery, ...foundSuggestions]);
+  } finally {
+    if (isComponentActive && requestId === currentSuggestionRequestId) {
+      loadingSuggestions.value = false;
+    }
   }
 }
 
-function bauvorhabenUebernehmen(): void {
-  emit("bauvorhabenUebernehmen", selectedBauvorhabenSearchResult.value);
-  selectedBauvorhabenSearchResult.value = "";
+async function search(query: string): Promise<void> {
+  const trimmedQuery = _.trim(query);
+  const requestId = ++currentSearchRequestId;
+
+  if (_.isEmpty(trimmedQuery)) {
+    bauvorhaben.value = [];
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    const result = await searchForEntities(createQueryFull(trimmedQuery));
+
+    if (!isComponentActive || requestId !== currentSearchRequestId) {
+      return;
+    }
+
+    bauvorhaben.value = result.searchResults?.map((entry) => entry as BauvorhabenSearchResultDto) ?? [];
+  } finally {
+    if (isComponentActive && requestId === currentSearchRequestId) {
+      loading.value = false;
+    }
+  }
 }
 
-function bauvorhabenAuswahlAbbrechen(): void {
-  selectedBauvorhabenSearchResult.value = "";
-  emit("bauvorhabenAuswahlAbbrechen");
+const debouncedSuggest = _.debounce((query: string) => {
+  void suggest(query);
+}, 200);
+
+const debouncedSearch = _.debounce((query: string) => {
+  void search(query);
+}, 300);
+
+function handleSearchInput(query: string): void {
+  searchQuery.value = query;
+
+  if (_.isEmpty(_.trim(query))) {
+    clearSearch();
+    return;
+  }
+
+  selectedBauvorhabenId.value = undefined;
+  debouncedSuggest(query);
+  debouncedSearch(query);
 }
+
+function handleSelection(item: AutocompleteItem | null): void {
+  selectedItem.value = item;
+
+  if (_.isNil(item)) {
+    selectedBauvorhabenId.value = undefined;
+    return;
+  }
+
+  if (item.type === "result") {
+    selectedBauvorhabenId.value = item.value;
+    searchQuery.value = item.label;
+    return;
+  }
+
+  searchQuery.value = item.label;
+  selectedBauvorhabenId.value = undefined;
+  debouncedSuggest(item.label);
+  debouncedSearch(item.label);
+}
+
+function handleEnter(): void {
+  if (selectedItem.value?.type === "result") {
+    uebernehmen();
+    return;
+  }
+
+  const firstResult = combinedItems.value.find((item) => item.type === "result");
+  if (!firstResult) {
+    return;
+  }
+
+  selectedItem.value = firstResult;
+  selectedBauvorhabenId.value = firstResult.value;
+  searchQuery.value = firstResult.label;
+}
+
+function clearSearch(): void {
+  debouncedSuggest.cancel();
+  debouncedSearch.cancel();
+
+  searchQuery.value = "";
+  selectedItem.value = null;
+  suggestions.value = [];
+  bauvorhaben.value = [];
+  selectedBauvorhabenId.value = undefined;
+  loading.value = false;
+  loadingSuggestions.value = false;
+
+  currentSearchRequestId++;
+  currentSuggestionRequestId++;
+}
+
+function abbrechen(): void {
+  clearSearch();
+  dialogOpen.value = false;
+}
+
+function uebernehmen(): void {
+  if (!selectedBauvorhabenId.value) {
+    return;
+  }
+  dialogOpen.value = false;
+}
+
+watch(dialogOpen, async (isOpen) => {
+  if (isOpen) {
+    await nextTick();
+    bauvorhabenSuchField.value?.focus?.();
+    return;
+  }
+
+  clearSearch();
+});
+
+onBeforeUnmount(() => {
+  isComponentActive = false;
+  clearSearch();
+});
 </script>
