@@ -32,15 +32,6 @@
           @keydown.enter.prevent="handleEnter"
           @click:clear="clearSearch"
         >
-          <template #item="{ props, item }">
-            <v-list-item
-              v-bind="props"
-              :prepend-icon="item.raw.type === 'suggestion' ? 'mdi-magnify' : 'mdi-office-building'"
-              :subtitle="item.raw.type === 'suggestion' ? 'Suchvorschlag' : 'Bauvorhaben'"
-              :title="item.raw.label"
-            />
-          </template>
-
           <template #no-data>
             <v-list-item>
               <v-list-item-title>Keine Ergebnisse</v-list-item-title>
@@ -110,12 +101,12 @@ let isComponentActive = true;
  * Führt Suchvorschläge und echte Bauvorhaben-Ergebnisse
  * in einer gemeinsamen Liste für das Autocomplete-Feld zusammen.
  *
- * Für Suchvorschläge wird ein technischer Präfix im Wert verwendet,
+ * Suchvorschläge erhalten einen technischen Präfix,
  * damit sie nicht mit echten Bauvorhaben-IDs verwechselt werden.
  */
 const combinedItems = computed<AutocompleteItem[]>(() => {
   const suggestionItems: AutocompleteItem[] = suggestions.value.map((suggestion) => ({
-    label: suggestion,
+    label: `Suchvorschlag: ${suggestion}`,
     value: `suggestion::${suggestion}`,
     type: "suggestion",
   }));
@@ -278,13 +269,9 @@ const debouncedSearch = _.debounce((query: string) => {
 /**
  * Reagiert auf Änderungen im Suchfeld.
  *
- * Die Suchaufrufe werden nicht bei jedem einzelnen Tastendruck sofort ausgeführt,
- * sondern zeitverzögert gesammelt.
- *
  * "Debounced" bedeutet hier:
  * Die Funktion wird erst kurz nach der letzten Eingabe ausgeführt.
- * Wenn der Benutzer schnell weitertippt, wird der vorherige geplante Aufruf
- * verworfen und durch einen neuen ersetzt.
+ * Wenn schnell weitergetippt wird, wird der vorherige geplante Aufruf verworfen.
  *
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
@@ -292,7 +279,9 @@ function handleSearchInput(query: string): void {
   searchQuery.value = query;
 
   if (_.isEmpty(_.trim(query))) {
-    resetSearchState();
+    suggestions.value = [];
+    bauvorhaben.value = [];
+    selectedValue.value = null;
     return;
   }
 
@@ -310,7 +299,7 @@ function handleSearchInput(query: string): void {
  * Bei einem Suchvorschlag wird nur der Suchtext übernommen
  * und direkt eine neue Suche ausgelöst.
  *
- * Bei einem echten Ergebnis bleibt die ausgewählte Bauvorhaben-ID stabil erhalten.
+ * Bei einem echten Ergebnis bleibt die ausgewählte ID in selectedValue erhalten.
  *
  * @param value Der technische Wert des ausgewählten Eintrags.
  */
@@ -355,11 +344,11 @@ function handleEnter(): void {
 }
 
 /**
- * Setzt nur den internen Suchzustand der Komponente zurück.
+ * Setzt nur den sichtbaren Suchzustand zurück.
  *
- * Dabei bleiben bereits im Parent übernommene Daten erhalten.
+ * Bereits übernommene Daten im Parent bleiben erhalten.
  */
-function resetSearchState(): void {
+function resetVisibleSearchState(): void {
   debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
@@ -375,13 +364,13 @@ function resetSearchState(): void {
 }
 
 /**
- * Setzt den kompletten Zustand der Suche zurück.
+ * Setzt den kompletten Zustand der Auswahl zurück.
  *
- * Zusätzlich zum Suchzustand wird auch der an den Parent
- * gebundene Bauvorhaben-Wert entfernt.
+ * Zusätzlich zum sichtbaren Suchzustand wird auch
+ * der an den Parent gebundene Bauvorhaben-Wert entfernt.
  */
 function clearSearch(): void {
-  resetSearchState();
+  resetVisibleSearchState();
   selectedBauvorhabenId.value = undefined;
 }
 
@@ -389,7 +378,7 @@ function clearSearch(): void {
  * Bricht die Auswahl ab.
  *
  * Dabei wird der komplette Zustand zurückgesetzt
- * und der Dialog anschließend geschlossen.
+ * und der Dialog geschlossen.
  */
 function abbrechen(): void {
   clearSearch();
@@ -411,32 +400,33 @@ function uebernehmen(): void {
 }
 
 /**
- * Beobachtet, ob der Dialog geöffnet oder geschlossen ist.
+ * Beobachtet, ob der Dialog geöffnet ist.
  *
- * Beim Öffnen wird das Suchfeld automatisch fokussiert.
- * Beim Schließen wird nur der interne Suchzustand zurückgesetzt,
- * der bereits übernommene Parent-Wert bleibt dabei erhalten.
+ * Beim Öffnen wird das Suchfeld fokussiert.
+ * Beim Schließen wird bewusst kein Reset ausgeführt,
+ * damit kein Konflikt mit laufenden Blur-/Unmount-Zyklen entsteht.
  *
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
 watch(dialogOpen, async (isOpen) => {
-  if (isOpen) {
-    await nextTick();
-    bauvorhabenSuchField.value?.focus?.();
+  if (!isOpen) {
     return;
   }
 
-  resetSearchState();
+  await nextTick();
+  bauvorhabenSuchField.value?.focus?.();
 });
 
 /**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
  *
- * Hier werden laufende zeitverzögerte Suchaufrufe und der interne Zustand
- * sauber beendet bzw. zurückgesetzt.
+ * Hier werden nur noch laufende debounced Suchaufrufe beendet.
+ * Es werden bewusst keine weiteren reaktiven Zustände mehr verändert,
+ * um Konflikte beim Unmounting zu vermeiden.
  */
 onBeforeUnmount(() => {
   isComponentActive = false;
-  resetSearchState();
+  debouncedSuggest.cancel();
+  debouncedSearch.cancel();
 });
 </script>
