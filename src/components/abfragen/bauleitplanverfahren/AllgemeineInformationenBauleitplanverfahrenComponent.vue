@@ -216,7 +216,11 @@ watch(
  */
 async function getBauvorhaben(): Promise<void> {
   if (!_.isNil(abfrage.value.bauvorhaben) && !_.isEmpty(abfrage.value.bauvorhaben)) {
-    bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
+    try {
+      bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
+    } catch {
+      bauvorhaben.value = createBauvorhabenDto();
+    }
   } else {
     bauvorhaben.value = createBauvorhabenDto();
   }
