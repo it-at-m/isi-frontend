@@ -197,13 +197,18 @@ function createQuery(searchText: string) {
     selectKinderkrippe: false,
     selectMittelschule: false,
     page: 1,
-    pageSize: 20,
+    pageSize: 100,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
 
   if (props.context === Context.ABFRAGE) {
-    switch (searchStore.selectedAbfrage?.artAbfrage) {
+    // Issue 2 fix: Check if selectedAbfrage exists before accessing artAbfrage
+    if (!searchStore.selectedAbfrage) {
+      return null;
+    }
+
+    switch (searchStore.selectedAbfrage.artAbfrage) {
       case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
         query.selectBauleitplanverfahren = true;
         break;
@@ -230,8 +235,13 @@ function createQuery(searchText: string) {
  */
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {
   if (props.context === Context.ABFRAGE) {
+    // Issue 2 fix: Check if selectedAbfrage exists before filtering
+    if (!searchStore.selectedAbfrage) {
+      return false;
+    }
+
     return (
-      result.artAbfrage === searchStore.selectedAbfrage?.artAbfrage &&
+      result.artAbfrage === searchStore.selectedAbfrage.artAbfrage &&
       result.statusAbfrage !== undefined &&
       result.statusAbfrage !== StatusAbfrage.Angelegt &&
       result.statusAbfrage !== StatusAbfrage.Abbruch
@@ -260,7 +270,17 @@ async function search(query: string): Promise<void> {
   loading.value = true;
 
   try {
-    const result = await searchForEntities(createQuery(trimmedQuery));
+    // Issue 2 fix: Check if query creation succeeded
+    const searchQuery = createQuery(trimmedQuery);
+    if (!searchQuery) {
+      // selectedAbfrage is missing in ABFRAGE context
+      abfragen.value = [];
+      console.warn("Cannot perform search: selectedAbfrage is missing in ABFRAGE context");
+      return;
+    }
+
+    // Issue 3 fix: Wrap searchForEntities in try/catch
+    const result = await searchForEntities(searchQuery);
 
     if (!isComponentActive || requestId !== currentSearchRequestId) {
       return;
@@ -268,11 +288,19 @@ async function search(query: string): Promise<void> {
 
     const normalizedQuery = trimmedQuery.toLowerCase();
 
+    // Issue 1 fix: Apply filters to get filtered results, then take first 20
     abfragen.value =
       result.searchResults
         ?.map((entry) => entry as AbfrageSearchResultDto)
         .filter(searchResultFilter)
-        .filter((entry) => getItemText(entry).toLowerCase().includes(normalizedQuery)) ?? [];
+        .filter((entry) => getItemText(entry).toLowerCase().includes(normalizedQuery))
+        .slice(0, 20) ?? [];
+  } catch (error) {
+    // Issue 3 fix: Handle errors gracefully
+    console.error("Search failed:", error);
+    if (isComponentActive && requestId === currentSearchRequestId) {
+      abfragen.value = [];
+    }
   } finally {
     if (isComponentActive && requestId === currentSearchRequestId) {
       loading.value = false;
@@ -367,11 +395,20 @@ async function abfrageUebernehmen(): Promise<void> {
     return;
   }
 
-  let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
-  selectedAbfrage = await getById(pendingSelectedAbfrageId.value);
+  // Issue 4 fix: Wrap getById in try/catch to handle errors gracefully
+  try {
+    let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
+    selectedAbfrage = await getById(pendingSelectedAbfrageId.value);
 
-  clearSearch();
-  emit("abfrageUebernehmen", selectedAbfrage);
+    clearSearch();
+    emit("abfrageUebernehmen", selectedAbfrage);
+  } catch (error) {
+    console.error("Failed to load selected Abfrage:", error);
+    // Reset state on error
+    pendingSelectedAbfrageId.value = undefined;
+    pendingSelectedLabel.value = "";
+    // User will see the error in console and dialog remains open for retry
+  }
 }
 
 /**
