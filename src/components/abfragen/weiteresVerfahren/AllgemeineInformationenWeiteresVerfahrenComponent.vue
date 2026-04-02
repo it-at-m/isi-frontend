@@ -211,16 +211,14 @@ const nameBauvorhaben = computed(() => {
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
-    await getBauvorhaben();
-
-    if (isInitialBauvorhabenWatchRun.value) {
+    const isInitialRun = isInitialBauvorhabenWatchRun.value;
+    if (isInitialRun) {
       isInitialBauvorhabenWatchRun.value = false;
-      return;
-    }
-
-    if (newValue !== oldValue) {
+    } else if (newValue !== oldValue) {
       formChanged();
     }
+
+    await getBauvorhaben();
   },
   { immediate: true },
 );

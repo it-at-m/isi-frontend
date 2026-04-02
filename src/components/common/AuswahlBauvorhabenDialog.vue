@@ -225,10 +225,12 @@ const debouncedSearch = _.debounce((query: string) => {
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
 function handleSearchInput(query: string): void {
-  searchQuery.value = query;
+  debouncedSearch.cancel();
+  currentSearchRequestId++;
+  loading.value = false;
+  bauvorhaben.value = [];
 
   if (_.isEmpty(_.trim(query))) {
-    bauvorhaben.value = [];
     pendingSelectedBauvorhabenId.value = undefined;
     pendingSelectedLabel.value = "";
     return;
@@ -298,7 +300,6 @@ function clearSearch(): void {
  */
 function abbrechen(): void {
   clearSearch();
-  selectedBauvorhabenId.value = undefined;
   dialogOpen.value = false;
 }
 
