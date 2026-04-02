@@ -7,6 +7,7 @@ import colors from "vuetify/util/colors";
 
 const vuetify = createVuetify({
   theme: {
+    defaultTheme: "light",
     themes: {
       light: {
         dark: false,

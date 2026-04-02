@@ -33,9 +33,9 @@ export interface GetDokumenteRequest {
 export class DokumenteApi extends runtime.BaseAPI {
 
     /**
-     * Holen aller in der Anwendung vorhandenen Dokumente
+     * Creates request options for getDokumente without sending the request
      */
-    async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
+    async getDokumenteRequestOpts(requestParameters: GetDokumenteRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['pageNumber'] != null) {
@@ -51,12 +51,20 @@ export class DokumenteApi extends runtime.BaseAPI {
 
         let urlPath = `/dokumente`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holen aller in der Anwendung vorhandenen Dokumente
+     */
+    async getDokumenteRaw(requestParameters: GetDokumenteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DokumenteDto>> {
+        const requestOptions = await this.getDokumenteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DokumenteDtoFromJSON(jsonValue));
     }

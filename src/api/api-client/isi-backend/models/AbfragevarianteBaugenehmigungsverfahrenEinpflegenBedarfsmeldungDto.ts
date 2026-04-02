@@ -20,13 +20,6 @@ import {
     BedarfsmeldungDtoToJSON,
     BedarfsmeldungDtoToJSONTyped,
 } from './BedarfsmeldungDto';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
-} from './DokumentDto';
 
 /**
  * 
@@ -48,7 +41,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldung
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum;
@@ -58,12 +51,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldung
      * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
-    /**
-     * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
-     */
-    bedarfsmeldungDokumenteFachreferate?: Array<DokumentDto>;
     /**
      * 
      * @type {boolean}
@@ -154,7 +141,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungD
         'version': json['version'] == null ? undefined : json['version'],
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'bedarfsmeldungDokumenteFachreferate': json['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((json['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoFromJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],
@@ -182,7 +168,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungD
         'version': value['version'],
         'artAbfragevariante': value['artAbfragevariante'],
         'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'bedarfsmeldungDokumenteFachreferate': value['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((value['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoToJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],
         'ausgeloesterBedarfMitversorgungInBestEinrichtungenKita': value['ausgeloesterBedarfMitversorgungInBestEinrichtungenKita'],

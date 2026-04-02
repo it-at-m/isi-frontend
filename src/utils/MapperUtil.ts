@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -29,6 +29,7 @@ import type {
   AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto,
   AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto,
   AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
@@ -724,9 +725,28 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
   const copy = _.cloneDeep(value);
+  if ("statusAbfrage" in value && "artAbfrage" in value) {
+    sanitizeAbfragevariantenSachbearbeitung(copy);
+  }
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
+}
+/*
+ * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Abfragevariante Nr. 1.x) übernommen werden,
+ * nicht aber die der Sachbearbeitung (Abfragevariante Nr. 2.x)
+ */
+function sanitizeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
+  if (value.statusAbfrage === StatusAbfrage.StartBearbeitung) {
+    if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      (value as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+      (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren = [];
+    }
+  }
+  return value;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

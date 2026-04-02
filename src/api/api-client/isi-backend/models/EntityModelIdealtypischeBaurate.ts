@@ -66,7 +66,7 @@ export interface EntityModelIdealtypischeBaurate {
     bisExklusiv?: number;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelIdealtypischeBaurateTypEnum}
      * @memberof EntityModelIdealtypischeBaurate
      */
     typ?: EntityModelIdealtypischeBaurateTypEnum;

@@ -180,13 +180,13 @@ export interface SearchQueryDto {
     filterGfWohnenGeplantBis?: number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<SearchQueryDtoFilterStandVerfahrenEnum>}
      * @memberof SearchQueryDto
      */
     filterStandVerfahren?: Array<SearchQueryDtoFilterStandVerfahrenEnum>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>}
      * @memberof SearchQueryDto
      */
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum>;

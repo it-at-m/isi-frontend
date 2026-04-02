@@ -66,9 +66,9 @@ export interface UpdateBauvorhabenRequest {
 export class BauvorhabenApi extends runtime.BaseAPI {
 
     /**
-     * Anlegen eines neuen Bauvorhabens
+     * Creates request options for createBauvorhaben without sending the request
      */
-    async createBauvorhabenRaw(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async createBauvorhabenRequestOpts(requestParameters: CreateBauvorhabenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['bauvorhabenDto'] == null) {
             throw new runtime.RequiredError(
                 'bauvorhabenDto',
@@ -89,13 +89,21 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
         let urlPath = `/bauvorhaben`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: BauvorhabenDtoToJSON(requestParameters['bauvorhabenDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Anlegen eines neuen Bauvorhabens
+     */
+    async createBauvorhabenRaw(requestParameters: CreateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+        const requestOptions = await this.createBauvorhabenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
     }
@@ -109,9 +117,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Löschen eines Bauvorhabens
+     * Creates request options for deleteBauvorhaben without sending the request
      */
-    async deleteBauvorhabenRaw(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteBauvorhabenRequestOpts(requestParameters: DeleteBauvorhabenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -127,12 +135,20 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhaben/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Löschen eines Bauvorhabens
+     */
+    async deleteBauvorhabenRaw(requestParameters: DeleteBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteBauvorhabenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -145,9 +161,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lesen eines Bauvorhabens
+     * Creates request options for getBauvorhabenById without sending the request
      */
-    async getBauvorhabenByIdRaw(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async getBauvorhabenByIdRequestOpts(requestParameters: GetBauvorhabenByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -163,12 +179,20 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhaben/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lesen eines Bauvorhabens
+     */
+    async getBauvorhabenByIdRaw(requestParameters: GetBauvorhabenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+        const requestOptions = await this.getBauvorhabenByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
     }
@@ -182,10 +206,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
-     * Lade alle Abfragen die einem Bauvorhaben angehören
+     * Creates request options for getReferencedAbfrage without sending the request
      */
-    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
+    async getReferencedAbfrageRequestOpts(requestParameters: GetReferencedAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -201,12 +224,21 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhaben/referenced/abfragen/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Das Ergebnis wird anhand des Erstellungsdatums aufsteigend sortiert.
+     * Lade alle Abfragen die einem Bauvorhaben angehören
+     */
+    async getReferencedAbfrageRaw(requestParameters: GetReferencedAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AbfrageSearchResultDto>>> {
+        const requestOptions = await this.getReferencedAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AbfrageSearchResultDtoFromJSON));
     }
@@ -221,10 +253,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
-     * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     * Creates request options for getReferencedInfrastruktureinrichtung without sending the request
      */
-    async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungSearchResultDto>>> {
+    async getReferencedInfrastruktureinrichtungRequestOpts(requestParameters: GetReferencedInfrastruktureinrichtungRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -240,12 +271,21 @@ export class BauvorhabenApi extends runtime.BaseAPI {
         let urlPath = `/bauvorhaben/referenced/infrastruktureinrichtung/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Das Ergebnis wird anhand des InfrastruktureinrichtungTyps und innerhalb des Types alphabetisch sortiert
+     * Lade alle Infrastruktureinrichtungen die einem Bauvorhaben angehören
+     */
+    async getReferencedInfrastruktureinrichtungRaw(requestParameters: GetReferencedInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InfrastruktureinrichtungSearchResultDto>>> {
+        const requestOptions = await this.getReferencedInfrastruktureinrichtungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InfrastruktureinrichtungSearchResultDtoFromJSON));
     }
@@ -260,9 +300,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#START_BEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
+     * Creates request options for putChangeRelevanteAbfragevariante without sending the request
      */
-    async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async putChangeRelevanteAbfragevarianteRequestOpts(requestParameters: PutChangeRelevanteAbfragevarianteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['abfragevarianteId'] == null) {
             throw new runtime.RequiredError(
                 'abfragevarianteId',
@@ -281,12 +321,20 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
         let urlPath = `/bauvorhaben/change-relevante-abfragevariante`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt die übergebene Abfragevariante als relevante Abfrage beim Bauvorhaben, welches mit der Abfrage der Abfragevariante verknüpft ist.Ist die Abfragevariante bereits als relevant markiert, wird die relevante Abfragevariante des Bauvorhabens entfernt.Eine Relevantsetzung kann nur vorgenommen werden, wenn die Abfrage ein Bauvorhaben referenziert,die Abfrage im Status {@link StatusAbfrage#START_BEARBEITUNG} istund noch keine andere Abfrage als relevant markiert wurde.
+     */
+    async putChangeRelevanteAbfragevarianteRaw(requestParameters: PutChangeRelevanteAbfragevarianteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+        const requestOptions = await this.putChangeRelevanteAbfragevarianteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
     }
@@ -300,9 +348,9 @@ export class BauvorhabenApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung eines Bauvorhabens
+     * Creates request options for updateBauvorhaben without sending the request
      */
-    async updateBauvorhabenRaw(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+    async updateBauvorhabenRequestOpts(requestParameters: UpdateBauvorhabenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['bauvorhabenDto'] == null) {
             throw new runtime.RequiredError(
                 'bauvorhabenDto',
@@ -319,13 +367,21 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
         let urlPath = `/bauvorhaben`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: BauvorhabenDtoToJSON(requestParameters['bauvorhabenDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung eines Bauvorhabens
+     */
+    async updateBauvorhabenRaw(requestParameters: UpdateBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BauvorhabenDto>> {
+        const requestOptions = await this.updateBauvorhabenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BauvorhabenDtoFromJSON(jsonValue));
     }

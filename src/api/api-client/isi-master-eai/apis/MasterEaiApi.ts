@@ -38,9 +38,9 @@ export interface GetAdressenRequest {
 export class MasterEaiApi extends runtime.BaseAPI {
 
     /**
-     * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
+     * Creates request options for getAdressen without sending the request
      */
-    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
+    async getAdressenRequestOpts(requestParameters: GetAdressenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['adressSucheDto'] == null) {
             throw new runtime.RequiredError(
                 'adressSucheDto',
@@ -57,13 +57,21 @@ export class MasterEaiApi extends runtime.BaseAPI {
 
         let urlPath = `/adresse/search`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: AdressSucheDtoToJSON(requestParameters['adressSucheDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt die Adressen bei denen die Suchkriterien übereinstimmen.
+     */
+    async getAdressenRaw(requestParameters: GetAdressenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MuenchenAdressenDto>> {
+        const requestOptions = await this.getAdressenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MuenchenAdressenDtoFromJSON(jsonValue));
     }

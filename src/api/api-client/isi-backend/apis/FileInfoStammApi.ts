@@ -28,9 +28,9 @@ import {
 export class FileInfoStammApi extends runtime.BaseAPI {
 
     /**
-     * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
+     * Creates request options for getFileInformation without sending the request
      */
-    async getFileInformationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileInformationDto>> {
+    async getFileInformationRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -38,12 +38,20 @@ export class FileInfoStammApi extends runtime.BaseAPI {
 
         let urlPath = `/stammdaten/file-information`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gibt die in der Anwendung erlaubten Dateiendungen, maximalen Dateigrößen, ... zurück (z.B. .pdf).
+     */
+    async getFileInformationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileInformationDto>> {
+        const requestOptions = await this.getFileInformationRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FileInformationDtoFromJSON(jsonValue));
     }

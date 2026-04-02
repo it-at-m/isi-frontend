@@ -80,7 +80,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
     abfragevariantenNr?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum;
@@ -92,7 +92,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
     name?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
     wesentlicheRechtsgrundlage?: Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>;
@@ -224,7 +224,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteBaugenehmigungsverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
@@ -272,22 +272,10 @@ export interface AbfragevarianteBaugenehmigungsverfahrenDto {
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
-     */
-    bedarfsmeldungDokumenteFachreferate?: Array<DokumentDto>;
-    /**
-     * 
      * @type {Array<BedarfsmeldungDto>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
-    /**
-     * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenDto
-     */
-    bedarfsmeldungDokumenteAbfrageersteller?: Array<DokumentDto>;
     /**
      * 
      * @type {Array<BauabschnittDto>}
@@ -460,9 +448,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoFromJSONTyped(json: an
         'bauratendateiInputBasis': json['bauratendateiInputBasis'] == null ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInput': json['bauratendateiInput'] == null ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
         'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'bedarfsmeldungDokumenteFachreferate': json['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((json['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoFromJSON)),
         'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
-        'bedarfsmeldungDokumenteAbfrageersteller': json['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoFromJSON)),
         'bauabschnitte': json['bauabschnitte'] == null ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
@@ -526,9 +512,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenDtoToJSONTyped(value?: Ab
         'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value['bauratendateiInputBasis']),
         'bauratendateiInput': value['bauratendateiInput'] == null ? undefined : ((value['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoToJSON)),
         'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'bedarfsmeldungDokumenteFachreferate': value['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((value['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoToJSON)),
         'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
-        'bedarfsmeldungDokumenteAbfrageersteller': value['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoToJSON)),
         'bauabschnitte': value['bauabschnitte'] == null ? undefined : ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],

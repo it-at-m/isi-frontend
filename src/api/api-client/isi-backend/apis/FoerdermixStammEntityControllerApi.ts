@@ -62,9 +62,9 @@ export interface PutItemResourceFoerdermixstammPutRequest {
 export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-foerdermixstamm
+     * Creates request options for deleteItemResourceFoerdermixstammDelete without sending the request
      */
-    async deleteItemResourceFoerdermixstammDeleteRaw(requestParameters: DeleteItemResourceFoerdermixstammDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceFoerdermixstammDeleteRequestOpts(requestParameters: DeleteItemResourceFoerdermixstammDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/foerdermixStamms/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-foerdermixstamm
+     */
+    async deleteItemResourceFoerdermixstammDeleteRaw(requestParameters: DeleteItemResourceFoerdermixstammDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceFoerdermixstammDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-foerdermixstamm
+     * Creates request options for getCollectionResourceFoerdermixstammGet without sending the request
      */
-    async getCollectionResourceFoerdermixstammGetRaw(requestParameters: GetCollectionResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelFoerdermixStamm>> {
+    async getCollectionResourceFoerdermixstammGetRequestOpts(requestParameters: GetCollectionResourceFoerdermixstammGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/foerdermixStamms`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-foerdermixstamm
+     */
+    async getCollectionResourceFoerdermixstammGetRaw(requestParameters: GetCollectionResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelFoerdermixStamm>> {
+        const requestOptions = await this.getCollectionResourceFoerdermixstammGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelFoerdermixStammFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-foerdermixstamm
+     * Creates request options for getItemResourceFoerdermixstammGet without sending the request
      */
-    async getItemResourceFoerdermixstammGetRaw(requestParameters: GetItemResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+    async getItemResourceFoerdermixstammGetRequestOpts(requestParameters: GetItemResourceFoerdermixstammGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/foerdermixStamms/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-foerdermixstamm
+     */
+    async getItemResourceFoerdermixstammGetRaw(requestParameters: GetItemResourceFoerdermixstammGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+        const requestOptions = await this.getItemResourceFoerdermixstammGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-foerdermixstamm
+     * Creates request options for patchItemResourceFoerdermixstammPatch without sending the request
      */
-    async patchItemResourceFoerdermixstammPatchRaw(requestParameters: PatchItemResourceFoerdermixstammPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+    async patchItemResourceFoerdermixstammPatchRequestOpts(requestParameters: PatchItemResourceFoerdermixstammPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/foerdermixStamms/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-foerdermixstamm
+     */
+    async patchItemResourceFoerdermixstammPatchRaw(requestParameters: PatchItemResourceFoerdermixstammPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+        const requestOptions = await this.patchItemResourceFoerdermixstammPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * create-foerdermixstamm
+     * Creates request options for postCollectionResourceFoerdermixstammPost without sending the request
      */
-    async postCollectionResourceFoerdermixstammPostRaw(requestParameters: PostCollectionResourceFoerdermixstammPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+    async postCollectionResourceFoerdermixstammPostRequestOpts(requestParameters: PostCollectionResourceFoerdermixstammPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['foerdermixStammRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'foerdermixStammRequestBody',
@@ -249,13 +281,21 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/foerdermixStamms`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-foerdermixstamm
+     */
+    async postCollectionResourceFoerdermixstammPostRaw(requestParameters: PostCollectionResourceFoerdermixstammPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+        const requestOptions = await this.postCollectionResourceFoerdermixstammPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-foerdermixstamm
+     * Creates request options for putItemResourceFoerdermixstammPut without sending the request
      */
-    async putItemResourceFoerdermixstammPutRaw(requestParameters: PutItemResourceFoerdermixstammPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+    async putItemResourceFoerdermixstammPutRequestOpts(requestParameters: PutItemResourceFoerdermixstammPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
         let urlPath = `/foerdermixStamms/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: FoerdermixStammRequestBodyToJSON(requestParameters['foerdermixStammRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-foerdermixstamm
+     */
+    async putItemResourceFoerdermixstammPutRaw(requestParameters: PutItemResourceFoerdermixstammPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+        const requestOptions = await this.putItemResourceFoerdermixstammPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
     }

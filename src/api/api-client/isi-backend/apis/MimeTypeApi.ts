@@ -38,10 +38,9 @@ export interface ExtractMediaTypeInformationForAllowedMediaTypeRequest {
 export class MimeTypeApi extends runtime.BaseAPI {
 
     /**
-     * Handelt es sich um einen ungültigen Mime-Type wird die referenzierte Datei vom S3-Storage gelöscht.
-     * Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.
+     * Creates request options for extractMediaTypeInformationForAllowedMediaType without sending the request
      */
-    async extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MimeTypeInformationDto>> {
+    async extractMediaTypeInformationForAllowedMediaTypeRequestOpts(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['filepathDto'] == null) {
             throw new runtime.RequiredError(
                 'filepathDto',
@@ -58,13 +57,22 @@ export class MimeTypeApi extends runtime.BaseAPI {
 
         let urlPath = `/mime-type`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: FilepathDtoToJSON(requestParameters['filepathDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Handelt es sich um einen ungültigen Mime-Type wird die referenzierte Datei vom S3-Storage gelöscht.
+     * Stellt die Mime-Type-Information für die im Parameter referenzierte und im S3-Storage befindliche Datei zur Verfügung.
+     */
+    async extractMediaTypeInformationForAllowedMediaTypeRaw(requestParameters: ExtractMediaTypeInformationForAllowedMediaTypeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MimeTypeInformationDto>> {
+        const requestOptions = await this.extractMediaTypeInformationForAllowedMediaTypeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MimeTypeInformationDtoFromJSON(jsonValue));
     }

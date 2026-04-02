@@ -62,9 +62,9 @@ export interface PutItemResourceVersorgungsquotesobonhortPutRequest {
 export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAPI {
 
     /**
-     * delete-versorgungsquotesobonhort
+     * Creates request options for deleteItemResourceVersorgungsquotesobonhortDelete without sending the request
      */
-    async deleteItemResourceVersorgungsquotesobonhortDeleteRaw(requestParameters: DeleteItemResourceVersorgungsquotesobonhortDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteItemResourceVersorgungsquotesobonhortDeleteRequestOpts(requestParameters: DeleteItemResourceVersorgungsquotesobonhortDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -80,12 +80,20 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-versorgungsquotesobonhort
+     */
+    async deleteItemResourceVersorgungsquotesobonhortDeleteRaw(requestParameters: DeleteItemResourceVersorgungsquotesobonhortDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteItemResourceVersorgungsquotesobonhortDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -98,9 +106,9 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
     }
 
     /**
-     * get-versorgungsquotesobonhort
+     * Creates request options for getCollectionResourceVersorgungsquotesobonhortGet without sending the request
      */
-    async getCollectionResourceVersorgungsquotesobonhortGetRaw(requestParameters: GetCollectionResourceVersorgungsquotesobonhortGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelVersorgungsquoteSobonHort>> {
+    async getCollectionResourceVersorgungsquotesobonhortGetRequestOpts(requestParameters: GetCollectionResourceVersorgungsquotesobonhortGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['page'] != null) {
@@ -120,12 +128,20 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
         let urlPath = `/versorgungsquoteSobonHorts`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-versorgungsquotesobonhort
+     */
+    async getCollectionResourceVersorgungsquotesobonhortGetRaw(requestParameters: GetCollectionResourceVersorgungsquotesobonhortGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagedModelEntityModelVersorgungsquoteSobonHort>> {
+        const requestOptions = await this.getCollectionResourceVersorgungsquotesobonhortGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PagedModelEntityModelVersorgungsquoteSobonHortFromJSON(jsonValue));
     }
@@ -139,9 +155,9 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
     }
 
     /**
-     * get-versorgungsquotesobonhort
+     * Creates request options for getItemResourceVersorgungsquotesobonhortGet without sending the request
      */
-    async getItemResourceVersorgungsquotesobonhortGetRaw(requestParameters: GetItemResourceVersorgungsquotesobonhortGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+    async getItemResourceVersorgungsquotesobonhortGetRequestOpts(requestParameters: GetItemResourceVersorgungsquotesobonhortGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -157,12 +173,20 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-versorgungsquotesobonhort
+     */
+    async getItemResourceVersorgungsquotesobonhortGetRaw(requestParameters: GetItemResourceVersorgungsquotesobonhortGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+        const requestOptions = await this.getItemResourceVersorgungsquotesobonhortGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteSobonHortFromJSON(jsonValue));
     }
@@ -176,9 +200,9 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
     }
 
     /**
-     * patch-versorgungsquotesobonhort
+     * Creates request options for patchItemResourceVersorgungsquotesobonhortPatch without sending the request
      */
-    async patchItemResourceVersorgungsquotesobonhortPatchRaw(requestParameters: PatchItemResourceVersorgungsquotesobonhortPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+    async patchItemResourceVersorgungsquotesobonhortPatchRequestOpts(requestParameters: PatchItemResourceVersorgungsquotesobonhortPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -203,13 +227,21 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteSobonHortRequestBodyToJSON(requestParameters['versorgungsquoteSobonHortRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-versorgungsquotesobonhort
+     */
+    async patchItemResourceVersorgungsquotesobonhortPatchRaw(requestParameters: PatchItemResourceVersorgungsquotesobonhortPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+        const requestOptions = await this.patchItemResourceVersorgungsquotesobonhortPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteSobonHortFromJSON(jsonValue));
     }
@@ -230,9 +262,9 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
     }
 
     /**
-     * create-versorgungsquotesobonhort
+     * Creates request options for postCollectionResourceVersorgungsquotesobonhortPost without sending the request
      */
-    async postCollectionResourceVersorgungsquotesobonhortPostRaw(requestParameters: PostCollectionResourceVersorgungsquotesobonhortPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+    async postCollectionResourceVersorgungsquotesobonhortPostRequestOpts(requestParameters: PostCollectionResourceVersorgungsquotesobonhortPostRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['versorgungsquoteSobonHortRequestBody'] == null) {
             throw new runtime.RequiredError(
                 'versorgungsquoteSobonHortRequestBody',
@@ -249,13 +281,21 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
         let urlPath = `/versorgungsquoteSobonHorts`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteSobonHortRequestBodyToJSON(requestParameters['versorgungsquoteSobonHortRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * create-versorgungsquotesobonhort
+     */
+    async postCollectionResourceVersorgungsquotesobonhortPostRaw(requestParameters: PostCollectionResourceVersorgungsquotesobonhortPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+        const requestOptions = await this.postCollectionResourceVersorgungsquotesobonhortPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteSobonHortFromJSON(jsonValue));
     }
@@ -269,9 +309,9 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
     }
 
     /**
-     * update-versorgungsquotesobonhort
+     * Creates request options for putItemResourceVersorgungsquotesobonhortPut without sending the request
      */
-    async putItemResourceVersorgungsquotesobonhortPutRaw(requestParameters: PutItemResourceVersorgungsquotesobonhortPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+    async putItemResourceVersorgungsquotesobonhortPutRequestOpts(requestParameters: PutItemResourceVersorgungsquotesobonhortPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -296,13 +336,21 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: VersorgungsquoteSobonHortRequestBodyToJSON(requestParameters['versorgungsquoteSobonHortRequestBody']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-versorgungsquotesobonhort
+     */
+    async putItemResourceVersorgungsquotesobonhortPutRaw(requestParameters: PutItemResourceVersorgungsquotesobonhortPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelVersorgungsquoteSobonHort>> {
+        const requestOptions = await this.putItemResourceVersorgungsquotesobonhortPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelVersorgungsquoteSobonHortFromJSON(jsonValue));
     }

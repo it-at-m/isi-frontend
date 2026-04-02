@@ -47,9 +47,9 @@ export interface UpdateInfrastruktureinrichtungOperationRequest {
 export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
 
     /**
-     * Anlegen einer neuen Infrastruktureinrichtung
+     * Creates request options for createInfrastruktureinrichtung without sending the request
      */
-    async createInfrastruktureinrichtungRaw(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async createInfrastruktureinrichtungRequestOpts(requestParameters: CreateInfrastruktureinrichtungRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['updateInfrastruktureinrichtungRequest'] == null) {
             throw new runtime.RequiredError(
                 'updateInfrastruktureinrichtungRequest',
@@ -66,13 +66,21 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
 
         let urlPath = `/infrastruktureinrichtung`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateInfrastruktureinrichtungRequestToJSON(requestParameters['updateInfrastruktureinrichtungRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Anlegen einer neuen Infrastruktureinrichtung
+     */
+    async createInfrastruktureinrichtungRaw(requestParameters: CreateInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+        const requestOptions = await this.createInfrastruktureinrichtungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UpdateInfrastruktureinrichtungRequestFromJSON(jsonValue));
     }
@@ -86,9 +94,9 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     }
 
     /**
-     * Löschen einer Infrastruktureinrichtung
+     * Creates request options for deleteInfrastruktureinrichtungById without sending the request
      */
-    async deleteInfrastruktureinrichtungByIdRaw(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteInfrastruktureinrichtungByIdRequestOpts(requestParameters: DeleteInfrastruktureinrichtungByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -104,12 +112,20 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
         let urlPath = `/infrastruktureinrichtung/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Löschen einer Infrastruktureinrichtung
+     */
+    async deleteInfrastruktureinrichtungByIdRaw(requestParameters: DeleteInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteInfrastruktureinrichtungByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -122,9 +138,9 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lesen einer Infrastruktureinrichtung
+     * Creates request options for getInfrastruktureinrichtungById without sending the request
      */
-    async getInfrastruktureinrichtungByIdRaw(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async getInfrastruktureinrichtungByIdRequestOpts(requestParameters: GetInfrastruktureinrichtungByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -140,12 +156,20 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
         let urlPath = `/infrastruktureinrichtung/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lesen einer Infrastruktureinrichtung
+     */
+    async getInfrastruktureinrichtungByIdRaw(requestParameters: GetInfrastruktureinrichtungByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+        const requestOptions = await this.getInfrastruktureinrichtungByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UpdateInfrastruktureinrichtungRequestFromJSON(jsonValue));
     }
@@ -159,9 +183,9 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     }
 
     /**
-     * Aktualisierung einer Infrastruktureinrichtung
+     * Creates request options for updateInfrastruktureinrichtung without sending the request
      */
-    async updateInfrastruktureinrichtungRaw(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+    async updateInfrastruktureinrichtungRequestOpts(requestParameters: UpdateInfrastruktureinrichtungOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['updateInfrastruktureinrichtungRequest'] == null) {
             throw new runtime.RequiredError(
                 'updateInfrastruktureinrichtungRequest',
@@ -178,13 +202,21 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
 
         let urlPath = `/infrastruktureinrichtung`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateInfrastruktureinrichtungRequestToJSON(requestParameters['updateInfrastruktureinrichtungRequest']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Aktualisierung einer Infrastruktureinrichtung
+     */
+    async updateInfrastruktureinrichtungRaw(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+        const requestOptions = await this.updateInfrastruktureinrichtungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UpdateInfrastruktureinrichtungRequestFromJSON(jsonValue));
     }

@@ -79,7 +79,7 @@ export interface InfrastruktureinrichtungDto {
     bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum}
      * @memberof InfrastruktureinrichtungDto
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum;
@@ -121,7 +121,7 @@ export interface InfrastruktureinrichtungDto {
     fertigstellungsjahr?: number;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungDtoStatusEnum}
      * @memberof InfrastruktureinrichtungDto
      */
     status: InfrastruktureinrichtungDtoStatusEnum;

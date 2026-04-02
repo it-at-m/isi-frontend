@@ -68,7 +68,7 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     wohnungsnaheKinderkrippePlaetze?: number;
     /**
      * 
-     * @type {string}
+     * @type {KinderkrippeDtoEinrichtungstraegerEnum}
      * @memberof KinderkrippeDto
      */
     einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;

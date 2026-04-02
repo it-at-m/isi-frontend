@@ -40,8 +40,9 @@ export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Requ
 export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchSobonorientierungswertsozialeinfrastrukturGet without sending the request
      */
-    async executeSearchSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['einrichtungstyp'] != null) {
@@ -61,12 +62,19 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndGueltigAbIsLessThanEqualOrderByGueltigAbDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGetRaw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.executeSearchSobonorientierungswertsozialeinfrastrukturGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }
@@ -79,8 +87,9 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
     }
 
     /**
+     * Creates request options for executeSearchSobonorientierungswertsozialeinfrastrukturGet1 without sending the request
      */
-    async executeSearchSobonorientierungswertsozialeinfrastrukturGet1Raw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGet1RequestOpts(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['einrichtungstyp'] != null) {
@@ -100,12 +109,19 @@ export class SobonOrientierungswertSozialeInfrastrukturSearchControllerApi exten
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/search/findFirstByEinrichtungstypAndFoerderartBezeichnungAndJahrBezeichnung`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchSobonorientierungswertsozialeinfrastrukturGet1Raw(requestParameters: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelSobonOrientierungswertSozialeInfrastruktur>> {
+        const requestOptions = await this.executeSearchSobonorientierungswertsozialeinfrastrukturGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON(jsonValue));
     }

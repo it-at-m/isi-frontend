@@ -56,7 +56,7 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
     id?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageSearchResultDtoArtAbfrageEnum}
      * @memberof AbfrageSearchResultDto
      */
     artAbfrage?: AbfrageSearchResultDtoArtAbfrageEnum;
@@ -86,7 +86,7 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
     fristBearbeitung?: Date;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageSearchResultDtoStandVerfahrenEnum}
      * @memberof AbfrageSearchResultDto
      */
     standVerfahren?: AbfrageSearchResultDtoStandVerfahrenEnum;

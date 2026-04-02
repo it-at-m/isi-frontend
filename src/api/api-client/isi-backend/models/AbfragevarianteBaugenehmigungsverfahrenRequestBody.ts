@@ -79,7 +79,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     name?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
     wesentlicheRechtsgrundlage?: Array<AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum>;
@@ -211,7 +211,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenRequestBodySobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteBaugenehmigungsverfahrenRequestBodySobonOrientierungswertJahrPlanungsursaechlichEnum;
@@ -259,22 +259,10 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     bedarfsmeldungFachreferate?: Array<Bedarfsmeldung>;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
-     */
-    bedarfsmeldungDokumenteFachreferate?: Array<string>;
-    /**
-     * 
      * @type {Array<Bedarfsmeldung>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
     bedarfsmeldungAbfrageersteller?: Array<Bedarfsmeldung>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
-     */
-    bedarfsmeldungDokumenteAbfrageersteller?: Array<string>;
     /**
      * 
      * @type {Array<Bauabschnitt>}
@@ -349,7 +337,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     dokumente?: Array<string>;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenRequestBodyArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenRequestBodyArtAbfragevarianteEnum;
@@ -452,9 +440,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'bauratendateiInputBasis': json['bauratendateiInputBasis'] == null ? undefined : BauratendateiInputFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInput': json['bauratendateiInput'] == null ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputFromJSON)),
         'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungFromJSON)),
-        'bedarfsmeldungDokumenteFachreferate': json['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : json['bedarfsmeldungDokumenteFachreferate'],
         'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungFromJSON)),
-        'bedarfsmeldungDokumenteAbfrageersteller': json['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : json['bedarfsmeldungDokumenteAbfrageersteller'],
         'bauabschnitte': json['bauabschnitte'] == null ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittFromJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
@@ -518,9 +504,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSONTyped(va
         'bauratendateiInputBasis': BauratendateiInputToJSON(value['bauratendateiInputBasis']),
         'bauratendateiInput': value['bauratendateiInput'] == null ? undefined : ((value['bauratendateiInput'] as Array<any>).map(BauratendateiInputToJSON)),
         'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungToJSON)),
-        'bedarfsmeldungDokumenteFachreferate': value['bedarfsmeldungDokumenteFachreferate'],
         'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungToJSON)),
-        'bedarfsmeldungDokumenteAbfrageersteller': value['bedarfsmeldungDokumenteAbfrageersteller'],
         'bauabschnitte': value['bauabschnitte'] == null ? undefined : ((value['bauabschnitte'] as Array<any>).map(BauabschnittToJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],
