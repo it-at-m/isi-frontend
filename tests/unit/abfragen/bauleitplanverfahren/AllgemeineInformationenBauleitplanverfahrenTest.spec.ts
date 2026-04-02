@@ -166,6 +166,22 @@ describe("AllgemeineInformationenBauleitplanverfahrenComponent", () => {
 
       expect(mockFormChanged).toHaveBeenCalled();
     });
+
+    test("does NOT call formChanged if bauvorhaben value stays the same", async () => {
+      mockGetBauvorhabenById.mockResolvedValue(createBauvorhabenDto());
+      const model = createModel({ bauvorhaben: "same-id" });
+      const wrapper = mountComponent(model);
+      await nextTick();
+      await nextTick();
+      vi.clearAllMocks();
+
+      // Set the same value again — watch fires but newValue === oldValue
+      await wrapper.setProps({ modelValue: { ...model, bauvorhaben: "same-id" } });
+      await nextTick();
+      await nextTick();
+
+      expect(mockFormChanged).not.toHaveBeenCalled();
+    });
   });
 
   describe("deleteBauvorhaben", () => {
