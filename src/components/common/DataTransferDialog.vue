@@ -197,7 +197,7 @@ function createQuery(searchText: string) {
     selectKinderkrippe: false,
     selectMittelschule: false,
     page: 1,
-    pageSize: 100,
+    pageSize: 20,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };

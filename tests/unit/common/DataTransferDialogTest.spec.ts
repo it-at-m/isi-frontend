@@ -164,9 +164,7 @@ describe("DataTransferDialog", () => {
       const searchStore = useSearchStore();
       searchStore.selectedAbfrage = undefined;
       const query = (wrapper.vm as any).createQuery("test");
-      expect(query.selectBauleitplanverfahren).toBe(false);
-      expect(query.selectBaugenehmigungsverfahren).toBe(false);
-      expect(query.selectWeiteresVerfahren).toBe(false);
+      expect(query).toBeNull();
     });
   });
 
