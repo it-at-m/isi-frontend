@@ -35,9 +35,9 @@ export interface UnifyRequest {
 export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).
+     * Creates request options for unify without sending the request
      */
-    async unifyRaw(requestParameters: UnifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MultiPolygonGeometryDto>> {
+    async unifyRequestOpts(requestParameters: UnifyRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['multiPolygonGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'multiPolygonGeometryDto',
@@ -54,13 +54,21 @@ export class ControllerFrGeometriespezifischeOperationenImStandardEPSG4326WGS84A
 
         let urlPath = `/geometry/operation/union`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Ermittelt die Vereinigung der Polygone für Multipolygon (im Standard EPSG:4326 (WGS84)).
+     */
+    async unifyRaw(requestParameters: UnifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MultiPolygonGeometryDto>> {
+        const requestOptions = await this.unifyRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MultiPolygonGeometryDtoFromJSON(jsonValue));
     }

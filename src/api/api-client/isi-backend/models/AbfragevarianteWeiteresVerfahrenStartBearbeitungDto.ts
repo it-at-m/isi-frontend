@@ -62,7 +62,7 @@ export interface AbfragevarianteWeiteresVerfahrenStartBearbeitungDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum;
@@ -86,7 +86,7 @@ export interface AbfragevarianteWeiteresVerfahrenStartBearbeitungDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>;
@@ -230,7 +230,7 @@ export interface AbfragevarianteWeiteresVerfahrenStartBearbeitungDto {
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

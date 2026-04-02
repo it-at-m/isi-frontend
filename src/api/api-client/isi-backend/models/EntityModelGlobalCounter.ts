@@ -47,7 +47,7 @@ export interface EntityModelGlobalCounter {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelGlobalCounterCounterTypeEnum}
      * @memberof EntityModelGlobalCounter
      */
     counterType?: EntityModelGlobalCounterCounterTypeEnum;

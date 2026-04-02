@@ -121,9 +121,9 @@ export interface FollowPropertyReferenceKommentarGet5Request {
 export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
     /**
-     * patch-bauvorhaben-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPatch without sending the request
      */
-    async createPropertyReferenceKommentarPatchRaw(requestParameters: CreatePropertyReferenceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceKommentarPatchRequestOpts(requestParameters: CreatePropertyReferenceKommentarPatchRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -148,13 +148,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-bauvorhaben-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPatchRaw(requestParameters: CreatePropertyReferenceKommentarPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPatchRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -175,9 +183,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-dokument-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPatch1 without sending the request
      */
-    async createPropertyReferenceKommentarPatch1Raw(requestParameters: CreatePropertyReferenceKommentarPatch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceKommentarPatch1RequestOpts(requestParameters: CreatePropertyReferenceKommentarPatch1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -202,13 +210,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-dokument-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPatch1Raw(requestParameters: CreatePropertyReferenceKommentarPatch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPatch1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -229,9 +245,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * patch-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPatch2 without sending the request
      */
-    async createPropertyReferenceKommentarPatch2Raw(requestParameters: CreatePropertyReferenceKommentarPatch2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async createPropertyReferenceKommentarPatch2RequestOpts(requestParameters: CreatePropertyReferenceKommentarPatch2Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -256,13 +272,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * patch-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPatch2Raw(requestParameters: CreatePropertyReferenceKommentarPatch2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPatch2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -283,9 +307,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-bauvorhaben-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPut without sending the request
      */
-    async createPropertyReferenceKommentarPutRaw(requestParameters: CreatePropertyReferenceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async createPropertyReferenceKommentarPutRequestOpts(requestParameters: CreatePropertyReferenceKommentarPutRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -310,13 +334,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-bauvorhaben-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPutRaw(requestParameters: CreatePropertyReferenceKommentarPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPutRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -339,9 +371,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-dokument-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPut1 without sending the request
      */
-    async createPropertyReferenceKommentarPut1Raw(requestParameters: CreatePropertyReferenceKommentarPut1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async createPropertyReferenceKommentarPut1RequestOpts(requestParameters: CreatePropertyReferenceKommentarPut1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -366,13 +398,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-dokument-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPut1Raw(requestParameters: CreatePropertyReferenceKommentarPut1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPut1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -395,9 +435,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * update-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for createPropertyReferenceKommentarPut2 without sending the request
      */
-    async createPropertyReferenceKommentarPut2Raw(requestParameters: CreatePropertyReferenceKommentarPut2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async createPropertyReferenceKommentarPut2RequestOpts(requestParameters: CreatePropertyReferenceKommentarPut2Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -422,13 +462,21 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: CollectionModelObjectToJSON(requestParameters['collectionModelObject']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * update-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async createPropertyReferenceKommentarPut2Raw(requestParameters: CreatePropertyReferenceKommentarPut2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.createPropertyReferenceKommentarPut2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -451,9 +499,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-bauvorhaben-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceIdKommentarDelete without sending the request
      */
-    async deletePropertyReferenceIdKommentarDeleteRaw(requestParameters: DeletePropertyReferenceIdKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdKommentarDeleteRequestOpts(requestParameters: DeletePropertyReferenceIdKommentarDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -477,12 +525,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-kommentar-Id
+     */
+    async deletePropertyReferenceIdKommentarDeleteRaw(requestParameters: DeletePropertyReferenceIdKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdKommentarDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -495,9 +551,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-dokument-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceIdKommentarDelete1 without sending the request
      */
-    async deletePropertyReferenceIdKommentarDelete1Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdKommentarDelete1RequestOpts(requestParameters: DeletePropertyReferenceIdKommentarDelete1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -521,12 +577,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-kommentar-Id
+     */
+    async deletePropertyReferenceIdKommentarDelete1Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdKommentarDelete1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -539,9 +603,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceIdKommentarDelete2 without sending the request
      */
-    async deletePropertyReferenceIdKommentarDelete2Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceIdKommentarDelete2RequestOpts(requestParameters: DeletePropertyReferenceIdKommentarDelete2Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -565,12 +629,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async deletePropertyReferenceIdKommentarDelete2Raw(requestParameters: DeletePropertyReferenceIdKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceIdKommentarDelete2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -583,9 +655,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-bauvorhaben-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceKommentarDelete without sending the request
      */
-    async deletePropertyReferenceKommentarDeleteRaw(requestParameters: DeletePropertyReferenceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceKommentarDeleteRequestOpts(requestParameters: DeletePropertyReferenceKommentarDeleteRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -601,12 +673,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-bauvorhaben-by-kommentar-Id
+     */
+    async deletePropertyReferenceKommentarDeleteRaw(requestParameters: DeletePropertyReferenceKommentarDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceKommentarDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -619,9 +699,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-dokument-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceKommentarDelete1 without sending the request
      */
-    async deletePropertyReferenceKommentarDelete1Raw(requestParameters: DeletePropertyReferenceKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceKommentarDelete1RequestOpts(requestParameters: DeletePropertyReferenceKommentarDelete1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -637,12 +717,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-dokument-by-kommentar-Id
+     */
+    async deletePropertyReferenceKommentarDelete1Raw(requestParameters: DeletePropertyReferenceKommentarDelete1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceKommentarDelete1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -655,9 +743,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * delete-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for deletePropertyReferenceKommentarDelete2 without sending the request
      */
-    async deletePropertyReferenceKommentarDelete2Raw(requestParameters: DeletePropertyReferenceKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deletePropertyReferenceKommentarDelete2RequestOpts(requestParameters: DeletePropertyReferenceKommentarDelete2Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -673,12 +761,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * delete-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async deletePropertyReferenceKommentarDelete2Raw(requestParameters: DeletePropertyReferenceKommentarDelete2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deletePropertyReferenceKommentarDelete2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -691,9 +787,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet without sending the request
      */
-    async followPropertyReferenceKommentarGetRaw(requestParameters: FollowPropertyReferenceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceKommentarGetRequestOpts(requestParameters: FollowPropertyReferenceKommentarGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -709,12 +805,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/bauvorhaben`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGetRaw(requestParameters: FollowPropertyReferenceKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -728,9 +832,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-bauvorhaben-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet1 without sending the request
      */
-    async followPropertyReferenceKommentarGet1Raw(requestParameters: FollowPropertyReferenceKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+    async followPropertyReferenceKommentarGet1RequestOpts(requestParameters: FollowPropertyReferenceKommentarGet1Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -754,12 +858,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-bauvorhaben-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGet1Raw(requestParameters: FollowPropertyReferenceKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelBauvorhaben>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelBauvorhabenFromJSON(jsonValue));
     }
@@ -773,9 +885,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-dokument-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet2 without sending the request
      */
-    async followPropertyReferenceKommentarGet2Raw(requestParameters: FollowPropertyReferenceKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceKommentarGet2RequestOpts(requestParameters: FollowPropertyReferenceKommentarGet2Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -791,12 +903,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/dokumente`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGet2Raw(requestParameters: FollowPropertyReferenceKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGet2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -810,9 +930,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-dokument-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet3 without sending the request
      */
-    async followPropertyReferenceKommentarGet3Raw(requestParameters: FollowPropertyReferenceKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+    async followPropertyReferenceKommentarGet3RequestOpts(requestParameters: FollowPropertyReferenceKommentarGet3Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -836,12 +956,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-dokument-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGet3Raw(requestParameters: FollowPropertyReferenceKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelDokument>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGet3RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelDokumentFromJSON(jsonValue));
     }
@@ -855,9 +983,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet4 without sending the request
      */
-    async followPropertyReferenceKommentarGet4Raw(requestParameters: FollowPropertyReferenceKommentarGet4Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async followPropertyReferenceKommentarGet4RequestOpts(requestParameters: FollowPropertyReferenceKommentarGet4Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -873,12 +1001,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGet4Raw(requestParameters: FollowPropertyReferenceKommentarGet4Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGet4RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }
@@ -892,9 +1028,9 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
     }
 
     /**
-     * get-infrastruktureinrichtung-by-kommentar-Id
+     * Creates request options for followPropertyReferenceKommentarGet5 without sending the request
      */
-    async followPropertyReferenceKommentarGet5Raw(requestParameters: FollowPropertyReferenceKommentarGet5Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+    async followPropertyReferenceKommentarGet5RequestOpts(requestParameters: FollowPropertyReferenceKommentarGet5Request): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -918,12 +1054,20 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
         urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * get-infrastruktureinrichtung-by-kommentar-Id
+     */
+    async followPropertyReferenceKommentarGet5Raw(requestParameters: FollowPropertyReferenceKommentarGet5Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelInfrastruktureinrichtung>> {
+        const requestOptions = await this.followPropertyReferenceKommentarGet5RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelInfrastruktureinrichtungFromJSON(jsonValue));
     }

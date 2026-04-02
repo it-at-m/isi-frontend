@@ -41,7 +41,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldung
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum;

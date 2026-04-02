@@ -32,8 +32,9 @@ export interface ExecuteSearchGlobalcounterGetRequest {
 export class GlobalCounterSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchGlobalcounterGet without sending the request
      */
-    async executeSearchGlobalcounterGetRaw(requestParameters: ExecuteSearchGlobalcounterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
+    async executeSearchGlobalcounterGetRequestOpts(requestParameters: ExecuteSearchGlobalcounterGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['counterType'] != null) {
@@ -45,12 +46,19 @@ export class GlobalCounterSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/globalCounters/search/findByCounterType`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchGlobalcounterGetRaw(requestParameters: ExecuteSearchGlobalcounterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelGlobalCounter>> {
+        const requestOptions = await this.executeSearchGlobalcounterGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelGlobalCounterFromJSON(jsonValue));
     }

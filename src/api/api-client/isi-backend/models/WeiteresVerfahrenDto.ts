@@ -96,13 +96,13 @@ export interface WeiteresVerfahrenDto extends AbfrageDto {
     sobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {string}
+     * @type {WeiteresVerfahrenDtoSobonJahrEnum}
      * @memberof WeiteresVerfahrenDto
      */
     sobonJahr?: WeiteresVerfahrenDtoSobonJahrEnum;
     /**
      * 
-     * @type {string}
+     * @type {WeiteresVerfahrenDtoStandVerfahrenEnum}
      * @memberof WeiteresVerfahrenDto
      */
     standVerfahren?: WeiteresVerfahrenDtoStandVerfahrenEnum;

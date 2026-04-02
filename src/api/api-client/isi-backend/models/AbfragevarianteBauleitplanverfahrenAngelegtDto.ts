@@ -41,7 +41,7 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum;
@@ -65,7 +65,7 @@ export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>;

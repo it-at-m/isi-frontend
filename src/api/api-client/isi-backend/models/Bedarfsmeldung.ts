@@ -51,7 +51,7 @@ export interface Bedarfsmeldung {
     anzahlEinrichtungen?: number;
     /**
      * 
-     * @type {string}
+     * @type {BedarfsmeldungInfrastruktureinrichtungTypEnum}
      * @memberof Bedarfsmeldung
      */
     infrastruktureinrichtungTyp?: BedarfsmeldungInfrastruktureinrichtungTypEnum;

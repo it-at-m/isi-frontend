@@ -80,7 +80,7 @@ export interface EntityModelAbfragevarianteBaugenehmigungsverfahren {
     name?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<EntityModelAbfragevarianteBaugenehmigungsverfahrenWesentlicheRechtsgrundlageEnum>}
      * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
      */
     wesentlicheRechtsgrundlage?: Array<EntityModelAbfragevarianteBaugenehmigungsverfahrenWesentlicheRechtsgrundlageEnum>;
@@ -212,7 +212,7 @@ export interface EntityModelAbfragevarianteBaugenehmigungsverfahren {
     weAnmerkung?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfragevarianteBaugenehmigungsverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: EntityModelAbfragevarianteBaugenehmigungsverfahrenSobonOrientierungswertJahrPlanungsursaechlichEnum;
@@ -332,7 +332,7 @@ export interface EntityModelAbfragevarianteBaugenehmigungsverfahren {
     anmerkungAbfrageersteller?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfragevarianteBaugenehmigungsverfahrenArtAbfragevarianteEnum}
      * @memberof EntityModelAbfragevarianteBaugenehmigungsverfahren
      */
     artAbfragevariante?: EntityModelAbfragevarianteBaugenehmigungsverfahrenArtAbfragevarianteEnum;
