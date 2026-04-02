@@ -555,6 +555,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldung
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -583,6 +584,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmel
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -611,6 +613,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -639,6 +642,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto;
   });
@@ -653,6 +657,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto;
   });
@@ -667,6 +672,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto;
   });
@@ -776,7 +782,9 @@ const sanitizationMap = new Map<string, unknown>([
   ["bauratendateiInputBasis", undefined],
   ["bauratendateiInput", []],
   ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungDokumenteFachreferate", []],
   ["bedarfsmeldungAbfrageersteller", []],
+  ["bedarfsmeldungDokumenteAbfrageersteller", []],
   ["anmerkungFachreferate", undefined],
   ["anmerkungAbfrageersteller", undefined],
   ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],

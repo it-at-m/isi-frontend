@@ -83,7 +83,7 @@
             variant="underlined"
             auto-grow
             rows="1"
-            maxlength="1000"
+            maxlength="2000"
             @update:model-value="formChanged"
             :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
           />
