@@ -21,7 +21,7 @@
           rounded="lg"
           label="Bauvorhaben suchen"
           prepend-inner-icon="mdi-magnify"
-          :loading="loading || loadingSuggestions"
+          :loading="loading"
           @update:model-value="handleSearchInput"
           @keydown.enter.prevent="handleEnter"
           @click:clear="clearSearch"
@@ -33,21 +33,6 @@
           variant="outlined"
         >
           <v-list density="comfortable">
-            <template
-              v-if="suggestionItems.length > 0"
-              v-for="item in suggestionItems"
-              :key="item.value"
-            >
-              <v-list-item
-                :title="item.label"
-                subtitle="Suchvorschlag"
-                prepend-icon="mdi-magnify"
-                @click="selectSuggestion(item)"
-              />
-            </template>
-
-            <v-divider v-if="suggestionItems.length > 0 && resultItems.length > 0" />
-
             <template
               v-if="resultItems.length > 0"
               v-for="item in resultItems"
@@ -105,11 +90,6 @@ import {
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 
-type SuggestionItem = {
-  label: string;
-  value: string;
-};
-
 type ResultItem = {
   label: string;
   value: string;
@@ -118,33 +98,20 @@ type ResultItem = {
 const dialogOpen = defineModel<boolean>({ required: true });
 const selectedBauvorhabenId = defineModel<string | undefined>("selectedBauvorhabenId");
 
-const { searchForEntities, searchForSearchwordSuggestion } = useSearchApi();
+const { searchForEntities } = useSearchApi();
 
 const bauvorhabenSuchField = ref();
 const searchQuery = ref("");
 
-const suggestions = ref<string[]>([]);
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 
 const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
 const pendingSelectedLabel = ref<string>("");
 
 const loading = ref(false);
-const loadingSuggestions = ref(false);
 
 let currentSearchRequestId = 0;
-let currentSuggestionRequestId = 0;
 let isComponentActive = true;
-
-/**
- * Bereitet die Suchvorschläge für die Anzeige in der Vorschlagsliste auf.
- */
-const suggestionItems = computed<SuggestionItem[]>(() =>
-  suggestions.value.map((suggestion) => ({
-    label: suggestion,
-    value: suggestion,
-  })),
-);
 
 /**
  * Bereitet die Bauvorhaben-Ergebnisse für die Anzeige in der Ergebnisliste auf.
@@ -159,9 +126,9 @@ const resultItems = computed<ResultItem[]>(() =>
 );
 
 /**
- * Prüft, ob Vorschläge oder Ergebnisse angezeigt werden sollen.
+ * Prüft, ob Ergebnisse angezeigt werden sollen.
  */
-const hasListContent = computed<boolean>(() => suggestionItems.value.length > 0 || resultItems.value.length > 0);
+const hasListContent = computed<boolean>(() => resultItems.value.length > 0);
 
 /**
  * Erstellt die grundlegende Suchanfrage für Bauvorhaben.
@@ -205,44 +172,6 @@ function createQueryFull(searchText: string) {
 }
 
 /**
- * Lädt Suchvorschläge für den aktuellen Suchtext.
- *
- * @param query Der aktuelle Suchtext.
- * @returns Ein Promise, das abgeschlossen ist, sobald die Vorschläge verarbeitet wurden.
- */
-async function suggest(query: string): Promise<void> {
-  const trimmedQuery = _.trim(query);
-  const requestId = ++currentSuggestionRequestId;
-
-  console.log("[Dialog] suggest START", { query, trimmedQuery, requestId });
-
-  if (_.isEmpty(trimmedQuery)) {
-    suggestions.value = [];
-    return;
-  }
-
-  loadingSuggestions.value = true;
-
-  try {
-    const result = await searchForSearchwordSuggestion(createQuery(trimmedQuery));
-
-    if (!isComponentActive || requestId !== currentSuggestionRequestId) {
-      console.log("[Dialog] suggest IGNORED", { requestId, currentSuggestionRequestId, isComponentActive });
-      return;
-    }
-
-    const foundSuggestions = _.toArray(result.suchwortSuggestions ?? []);
-    suggestions.value = _.uniq([trimmedQuery, ...foundSuggestions]);
-
-    console.log("[Dialog] suggest APPLIED", { suggestions: suggestions.value });
-  } finally {
-    if (isComponentActive && requestId === currentSuggestionRequestId) {
-      loadingSuggestions.value = false;
-    }
-  }
-}
-
-/**
  * Lädt Bauvorhaben-Ergebnisse für den aktuellen Suchtext.
  *
  * Zusätzlich werden die Ergebnisse im Frontend
@@ -255,8 +184,6 @@ async function search(query: string): Promise<void> {
   const trimmedQuery = _.trim(query);
   const requestId = ++currentSearchRequestId;
 
-  console.log("[Dialog] search START", { query, trimmedQuery, requestId });
-
   if (_.isEmpty(trimmedQuery)) {
     bauvorhaben.value = [];
     return;
@@ -268,7 +195,6 @@ async function search(query: string): Promise<void> {
     const result = await searchForEntities(createQueryFull(trimmedQuery));
 
     if (!isComponentActive || requestId !== currentSearchRequestId) {
-      console.log("[Dialog] search IGNORED", { requestId, currentSearchRequestId, isComponentActive });
       return;
     }
 
@@ -278,18 +204,12 @@ async function search(query: string): Promise<void> {
       result.searchResults
         ?.map((entry) => entry as BauvorhabenSearchResultDto)
         .filter((entry) => (entry.nameVorhaben ?? "").toLowerCase().includes(normalizedQuery)) ?? [];
-
-    console.log("[Dialog] search APPLIED", { results: bauvorhaben.value });
   } finally {
     if (isComponentActive && requestId === currentSearchRequestId) {
       loading.value = false;
     }
   }
 }
-
-const debouncedSuggest = _.debounce((query: string) => {
-  void suggest(query);
-}, 200);
 
 const debouncedSearch = _.debounce((query: string) => {
   void search(query);
@@ -305,16 +225,9 @@ const debouncedSearch = _.debounce((query: string) => {
  * @param query Der aktuelle Inhalt des Suchfelds.
  */
 function handleSearchInput(query: string): void {
-  console.log("[Dialog] handleSearchInput", {
-    query,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-  });
-
   searchQuery.value = query;
 
   if (_.isEmpty(_.trim(query))) {
-    suggestions.value = [];
     bauvorhaben.value = [];
     pendingSelectedBauvorhabenId.value = undefined;
     pendingSelectedLabel.value = "";
@@ -326,25 +239,7 @@ function handleSearchInput(query: string): void {
     pendingSelectedLabel.value = "";
   }
 
-  debouncedSuggest(query);
   debouncedSearch(query);
-}
-
-/**
- * Übernimmt einen Suchvorschlag in das Suchfeld
- * und startet direkt eine neue Suche.
- *
- * @param item Der ausgewählte Suchvorschlag.
- */
-function selectSuggestion(item: SuggestionItem): void {
-  console.log("[Dialog] selectSuggestion", { item });
-
-  searchQuery.value = item.label;
-  pendingSelectedBauvorhabenId.value = undefined;
-  pendingSelectedLabel.value = "";
-
-  debouncedSuggest(item.label);
-  debouncedSearch(item.label);
 }
 
 /**
@@ -353,8 +248,6 @@ function selectSuggestion(item: SuggestionItem): void {
  * @param item Das ausgewählte Bauvorhaben.
  */
 function selectResult(item: ResultItem): void {
-  console.log("[Dialog] selectResult", { item });
-
   pendingSelectedBauvorhabenId.value = item.value;
   pendingSelectedLabel.value = item.label;
   searchQuery.value = item.label;
@@ -367,12 +260,6 @@ function selectResult(item: ResultItem): void {
  * Andernfalls wird das erste Ergebnis ausgewählt.
  */
 function handleEnter(): void {
-  console.log("[Dialog] handleEnter BEFORE", {
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-    resultItems: resultItems.value,
-  });
-
   if (pendingSelectedBauvorhabenId.value) {
     uebernehmen();
     return;
@@ -386,42 +273,21 @@ function handleEnter(): void {
   pendingSelectedBauvorhabenId.value = firstResult.value;
   pendingSelectedLabel.value = firstResult.label;
   searchQuery.value = firstResult.label;
-
-  console.log("[Dialog] handleEnter AFTER", {
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-  });
 }
 
 /**
  * Setzt den sichtbaren Such- und Auswahlzustand zurück.
  */
 function clearSearch(): void {
-  console.log("[Dialog] clearSearch BEFORE", {
-    searchQuery: searchQuery.value,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-  });
-
-  debouncedSuggest.cancel();
   debouncedSearch.cancel();
 
   searchQuery.value = "";
-  suggestions.value = [];
   bauvorhaben.value = [];
   pendingSelectedBauvorhabenId.value = undefined;
   pendingSelectedLabel.value = "";
   loading.value = false;
-  loadingSuggestions.value = false;
 
   currentSearchRequestId++;
-  currentSuggestionRequestId++;
-
-  console.log("[Dialog] clearSearch AFTER", {
-    searchQuery: searchQuery.value,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-  });
 }
 
 /**
@@ -431,20 +297,9 @@ function clearSearch(): void {
  * die Parent-Auswahl verworfen und der Dialog geschlossen.
  */
 function abbrechen(): void {
-  console.log("[Dialog] abbrechen BEFORE", {
-    dialogOpen: dialogOpen.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-  });
-
   clearSearch();
   selectedBauvorhabenId.value = undefined;
   dialogOpen.value = false;
-
-  console.log("[Dialog] abbrechen AFTER", {
-    dialogOpen: dialogOpen.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-  });
 }
 
 /**
@@ -453,26 +308,12 @@ function abbrechen(): void {
  * und schließt den Dialog.
  */
 function uebernehmen(): void {
-  console.log("[Dialog] uebernehmen BEFORE", {
-    dialogOpen: dialogOpen.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-    pendingSelectedLabel: pendingSelectedLabel.value,
-  });
-
   if (!pendingSelectedBauvorhabenId.value) {
-    console.log("[Dialog] uebernehmen ABORT - keine Auswahl vorhanden");
     return;
   }
 
   selectedBauvorhabenId.value = pendingSelectedBauvorhabenId.value;
   dialogOpen.value = false;
-
-  console.log("[Dialog] uebernehmen AFTER", {
-    dialogOpen: dialogOpen.value,
-    selectedBauvorhabenId: selectedBauvorhabenId.value,
-    pendingSelectedBauvorhabenId: pendingSelectedBauvorhabenId.value,
-  });
 }
 
 /**
@@ -483,8 +324,6 @@ function uebernehmen(): void {
  * @param isOpen Gibt an, ob der Dialog aktuell geöffnet ist.
  */
 watch(dialogOpen, async (isOpen) => {
-  console.log("[Dialog] watch dialogOpen", { isOpen });
-
   if (!isOpen) {
     return;
   }
@@ -495,32 +334,12 @@ watch(dialogOpen, async (isOpen) => {
 });
 
 /**
- * Beobachtet die an den Parent gebundene Bauvorhaben-ID.
- *
- * @param newValue Neuer Wert.
- * @param oldValue Alter Wert.
- */
-watch(
-  () => selectedBauvorhabenId.value,
-  (newValue, oldValue) => {
-    console.log("[Dialog] watch selectedBauvorhabenId", {
-      oldValue,
-      newValue,
-      dialogOpen: dialogOpen.value,
-    });
-  },
-);
-
-/**
  * Wird aufgerufen, bevor die Komponente aus dem DOM entfernt wird.
  *
  * Hier werden nur laufende zeitverzögerte Suchaufrufe beendet.
  */
 onBeforeUnmount(() => {
-  console.log("[Dialog] onBeforeUnmount");
-
   isComponentActive = false;
-  debouncedSuggest.cancel();
   debouncedSearch.cancel();
 });
 </script>
