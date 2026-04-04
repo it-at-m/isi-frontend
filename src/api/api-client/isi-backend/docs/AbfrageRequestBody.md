@@ -17,9 +17,9 @@ Name | Type
 `sub` | string
 `linkEakte` | string
 `bearbeitungshistorie` | [Array&lt;Bearbeitungshistorie&gt;](Bearbeitungshistorie.md)
+`artAbfrage` | string
 `resultType` | string
 `bauvorhabenUuid` | string
-`artAbfrage` | string
 
 ## Example
 
@@ -39,9 +39,9 @@ const example = {
   "sub": null,
   "linkEakte": null,
   "bearbeitungshistorie": null,
+  "artAbfrage": null,
   "resultType": null,
   "bauvorhabenUuid": null,
-  "artAbfrage": null,
 } satisfies AbfrageRequestBody
 
 console.log(example)
