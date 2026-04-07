@@ -168,12 +168,20 @@
             label="Anmerkungen"
             auto-grow
             rows="3"
-            maxlength="1000"
+            maxlength="2000"
             @update:model-value="formChanged"
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
       </v-row>
+      <dokumente
+        id="dokumente_component"
+        ref="dokumenteComponent"
+        v-model="dokumente"
+        :name-root-folder="nameRootFolder"
+        :is-dokumente-editable="isEditable"
+        @change="formChanged"
+      />
     </field-group-card>
     <bedarfsmeldung-dialog
       id="bedarfsmeldung_dialog"
@@ -187,7 +195,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import type { BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
+import type { DokumentDto, BedarfsmeldungDto, LookupEntryDto } from "@/api/api-client/isi-backend";
 import BedarfsmeldungDialog from "@/components/abfragevarianten/BedarfsmeldungDialog.vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -197,6 +205,7 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import BedarfsmeldungModel from "@/types/model/abfragevariante/BedarfsmeldungModel";
 import { BedarfsmeldungTitle, createBedarfsmeldungDto } from "@/utils/Factories";
 import _ from "lodash";
+import Dokumente from "@/components/common/dokumente/Dokumente.vue";
 
 interface Props {
   bedarfsmeldungTitle: BedarfsmeldungTitle;
@@ -214,6 +223,10 @@ const bedarfsmeldungTitle = computed(() => {
   return "";
 });
 
+const nameRootFolder = computed(() => {
+  return props.isFachreferat ? "bedmeld_fachref" : "bedmeld_abfrerst";
+});
+
 const isEditable = computed(() => props.isEditable);
 
 const bedarfsmeldungenHeaders = ref<any[]>([
@@ -226,6 +239,7 @@ const bedarfsmeldungenHeaders = ref<any[]>([
   { title: "", key: "actions", sortable: false, align: "end", width: "10%" },
 ]);
 const bedarfsmeldungen = ref<BedarfsmeldungDto[] | undefined>([]);
+const dokumente = ref<DokumentDto[]>([]);
 const bedarfsmeldungDialogOpen = ref<boolean>(false);
 const currentBedarfsmeldung = ref<BedarfsmeldungDto>(createBedarfsmeldungDto());
 const anmerkung = ref<string | undefined>(undefined);
@@ -243,6 +257,10 @@ function watchBedarfsmeldungSelection(): void {
   anmerkung.value = props.isFachreferat
     ? abfragevariante.value.anmerkungFachreferate
     : abfragevariante.value.anmerkungAbfrageersteller;
+
+  dokumente.value = props.isFachreferat
+    ? abfragevariante.value.bedarfsmeldungDokumenteFachreferate
+    : abfragevariante.value.bedarfsmeldungDokumenteAbfrageersteller;
 }
 
 watch(() => anmerkung, watchAnmerkung, { immediate: true, deep: true });
@@ -251,6 +269,15 @@ function watchAnmerkung(): void {
     abfragevariante.value.anmerkungFachreferate = anmerkung.value;
   } else {
     abfragevariante.value.anmerkungAbfrageersteller = anmerkung.value;
+  }
+}
+
+watch(() => dokumente, watchDokumente, { immediate: true, deep: true });
+function watchDokumente(): void {
+  if (props.isFachreferat) {
+    abfragevariante.value.bedarfsmeldungDokumenteFachreferate = dokumente.value;
+  } else {
+    abfragevariante.value.bedarfsmeldungDokumenteAbfrageersteller = dokumente.value;
   }
 }
 

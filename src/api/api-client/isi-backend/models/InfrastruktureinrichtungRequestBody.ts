@@ -142,13 +142,13 @@ export interface InfrastruktureinrichtungRequestBody {
      * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
+    bauvorhabenName?: string;
     /**
      * 
      * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    bauvorhabenName?: string;
+    resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
     /**
      * 
      * @type {Adresse}
@@ -238,8 +238,8 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
     };
@@ -272,8 +272,8 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'resultType': value['resultType'],
         'bauvorhabenName': value['bauvorhabenName'],
+        'resultType': value['resultType'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
     };

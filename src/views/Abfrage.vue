@@ -612,7 +612,7 @@ function statusUebergang(transition: TransitionDto): void {
 
   if (transition.url === TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
     // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
-    const availableLength = 1000 - (abfrage.value.anmerkung?.length ?? 0) - 1;
+    const availableLength = 2000 - (abfrage.value.anmerkung?.length ?? 0) - 1;
     if (availableLength > 0) {
       anmerkungMaxLength.value = availableLength;
       dialogTextStatus.value += " Sie können eine Anmerkung hinzufügen.";
