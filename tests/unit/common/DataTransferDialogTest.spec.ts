@@ -164,9 +164,7 @@ describe("DataTransferDialog", () => {
       const searchStore = useSearchStore();
       searchStore.selectedAbfrage = undefined;
       const query = (wrapper.vm as any).createQuery("test");
-      expect(query.selectBauleitplanverfahren).toBe(false);
-      expect(query.selectBaugenehmigungsverfahren).toBe(false);
-      expect(query.selectWeiteresVerfahren).toBe(false);
+      expect(query).toBeNull();
     });
   });
 
@@ -369,10 +367,7 @@ describe("DataTransferDialog", () => {
     test("filters out entries with empty id", async () => {
       const wrapper = mountDialog();
       const vm = wrapper.vm as any;
-      vm.abfragen = [
-        createAbfrageSearchResult({ id: "" }),
-        createAbfrageSearchResult({ id: "id-2", name: "Valide" }),
-      ];
+      vm.abfragen = [createAbfrageSearchResult({ id: "" }), createAbfrageSearchResult({ id: "id-2", name: "Valide" })];
       await nextTick();
       expect(vm.resultItems).toHaveLength(1);
       expect(vm.resultItems[0].value).toBe("id-2");
