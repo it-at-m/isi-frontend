@@ -555,6 +555,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldung
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -583,6 +584,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmel
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -611,6 +613,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -639,6 +642,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto;
   });
@@ -653,6 +657,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto;
   });
@@ -667,6 +672,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto;
   });
@@ -717,9 +723,12 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
  * @returns Die bereinigte Kopie.
  */
-export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
+  value: T,
+  options?: { includeSachbearbeitungVarianten?: boolean },
+): T {
   const copy = _.cloneDeep(value);
-  if ("statusAbfrage" in value && "artAbfrage" in value) {
+  if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
     sanitizeAbfragevariantenSachbearbeitung(copy);
   }
   sanitizeCopy(copy);
@@ -776,7 +785,9 @@ const sanitizationMap = new Map<string, unknown>([
   ["bauratendateiInputBasis", undefined],
   ["bauratendateiInput", []],
   ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungDokumenteFachreferate", []],
   ["bedarfsmeldungAbfrageersteller", []],
+  ["bedarfsmeldungDokumenteAbfrageersteller", []],
   ["anmerkungFachreferate", undefined],
   ["anmerkungAbfrageersteller", undefined],
   ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],
