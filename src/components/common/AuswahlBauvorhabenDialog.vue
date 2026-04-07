@@ -40,8 +40,8 @@
             >
               <v-list-item
                 :active="pendingSelectedBauvorhabenId === item.value"
-                :title="item.label"
-                subtitle="Bauvorhaben"
+                :title="item.title"
+                :subtitle="item.subtitle"
                 prepend-icon="mdi-office-building"
                 @click="selectResult(item)"
               />
@@ -85,13 +85,17 @@ import _ from "lodash";
 import {
   type BauvorhabenSearchResultDto,
   type SearchQueryDto,
+  type StadtbezirkDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 
 type ResultItem = {
+  title: string;
+  subtitle: string;
   label: string;
+  selectionLabel: string;
   value: string;
 };
 
@@ -114,15 +118,42 @@ let currentSearchRequestId = 0;
 let isComponentActive = true;
 
 /**
+ * Formatiert Stadtbezirke analog zu Search.vue.
+ */
+function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
+  const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+    "nummer",
+  ]).map((stadtbezirk: StadtbezirkDto) => {
+    return stadtbezirk.nummer + "/" + stadtbezirk.name;
+  });
+
+  return _.join(auflistungStadtbezirksbezeichnungen, ", ");
+}
+
+/**
  * Bereitet die Bauvorhaben-Ergebnisse für die Anzeige in der Ergebnisliste auf.
+ *
+ * title: Anzeige im Listeneintrag
+ * subtitle: Zusatzinfo im Listeneintrag
+ * label: stabiler Wert für bestehende Logik
+ * selectionLabel: ausführliche Anzeige für "Ausgewählt:"
  */
 const resultItems = computed<ResultItem[]>(() =>
   bauvorhaben.value
     .filter((entry) => !_.isEmpty(entry.id) && !_.isEmpty(entry.nameVorhaben))
-    .map((entry) => ({
-      label: entry.nameVorhaben ?? "",
-      value: entry.id ?? "",
-    })),
+    .map((entry) => {
+      const title = entry.nameVorhaben ?? "";
+      const stadtbezirkeText = _.defaultTo(getStadtbezirke(entry.stadtbezirke), "Keine Stadtbezirke vorhanden");
+      const subtitle = `Stadtbezirke: ${stadtbezirkeText}`;
+
+      return {
+        title,
+        subtitle,
+        label: title,
+        selectionLabel: `${title} – ${subtitle}`,
+        value: entry.id ?? "",
+      };
+    }),
 );
 
 /**
@@ -247,11 +278,14 @@ function handleSearchInput(query: string): void {
 /**
  * Merkt ein ausgewähltes Bauvorhaben stabil für die spätere Übernahme.
  *
+ * Das Suchfeld zeigt bewusst nur den Namen,
+ * während "Ausgewählt:" den ausführlicheren Text anzeigt.
+ *
  * @param item Das ausgewählte Bauvorhaben.
  */
 function selectResult(item: ResultItem): void {
   pendingSelectedBauvorhabenId.value = item.value;
-  pendingSelectedLabel.value = item.label;
+  pendingSelectedLabel.value = item.selectionLabel;
   searchQuery.value = item.label;
 }
 
@@ -273,7 +307,7 @@ function handleEnter(): void {
   }
 
   pendingSelectedBauvorhabenId.value = firstResult.value;
-  pendingSelectedLabel.value = firstResult.label;
+  pendingSelectedLabel.value = firstResult.selectionLabel;
   searchQuery.value = firstResult.label;
 }
 

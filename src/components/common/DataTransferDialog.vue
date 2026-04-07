@@ -8,7 +8,9 @@
       class="rounded-xl"
       elevation="8"
     >
-      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Datenübernahme aus Abfrage </v-card-title>
+      <v-card-title class="px-6 pt-6 pb-2 text-h6">
+        {{ dialogTitle }}
+      </v-card-title>
 
       <v-card-text class="px-6 pb-2">
         <v-text-field
@@ -86,6 +88,7 @@ import {
   AbfrageDtoArtAbfrageEnum,
   type AbfrageSearchResultDto,
   type LookupEntryDto,
+  type StadtbezirkDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
   StatusAbfrage,
@@ -136,6 +139,49 @@ const loading = ref(false);
 let currentSearchRequestId = 0;
 let isComponentActive = true;
 
+const dialogTitle = computed<string>(() => {
+  if (props.context === Context.BAUVORHABEN) {
+    return "Datenübernahme aus Abfrage";
+  }
+
+  if (props.context === Context.ABFRAGE) {
+    const artAbfrage = searchStore.selectedAbfrage?.artAbfrage;
+    const formattedArtAbfrage = getArtAbfrage(artAbfrage);
+
+    return _.isEmpty(formattedArtAbfrage) ? "Datenübernahme aus Abfrage" : `Datenübernahme aus ${formattedArtAbfrage}`;
+  }
+
+  return "Datenübernahme aus Abfrage";
+});
+
+/**
+ * Formatiert die Art der Abfrage analog zu Search.vue.
+ */
+function getArtAbfrage(artAbfrage: AbfrageDtoArtAbfrageEnum | undefined): string {
+  let bezeichnungArtAbfrage = "";
+  if (artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    bezeichnungArtAbfrage = "Bauleitplanverfahren";
+  } else if (artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
+  } else if (artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+    bezeichnungArtAbfrage = "Weiteres Verfahren";
+  }
+  return _.defaultTo(bezeichnungArtAbfrage, "Unbekannte Art");
+}
+
+/**
+ * Formatiert Stadtbezirke analog zu Search.vue.
+ */
+function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
+  const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+    "nummer",
+  ]).map((stadtbezirk: StadtbezirkDto) => {
+    return stadtbezirk.nummer + "/" + stadtbezirk.name;
+  });
+
+  return _.join(auflistungStadtbezirksbezeichnungen, ", ");
+}
+
 /**
  * Formatiert den sichtbaren Text eines Suchtreffers.
  */
@@ -143,6 +189,10 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
   return (
     "Name: " +
     _.defaultTo(searchResult.name, "Kein Name vorhanden") +
+    " - Abfrageart: " +
+    getArtAbfrage(searchResult.artAbfrage) +
+    " - Stadtbezirke: " +
+    _.defaultTo(getStadtbezirke(searchResult.stadtbezirke), "Keine Stadtbezirke vorhanden") +
     " - Status: " +
     _.defaultTo(getLookupValue(searchResult.statusAbfrage, lookupStore.statusAbfrage), "Kein Abfragestatus vorhanden") +
     " - Stand: " +
@@ -157,8 +207,12 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
  * Baut den Untertitel eines Suchtreffers.
  */
 function getItemSubtitle(searchResult: AbfrageSearchResultDto): string {
-  const art = _.defaultTo(searchResult.artAbfrage, "Unbekannte Art");
-  return `Abfrage • ${art}`;
+  return (
+    "Abfrageart: " +
+    getArtAbfrage(searchResult.artAbfrage) +
+    " • Stadtbezirke: " +
+    _.defaultTo(getStadtbezirke(searchResult.stadtbezirke), "Keine Stadtbezirke vorhanden")
+  );
 }
 
 /**
@@ -203,7 +257,6 @@ function createQuery(searchText: string) {
   };
 
   if (props.context === Context.ABFRAGE) {
-    // Issue 2 fix: Check if selectedAbfrage exists before accessing artAbfrage
     if (!searchStore.selectedAbfrage) {
       return null;
     }
@@ -235,7 +288,6 @@ function createQuery(searchText: string) {
  */
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {
   if (props.context === Context.ABFRAGE) {
-    // Issue 2 fix: Check if selectedAbfrage exists before filtering
     if (!searchStore.selectedAbfrage) {
       return false;
     }
@@ -270,16 +322,13 @@ async function search(query: string): Promise<void> {
   loading.value = true;
 
   try {
-    // Issue 2 fix: Check if query creation succeeded
     const searchQuery = createQuery(trimmedQuery);
     if (!searchQuery) {
-      // selectedAbfrage is missing in ABFRAGE context
       abfragen.value = [];
       console.warn("Cannot perform search: selectedAbfrage is missing in ABFRAGE context");
       return;
     }
 
-    // Issue 3 fix: Wrap searchForEntities in try/catch
     const result = await searchForEntities(searchQuery);
 
     if (!isComponentActive || requestId !== currentSearchRequestId) {
@@ -288,7 +337,6 @@ async function search(query: string): Promise<void> {
 
     const normalizedQuery = trimmedQuery.toLowerCase();
 
-    // Issue 1 fix: Apply filters to get filtered results, then take first 20
     abfragen.value =
       result.searchResults
         ?.map((entry) => entry as AbfrageSearchResultDto)
@@ -296,7 +344,6 @@ async function search(query: string): Promise<void> {
         .filter((entry) => getItemText(entry).toLowerCase().includes(normalizedQuery))
         .slice(0, 20) ?? [];
   } catch (error) {
-    // Issue 3 fix: Handle errors gracefully
     console.error("Search failed:", error);
     if (isComponentActive && requestId === currentSearchRequestId) {
       abfragen.value = [];
@@ -395,7 +442,6 @@ async function abfrageUebernehmen(): Promise<void> {
     return;
   }
 
-  // Issue 4 fix: Wrap getById in try/catch to handle errors gracefully
   try {
     let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
     selectedAbfrage = await getById(pendingSelectedAbfrageId.value);
@@ -404,10 +450,8 @@ async function abfrageUebernehmen(): Promise<void> {
     emit("abfrageUebernehmen", selectedAbfrage);
   } catch (error) {
     console.error("Failed to load selected Abfrage:", error);
-    // Reset state on error
     pendingSelectedAbfrageId.value = undefined;
     pendingSelectedLabel.value = "";
-    // User will see the error in console and dialog remains open for retry
   }
 }
 
