@@ -723,9 +723,12 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
  * @returns Die bereinigte Kopie.
  */
-export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
+  value: T,
+  options?: { includeSachbearbeitungVarianten?: boolean },
+): T {
   const copy = _.cloneDeep(value);
-  if ("statusAbfrage" in value && "artAbfrage" in value) {
+  if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
     sanitizeAbfragevariantenSachbearbeitung(copy);
   }
   sanitizeCopy(copy);
