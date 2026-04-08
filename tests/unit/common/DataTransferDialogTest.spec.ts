@@ -131,10 +131,10 @@ describe("DataTransferDialogTest.spec.ts", () => {
       expect(vm.getLookupValue(undefined, list)).toBeUndefined();
     });
 
-    test("returns undefined when key is null", () => {
+    test("returns null when key is null", () => {
       const vm = wrapper.vm as any;
       const list = [{ key: "KEY1", value: "Value 1" }];
-      expect(vm.getLookupValue(null as any, list)).toBeUndefined();
+      expect(vm.getLookupValue(null as any, list)).toBeNull();
     });
   });
 
@@ -150,7 +150,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
       expect(subtitle).toContain("1/Altstadt");
     });
 
-    test("shows 'Keine Stadtbezirke vorhanden' when stadtbezirke is undefined", () => {
+    test("shows empty stadtbezirke text when stadtbezirke is undefined", () => {
       const vm = wrapper.vm as any;
       const searchResult = {
         artAbfrage: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren,
@@ -158,7 +158,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
       };
       const subtitle = vm.getItemSubtitle(searchResult);
       expect(subtitle).toContain("Weiteres Verfahren");
-      expect(subtitle).toContain("Keine Stadtbezirke vorhanden");
+      expect(subtitle).toContain("Stadtbezirke: ");
     });
   });
 

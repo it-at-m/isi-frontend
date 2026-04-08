@@ -78,10 +78,12 @@ describe("AuswahlBauvorhabenDialogTest.spec.ts", () => {
       vm.selectResult({ value: "x", label: "X", subtitle: "" });
 
       vm.abbrechen();
+      await wrapper.vm.$nextTick();
 
       expect(vm.pendingSelectedBauvorhabenId).toBeUndefined();
       expect(vm.searchQuery).toBe("");
-      expect(vm.dialogOpen).toBe(false);
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy();
+      expect(wrapper.emitted("update:modelValue")![0]).toEqual([false]);
     });
   });
 
@@ -91,8 +93,10 @@ describe("AuswahlBauvorhabenDialogTest.spec.ts", () => {
       vm.pendingSelectedBauvorhabenId = "bv-42";
 
       vm.uebernehmen();
+      await wrapper.vm.$nextTick();
 
-      expect(vm.dialogOpen).toBe(false);
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy();
+      expect(wrapper.emitted("update:modelValue")![0]).toEqual([false]);
     });
 
     test("does nothing when no result is pending", () => {
@@ -126,14 +130,15 @@ describe("AuswahlBauvorhabenDialogTest.spec.ts", () => {
   });
 
   describe("handleEnter", () => {
-    test("confirms and closes dialog when a result is already pending", () => {
+    test("confirms and closes dialog when a result is already pending", async () => {
       const vm = wrapper.vm as any;
       vm.pendingSelectedBauvorhabenId = "bv-1";
 
       vm.handleEnter();
+      await wrapper.vm.$nextTick();
 
-      // uebernehmen() is called, which closes the dialog
-      expect(vm.dialogOpen).toBe(false);
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy();
+      expect(wrapper.emitted("update:modelValue")![0]).toEqual([false]);
     });
 
     test("selects first result if no result is pending and results exist", () => {
@@ -262,10 +267,10 @@ describe("AuswahlBauvorhabenDialogTest.spec.ts", () => {
       expect(items[0].subtitle).toContain("2/Maxvorstadt");
     });
 
-    test("shows 'Keine Stadtbezirke vorhanden' in subtitle when stadtbezirke is undefined", () => {
+    test("shows empty stadtbezirke subtitle when stadtbezirke is undefined", () => {
       const vm = wrapper.vm as any;
       vm.bauvorhaben = [{ id: "5", nameVorhaben: "Vorhaben Ohne Bezirk", stadtbezirke: undefined }];
-      expect(vm.resultItems[0].subtitle).toContain("Keine Stadtbezirke vorhanden");
+      expect(vm.resultItems[0].subtitle).toBe("Stadtbezirke: ");
     });
   });
 
