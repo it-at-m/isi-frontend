@@ -40,7 +40,7 @@
             >
               <v-list-item
                 :active="pendingSelectedBauvorhabenId === item.value"
-                :title="item.title"
+                :title="item.label"
                 :subtitle="item.subtitle"
                 prepend-icon="mdi-office-building"
                 @click="selectResult(item)"
@@ -92,10 +92,8 @@ import {
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 
 type ResultItem = {
-  title: string;
-  subtitle: string;
   label: string;
-  selectionLabel: string;
+  subtitle: string;
   value: string;
 };
 
@@ -117,9 +115,6 @@ const loading = ref(false);
 let currentSearchRequestId = 0;
 let isComponentActive = true;
 
-/**
- * Formatiert Stadtbezirke analog zu Search.vue.
- */
 function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
   const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
     "nummer",
@@ -132,28 +127,15 @@ function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string 
 
 /**
  * Bereitet die Bauvorhaben-Ergebnisse für die Anzeige in der Ergebnisliste auf.
- *
- * title: Anzeige im Listeneintrag
- * subtitle: Zusatzinfo im Listeneintrag
- * label: stabiler Wert für bestehende Logik
- * selectionLabel: ausführliche Anzeige für "Ausgewählt:"
  */
 const resultItems = computed<ResultItem[]>(() =>
   bauvorhaben.value
     .filter((entry) => !_.isEmpty(entry.id) && !_.isEmpty(entry.nameVorhaben))
-    .map((entry) => {
-      const title = entry.nameVorhaben ?? "";
-      const stadtbezirkeText = _.defaultTo(getStadtbezirke(entry.stadtbezirke), "Keine Stadtbezirke vorhanden");
-      const subtitle = `Stadtbezirke: ${stadtbezirkeText}`;
-
-      return {
-        title,
-        subtitle,
-        label: title,
-        selectionLabel: `${title} – ${subtitle}`,
-        value: entry.id ?? "",
-      };
-    }),
+    .map((entry) => ({
+      label: entry.nameVorhaben ?? "",
+      subtitle: `Stadtbezirke: ${_.defaultTo(getStadtbezirke(entry.stadtbezirke), "Keine Stadtbezirke vorhanden")}`,
+      value: entry.id ?? "",
+    })),
 );
 
 /**
@@ -278,14 +260,11 @@ function handleSearchInput(query: string): void {
 /**
  * Merkt ein ausgewähltes Bauvorhaben stabil für die spätere Übernahme.
  *
- * Das Suchfeld zeigt bewusst nur den Namen,
- * während "Ausgewählt:" den ausführlicheren Text anzeigt.
- *
  * @param item Das ausgewählte Bauvorhaben.
  */
 function selectResult(item: ResultItem): void {
   pendingSelectedBauvorhabenId.value = item.value;
-  pendingSelectedLabel.value = item.selectionLabel;
+  pendingSelectedLabel.value = item.label;
   searchQuery.value = item.label;
 }
 
@@ -307,7 +286,7 @@ function handleEnter(): void {
   }
 
   pendingSelectedBauvorhabenId.value = firstResult.value;
-  pendingSelectedLabel.value = firstResult.selectionLabel;
+  pendingSelectedLabel.value = firstResult.label;
   searchQuery.value = firstResult.label;
 }
 

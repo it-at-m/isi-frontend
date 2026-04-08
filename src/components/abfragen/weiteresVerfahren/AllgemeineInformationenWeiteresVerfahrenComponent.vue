@@ -211,10 +211,9 @@ const nameBauvorhaben = computed(() => {
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
-    const isInitialRun = isInitialBauvorhabenWatchRun.value;
-    if (isInitialRun) {
-      isInitialBauvorhabenWatchRun.value = false;
-    } else if (newValue !== oldValue) {
+    const isInitializationPhase = _.isUndefined(oldValue);
+
+    if (!isInitializationPhase && newValue !== oldValue) {
       formChanged();
     }
 

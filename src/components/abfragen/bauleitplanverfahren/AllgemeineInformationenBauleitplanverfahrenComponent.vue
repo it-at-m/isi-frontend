@@ -198,10 +198,9 @@ const nameBauvorhaben = computed(() => {
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
-    const isInitialRun = isInitialBauvorhabenWatchRun.value;
-    if (isInitialRun) {
-      isInitialBauvorhabenWatchRun.value = false;
-    } else if (newValue !== oldValue) {
+    const isInitializationPhase = _.isUndefined(oldValue);
+
+    if (!isInitializationPhase && newValue !== oldValue) {
       formChanged();
     }
 
@@ -227,19 +226,6 @@ async function getBauvorhaben(): Promise<void> {
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
-
-watch(
-  () => abfrage.value.standVerfahren,
-  (value) => {
-    if (value?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
-    } else {
-      standVerfahrenFreieEingabeVisible.value = false;
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
-    }
-  },
-  { immediate: true },
-);
 
 watch(
   () => abfrage.value.sobonRelevant,
