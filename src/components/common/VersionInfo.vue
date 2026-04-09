@@ -103,7 +103,7 @@ import _ from "lodash";
 const visible = defineModel<boolean>({ required: true });
 const services = ref<Service[]>([]);
 const fetchSuccess = ref<boolean | undefined>(undefined);
-const base = window.location.origin;
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
 
 watch(visible, updateServices);
 

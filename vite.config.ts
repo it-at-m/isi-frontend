@@ -9,6 +9,8 @@ import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
+const ROOT_DIR = fileURLToPath(new URL(".", import.meta.url));
+
 function frontendInfoPlugin() {
   return {
     name: "frontend-info-plugin",
@@ -18,7 +20,7 @@ function frontendInfoPlugin() {
       let version = "";
 
       try {
-        const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "package.json"), "utf-8"));
+        const packageJson = JSON.parse(fs.readFileSync(path.resolve(ROOT_DIR, "package.json"), "utf-8"));
         version = packageJson.version ?? "";
       } catch {
         version = "";
@@ -50,7 +52,7 @@ function frontendInfoPlugin() {
         },
       };
 
-      const outDir = path.resolve(__dirname, "dist");
+      const outDir = path.resolve(ROOT_DIR, "dist");
       fs.mkdirSync(outDir, { recursive: true });
       fs.writeFileSync(path.join(outDir, "info.json"), JSON.stringify(info, null, 2), "utf-8");
     },
