@@ -194,7 +194,6 @@ const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);
-const isInitialBauvorhabenWatchRun = ref(true);
 
 const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
@@ -211,9 +210,7 @@ const nameBauvorhaben = computed(() => {
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
-    const isInitializationPhase = _.isUndefined(oldValue);
-
-    if (!isInitializationPhase && newValue !== oldValue) {
+    if (!_.isUndefined(oldValue) && newValue !== oldValue) {
       formChanged();
     }
 

@@ -153,11 +153,7 @@
 import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import {
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  UncertainBoolean,
-  BauvorhabenDto,
-} from "@/api/api-client/isi-backend";
+import { UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useLookupStore } from "@/stores/LookupStore";
@@ -182,7 +178,6 @@ const standVerfahrenFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);
-const isInitialBauvorhabenWatchRun = ref(true);
 const isBauverfahrenEditable = computed(() => {
   return isEditableByAbfrageerstellung.value || isEditableBySachbearbeitung.value;
 });
@@ -198,9 +193,7 @@ const nameBauvorhaben = computed(() => {
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
-    const isInitializationPhase = _.isUndefined(oldValue);
-
-    if (!isInitializationPhase && newValue !== oldValue) {
+    if (!_.isUndefined(oldValue) && newValue !== oldValue) {
       formChanged();
     }
 
