@@ -145,8 +145,7 @@
   <auswahl-bauvorhaben-dialog
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
-    @bauvorhaben-uebernehmen="bauvorhabenUebernehmen"
-    @bauvorhaben-auswahl-abbrechen="isAuswahlBauvorhabenDialogOpen = false"
+    v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
   />
 </template>
 
@@ -154,11 +153,7 @@
 import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import {
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  UncertainBoolean,
-  BauvorhabenDto,
-} from "@/api/api-client/isi-backend";
+import { UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useLookupStore } from "@/stores/LookupStore";
@@ -197,38 +192,33 @@ const nameBauvorhaben = computed(() => {
 
 watch(
   () => abfrage.value.bauvorhaben,
-  async (value) => {
+  async (newValue, oldValue) => {
+    if (!_.isUndefined(oldValue) && newValue !== oldValue) {
+      formChanged();
+    }
+
     await getBauvorhaben();
   },
   { immediate: true },
 );
 
+/**
+ * Lädt das aktuell referenzierte Bauvorhaben anhand der gespeicherten ID
+ * und setzt es für die Anzeige im Formular.
+ */
 async function getBauvorhaben(): Promise<void> {
-  if (
-    !_.isNil(abfrage.value.bauvorhaben) &&
-    !_.isEmpty(abfrage.value.bauvorhaben) &&
-    abfrage.value.bauvorhaben != bauvorhaben.value.id
-  ) {
-    bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
+  if (!_.isNil(abfrage.value.bauvorhaben) && !_.isEmpty(abfrage.value.bauvorhaben)) {
+    try {
+      bauvorhaben.value = await getBauvorhabenById(abfrage.value.bauvorhaben);
+    } catch {
+      bauvorhaben.value = createBauvorhabenDto();
+    }
   } else {
     bauvorhaben.value = createBauvorhabenDto();
   }
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
-
-watch(
-  () => abfrage.value.standVerfahren,
-  (value) => {
-    if (value?.includes(BauleitplanverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
-    } else {
-      standVerfahrenFreieEingabeVisible.value = false;
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
-    }
-  },
-  { immediate: true },
-);
 
 watch(
   () => abfrage.value.sobonRelevant,
@@ -242,12 +232,6 @@ watch(
   },
   { immediate: true },
 );
-
-function bauvorhabenUebernehmen(idBauvorhaben: string): void {
-  abfrage.value.bauvorhaben = idBauvorhaben;
-  isAuswahlBauvorhabenDialogOpen.value = false;
-  formChanged();
-}
 
 function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;
