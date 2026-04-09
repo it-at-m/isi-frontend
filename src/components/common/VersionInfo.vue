@@ -146,7 +146,9 @@ async function fetchServices(): Promise<Service[]> {
   try {
     const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(
+        `Request failed (${response.status}) for ${fetchServicesUrl}: ${response.statusText || "no status text"}`,
+      );
     }
 
     const json = await response.json();
@@ -167,7 +169,9 @@ async function fetchCommitHash(service: Service): Promise<string> {
 
   const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
   if (!response.ok) {
-    throw new Error(response.statusText);
+    throw new Error(
+      `Request failed (${response.status}) for ${serviceInfoUrl}: ${response.statusText || "no status text"}`,
+    );
   }
 
   const json = await response.json();
