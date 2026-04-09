@@ -22,14 +22,16 @@ function frontendInfoPlugin() {
       try {
         const packageJson = JSON.parse(fs.readFileSync(path.resolve(ROOT_DIR, "package.json"), "utf-8"));
         version = packageJson.version ?? "";
-      } catch {
+      } catch (error) {
+        console.warn("[frontend-info-plugin] Failed to read package.json version:", error);
         version = "";
       }
 
       if (!commitHash) {
         try {
           commitHash = execSync("git rev-parse HEAD").toString().trim();
-        } catch {
+        } catch (error) {
+          console.warn("[frontend-info-plugin] Failed to resolve git commit hash:", error);
           commitHash = "";
         }
       }
@@ -37,7 +39,8 @@ function frontendInfoPlugin() {
       if (!branch) {
         try {
           branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
-        } catch {
+        } catch (error) {
+          console.warn("[frontend-info-plugin] Failed to resolve git branch:", error);
           branch = "";
         }
       }
