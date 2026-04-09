@@ -1384,6 +1384,44 @@ function renumberingAbfragevarianten(
   });
 }
 
+function getAbfragevariantenForAbfrage(model: AnyAbfrageModel): AnyAbfragevarianteModel[] {
+  if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    return (model as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren ?? [];
+  } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    return (model as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren ?? [];
+  } else {
+    return (model as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren ?? [];
+  }
+}
+
+function mergeSachbearbeitungsvariantenIntoAbfragevarianten(model: AnyAbfrageModel): void {
+  if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    const typedModel = model as BauleitplanverfahrenModel;
+    typedModel.abfragevariantenBauleitplanverfahren = [
+      ...(typedModel.abfragevariantenBauleitplanverfahren ?? []),
+      ...(typedModel.abfragevariantenSachbearbeitungBauleitplanverfahren ?? []),
+    ];
+    typedModel.abfragevariantenSachbearbeitungBauleitplanverfahren = [];
+    renumberingAbfragevarianten(typedModel.abfragevariantenBauleitplanverfahren);
+  } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    const typedModel = model as BaugenehmigungsverfahrenModel;
+    typedModel.abfragevariantenBaugenehmigungsverfahren = [
+      ...(typedModel.abfragevariantenBaugenehmigungsverfahren ?? []),
+      ...(typedModel.abfragevariantenSachbearbeitungBaugenehmigungsverfahren ?? []),
+    ];
+    typedModel.abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [];
+    renumberingAbfragevarianten(typedModel.abfragevariantenBaugenehmigungsverfahren);
+  } else {
+    const typedModel = model as WeiteresVerfahrenModel;
+    typedModel.abfragevariantenWeiteresVerfahren = [
+      ...(typedModel.abfragevariantenWeiteresVerfahren ?? []),
+      ...(typedModel.abfragevariantenSachbearbeitungWeiteresVerfahren ?? []),
+    ];
+    typedModel.abfragevariantenSachbearbeitungWeiteresVerfahren = [];
+    renumberingAbfragevarianten(typedModel.abfragevariantenWeiteresVerfahren);
+  }
+}
+
 function selectAbfrage(): void {
   if (isBauleitplanverfahren.value) {
     selectEntity(abfrage.value, AbfrageFormType.BAULEITPLANVERFAHREN, "", AnzeigeContextAbfragevariante.UNDEFINED);
@@ -1537,10 +1575,24 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
 
 function abfrageUebernehmen(value: AbfrageDto): void {
   if (value.artAbfrage === abfrage.value.artAbfrage) {
-    abfrage.value = copyAbfrageOrAbfragevariante(value);
+    const copiedAbfrage = copyAbfrageOrAbfragevariante(value, {
+      includeSachbearbeitungVarianten: true,
+    }) as AnyAbfrageModel;
+
+    mergeSachbearbeitungsvariantenIntoAbfragevarianten(copiedAbfrage);
+
+    abfrage.value = copiedAbfrage;
     selectAbfrage();
     formChanged();
     isDataTransferDialogOpen.value = false;
+
+    const anzahl = getAbfragevariantenForAbfrage(abfrage.value).length;
+    if (anzahl > 5) {
+      toast.warning(
+        "Es wurden mehr als fünf Abfragevarianten übernommen. Bitte löschen Sie die überzähligen Varianten vor dem Speichern.",
+        { timeout: false },
+      );
+    }
   }
 }
 </script>
