@@ -107,6 +107,10 @@ const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
 
 watch(visible, updateServices);
 
+function joinUrl(base: string, path: string): string {
+  return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
+}
+
 async function updateServices(): Promise<void> {
   if (visible.value) {
     fetchSuccess.value = undefined;
@@ -136,49 +140,42 @@ async function updateServices(): Promise<void> {
 }
 
 async function fetchServices(): Promise<Service[]> {
-  const fetchServicesUrl = base ? `${base.replace(/\/+$/, "")}/actuator/info` : `/actuator/info`;
+  const fetchServicesUrl = joinUrl(base, "/actuator/info");
   let services: Service[] = [];
 
   try {
     const response = await fetch(fetchServicesUrl, RequestUtils.getGETConfig());
     if (!response.ok) {
-      throw Error(response.statusText);
+      throw new Error(
+        `Request failed (${response.status}) for ${fetchServicesUrl}: ${response.statusText || "no status text"}`,
+      );
     }
 
     const json = await response.json();
     const object = json?.application?.services;
     if (!_.isNil(object)) {
-      // JS interpretiert die Antwort als Objekt, weshalb sie hier in ein Array umgewandelt wird
       services = Object.values(object);
     }
   } catch (error) {
     fetchSuccess.value = false;
+    console.error("Fehler beim Laden der Services:", error);
   }
 
   return services;
 }
 
 async function fetchCommitHash(service: Service): Promise<string> {
-  let commitHash = "";
-  const serviceInfoUrl = base ? `${base.replace(/\/+$/, "")}${service.infoPath}` : `${service.infoPath}`;
-  base ? `${base.replace(/\/+$/, "")}${service.infoPath}` : `${service.infoPath}`;
+  const serviceInfoUrl = joinUrl(base, service.infoPath);
 
-  try {
-    const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-
-    const json = await response.json();
-    const string = json?.application?.commitHash;
-    if (!_.isNil(string)) {
-      commitHash = string;
-    }
-  } catch (error) {
-    return Promise.reject(error);
+  const response = await fetch(serviceInfoUrl, RequestUtils.getGETConfig());
+  if (!response.ok) {
+    throw new Error(
+      `Request failed (${response.status}) for ${serviceInfoUrl}: ${response.statusText || "no status text"}`,
+    );
   }
 
-  return commitHash;
+  const json = await response.json();
+  return json?.application?.commitHash ?? "";
 }
 
 function getCommitUrl(service: Service): string {
