@@ -25,6 +25,8 @@
       v-model="bauleitplanverfahren.verortung"
       :context="Context.ABFRAGE"
       :look-at="bauleitplanverfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
+      @form-changed="formChanged"
     />
     <allgemeine-informationen-zur-abfrage-bauleitplanverfahren-component
       id="allgemeine_informationen_zur_abfrage_bauleitplanverfahren-component"
@@ -47,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenBauleitplanverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/AllgemeineInformationenZurAbfrageBauleitplanverfahrenComponent.vue";
@@ -70,4 +73,14 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrag
 const bauleitplanverfahren = defineModel<BauleitplanverfahrenModel>({ required: true });
 
 withDefaults(defineProps<Props>(), { isNew: false });
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => bauleitplanverfahren.value.verortung,
+  () => {
+    emit("update:modelValue", bauleitplanverfahren.value);
+  },
+  { immediate: true, deep: true },
+);
 </script>

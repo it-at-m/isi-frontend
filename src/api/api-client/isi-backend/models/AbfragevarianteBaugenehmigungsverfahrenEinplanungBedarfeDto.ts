@@ -20,6 +20,13 @@ import {
     BedarfsmeldungDtoToJSON,
     BedarfsmeldungDtoToJSONTyped,
 } from './BedarfsmeldungDto';
+import type { DokumentDto } from './DokumentDto';
+import {
+    DokumentDtoFromJSON,
+    DokumentDtoFromJSONTyped,
+    DokumentDtoToJSON,
+    DokumentDtoToJSONTyped,
+} from './DokumentDto';
 
 /**
  * 
@@ -41,7 +48,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum;
@@ -51,6 +58,12 @@ export interface AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto {
      * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
+     */
+    bedarfsmeldungDokumenteAbfrageersteller?: Array<DokumentDto>;
     /**
      * 
      * @type {string}
@@ -93,6 +106,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoFromJ
         'version': json['version'] == null ? undefined : json['version'],
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bedarfsmeldungDokumenteAbfrageersteller': json['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoFromJSON)),
         'anmerkungAbfrageersteller': json['anmerkungAbfrageersteller'] == null ? undefined : json['anmerkungAbfrageersteller'],
     };
 }
@@ -112,6 +126,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoToJSO
         'version': value['version'],
         'artAbfragevariante': value['artAbfragevariante'],
         'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bedarfsmeldungDokumenteAbfrageersteller': value['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoToJSON)),
         'anmerkungAbfrageersteller': value['anmerkungAbfrageersteller'],
     };
 }

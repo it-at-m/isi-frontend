@@ -37,7 +37,11 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
-export type OverlayUrlMapping = { displayName: string; internalName: string; urlPart: string };
+export class OverlayUrlMapping {
+  displayName: string = "";
+  internalName: string = "";
+  urlPart: string = "";
+}
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
   { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },

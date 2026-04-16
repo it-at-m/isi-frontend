@@ -36,8 +36,9 @@ export interface ExecuteSearchAbfragevarianteweiteresverfahrenGet1Request {
 export class AbfragevarianteWeiteresVerfahrenSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchAbfragevarianteweiteresverfahrenGet without sending the request
      */
-    async executeSearchAbfragevarianteweiteresverfahrenGetRaw(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteWeiteresVerfahren>> {
+    async executeSearchAbfragevarianteweiteresverfahrenGetRequestOpts(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -49,12 +50,19 @@ export class AbfragevarianteWeiteresVerfahrenSearchControllerApi extends runtime
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/search/findAbfrageIdForAbfragevarianteById`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchAbfragevarianteweiteresverfahrenGetRaw(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteWeiteresVerfahren>> {
+        const requestOptions = await this.executeSearchAbfragevarianteweiteresverfahrenGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteWeiteresVerfahrenFromJSON(jsonValue));
     }
@@ -67,8 +75,9 @@ export class AbfragevarianteWeiteresVerfahrenSearchControllerApi extends runtime
     }
 
     /**
+     * Creates request options for executeSearchAbfragevarianteweiteresverfahrenGet1 without sending the request
      */
-    async executeSearchAbfragevarianteweiteresverfahrenGet1Raw(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteWeiteresVerfahren>> {
+    async executeSearchAbfragevarianteweiteresverfahrenGet1RequestOpts(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGet1Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -80,12 +89,19 @@ export class AbfragevarianteWeiteresVerfahrenSearchControllerApi extends runtime
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/search/findAbfrageIdForAbfragevarianteSachbearbeitungById`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchAbfragevarianteweiteresverfahrenGet1Raw(requestParameters: ExecuteSearchAbfragevarianteweiteresverfahrenGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelAbfragevarianteWeiteresVerfahren>> {
+        const requestOptions = await this.executeSearchAbfragevarianteweiteresverfahrenGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelAbfragevarianteWeiteresVerfahrenFromJSON(jsonValue));
     }

@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -29,6 +29,7 @@ import type {
   AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto,
   AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto,
   AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
@@ -554,6 +555,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldung
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -582,6 +584,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmel
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -610,6 +613,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -638,6 +642,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto;
   });
@@ -652,6 +657,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto;
   });
@@ -666,6 +672,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto;
   });
@@ -716,11 +723,33 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
  * @returns Die bereinigte Kopie.
  */
-export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
+  value: T,
+  options?: { includeSachbearbeitungVarianten?: boolean },
+): T {
   const copy = _.cloneDeep(value);
+  if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
+    sanitizeAbfragevariantenSachbearbeitung(copy);
+  }
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
+}
+/*
+ * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Abfragevariante Nr. 1.x) übernommen werden,
+ * nicht aber die der Sachbearbeitung (Abfragevariante Nr. 2.x)
+ */
+function sanitizeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
+  if (value.statusAbfrage === StatusAbfrage.StartBearbeitung) {
+    if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      (value as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+      (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren = [];
+    }
+  }
+  return value;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -756,7 +785,9 @@ const sanitizationMap = new Map<string, unknown>([
   ["bauratendateiInputBasis", undefined],
   ["bauratendateiInput", []],
   ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungDokumenteFachreferate", []],
   ["bedarfsmeldungAbfrageersteller", []],
+  ["bedarfsmeldungDokumenteAbfrageersteller", []],
   ["anmerkungFachreferate", undefined],
   ["anmerkungAbfrageersteller", undefined],
   ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],

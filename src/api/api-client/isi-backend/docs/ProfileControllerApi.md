@@ -1,6 +1,6 @@
 # ProfileControllerApi
 
-All URIs are relative to *http://localhost:39146*
+All URIs are relative to *http://localhost:8089*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -12,6 +12,7 @@ All URIs are relative to *http://localhost:39146*
 | [**descriptor13**](ProfileControllerApi.md#descriptor13) | **GET** /profile/staedtebaulicheOrientierungswerts |  |
 | [**descriptor14**](ProfileControllerApi.md#descriptor14) | **GET** /profile/umlegungFoerderartens |  |
 | [**descriptor15**](ProfileControllerApi.md#descriptor15) | **GET** /profile/versorgungsquoteGruppenstaerkes |  |
+| [**descriptor16**](ProfileControllerApi.md#descriptor16) | **GET** /profile/versorgungsquoteSobonHorts |  |
 | [**descriptor2**](ProfileControllerApi.md#descriptor2) | **GET** /profile/abfragevarianteBauleitplanverfahrens |  |
 | [**descriptor3**](ProfileControllerApi.md#descriptor3) | **GET** /profile/abfragevarianteWeiteresVerfahrens |  |
 | [**descriptor4**](ProfileControllerApi.md#descriptor4) | **GET** /profile/abfragevariantes |  |
@@ -444,6 +445,63 @@ async function example() {
 
   try {
     const data = await api.descriptor15();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+**string**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `*/*`, `application/alps+json`, `application/schema+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## descriptor16
+
+> string descriptor16()
+
+
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ProfileControllerApi,
+} from '';
+import type { Descriptor16Request } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new ProfileControllerApi();
+
+  try {
+    const data = await api.descriptor16();
     console.log(data);
   } catch (error) {
     console.error(error);

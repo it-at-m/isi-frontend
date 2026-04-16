@@ -55,13 +55,13 @@ export interface AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeit
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

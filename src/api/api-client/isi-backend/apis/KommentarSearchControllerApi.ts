@@ -44,8 +44,9 @@ export interface ExecuteSearchKommentarGet3Request {
 export class KommentarSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchKommentarGet without sending the request
      */
-    async executeSearchKommentarGetRaw(requestParameters: ExecuteSearchKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async executeSearchKommentarGetRequestOpts(requestParameters: ExecuteSearchKommentarGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['bauvorhaben'] != null) {
@@ -57,12 +58,19 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars/search/deleteAllByBauvorhabenId`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchKommentarGetRaw(requestParameters: ExecuteSearchKommentarGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.executeSearchKommentarGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -74,8 +82,9 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for executeSearchKommentarGet1 without sending the request
      */
-    async executeSearchKommentarGet1Raw(requestParameters: ExecuteSearchKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async executeSearchKommentarGet1RequestOpts(requestParameters: ExecuteSearchKommentarGet1Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['infrastruktureinrichtung'] != null) {
@@ -87,12 +96,19 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars/search/deleteAllByInfrastruktureinrichtungId`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchKommentarGet1Raw(requestParameters: ExecuteSearchKommentarGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.executeSearchKommentarGet1RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -104,8 +120,9 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for executeSearchKommentarGet2 without sending the request
      */
-    async executeSearchKommentarGet2Raw(requestParameters: ExecuteSearchKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async executeSearchKommentarGet2RequestOpts(requestParameters: ExecuteSearchKommentarGet2Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['bauvorhaben'] != null) {
@@ -117,12 +134,19 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars/search/findAllByBauvorhabenIdOrderByCreatedDateTimeDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchKommentarGet2Raw(requestParameters: ExecuteSearchKommentarGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.executeSearchKommentarGet2RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }
@@ -135,8 +159,9 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for executeSearchKommentarGet3 without sending the request
      */
-    async executeSearchKommentarGet3Raw(requestParameters: ExecuteSearchKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+    async executeSearchKommentarGet3RequestOpts(requestParameters: ExecuteSearchKommentarGet3Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['infrastruktureinrichtung'] != null) {
@@ -148,12 +173,19 @@ export class KommentarSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/kommentars/search/findAllByInfrastruktureinrichtungIdOrderByCreatedDateTimeDesc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchKommentarGet3Raw(requestParameters: ExecuteSearchKommentarGet3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelKommentar>> {
+        const requestOptions = await this.executeSearchKommentarGet3RequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelKommentarFromJSON(jsonValue));
     }

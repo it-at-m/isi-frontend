@@ -2,113 +2,103 @@
   <v-dialog
     v-model="dialogOpen"
     persistent
-    width="60%"
+    max-width="720"
   >
-    <v-card class="overflow-x-hidden">
-      <v-card-title class="align-stretch">Datenübernahme aus Abfrage</v-card-title>
-      <v-row justify="center">
-        <v-col
-          cols="11"
-          md="9"
+    <v-card
+      class="rounded-xl"
+      elevation="8"
+    >
+      <v-card-title class="px-6 pt-6 pb-2 text-h6">
+        {{ dialogTitle }}
+      </v-card-title>
+
+      <v-card-text class="px-6 pb-2">
+        <v-text-field
+          ref="abfrageSuchField"
+          v-model="searchQuery"
+          clearable
+          hide-details="auto"
+          variant="outlined"
+          density="comfortable"
+          rounded="lg"
+          label="Abfrage suchen"
+          prepend-inner-icon="mdi-magnify"
+          :loading="loading"
+          @update:model-value="handleSearchInput"
+          @keydown.enter.prevent="handleEnter"
+          @click:clear="clearSearch"
+        />
+
+        <v-card
+          v-if="hasListContent"
+          class="mt-3 rounded-lg"
+          variant="outlined"
         >
-          <v-text-field
-            id="abfrageSuch_field"
-            ref="abfrageSuchField"
-            v-model="abfrageSearchModel"
-            label="Suche"
-            variant="underlined"
-            @keyup.enter="fetchAbfragen"
-          />
-        </v-col>
-        <v-col
-          cols="11"
-          md="2"
-          class="d-flex justify-end align-center"
+          <v-list density="comfortable">
+            <template
+              v-for="item in resultItems"
+              :key="item.value"
+            >
+              <v-list-item
+                :active="pendingSelectedAbfrageId === item.value"
+                :title="item.title"
+                :subtitle="item.subtitle"
+                prepend-icon="mdi-file-document-outline"
+                @click="selectResult(item)"
+              />
+            </template>
+          </v-list>
+        </v-card>
+
+        <div
+          v-if="pendingSelectedAbfrageId"
+          class="mt-3 text-body-2"
         >
-          <v-btn
-            variant="outlined"
-            id="abfrage_datenuebernahme_suchen_button"
-            style="width: 120px"
-            @click="fetchAbfragen"
-          >
-            Suchen
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="11"
-          md="11"
-        >
-          <v-select
-            id="abfrage_datenuebernahme_dropdown"
-            v-model="selectedAbfrageSearchResult"
-            ref="abfragenSelect"
-            variant="underlined"
-            :items="abfragen"
-            item-value="id"
-            :item-title="(item) => getItemText(item)"
-            title="Abfrage für Datenübernahme auswählen"
-          >
-          </v-select>
-        </v-col>
-      </v-row>
-      <v-card-actions class="d-flex justify-end">
+          Ausgewählt:
+          <strong>{{ pendingSelectedLabel }}</strong>
+        </div>
+      </v-card-text>
+
+      <v-card-actions class="px-6 pb-6 pt-4">
+        <v-spacer />
         <v-btn
-          id="abfrage_datenuebernahme_abbrechen_button"
+          variant="text"
           @click="uebernahmeAbbrechen"
         >
           Abbrechen
         </v-btn>
         <v-btn
-          id="abfrage_datenuebernahme_uebernehmen_button"
-          variant="elevated"
           color="primary"
+          variant="elevated"
+          :disabled="!pendingSelectedAbfrageId"
           @click="abfrageUebernehmen"
         >
           Übernehmen
         </v-btn>
       </v-card-actions>
     </v-card>
-    <v-dialog
-      v-model="loading"
-      max-width="360"
-      persistent
-    >
-      <v-list
-        class="py-3"
-        color="primary"
-        elevation="12"
-        rounded="lg"
-      >
-        <loading-progress-circular
-          icon="mdi-file-document-refresh"
-          text="Suche läuft..."
-        />
-      </v-list>
-    </v-dialog>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+import _ from "lodash";
 import {
   type AbfrageDto,
   AbfrageDtoArtAbfrageEnum,
   type AbfrageSearchResultDto,
   type LookupEntryDto,
+  type StadtbezirkDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
   StatusAbfrage,
 } from "@/api/api-client/isi-backend";
-import _ from "lodash";
 import { createBauleitplanverfahrenDto } from "@/utils/Factories";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
-import LoadingProgressCircular from "@/components/common/LoadingProgressCircular.vue";
 
 interface Props {
   context: Context;
@@ -116,39 +106,93 @@ interface Props {
 
 interface Emits {
   (event: "abfrageUebernehmen", value: AbfrageDto): void;
-
   (event: "uebernahmeAbbrechen", value: void): void;
 }
+
+type ResultItem = {
+  title: string;
+  subtitle: string;
+  label: string;
+  value: string;
+};
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const dialogOpen = defineModel<boolean>({ required: true });
 
 const { getById } = useAbfragenApi();
 const { searchForEntities } = useSearchApi();
 const lookupStore = useLookupStore();
 const searchStore = useSearchStore();
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const dialogOpen = defineModel<boolean>({ required: true });
+
+const abfrageSuchField = ref();
+const searchQuery = ref("");
+
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
-const selectedAbfrageSearchResult = ref<AbfrageSearchResultDto>();
-let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
-const abfrageSearchModel = ref("");
+
+const pendingSelectedAbfrageId = ref<string | undefined>(undefined);
+const pendingSelectedLabel = ref<string>("");
+
 const loading = ref(false);
-const abfragenSelect = ref();
 
-watch(
-  selectedAbfrageSearchResult,
-  async () => {
-    if (!_.isNil(selectedAbfrageSearchResult.value)) {
-      const idAbfrage = selectedAbfrageSearchResult.value;
-      selectedAbfrage = await getById(idAbfrage);
-    }
-  },
-  { immediate: true },
-);
+let currentSearchRequestId = 0;
+let isComponentActive = true;
 
+const dialogTitle = computed<string>(() => {
+  if (props.context === Context.BAUVORHABEN) {
+    return "Datenübernahme aus Abfrage";
+  }
+
+  if (props.context === Context.ABFRAGE) {
+    const artAbfrage = searchStore.selectedAbfrage?.artAbfrage;
+    const formattedArtAbfrage = getArtAbfrage(artAbfrage);
+
+    return _.isEmpty(formattedArtAbfrage) ? "Datenübernahme aus Abfrage" : `Datenübernahme aus ${formattedArtAbfrage}`;
+  }
+
+  return "Datenübernahme aus Abfrage";
+});
+
+/**
+ * Formatiert die Art der Abfrage analog zu Search.vue.
+ */
+function getArtAbfrage(artAbfrage: AbfrageDtoArtAbfrageEnum | undefined): string {
+  let bezeichnungArtAbfrage = "";
+  if (artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+    bezeichnungArtAbfrage = "Bauleitplanverfahren";
+  } else if (artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+    bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
+  } else if (artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+    bezeichnungArtAbfrage = "Weiteres Verfahren";
+  }
+  return _.defaultTo(bezeichnungArtAbfrage, "Unbekannte Art");
+}
+
+/**
+ * Formatiert Stadtbezirke analog zu Search.vue.
+ */
+function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
+  const auflistungStadtbezirksbezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), [
+    "nummer",
+  ]).map((stadtbezirk: StadtbezirkDto) => {
+    return stadtbezirk.nummer + "/" + stadtbezirk.name;
+  });
+
+  return _.join(auflistungStadtbezirksbezeichnungen, ", ");
+}
+
+/**
+ * Formatiert den sichtbaren Text eines Suchtreffers.
+ */
 function getItemText(searchResult: AbfrageSearchResultDto): string {
   return (
     "Name: " +
     _.defaultTo(searchResult.name, "Kein Name vorhanden") +
+    " - Abfrageart: " +
+    getArtAbfrage(searchResult.artAbfrage) +
+    " - Stadtbezirke: " +
+    _.defaultTo(getStadtbezirke(searchResult.stadtbezirke), "Keine Stadtbezirke vorhanden") +
     " - Status: " +
     _.defaultTo(getLookupValue(searchResult.statusAbfrage, lookupStore.statusAbfrage), "Kein Abfragestatus vorhanden") +
     " - Stand: " +
@@ -159,9 +203,43 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
   );
 }
 
-async function fetchAbfragen(): Promise<void> {
-  const searchQueryAndSortingDto = {
-    searchQuery: "",
+/**
+ * Baut den Untertitel eines Suchtreffers.
+ */
+function getItemSubtitle(searchResult: AbfrageSearchResultDto): string {
+  return (
+    "Abfrageart: " +
+    getArtAbfrage(searchResult.artAbfrage) +
+    " • Stadtbezirke: " +
+    _.defaultTo(getStadtbezirke(searchResult.stadtbezirke), "Keine Stadtbezirke vorhanden")
+  );
+}
+
+/**
+ * Bereitet die Suchergebnisse für die Anzeige auf.
+ */
+const resultItems = computed<ResultItem[]>(() =>
+  abfragen.value
+    .filter((entry) => !_.isEmpty(entry.id))
+    .map((entry) => ({
+      title: _.defaultTo(entry.name, "Kein Name vorhanden"),
+      subtitle: getItemSubtitle(entry),
+      label: getItemText(entry),
+      value: entry.id ?? "",
+    })),
+);
+
+/**
+ * Prüft, ob Ergebnisse angezeigt werden sollen.
+ */
+const hasListContent = computed<boolean>(() => resultItems.value.length > 0);
+
+/**
+ * Erstellt die Suchanfrage passend zum aktuellen Kontext.
+ */
+function createQuery(searchText: string) {
+  const query = {
+    searchQuery: searchText,
     selectBauleitplanverfahren: false,
     selectBaugenehmigungsverfahren: false,
     selectWeiteresVerfahren: false,
@@ -172,65 +250,183 @@ async function fetchAbfragen(): Promise<void> {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
-    page: undefined,
-    pageSize: undefined,
+    page: 1,
+    pageSize: 20,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum.Desc,
   };
-  if (!_.isEmpty(abfrageSearchModel.value)) {
-    searchQueryAndSortingDto.searchQuery = abfrageSearchModel.value;
-    loading.value = true;
-    if (props.context === Context.ABFRAGE) {
-      switch (searchStore.selectedAbfrage?.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-          searchQueryAndSortingDto.selectBauleitplanverfahren = true;
-          break;
-        case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-          searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
-          break;
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          searchQueryAndSortingDto.selectWeiteresVerfahren = true;
-          break;
-        default:
-          break;
-      }
-    } else {
-      searchQueryAndSortingDto.selectBauleitplanverfahren = true;
-      searchQueryAndSortingDto.selectBaugenehmigungsverfahren = true;
-      searchQueryAndSortingDto.selectWeiteresVerfahren = true;
+
+  if (props.context === Context.ABFRAGE) {
+    if (!searchStore.selectedAbfrage) {
+      return null;
     }
-    const searchResults = await searchForEntities(searchQueryAndSortingDto);
-    loading.value = false;
-    abfragen.value = searchResults.searchResults
-      ?.map((searchResult) => searchResult as AbfrageSearchResultDto)
-      .filter(searchResultFilter) as Array<AbfrageSearchResultDto>;
+
+    switch (searchStore.selectedAbfrage.artAbfrage) {
+      case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+        query.selectBauleitplanverfahren = true;
+        break;
+      case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+        query.selectBaugenehmigungsverfahren = true;
+        break;
+      case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+        query.selectWeiteresVerfahren = true;
+        break;
+      default:
+        break;
+    }
+  } else {
+    query.selectBauleitplanverfahren = true;
+    query.selectBaugenehmigungsverfahren = true;
+    query.selectWeiteresVerfahren = true;
   }
-  await nextTick();
-  if (abfragen.value.length > 0 && abfragenSelect.value) {
-    abfragenSelect.value.menu = true;
-  }
+
+  return query;
 }
 
+/**
+ * Filtert Suchergebnisse gemäß Kontext.
+ */
 function searchResultFilter(result: AbfrageSearchResultDto): boolean {
   if (props.context === Context.ABFRAGE) {
+    if (!searchStore.selectedAbfrage) {
+      return false;
+    }
+
     return (
-      result.artAbfrage === searchStore.selectedAbfrage?.artAbfrage &&
+      result.artAbfrage === searchStore.selectedAbfrage.artAbfrage &&
       result.statusAbfrage !== undefined &&
       result.statusAbfrage !== StatusAbfrage.Angelegt &&
       result.statusAbfrage !== StatusAbfrage.Abbruch
     );
-  } else if (props.context === Context.BAUVORHABEN) {
-    return _.isNil(result.bauvorhaben);
   }
+
+  if (props.context === Context.BAUVORHABEN) {
+    return _.isEmpty(result.bauvorhaben);
+  }
+
   return true;
 }
 
 /**
- * Holt aus der im Parameter gegebenen Lookup-Liste den darin hinterlegten Wert des im Parameter gegebenen Schlüssel.
- *
- * @param key für welchen der Wert aus der Liste geholt werden soll.
- * @param list mit den Schlüssel-Wert-Paaren.
- * @return den Wert für den Schlüssel. Ist der Parameter key oder die Liste undefined, so wird auch undefined zurückgegeben.
+ * Führt die Suche aus und schützt vor veralteten Requests.
+ */
+async function search(query: string): Promise<void> {
+  const trimmedQuery = _.trim(query);
+  const requestId = ++currentSearchRequestId;
+
+  if (_.isEmpty(trimmedQuery)) {
+    abfragen.value = [];
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    const searchQuery = createQuery(trimmedQuery);
+    if (!searchQuery) {
+      abfragen.value = [];
+      console.warn("Cannot perform search: selectedAbfrage is missing in ABFRAGE context");
+      return;
+    }
+
+    const result = await searchForEntities(searchQuery);
+
+    if (!isComponentActive || requestId !== currentSearchRequestId) {
+      return;
+    }
+
+    const normalizedQuery = trimmedQuery.toLowerCase();
+
+    abfragen.value =
+      result.searchResults
+        ?.map((entry) => entry as AbfrageSearchResultDto)
+        .filter(searchResultFilter)
+        .filter((entry) => getItemText(entry).toLowerCase().includes(normalizedQuery))
+        .slice(0, 20) ?? [];
+  } catch (error) {
+    console.error("Search failed:", error);
+    if (isComponentActive && requestId === currentSearchRequestId) {
+      abfragen.value = [];
+    }
+  } finally {
+    if (isComponentActive && requestId === currentSearchRequestId) {
+      loading.value = false;
+    }
+  }
+}
+
+const debouncedSearch = _.debounce((query: string) => {
+  void search(query);
+}, 300);
+
+/**
+ * Reagiert auf Änderungen im Suchfeld.
+ */
+function handleSearchInput(query: string): void {
+  debouncedSearch.cancel();
+  currentSearchRequestId++;
+  loading.value = false;
+  abfragen.value = [];
+
+  if (_.isEmpty(_.trim(query))) {
+    pendingSelectedAbfrageId.value = undefined;
+    pendingSelectedLabel.value = "";
+    return;
+  }
+
+  if (!_.isEmpty(pendingSelectedLabel.value) && pendingSelectedLabel.value !== query) {
+    pendingSelectedAbfrageId.value = undefined;
+    pendingSelectedLabel.value = "";
+  }
+
+  debouncedSearch(query);
+}
+
+/**
+ * Merkt eine Auswahl stabil vor.
+ */
+function selectResult(item: ResultItem): void {
+  pendingSelectedAbfrageId.value = item.value;
+  pendingSelectedLabel.value = item.label;
+  searchQuery.value = item.label;
+}
+
+/**
+ * Übernimmt bei Enter zuerst die Auswahl, sonst den ersten Treffer.
+ */
+function handleEnter(): void {
+  if (pendingSelectedAbfrageId.value) {
+    void abfrageUebernehmen();
+    return;
+  }
+
+  const firstResult = resultItems.value[0];
+  if (!firstResult) {
+    return;
+  }
+
+  pendingSelectedAbfrageId.value = firstResult.value;
+  pendingSelectedLabel.value = firstResult.label;
+  searchQuery.value = firstResult.label;
+}
+
+/**
+ * Setzt den sichtbaren Zustand zurück.
+ */
+function clearSearch(): void {
+  debouncedSearch.cancel();
+
+  searchQuery.value = "";
+  abfragen.value = [];
+  pendingSelectedAbfrageId.value = undefined;
+  pendingSelectedLabel.value = "";
+  loading.value = false;
+
+  currentSearchRequestId++;
+}
+
+/**
+ * Holt aus einer Lookup-Liste den Wert zum Schlüssel.
  */
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
   return !_.isUndefined(list) && !_.isNil(key)
@@ -238,13 +434,53 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
     : key;
 }
 
-function abfrageUebernehmen(): void {
-  selectedAbfrageSearchResult.value = undefined;
-  emit("abfrageUebernehmen", selectedAbfrage);
+/**
+ * Übernimmt die aktuell ausgewählte Abfrage.
+ */
+async function abfrageUebernehmen(): Promise<void> {
+  if (!pendingSelectedAbfrageId.value) {
+    return;
+  }
+
+  try {
+    let selectedAbfrage: AbfrageDto = createBauleitplanverfahrenDto();
+    selectedAbfrage = await getById(pendingSelectedAbfrageId.value);
+
+    clearSearch();
+    emit("abfrageUebernehmen", selectedAbfrage);
+  } catch (error) {
+    console.error("Failed to load selected Abfrage:", error);
+    pendingSelectedAbfrageId.value = undefined;
+    pendingSelectedLabel.value = "";
+  }
 }
 
+/**
+ * Bricht die Übernahme ab.
+ */
 function uebernahmeAbbrechen(): void {
-  selectedAbfrageSearchResult.value = undefined;
+  clearSearch();
   emit("uebernahmeAbbrechen");
 }
+
+/**
+ * Beim Öffnen wird der Dialog zurückgesetzt und das Suchfeld fokussiert.
+ */
+watch(dialogOpen, async (isOpen) => {
+  if (!isOpen) {
+    return;
+  }
+
+  clearSearch();
+  await nextTick();
+  abfrageSuchField.value?.focus?.();
+});
+
+/**
+ * Vor dem Unmount laufende debounced Aufrufe beenden.
+ */
+onBeforeUnmount(() => {
+  isComponentActive = false;
+  debouncedSearch.cancel();
+});
 </script>

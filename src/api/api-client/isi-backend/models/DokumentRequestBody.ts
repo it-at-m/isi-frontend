@@ -59,7 +59,7 @@ export interface DokumentRequestBody {
     filePath?: Filepath;
     /**
      * 
-     * @type {string}
+     * @type {DokumentRequestBodyArtDokumentEnum}
      * @memberof DokumentRequestBody
      */
     artDokument?: DokumentRequestBodyArtDokumentEnum;

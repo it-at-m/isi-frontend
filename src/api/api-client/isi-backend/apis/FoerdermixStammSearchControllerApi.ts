@@ -28,8 +28,9 @@ import {
 export class FoerdermixStammSearchControllerApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for executeSearchFoerdermixstammGet without sending the request
      */
-    async executeSearchFoerdermixstammGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+    async executeSearchFoerdermixstammGetRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -37,12 +38,19 @@ export class FoerdermixStammSearchControllerApi extends runtime.BaseAPI {
 
         let urlPath = `/foerdermixStamms/search/findAllByOrderByFoerdermixBezeichnungAsc`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     */
+    async executeSearchFoerdermixstammGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelFoerdermixStamm>> {
+        const requestOptions = await this.executeSearchFoerdermixstammGetRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelFoerdermixStammFromJSON(jsonValue));
     }

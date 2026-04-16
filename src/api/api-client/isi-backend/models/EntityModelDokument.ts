@@ -60,7 +60,7 @@ export interface EntityModelDokument {
     filePath?: Filepath;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelDokumentArtDokumentEnum}
      * @memberof EntityModelDokument
      */
     artDokument?: EntityModelDokumentArtDokumentEnum;

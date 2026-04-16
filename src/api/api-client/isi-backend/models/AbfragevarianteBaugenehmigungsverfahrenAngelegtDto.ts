@@ -41,7 +41,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenAngelegtDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum;
@@ -59,7 +59,7 @@ export interface AbfragevarianteBaugenehmigungsverfahrenAngelegtDto {
     name: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>;

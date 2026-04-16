@@ -42,10 +42,9 @@ export interface SaveFileRequest {
 export class DateihandlingApi extends runtime.BaseAPI {
 
     /**
-     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
-     * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
+     * Creates request options for getFile without sending the request
      */
-    async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+    async getFileRequestOpts(requestParameters: GetFileRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['pathToFile'] == null) {
             throw new runtime.RequiredError(
                 'pathToFile',
@@ -64,12 +63,21 @@ export class DateihandlingApi extends runtime.BaseAPI {
 
         let urlPath = `/presigned-url`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode GET zu verwenden.
+     * Stellt die Presigned-Url zum Holen einer Datei zur Verfügung.
+     */
+    async getFileRaw(requestParameters: GetFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+        const requestOptions = await this.getFileRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
     }
@@ -84,10 +92,9 @@ export class DateihandlingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
-     * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
+     * Creates request options for saveFile without sending the request
      */
-    async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+    async saveFileRequestOpts(requestParameters: SaveFileRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['filepathDto'] == null) {
             throw new runtime.RequiredError(
                 'filepathDto',
@@ -104,13 +111,22 @@ export class DateihandlingApi extends runtime.BaseAPI {
 
         let urlPath = `/presigned-url`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: FilepathDtoToJSON(requestParameters['filepathDto']),
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Die Presigned-Url ist vom Aufrufer mit der Http-Methode PUT zu verwenden.
+     * Stellt die Presigned-Url zum Initialen Speichern einer Datei zur Verfügung.
+     */
+    async saveFileRaw(requestParameters: SaveFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PresignedUrlDto>> {
+        const requestOptions = await this.saveFileRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PresignedUrlDtoFromJSON(jsonValue));
     }

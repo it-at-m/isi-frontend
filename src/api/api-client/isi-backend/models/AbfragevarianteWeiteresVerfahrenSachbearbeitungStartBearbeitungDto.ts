@@ -55,13 +55,13 @@ export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitung
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {string}
+     * @type {AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
      * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;

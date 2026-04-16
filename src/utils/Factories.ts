@@ -307,6 +307,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -358,6 +360,8 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -412,6 +416,8 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     dokumente: [],
     bedarfsmeldungFachreferate: new Array<BedarfsmeldungDto>(),
     bedarfsmeldungAbfrageersteller: new Array<BedarfsmeldungDto>(),
+    bedarfsmeldungDokumenteAbfrageersteller: [],
+    bedarfsmeldungDokumenteFachreferate: [],
     anmerkungFachreferate: undefined,
     anmerkungAbfrageersteller: undefined,
     bauabschnitte: [],
@@ -424,6 +430,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
@@ -433,6 +440,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     isASobonBerechnung: false,
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
+    versorgungsquoteHortSobon: undefined,
   };
 }
 
@@ -512,8 +520,6 @@ export function createDokumentDto(): DokumentDto {
     lastModifiedDateTime: undefined,
     filePath: createFilepathDto(),
     artDokument: DokumentDtoArtDokumentEnum.Unspecified,
-    sizeInBytes: 0,
-    typDokument: "",
   };
 }
 

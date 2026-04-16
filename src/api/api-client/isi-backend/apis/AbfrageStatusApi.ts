@@ -85,9 +85,9 @@ export interface ZurueckAnSachbearbeitungAbfrageRequest {
 export class AbfrageStatusApi extends runtime.BaseAPI {
 
     /**
-     * Setzt eine Abfrage auf den Status ABBRUCH
+     * Creates request options for abbrechenAbfrage without sending the request
      */
-    async abbrechenAbfrageRaw(requestParameters: AbbrechenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async abbrechenAbfrageRequestOpts(requestParameters: AbbrechenAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -107,12 +107,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/abbrechen`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ABBRUCH
+     */
+    async abbrechenAbfrageRaw(requestParameters: AbbrechenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.abbrechenAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -125,9 +133,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status EINPLANUNG_BEDARFE
+     * Creates request options for bedarfsmeldungErfolgt without sending the request
      */
-    async bedarfsmeldungErfolgtRaw(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async bedarfsmeldungErfolgtRequestOpts(requestParameters: BedarfsmeldungErfolgtRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -147,12 +155,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/bedarfsmeldung-erfolgt`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status EINPLANUNG_BEDARFE
+     */
+    async bedarfsmeldungErfolgtRaw(requestParameters: BedarfsmeldungErfolgtRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.bedarfsmeldungErfolgtRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -165,9 +181,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
+     * Creates request options for erledigtMitFachreferat without sending the request
      */
-    async erledigtMitFachreferatRaw(requestParameters: ErledigtMitFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async erledigtMitFachreferatRequestOpts(requestParameters: ErledigtMitFachreferatRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -187,12 +203,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/erledigt-mit-fachreferat`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ERLEDIGT_MIT_FACHREFERAT
+     */
+    async erledigtMitFachreferatRaw(requestParameters: ErledigtMitFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.erledigtMitFachreferatRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -205,9 +229,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     * Creates request options for erledigtOhneFachreferat without sending the request
      */
-    async erledigtOhneFachreferatRaw(requestParameters: ErledigtOhneFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async erledigtOhneFachreferatRequestOpts(requestParameters: ErledigtOhneFachreferatRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -227,12 +251,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/erledigt-ohne-fachreferat`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ERLEDIGT_OHNE_FACHREFERAT
+     */
+    async erledigtOhneFachreferatRaw(requestParameters: ErledigtOhneFachreferatRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.erledigtOhneFachreferatRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -245,9 +277,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     * Creates request options for erneuteBearbeitungSachbearbeitung without sending the request
      */
-    async erneuteBearbeitungSachbearbeitungRaw(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async erneuteBearbeitungSachbearbeitungRequestOpts(requestParameters: ErneuteBearbeitungSachbearbeitungRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -267,12 +299,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     */
+    async erneuteBearbeitungSachbearbeitungRaw(requestParameters: ErneuteBearbeitungSachbearbeitungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.erneuteBearbeitungSachbearbeitungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -285,9 +325,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status UEBERMITTELT_ZUR_BEARBEITUNG
+     * Creates request options for freigabeAbfrage without sending the request
      */
-    async freigabeAbfrageRaw(requestParameters: FreigabeAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async freigabeAbfrageRequestOpts(requestParameters: FreigabeAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -307,12 +347,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/freigabe`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status UEBERMITTELT_ZUR_BEARBEITUNG
+     */
+    async freigabeAbfrageRaw(requestParameters: FreigabeAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.freigabeAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -325,9 +373,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     * Creates request options for inBearbeitungSetzenAbfrage without sending the request
      */
-    async inBearbeitungSetzenAbfrageRaw(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async inBearbeitungSetzenAbfrageRequestOpts(requestParameters: InBearbeitungSetzenAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -347,12 +395,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/in-bearbeitung-setzen`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     */
+    async inBearbeitungSetzenAbfrageRaw(requestParameters: InBearbeitungSetzenAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.inBearbeitungSetzenAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -365,9 +421,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status
+     * Creates request options for transitionsAbfrage without sending the request
      */
-    async transitionsAbfrageRaw(requestParameters: TransitionsAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TransitionDto>>> {
+    async transitionsAbfrageRequestOpts(requestParameters: TransitionsAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -383,12 +439,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/transitions`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Holt alle möglichen StatusAbfrage Transitions auf Basis der Authorities und des aktuellen Status
+     */
+    async transitionsAbfrageRaw(requestParameters: TransitionsAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TransitionDto>>> {
+        const requestOptions = await this.transitionsAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TransitionDtoFromJSON));
     }
@@ -402,9 +466,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status EINPFLEGEN_BEDARFSMELDUNG
+     * Creates request options for verschickenDerStellungnahme without sending the request
      */
-    async verschickenDerStellungnahmeRaw(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async verschickenDerStellungnahmeRequestOpts(requestParameters: VerschickenDerStellungnahmeRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -424,12 +488,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/verschicken-der-stellungnahme`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status EINPFLEGEN_BEDARFSMELDUNG
+     */
+    async verschickenDerStellungnahmeRaw(requestParameters: VerschickenDerStellungnahmeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.verschickenDerStellungnahmeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -442,9 +514,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status ANGELEGT
+     * Creates request options for zurueckAnAbfrageerstellungAbfrage without sending the request
      */
-    async zurueckAnAbfrageerstellungAbfrageRaw(requestParameters: ZurueckAnAbfrageerstellungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async zurueckAnAbfrageerstellungAbfrageRequestOpts(requestParameters: ZurueckAnAbfrageerstellungAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -464,12 +536,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/zurueck-an-abfrageerstellung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status ANGELEGT
+     */
+    async zurueckAnAbfrageerstellungAbfrageRaw(requestParameters: ZurueckAnAbfrageerstellungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.zurueckAnAbfrageerstellungAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -482,9 +562,9 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
     }
 
     /**
-     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     * Creates request options for zurueckAnSachbearbeitungAbfrage without sending the request
      */
-    async zurueckAnSachbearbeitungAbfrageRaw(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async zurueckAnSachbearbeitungAbfrageRequestOpts(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -504,12 +584,20 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
         let urlPath = `/abfrage-status/{id}/zurueck-an-sachbearbeitung`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Setzt eine Abfrage auf den Status START_BEARBEITUNG
+     */
+    async zurueckAnSachbearbeitungAbfrageRaw(requestParameters: ZurueckAnSachbearbeitungAbfrageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.zurueckAnSachbearbeitungAbfrageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

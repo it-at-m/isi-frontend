@@ -59,7 +59,7 @@ export interface EntityModelAbfragevariante {
     name?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelAbfragevarianteArtAbfragevarianteEnum}
      * @memberof EntityModelAbfragevariante
      */
     artAbfragevariante?: EntityModelAbfragevarianteArtAbfragevarianteEnum;

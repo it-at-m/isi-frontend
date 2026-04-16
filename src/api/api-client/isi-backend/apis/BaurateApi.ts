@@ -37,9 +37,9 @@ export interface DetermineBauratenRequest {
 export class BaurateApi extends runtime.BaseAPI {
 
     /**
-     * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
+     * Creates request options for determineBauraten without sending the request
      */
-    async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
+    async determineBauratenRequestOpts(requestParameters: DetermineBauratenRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['realisierungsbeginn'] == null) {
             throw new runtime.RequiredError(
                 'realisierungsbeginn',
@@ -66,12 +66,20 @@ export class BaurateApi extends runtime.BaseAPI {
 
         let urlPath = `/baurate/determine`;
 
-        const response = await this.request({
+        return {
             path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Ermittelt die Bauraten auf Basis der Stammdaten für idealtypische Bauraten
+     */
+    async determineBauratenRaw(requestParameters: DetermineBauratenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BaurateDto>>> {
+        const requestOptions = await this.determineBauratenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BaurateDtoFromJSON));
     }

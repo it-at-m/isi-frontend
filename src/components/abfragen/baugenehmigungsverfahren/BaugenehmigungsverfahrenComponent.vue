@@ -25,6 +25,8 @@
       v-model="baugenehmigungsverfahren.verortung"
       :context="Context.ABFRAGE"
       :look-at="baugenehmigungsverfahren.adresse"
+      :is-editable="isEditableByAbfrageerstellung || isEditableBySachbearbeitung"
+      @form-changed="formChanged"
     />
     <allgemeine-informationen-zur-abfrage-baugenehmigungsverfahren-component
       id="allgemeine_informationen_zur_abfrage_baugenehmigunsverfahren-component"
@@ -47,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import AbfrageCommonComponent from "@/components/abfragen/AbfrageCommonComponent.vue";
 import AllgemeineInformationenBaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/AllgemeineInformationenBaugenehmigungsverfahrenComponent.vue";
 import AllgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent from "@/components/abfragen/baugenehmigungsverfahren/AllgemeineInformationenZurAbfrageBaugenehmigungsverfahrenComponent.vue";
@@ -70,4 +73,13 @@ const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrag
 const baugenehmigungsverfahren = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
 
 withDefaults(defineProps<Props>(), { isNew: false });
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => baugenehmigungsverfahren.value.verortung,
+  () => {
+    emit("update:modelValue", baugenehmigungsverfahren.value);
+  },
+  { immediate: true, deep: true },
+);
 </script>

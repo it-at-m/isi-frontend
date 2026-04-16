@@ -69,7 +69,7 @@ export interface BaugenehmigungsverfahrenAngelegtDto extends AbfrageAngelegtDto 
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {string}
+     * @type {BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum}
      * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     standVerfahren: BaugenehmigungsverfahrenAngelegtDtoStandVerfahrenEnum;

@@ -31,7 +31,7 @@ export interface AbfrageEinplanungBedarfeDto {
     version?: number;
     /**
      * 
-     * @type {string}
+     * @type {AbfrageEinplanungBedarfeDtoArtAbfrageEnum}
      * @memberof AbfrageEinplanungBedarfeDto
      */
     artAbfrage?: AbfrageEinplanungBedarfeDtoArtAbfrageEnum;
