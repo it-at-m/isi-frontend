@@ -26,7 +26,6 @@ Emits:
 - `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
 - `determine-bauraten-for-baugebiet: AbfrageTreeItem`
 -->
-
 <template>
   <v-list
     activatable
@@ -274,7 +273,6 @@ function buildSubTreeAbfragevariante(
     if (firstBauabschnitt && firstBauabschnitt.technical) {
       const firstBaugebiet = firstBauabschnitt.baugebiete[0];
       if (firstBaugebiet && firstBaugebiet.technical) {
-        // Fall 1: Platzhalter-Bauabschnitt und -Baugebiet -> Bauraten werden angezeigt und können angelegt werden
         item.children = firstBaugebiet.bauraten.map((value, index) => buildSubTreeBaurate(value, item, index, context));
         if (editable) {
           item.actions.push({
@@ -284,7 +282,6 @@ function buildSubTreeAbfragevariante(
           });
         }
       } else {
-        // Fall 2: Platzhalter-Bauabschnitt -> Baugebiete werden angezeigt und können angelegt werden
         item.children = firstBauabschnitt.baugebiete.map((value, index) =>
           buildSubTreeBaugebiet(value, item, index, context, abfragevariante),
         );
@@ -297,7 +294,6 @@ function buildSubTreeAbfragevariante(
         }
       }
     } else {
-      // Fall 3: Bauabschnitt(e) -> Bauabschnitte werden angezeigt und können angelegt werden
       item.children = abfragevariante.bauabschnitte.map((value, index) =>
         buildSubTreeBauabschnitt(value, item, index, context, abfragevariante),
       );
@@ -310,7 +306,6 @@ function buildSubTreeAbfragevariante(
       }
     }
   } else {
-    // Fall 4: Keine Bauabschnitte -> Bauabschnitt, Baugebiet oder Baurate kann angelegt werden
     if (editable) {
       item.actions.push({
         name: CREATE_BAUABSCHNITT,
@@ -500,30 +495,20 @@ function createAbfragevarianteModel(abfragevariante: AnyAbfragevarianteDto): Any
 
 function bauratenDeterminableForAbfragevariante(abfragevariante: AnyAbfragevarianteDto): boolean {
   return (
-    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.weGesamt) || !_.isNil(abfragevariante.gfWohnenGesamt)) &&
-    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
     _.isEmpty(abfragevariante.bauabschnitte) &&
-    // Das Datum für Realisierung von muss gesetzt sein.
     !_.isNil(abfragevariante.realisierungVon)
   );
 }
 
 function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
   return (
-    // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(baugebiet.weGeplant) || !_.isNil(baugebiet.gfWohnenGeplant)) &&
-    // Die Abfragevariante darf keine Bauabschnitte referenzieren.
     _.isEmpty(baugebiet.bauraten) &&
-    // Das Datum für Realisierung von muss gesetzt sein.
     !_.isNil(baugebiet.realisierungVon)
   );
 }
 
-/**
- * Erzeugt eine einzigartige Id für ein TreeItem, die auf der Id des Parents und seinem Index (unter seinen Silblings) basiert.
- * Die Id vom Root ist immer ein leerer String und braucht deshalb diese Funktion nicht.
- */
 function generateTreeItemId(parentId: string, index: number): string {
   if (parentId === "") {
     return index.toString();
@@ -532,5 +517,27 @@ function generateTreeItemId(parentId: string, index: number): string {
   return `${parentId}.${index}`;
 }
 
-defineExpose({ generateTreeItemId });
+function findTreeItemById(itemId: string): AbfrageTreeItem | undefined {
+  return findTreeItemRecursive(root.value, itemId);
+}
+
+function findTreeItemRecursive(item: AbfrageTreeItem, itemId: string): AbfrageTreeItem | undefined {
+  if (item.id === itemId) {
+    return item;
+  }
+
+  for (const child of item.children) {
+    const result = findTreeItemRecursive(child, itemId);
+    if (result) {
+      return result;
+    }
+  }
+
+  return undefined;
+}
+
+defineExpose({
+  generateTreeItemId,
+  findTreeItemById,
+});
 </script>

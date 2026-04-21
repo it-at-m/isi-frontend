@@ -296,7 +296,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { computed, nextTick, onBeforeMount, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
 import {
   type AbfragevarianteBauleitplanverfahrenDto,
@@ -466,6 +466,11 @@ const relevanteAbfragevarianteDialogText = ref("");
 const relevanteAbfragevarianteYesButtonText = ref("Ok");
 const anzeigeContextAbfragevariante = ref(AnzeigeContextAbfragevariante.UNDEFINED);
 const selectedTreeItemId = ref("");
+const lastSelection = ref<{
+  itemId: string;
+  type: AbfrageFormType;
+  context: AnzeigeContextAbfragevariante;
+} | null>(null);
 const treeItemToDelete = ref<AbfrageTreeItem | undefined>(undefined);
 const anmerkungMaxLength = ref(0);
 const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
@@ -473,7 +478,7 @@ const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
 );
 const baugebietAncestor = ref<BaugebietModel>(new BaugebietModel(createBaugebietDto()));
 const form = ref<VForm | null>(null);
-const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
+const abfrageNavigationTree = ref<InstanceType<typeof AbfrageNavigationTree> | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
@@ -611,7 +616,6 @@ function statusUebergang(transition: TransitionDto): void {
   dialogTextStatus.value = transition.dialogText as string;
 
   if (transition.url === TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
-    // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
     const availableLength = 2000 - (abfrage.value.anmerkung?.length ?? 0) - 1;
     if (availableLength > 0) {
       anmerkungMaxLength.value = availableLength;
@@ -708,17 +712,23 @@ async function saveAbfrage(): Promise<void> {
   if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
+      lastSelection.value = {
+        itemId: selectedTreeItemId.value,
+        type: openForm.value,
+        context: anzeigeContextAbfragevariante.value,
+      };
+
       commonStore.disableButton();
       if (isNew.value) {
-        handleSave(abfrage.value);
+        await handleSave(abfrage.value);
       } else if (isEditableByAbfrageerstellung.value) {
-        handlePatchAngelegt(abfrage.value);
+        await handlePatchAngelegt(abfrage.value);
       } else if (isEditableBySachbearbeitung.value) {
-        handlePatchStartBearbeitung(abfrage.value);
+        await handlePatchStartBearbeitung(abfrage.value);
       } else if (isEditableByBedarfsmeldung.value) {
-        handlePatchEinpflegenBedarfsmeldung(abfrage.value);
+        await handlePatchEinpflegenBedarfsmeldung(abfrage.value);
       } else if (isBedarfsmeldungEditableByAbfrageerstellung.value) {
-        handlePatchEinplanungBedarfe(abfrage.value);
+        await handlePatchEinplanungBedarfe(abfrage.value);
       }
     } else {
       toast.error(validationMessage, { timeout: false });
@@ -742,7 +752,7 @@ async function handleSave(model: AnyAbfrageModel): Promise<void> {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
   const dto = await save(abfrageAngelegtDto);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
@@ -759,7 +769,7 @@ async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
   const dto = await patchAngelegt(abfrageAngelegtDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchStartBearbeitung(model: AnyAbfrageModel): Promise<void> {
@@ -776,7 +786,7 @@ async function handlePatchStartBearbeitung(model: AnyAbfrageModel): Promise<void
     abfrageStartBearbeitungDto = mapToWeiteresVerfahrenStartBearbeitungDto(model);
   }
   const dto = await patchStartBearbeitung(abfrageStartBearbeitungDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchEinpflegenBedarfsmeldung(model: AnyAbfrageModel): Promise<void> {
@@ -793,7 +803,7 @@ async function handlePatchEinpflegenBedarfsmeldung(model: AnyAbfrageModel): Prom
     abfrageEinpflegenBedarfsmeldungDto = mapToWeiteresVerfahrenEinpflegenBedarfsmeldungDto(model);
   }
   const dto = await patchEinpflegenBedarfsmeldung(abfrageEinpflegenBedarfsmeldungDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchEinplanungBedarfe(model: AnyAbfrageModel): Promise<void> {
@@ -810,10 +820,10 @@ async function handlePatchEinplanungBedarfe(model: AnyAbfrageModel): Promise<voi
     abfrageEinplanungBedarfeDto = mapToWeiteresVerfahrenEinplanungBedarfeDto(model);
   }
   const dto = await patchEinplanungBedarfe(abfrageEinplanungBedarfeDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
-function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
+async function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): Promise<void> {
   if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfrage.value = new BauleitplanverfahrenModel(dto);
   } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
@@ -821,16 +831,35 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
     abfrage.value = new WeiteresVerfahrenModel(dto);
   }
+
   if (isNew.value) {
     toast.success(`Die Abfrage wurde erfolgreich gespeichert`);
     isNew.value = false;
     abfrageId = !_.isNil(dto.id) ? dto.id : "";
-    getTransitions(abfrageId).then((transitions) => (possibleTransitions.value = transitions));
+    possibleTransitions.value = await getTransitions(abfrageId);
+    selectAbfrage();
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
+
+  await nextTick();
+  restoreSelectionAfterSave();
   commonStore.enableButton();
-  selectAbfrage();
+}
+
+function restoreSelectionAfterSave(): void {
+  if (!lastSelection.value) {
+    selectAbfrage();
+    return;
+  }
+
+  const treeItem = abfrageNavigationTree.value?.findTreeItemById(lastSelection.value.itemId);
+
+  if (treeItem) {
+    selectEntity(treeItem.value, treeItem.type, treeItem.id, treeItem.context);
+  } else {
+    selectAbfrage();
+  }
 }
 
 async function startStatusUebergang(transition: TransitionDto) {
@@ -1225,7 +1254,6 @@ function removeBauabschnittFromAbfragevariante(): void {
     const abfragevariante = getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value);
     if (abfragevariante && abfragevariante.bauabschnitte) {
       _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === treeItemToDelete.value!.value);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1240,7 +1268,6 @@ function removeBaugebietFromBauabschnitt(): void {
     if (bauabschnitt) {
       _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === treeItemToDelete.value!.value);
       clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1255,7 +1282,6 @@ function removeBaurateFromBaugebiet(): void {
     if (baugebiet) {
       _.remove(baugebiet.bauraten, (baurate) => baurate === treeItemToDelete.value!.value);
       clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
-      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       baugebiet.bauraten = [...baugebiet.bauraten];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1306,10 +1332,6 @@ async function handleDetermineBauratenForBaugebiet(item: AbfrageTreeItem): Promi
     formChanged();
   }
 }
-
-/* Diese "Ancestor"-Methoden sind prinzipiell dafür da, einen Vorfahren von einem bestimmten Typ zu finden.
- * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
- */
 
 function getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AnyAbfragevarianteModel | undefined {
   while (item.parent) {
@@ -1442,11 +1464,10 @@ function selectCreatedEntity(
   parent: AbfrageTreeItem,
   context: AnzeigeContextAbfragevariante,
 ): void {
-  // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
   selectEntity(
     entity,
     type,
-    abfrageNavigationTree.value?.generateTreeItemId(parent.id, parent.children.length),
+    abfrageNavigationTree.value?.generateTreeItemId(parent.id, parent.children.length) ?? "",
     context,
   );
 }
@@ -1501,9 +1522,6 @@ function isBaurate(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is B
   return item.type === AbfrageFormType.BAURATE;
 }
 
-/**
- * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
- */
 function getTechnicalBauabschnitt(abfragevariante: AnyAbfragevarianteModel): BauabschnittModel | undefined {
   let bauabschnitt: BauabschnittModel | undefined;
 
@@ -1525,9 +1543,6 @@ function getTechnicalBauabschnitt(abfragevariante: AnyAbfragevarianteModel): Bau
   }
 }
 
-/**
- * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
- */
 function getTechnicalBaugebiet(abfragevariante: AnyAbfragevarianteModel): BaugebietModel | undefined {
   const bauabschnitt = getTechnicalBauabschnitt(abfragevariante);
 
@@ -1548,9 +1563,6 @@ function getTechnicalBaugebiet(abfragevariante: AnyAbfragevarianteModel): Baugeb
   return undefined;
 }
 
-/**
- * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
- */
 function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void {
   if (!_.isNil(abfragevariante.bauabschnitte)) {
     const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);
