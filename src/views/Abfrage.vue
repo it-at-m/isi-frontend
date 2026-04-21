@@ -616,6 +616,7 @@ function statusUebergang(transition: TransitionDto): void {
   dialogTextStatus.value = transition.dialogText as string;
 
   if (transition.url === TRANSITION_URL_ERLEDIGT_OHNE_FACHREFERAT) {
+    // Verfügbare Zeichen = (maximale Zeichenanzahl) - (benutzte Zeichen) - (Zeilenumbruch)
     const availableLength = 2000 - (abfrage.value.anmerkung?.length ?? 0) - 1;
     if (availableLength > 0) {
       anmerkungMaxLength.value = availableLength;
@@ -1254,6 +1255,7 @@ function removeBauabschnittFromAbfragevariante(): void {
     const abfragevariante = getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value);
     if (abfragevariante && abfragevariante.bauabschnitte) {
       _.remove(abfragevariante.bauabschnitte, (bauabschnitt) => bauabschnitt === treeItemToDelete.value!.value);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       abfragevariante.bauabschnitte = [...abfragevariante.bauabschnitte];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1267,6 +1269,7 @@ function removeBaugebietFromBauabschnitt(): void {
     const bauabschnitt = getFirstAncestorOfTypeBauabschnitt(treeItemToDelete.value);
     if (bauabschnitt) {
       _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === treeItemToDelete.value!.value);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
       bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
       formChanged();
@@ -1282,6 +1285,7 @@ function removeBaurateFromBaugebiet(): void {
     if (baugebiet) {
       _.remove(baugebiet.bauraten, (baurate) => baurate === treeItemToDelete.value!.value);
       clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
+      // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
       baugebiet.bauraten = [...baugebiet.bauraten];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1333,6 +1337,10 @@ async function handleDetermineBauratenForBaugebiet(item: AbfrageTreeItem): Promi
   }
 }
 
+/*
+ * Diese "Ancestor"-Methoden sind prinzipiell dafür da, einen Vorfahren von einem bestimmten Typ zu finden.
+ * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
+ */
 function getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AnyAbfragevarianteModel | undefined {
   while (item.parent) {
     if (
@@ -1455,6 +1463,7 @@ function selectAbfrage(): void {
 }
 
 function selectItem(item: AbfrageTreeItem): void {
+  // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
   selectEntity(item.value, item.type, item.id, item.context);
 }
 
@@ -1522,6 +1531,9 @@ function isBaurate(item: AbfrageTreeItem, value: AbfrageDtoWithForm): value is B
   return item.type === AbfrageFormType.BAURATE;
 }
 
+/**
+ * Ermittelt oder erstellt bei Bedarf einen Platzhalter-Bauabschnitt für "alleinstehende" Baugebiete und -raten.
+ */
 function getTechnicalBauabschnitt(abfragevariante: AnyAbfragevarianteModel): BauabschnittModel | undefined {
   let bauabschnitt: BauabschnittModel | undefined;
 
@@ -1543,6 +1555,9 @@ function getTechnicalBauabschnitt(abfragevariante: AnyAbfragevarianteModel): Bau
   }
 }
 
+/**
+ * Ermittelt oder erstellt bei Bedarf ein Platzhalter-Baugebiet für "alleinstehende" Bauraten.
+ */
 function getTechnicalBaugebiet(abfragevariante: AnyAbfragevarianteModel): BaugebietModel | undefined {
   const bauabschnitt = getTechnicalBauabschnitt(abfragevariante);
 
@@ -1563,6 +1578,9 @@ function getTechnicalBaugebiet(abfragevariante: AnyAbfragevarianteModel): Baugeb
   return undefined;
 }
 
+/**
+ * Soll nach dem Löschen von Baugebieten und -raten aufgerufen werden, um Platzhalter ohne Kinder zu beseitigen.
+ */
 function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void {
   if (!_.isNil(abfragevariante.bauabschnitte)) {
     const bauabschnittIndex = abfragevariante.bauabschnitte.findIndex((dto) => dto.technical);
