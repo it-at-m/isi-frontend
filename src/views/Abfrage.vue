@@ -857,7 +857,15 @@ function restoreSelectionAfterSave(): void {
   const treeItem = abfrageNavigationTree.value?.findTreeItemById(lastSelection.value.itemId);
 
   if (treeItem) {
-    selectEntity(treeItem.value, treeItem.type, treeItem.id, treeItem.context);
+    if (treeItem.id === "") {
+      selectAbfrage();
+    } else if (isBaugebiet(treeItem, treeItem.value)) {
+      handleSelectBaugebiet(treeItem);
+    } else if (isBaurate(treeItem, treeItem.value)) {
+      handleSelectBaurate(treeItem);
+    } else {
+      selectItem(treeItem);
+    }
   } else {
     selectAbfrage();
   }
