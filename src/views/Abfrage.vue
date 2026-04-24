@@ -296,7 +296,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { computed, nextTick, onBeforeMount, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
 import {
   type AbfragevarianteBauleitplanverfahrenDto,
@@ -466,6 +466,11 @@ const relevanteAbfragevarianteDialogText = ref("");
 const relevanteAbfragevarianteYesButtonText = ref("Ok");
 const anzeigeContextAbfragevariante = ref(AnzeigeContextAbfragevariante.UNDEFINED);
 const selectedTreeItemId = ref("");
+const lastSelection = ref<{
+  itemId: string;
+  type: AbfrageFormType;
+  context: AnzeigeContextAbfragevariante;
+} | null>(null);
 const treeItemToDelete = ref<AbfrageTreeItem | undefined>(undefined);
 const anmerkungMaxLength = ref(0);
 const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
@@ -473,7 +478,7 @@ const abfragevarianteAncestor = ref<AnyAbfragevarianteModel>(
 );
 const baugebietAncestor = ref<BaugebietModel>(new BaugebietModel(createBaugebietDto()));
 const form = ref<VForm | null>(null);
-const abfrageNavigationTree = ref<typeof AbfrageNavigationTree | null>(null);
+const abfrageNavigationTree = ref<InstanceType<typeof AbfrageNavigationTree> | null>(null);
 const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
@@ -708,17 +713,23 @@ async function saveAbfrage(): Promise<void> {
   if ((await form.value?.validate())?.valid) {
     const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
+      lastSelection.value = {
+        itemId: selectedTreeItemId.value,
+        type: openForm.value,
+        context: anzeigeContextAbfragevariante.value,
+      };
+
       commonStore.disableButton();
       if (isNew.value) {
-        handleSave(abfrage.value);
+        await handleSave(abfrage.value);
       } else if (isEditableByAbfrageerstellung.value) {
-        handlePatchAngelegt(abfrage.value);
+        await handlePatchAngelegt(abfrage.value);
       } else if (isEditableBySachbearbeitung.value) {
-        handlePatchStartBearbeitung(abfrage.value);
+        await handlePatchStartBearbeitung(abfrage.value);
       } else if (isEditableByBedarfsmeldung.value) {
-        handlePatchEinpflegenBedarfsmeldung(abfrage.value);
+        await handlePatchEinpflegenBedarfsmeldung(abfrage.value);
       } else if (isBedarfsmeldungEditableByAbfrageerstellung.value) {
-        handlePatchEinplanungBedarfe(abfrage.value);
+        await handlePatchEinplanungBedarfe(abfrage.value);
       }
     } else {
       toast.error(validationMessage, { timeout: false });
@@ -742,7 +753,7 @@ async function handleSave(model: AnyAbfrageModel): Promise<void> {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
   const dto = await save(abfrageAngelegtDto);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
@@ -759,7 +770,7 @@ async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
     abfrageAngelegtDto = mapToWeiteresVerfahrenAngelegt(model);
   }
   const dto = await patchAngelegt(abfrageAngelegtDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchStartBearbeitung(model: AnyAbfrageModel): Promise<void> {
@@ -776,7 +787,7 @@ async function handlePatchStartBearbeitung(model: AnyAbfrageModel): Promise<void
     abfrageStartBearbeitungDto = mapToWeiteresVerfahrenStartBearbeitungDto(model);
   }
   const dto = await patchStartBearbeitung(abfrageStartBearbeitungDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchEinpflegenBedarfsmeldung(model: AnyAbfrageModel): Promise<void> {
@@ -793,7 +804,7 @@ async function handlePatchEinpflegenBedarfsmeldung(model: AnyAbfrageModel): Prom
     abfrageEinpflegenBedarfsmeldungDto = mapToWeiteresVerfahrenEinpflegenBedarfsmeldungDto(model);
   }
   const dto = await patchEinpflegenBedarfsmeldung(abfrageEinpflegenBedarfsmeldungDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
 async function handlePatchEinplanungBedarfe(model: AnyAbfrageModel): Promise<void> {
@@ -810,10 +821,10 @@ async function handlePatchEinplanungBedarfe(model: AnyAbfrageModel): Promise<voi
     abfrageEinplanungBedarfeDto = mapToWeiteresVerfahrenEinplanungBedarfeDto(model);
   }
   const dto = await patchEinplanungBedarfe(abfrageEinplanungBedarfeDto, abfrageId);
-  handleSuccess(dto, true);
+  await handleSuccess(dto, true);
 }
 
-function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
+async function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): Promise<void> {
   if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfrage.value = new BauleitplanverfahrenModel(dto);
   } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
@@ -821,16 +832,43 @@ function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): void {
   } else if (dto.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
     abfrage.value = new WeiteresVerfahrenModel(dto);
   }
+
   if (isNew.value) {
     toast.success(`Die Abfrage wurde erfolgreich gespeichert`);
     isNew.value = false;
     abfrageId = !_.isNil(dto.id) ? dto.id : "";
-    getTransitions(abfrageId).then((transitions) => (possibleTransitions.value = transitions));
+    possibleTransitions.value = await getTransitions(abfrageId);
+    selectAbfrage();
   } else if (showToast) {
     toast.success(`Die Abfrage wurde erfolgreich aktualisiert`);
   }
+
+  await nextTick();
+  restoreSelectionAfterSave();
   commonStore.enableButton();
-  selectAbfrage();
+}
+
+function restoreSelectionAfterSave(): void {
+  if (!lastSelection.value) {
+    selectAbfrage();
+    return;
+  }
+
+  const treeItem = abfrageNavigationTree.value?.findTreeItemById(lastSelection.value.itemId);
+
+  if (treeItem) {
+    if (treeItem.id === "") {
+      selectAbfrage();
+    } else if (isBaugebiet(treeItem, treeItem.value)) {
+      handleSelectBaugebiet(treeItem);
+    } else if (isBaurate(treeItem, treeItem.value)) {
+      handleSelectBaurate(treeItem);
+    } else {
+      selectItem(treeItem);
+    }
+  } else {
+    selectAbfrage();
+  }
 }
 
 async function startStatusUebergang(transition: TransitionDto) {
@@ -1239,8 +1277,8 @@ function removeBaugebietFromBauabschnitt(): void {
     const bauabschnitt = getFirstAncestorOfTypeBauabschnitt(treeItemToDelete.value);
     if (bauabschnitt) {
       _.remove(bauabschnitt.baugebiete, (baugebiet) => baugebiet === treeItemToDelete.value!.value);
-      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
       // Ersetzt das Array-Objekt, um eine Aktualisierung hervorzurufen.
+      clearTechnicalEntities(getFirstAncestorOfTypeAbfragevariante(treeItemToDelete.value)!);
       bauabschnitt.baugebiete = [...bauabschnitt.baugebiete];
       formChanged();
       selectItem(treeItemToDelete.value.parent!);
@@ -1307,10 +1345,10 @@ async function handleDetermineBauratenForBaugebiet(item: AbfrageTreeItem): Promi
   }
 }
 
-/* Diese "Ancestor"-Methoden sind prinzipiell dafür da, einen Vorfahren von einem bestimmten Typ zu finden.
+/*
+ * Diese "Ancestor"-Methoden sind prinzipiell dafür da, einen Vorfahren von einem bestimmten Typ zu finden.
  * Jedoch können sie auch das übergebene Item selbst zurückgeben, wenn es dem Typen entspricht.
  */
-
 function getFirstAncestorOfTypeAbfragevariante(item: AbfrageTreeItem): AnyAbfragevarianteModel | undefined {
   while (item.parent) {
     if (
@@ -1433,6 +1471,7 @@ function selectAbfrage(): void {
 }
 
 function selectItem(item: AbfrageTreeItem): void {
+  // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
   selectEntity(item.value, item.type, item.id, item.context);
 }
 
@@ -1442,11 +1481,10 @@ function selectCreatedEntity(
   parent: AbfrageTreeItem,
   context: AnzeigeContextAbfragevariante,
 ): void {
-  // Da das TreeItem zu diesem Zeitpunkt noch nicht existiert, muss die ID "vorhergesagt" werden.
   selectEntity(
     entity,
     type,
-    abfrageNavigationTree.value?.generateTreeItemId(parent.id, parent.children.length),
+    abfrageNavigationTree.value?.generateTreeItemId(parent.id, parent.children.length) ?? "",
     context,
   );
 }

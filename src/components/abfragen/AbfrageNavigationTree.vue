@@ -26,7 +26,6 @@ Emits:
 - `determine-bauraten-for-abfragevariante: AbfrageTreeItem`
 - `determine-bauraten-for-baugebiet: AbfrageTreeItem`
 -->
-
 <template>
   <v-list
     activatable
@@ -532,5 +531,27 @@ function generateTreeItemId(parentId: string, index: number): string {
   return `${parentId}.${index}`;
 }
 
-defineExpose({ generateTreeItemId });
+function findTreeItemById(itemId: string): AbfrageTreeItem | undefined {
+  return findTreeItemRecursive(root.value, itemId);
+}
+
+function findTreeItemRecursive(item: AbfrageTreeItem, itemId: string): AbfrageTreeItem | undefined {
+  if (item.id === itemId) {
+    return item;
+  }
+
+  for (const child of item.children) {
+    const result = findTreeItemRecursive(child, itemId);
+    if (result) {
+      return result;
+    }
+  }
+
+  return undefined;
+}
+
+defineExpose({
+  generateTreeItemId,
+  findTreeItemById,
+});
 </script>
