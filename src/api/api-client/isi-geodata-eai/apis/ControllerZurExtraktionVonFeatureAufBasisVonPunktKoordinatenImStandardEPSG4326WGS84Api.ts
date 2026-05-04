@@ -15,6 +15,8 @@
 
 import * as runtime from '../runtime';
 import type {
+  FeatureCollectionDtoFeatureDtoBaublockDto,
+  FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto,
   FeatureCollectionDtoFeatureDtoBezirksteilDto,
   FeatureCollectionDtoFeatureDtoFlurstueckDto,
   FeatureCollectionDtoFeatureDtoGemarkungDto,
@@ -27,6 +29,10 @@ import type {
   PointGeometryDto,
 } from '../models/index';
 import {
+    FeatureCollectionDtoFeatureDtoBaublockDtoFromJSON,
+    FeatureCollectionDtoFeatureDtoBaublockDtoToJSON,
+    FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoFromJSON,
+    FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoToJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoToJSON,
     FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON,
@@ -48,6 +54,14 @@ import {
     PointGeometryDtoFromJSON,
     PointGeometryDtoToJSON,
 } from '../models/index';
+
+export interface GetBaublckeRequest {
+    pointGeometryDto: PointGeometryDto;
+}
+
+export interface GetBebauungsplaeneRequest {
+    pointGeometryDto: PointGeometryDto;
+}
 
 export interface GetBezirksteile1Request {
     pointGeometryDto: PointGeometryDto;
@@ -85,6 +99,100 @@ export interface GetViertel1Request {
  * 
  */
 export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for getBaublcke without sending the request
+     */
+    async getBaublckeRequestOpts(requestParameters: GetBaublckeRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBaublcke().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/point/baubloecke`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
+        };
+    }
+
+    /**
+     * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBaublckeRaw(requestParameters: GetBaublckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBaublockDto>> {
+        const requestOptions = await this.getBaublckeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBaublockDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBaublcke(requestParameters: GetBaublckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBaublockDto> {
+        const response = await this.getBaublckeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getBebauungsplaene without sending the request
+     */
+    async getBebauungsplaeneRequestOpts(requestParameters: GetBebauungsplaeneRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBebauungsplaene().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/point/bebauungsplaene`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
+        };
+    }
+
+    /**
+     * Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBebauungsplaeneRaw(requestParameters: GetBebauungsplaeneRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto>> {
+        const requestOptions = await this.getBebauungsplaeneRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBebauungsplaene(requestParameters: GetBebauungsplaeneRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto> {
+        const response = await this.getBebauungsplaeneRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for getBezirksteile1 without sending the request

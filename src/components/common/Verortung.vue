@@ -1,5 +1,28 @@
 <template>
   <field-group-card card-title="Verortung">
+    <v-btn-toggle
+      v-if="isEditable"
+      v-model="selectionMode"
+      mandatory
+      density="compact"
+      class="mb-2"
+    >
+      <v-btn
+        value="flurstück"
+        prepend-icon="mdi-land-fields"
+        >Flurstücke</v-btn
+      >
+      <v-btn
+        value="baublock"
+        prepend-icon="mdi-city-variant-outline"
+        >Baublöcke</v-btn
+      >
+      <v-btn
+        value="bebauungsplan"
+        prepend-icon="mdi-map-outline"
+        >Bebauungspläne</v-btn
+      >
+    </v-btn-toggle>
     <city-map
       height="300"
       :zoom="14"
@@ -183,6 +206,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import type { Feature, MultiPolygon } from "geojson";
 import type {
+  FeatureDtoBaublockDto,
+  FeatureDtoBebauungsplanUmgriffDto,
   FeatureDtoBezirksteilDto,
   FeatureDtoFlurstueckDto,
   FeatureDtoGemarkungDto,
@@ -218,6 +243,7 @@ import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
+import { useToast } from "vue-toastification";
 
 interface Props {
   context?: Context;
@@ -256,10 +282,14 @@ const geoJsonOptions = {
   },
 };
 
+type SelectionMode = "flurstück" | "baublock" | "bebauungsplan";
+
 const { formChanged } = useSaveLeave();
 const { isRoleAdminOrSachbearbeitung } = useSecurity();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const geoApi = useGeodataEaiApi();
+const toast = useToast();
+const selectionMode = ref<SelectionMode>("flurstück");
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED });
 const verortungModel = defineModel<VerortungMultiPolygonModel | undefined>();
 // Repräsentiert das Multipolygon je Flurstück.
@@ -317,12 +347,58 @@ function onVerortungModelChanged(): void {
 }
 
 async function handleClickInMap(latlng: LatLng): Promise<void> {
-  if (isEditable.value) {
-    const point = createPointGeometry(latlng);
+  if (!isEditable.value) return;
+  const point = createPointGeometry(latlng);
+
+  if (selectionMode.value === "flurstück") {
     const flurstuecke = await geoApi.getFlurstueckeForPoint(point);
     const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
     selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+  } else if (selectionMode.value === "baublock") {
+    await handleBaublockSelection(point);
+  } else if (selectionMode.value === "bebauungsplan") {
+    await handleBebauungsplanSelection(point);
   }
+}
+
+async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
+  const baublöcke = await geoApi.getBaublöckeForPoint(point);
+  if (baublöcke.length === 0) {
+    toast.warning("Es wurde kein Baublock an der gewählten Stelle gefunden.");
+    return;
+  }
+  for (const baublock of baublöcke) {
+    const baublockMultiPolygon = baublockToMultiPolygon(baublock);
+    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(baublockMultiPolygon);
+    const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+    selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+  }
+}
+
+async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<void> {
+  const bebauungsplaene = await geoApi.getBebauungsplaeneForPoint(point);
+  if (bebauungsplaene.length === 0) {
+    toast.warning("Es wurde kein Bebauungsplan-Umgriff an der gewählten Stelle gefunden.");
+    return;
+  }
+  for (const bebauungsplan of bebauungsplaene) {
+    const bebauungsplanMultiPolygon = bebauungsplanToMultiPolygon(bebauungsplan);
+    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(bebauungsplanMultiPolygon);
+    const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
+    selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+  }
+}
+
+function baublockToMultiPolygon(baublock: FeatureDtoBaublockDto): MultiPolygonGeometryDtoGeoDataEai {
+  const geometry = baublock.geometry as MultiPolygonGeometryDtoGeoDataEai;
+  return geometry ?? { type: "MultiPolygon", coordinates: [] };
+}
+
+function bebauungsplanToMultiPolygon(
+  bebauungsplan: FeatureDtoBebauungsplanUmgriffDto,
+): MultiPolygonGeometryDtoGeoDataEai {
+  const geometry = bebauungsplan.geometry as MultiPolygonGeometryDtoGeoDataEai;
+  return geometry ?? { type: "MultiPolygon", coordinates: [] };
 }
 
 function handleDeselectGeoJson(): void {
