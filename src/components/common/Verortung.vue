@@ -367,12 +367,18 @@ async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
     toast.warning("Es wurde kein Baublock an der gewählten Stelle gefunden.");
     return;
   }
+  const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const baublock of baublöcke) {
     const baublockMultiPolygon = baublockToMultiPolygon(baublock);
     const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(baublockMultiPolygon);
-    const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
-    selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+    allFlurstueckeEai.push(...flurstuecke);
   }
+  const deduplicated = _.uniqBy(
+    allFlurstueckeEai,
+    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+  );
+  const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
+  selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
 }
 
 async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<void> {
@@ -381,12 +387,18 @@ async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<vo
     toast.warning("Es wurde kein Bebauungsplan-Umgriff an der gewählten Stelle gefunden.");
     return;
   }
+  const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const bebauungsplan of bebauungsplaene) {
     const bebauungsplanMultiPolygon = bebauungsplanToMultiPolygon(bebauungsplan);
     const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(bebauungsplanMultiPolygon);
-    const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(flurstuecke);
-    selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
+    allFlurstueckeEai.push(...flurstuecke);
   }
+  const deduplicated = _.uniqBy(
+    allFlurstueckeEai,
+    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+  );
+  const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
+  selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
 }
 
 function baublockToMultiPolygon(baublock: FeatureDtoBaublockDto): MultiPolygonGeometryDtoGeoDataEai {
