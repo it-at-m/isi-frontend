@@ -55,7 +55,7 @@ import {
     PointGeometryDtoToJSON,
 } from '../models/index';
 
-export interface GetBaublckeRequest {
+export interface GetBaubloeckeRequest {
     pointGeometryDto: PointGeometryDto;
 }
 
@@ -101,13 +101,13 @@ export interface GetViertel1Request {
 export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
 
     /**
-     * Creates request options for getBaublcke without sending the request
+     * Creates request options for getBaubloecke without sending the request
      */
-    async getBaublckeRequestOpts(requestParameters: GetBaublckeRequest): Promise<runtime.RequestOpts> {
+    async getBaubloeckeRequestOpts(requestParameters: GetBaubloeckeRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['pointGeometryDto'] == null) {
             throw new runtime.RequiredError(
                 'pointGeometryDto',
-                'Required parameter "pointGeometryDto" was null or undefined when calling getBaublcke().'
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBaubloecke().'
             );
         }
 
@@ -132,8 +132,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     /**
      * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
-    async getBaublckeRaw(requestParameters: GetBaublckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBaublockDto>> {
-        const requestOptions = await this.getBaublckeRequestOpts(requestParameters);
+    async getBaubloeckeRaw(requestParameters: GetBaubloeckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBaublockDto>> {
+        const requestOptions = await this.getBaubloeckeRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBaublockDtoFromJSON(jsonValue));
@@ -142,8 +142,8 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStand
     /**
      * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
      */
-    async getBaublcke(requestParameters: GetBaublckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBaublockDto> {
-        const response = await this.getBaublckeRaw(requestParameters, initOverrides);
+    async getBaubloecke(requestParameters: GetBaubloeckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBaublockDto> {
+        const response = await this.getBaubloeckeRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

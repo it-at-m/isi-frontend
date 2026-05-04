@@ -512,7 +512,7 @@
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
         "summary": "Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
-        "operationId": "getBaublöcke",
+        "operationId": "getBaubloecke",
         "requestBody": {
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
           "required": true

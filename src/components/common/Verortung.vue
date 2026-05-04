@@ -1,11 +1,24 @@
 <template>
   <field-group-card card-title="Verortung">
+    <city-map
+      height="300"
+      :zoom="14"
+      expandable
+      automatic-zoom-to-polygons
+      :editable="isEditable"
+      :look-at="coordinate"
+      :geo-json="geoJson"
+      :geo-json-options="geoJsonOptions"
+      @click-in-map="handleClickInMap"
+      @deselect-geo-json="handleDeselectGeoJson"
+      @accept-selected-geo-json="handleAcceptSelectedGeoJson"
+    />
     <v-btn-toggle
       v-if="isEditable"
       v-model="selectionMode"
       mandatory
       density="compact"
-      class="mb-2"
+      class="mt-2"
     >
       <v-btn
         value="flurstück"
@@ -23,19 +36,6 @@
         >Bebauungspläne</v-btn
       >
     </v-btn-toggle>
-    <city-map
-      height="300"
-      :zoom="14"
-      expandable
-      automatic-zoom-to-polygons
-      :editable="isEditable"
-      :look-at="coordinate"
-      :geo-json="geoJson"
-      :geo-json-options="geoJsonOptions"
-      @click-in-map="handleClickInMap"
-      @deselect-geo-json="handleDeselectGeoJson"
-      @accept-selected-geo-json="handleAcceptSelectedGeoJson"
-    />
 
     <v-row class="justify-center">
       <v-col
@@ -362,7 +362,7 @@ async function handleClickInMap(latlng: LatLng): Promise<void> {
 }
 
 async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
-  const baublöcke = await geoApi.getBaublöckeForPoint(point);
+  const baublöcke = await geoApi.getBaubloeckeForPoint(point);
   if (baublöcke.length === 0) {
     toast.warning("Es wurde kein Baublock an der gewählten Stelle gefunden.");
     return;

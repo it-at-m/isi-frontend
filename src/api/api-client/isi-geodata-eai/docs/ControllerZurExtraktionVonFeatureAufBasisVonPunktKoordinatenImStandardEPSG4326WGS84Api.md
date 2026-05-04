@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost:8085*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getBaublcke**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbaublcke) | **POST** /point/baubloecke | Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
+| [**getBaubloecke**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbaubloecke) | **POST** /point/baubloecke | Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getBebauungsplaene**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbebauungsplaene) | **POST** /point/bebauungsplaene | Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getBezirksteile1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbezirksteile1) | **POST** /point/bezirksteile | Holt die Bezirksteile die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getFlurstuecke1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getflurstuecke1) | **POST** /point/flurstuecke | Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
@@ -17,9 +17,9 @@ All URIs are relative to *http://localhost:8085*
 
 
 
-## getBaublcke
+## getBaubloecke
 
-> FeatureCollectionDtoFeatureDtoBaublockDto getBaublcke(pointGeometryDto)
+> FeatureCollectionDtoFeatureDtoBaublockDto getBaubloecke(pointGeometryDto)
 
 Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
 
@@ -30,7 +30,7 @@ import {
   Configuration,
   ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api,
 } from '';
-import type { GetBaublckeRequest } from '';
+import type { GetBaubloeckeRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
@@ -39,10 +39,10 @@ async function example() {
   const body = {
     // PointGeometryDto
     pointGeometryDto: ...,
-  } satisfies GetBaublckeRequest;
+  } satisfies GetBaubloeckeRequest;
 
   try {
-    const data = await api.getBaublcke(body);
+    const data = await api.getBaubloecke(body);
     console.log(data);
   } catch (error) {
     console.error(error);

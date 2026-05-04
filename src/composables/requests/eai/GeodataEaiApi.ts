@@ -4,8 +4,8 @@ import type {
   FeatureDtoBaublockDto,
   FeatureDtoBebauungsplanUmgriffDto,
   GetFlurstuecke1Request,
-  GetBaubloecke1Request,
-  GetBebauungsplaene1Request,
+  GetBaubloeckeRequest,
+  GetBebauungsplaeneRequest,
   PointGeometryDto,
   FeatureDtoGemarkungDto,
   GetGemarkungenRequest,
@@ -138,12 +138,12 @@ export function useGeodataEaiApi() {
     }
   }
 
-  async function getBaublöckeForPoint(point: PointGeometryDto): Promise<Array<FeatureDtoBaublockDto>> {
-    const request: GetBaubloecke1Request = { pointGeometryDto: point };
+  async function getBaubloeckeForPoint(point: PointGeometryDto): Promise<Array<FeatureDtoBaublockDto>> {
+    const request: GetBaubloeckeRequest = { pointGeometryDto: point };
     const maxIterations = 3;
     for (let i = 0; i < maxIterations; i++) {
       try {
-        const response = await punktApi.getBaubloecke1(request, RequestUtils.getPOSTConfig());
+        const response = await punktApi.getBaubloecke(request, RequestUtils.getPOSTConfig());
         return response.features ?? [];
       } catch (error) {
         if (i === maxIterations - 1) {
@@ -156,11 +156,11 @@ export function useGeodataEaiApi() {
   async function getBebauungsplaeneForPoint(
     point: PointGeometryDto,
   ): Promise<Array<FeatureDtoBebauungsplanUmgriffDto>> {
-    const request: GetBebauungsplaene1Request = { pointGeometryDto: point };
+    const request: GetBebauungsplaeneRequest = { pointGeometryDto: point };
     const maxIterations = 3;
     for (let i = 0; i < maxIterations; i++) {
       try {
-        const response = await punktApi.getBebauungsplaene1(request, RequestUtils.getPOSTConfig());
+        const response = await punktApi.getBebauungsplaene(request, RequestUtils.getPOSTConfig());
         return response.features ?? [];
       } catch (error) {
         if (i === maxIterations - 1) {
@@ -287,7 +287,7 @@ export function useGeodataEaiApi() {
 
   return {
     getFlurstueckeForPoint,
-    getBaublöckeForPoint,
+    getBaubloeckeForPoint,
     getBebauungsplaeneForPoint,
     getStadtbezirkeForPoint,
     getGemarkungenForPoint,
