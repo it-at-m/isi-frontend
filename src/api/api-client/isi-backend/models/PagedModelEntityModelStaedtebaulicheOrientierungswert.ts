@@ -58,7 +58,7 @@ export interface PagedModelEntityModelStaedtebaulicheOrientierungswert {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelStaedtebaulicheOrientierungswert
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

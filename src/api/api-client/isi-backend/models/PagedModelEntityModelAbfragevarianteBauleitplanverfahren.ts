@@ -58,7 +58,7 @@ export interface PagedModelEntityModelAbfragevarianteBauleitplanverfahren {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelAbfragevarianteBauleitplanverfahren
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

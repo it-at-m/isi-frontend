@@ -58,7 +58,7 @@ export interface PagedModelEntityModelUmlegungFoerderarten {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelUmlegungFoerderarten
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**
