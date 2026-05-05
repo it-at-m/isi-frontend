@@ -47,7 +47,7 @@
         <v-autocomplete
           id="wesentliche_rechtsgrundlage_dropdown"
           v-model="abfragevariante.wesentlicheRechtsgrundlage"
-          :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
+          :items="planartList"
           variant="underlined"
           item-value="key"
           item-title="value"
@@ -142,9 +142,7 @@ const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
 
-const wesentlicheRechtsgrundlageBauleitplanverfahrenList = computed(
-  () => lookupStore.wesentlicheRechtsgrundlageBauleitplanverfahren,
-);
+const planartList = computed(() => lookupStore.planart);
 
 const calcRealisierungBis = computed(() => {
   const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte

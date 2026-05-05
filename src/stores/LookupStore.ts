@@ -13,7 +13,7 @@ interface State {
   verfahrensstandWeiteresVerfahren: LookupEntryDto[];
   verfahrensstand: LookupEntryDto[];
   statusAbfrage: LookupEntryDto[];
-  wesentlicheRechtsgrundlageBauleitplanverfahren: LookupEntryDto[];
+  planart: LookupEntryDto[];
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: LookupEntryDto[];
   wesentlicheRechtsgrundlage: LookupEntryDto[];
   artBaulicheNutzung: LookupEntryDto[];
@@ -39,7 +39,7 @@ export const useLookupStore = defineStore("lookup", {
       verfahrensstandWeiteresVerfahren: [],
       verfahrensstand: [],
       statusAbfrage: [],
-      wesentlicheRechtsgrundlageBauleitplanverfahren: [],
+      planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
@@ -66,9 +66,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setVerfahrensstandWeiteresVerfahren(lookupLists.verfahrensstandWeiteresVerfahren);
         this.setVerfahrensstand(lookupLists.verfahrensstand);
         this.setStatusAbfrage(lookupLists.statusAbfrage);
-        this.setWesentlicheRechtsgrundlageBauleitplanverfahren(
-          lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren,
-        );
+        this.setplanart(lookupLists.planart);
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
@@ -125,10 +123,8 @@ export const useLookupStore = defineStore("lookup", {
     setStatusAbfrage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list) ? (this.statusAbfrage = payload?.list) : (this.statusAbfrage = []);
     },
-    setWesentlicheRechtsgrundlageBauleitplanverfahren(payload: LookupListDto | undefined): void {
-      !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.wesentlicheRechtsgrundlageBauleitplanverfahren = payload?.list)
-        : (this.wesentlicheRechtsgrundlageBauleitplanverfahren = []);
+    setplanart(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.planart = payload?.list) : (this.planart = []);
     },
     setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)

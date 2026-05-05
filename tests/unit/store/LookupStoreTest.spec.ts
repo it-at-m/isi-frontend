@@ -102,12 +102,12 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setWesentlicheRechtsgrundlageBauleitplanverfahren updates wesentlicheRechtsgrundlageBauleitplanverfahren correctly", () => {
+  test("setplanart updates planart correctly", () => {
     const store = useLookupStore();
-    store.setWesentlicheRechtsgrundlageBauleitplanverfahren(examplePayload);
-    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual(examplePayload.list);
-    store.setWesentlicheRechtsgrundlageBauleitplanverfahren(examplePayloadListUndefined);
-    expect(store.wesentlicheRechtsgrundlageBauleitplanverfahren).toEqual([]);
+    store.setplanart(examplePayload);
+    expect(store.planart).toEqual(examplePayload.list);
+    store.setplanart(examplePayloadListUndefined);
+    expect(store.planart).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);
   });
