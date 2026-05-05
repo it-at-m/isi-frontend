@@ -172,8 +172,15 @@ export function findFaultInAbfragevariante(
   if (_.size(abfragevariante.name) > 30) {
     return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
   }
-  if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
+  if (
+    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren ||
+      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) &&
+    _.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)
+  ) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
+  }
+  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren && _.isEmpty(abfragevariante.planart)) {
+    return "Bitte die Planart angeben";
   }
   if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
     return `Bitte das Jahr für 'Realisierung von' angeben`;
@@ -429,7 +436,7 @@ export function findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | nu
   }
 
   if (bauvorhaben.verfahrensstand === BauvorhabenDtoVerfahrensstandEnum.Unspecified) {
-    return "Bitte den Stand des Verfahrens angeben";
+    return "Bitte den Verfahrensstand angeben";
   }
 
   if (_.isEmpty(bauvorhaben.wesentlicheRechtsgrundlage)) {
@@ -583,7 +590,7 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
       abfrage.verfahrensstand === WeiteresVerfahrenDtoVerfahrensstandEnum.Unspecified)
   ) {
-    return "Bitte Stand des Verfahrens angeben";
+    return "Bitte Verfahrensstand angeben";
   }
   const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
   if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {

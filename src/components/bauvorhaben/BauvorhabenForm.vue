@@ -17,7 +17,7 @@
             :disabled="!isEditable"
             @update:model-value="formChanged"
           >
-            <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
+            <template #label> Verfahrensstand <span class="text-secondary">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -32,7 +32,7 @@
               v-model="bauvorhaben.verfahrensstandFreieEingabe"
               variant="underlined"
               :readonly="!isEditable"
-              label="Freie Eingabe für Stand des Verfahrens"
+              label="Freie Eingabe für Verfahrensstand"
               maxlength="1000"
               @update:model-value="formChanged"
               :class="isEditable ? '' : 'text-grey-lighten-1'"

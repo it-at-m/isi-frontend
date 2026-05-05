@@ -118,7 +118,7 @@
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
+          <template #label> Verfahrensstand <span class="text-secondary">*</span></template>
         </v-select>
       </v-col>
       <v-col

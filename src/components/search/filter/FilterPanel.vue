@@ -117,7 +117,7 @@
                 v-bind="activatorProps"
                 variant="underlined"
               >
-                <template #label> Stand des Verfahrens</template>
+                <template #label> Verfahrensstand</template>
               </v-autocomplete>
             </template>
             <span> Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll. </span>

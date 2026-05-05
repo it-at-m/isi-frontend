@@ -59,7 +59,7 @@
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label>
-            Wesentliche Rechtsgrundlage
+            Planart
             <span class="text-secondary">*</span>
           </template>
         </v-autocomplete>
