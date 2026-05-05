@@ -58,7 +58,7 @@ export interface PagedModelEntityModelDokument {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelDokument
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

@@ -170,7 +170,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
         artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
         stadtbezirke: undefined,
         statusAbfrage: undefined,
-        standVerfahren: undefined,
+        verfahrensstand: undefined,
       };
       const text = vm.getItemText(searchResult);
       expect(text).toContain("Projekt Süd");
@@ -183,7 +183,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
         artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
         stadtbezirke: undefined,
         statusAbfrage: undefined,
-        standVerfahren: undefined,
+        verfahrensstand: undefined,
       };
       const text = vm.getItemText(searchResult);
       expect(text).toContain("Kein Name vorhanden");
@@ -196,7 +196,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
         artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
         stadtbezirke: undefined,
         statusAbfrage: undefined,
-        standVerfahren: undefined,
+        verfahrensstand: undefined,
       };
       const text = vm.getItemText(searchResult);
       expect(text).toContain("Baugenehmigungsverfahren");
@@ -414,7 +414,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
           artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
           statusAbfrage: StatusAbfrage.StartBearbeitung,
           stadtbezirke: undefined,
-          standVerfahren: undefined,
+          verfahrensstand: undefined,
         },
       ];
 
@@ -500,7 +500,7 @@ describe("DataTransferDialogTest.spec.ts", () => {
           artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
           stadtbezirke: undefined,
           statusAbfrage: undefined,
-          standVerfahren: undefined,
+          verfahrensstand: undefined,
         },
       ];
       const items = vm.resultItems;

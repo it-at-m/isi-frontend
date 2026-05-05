@@ -10,10 +10,10 @@ Name | Type
 `artDokument` | [LookupListDto](LookupListDto.md)
 `artAbfrage` | [LookupListDto](LookupListDto.md)
 `sobonVerfahrensgrundsaetzeJahr` | [LookupListDto](LookupListDto.md)
-`standVerfahrenBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahrenBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahrenWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstand` | [LookupListDto](LookupListDto.md)
 `statusAbfrage` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
@@ -39,10 +39,10 @@ const example = {
   "artDokument": null,
   "artAbfrage": null,
   "sobonVerfahrensgrundsaetzeJahr": null,
-  "standVerfahrenBauleitplanverfahren": null,
-  "standVerfahrenBaugenehmigungsverfahren": null,
-  "standVerfahrenWeiteresVerfahren": null,
-  "standVerfahren": null,
+  "verfahrensstandBauleitplanverfahren": null,
+  "verfahrensstandBaugenehmigungsverfahren": null,
+  "verfahrensstandWeiteresVerfahren": null,
+  "verfahrensstand": null,
   "statusAbfrage": null,
   "wesentlicheRechtsgrundlageBauleitplanverfahren": null,
   "wesentlicheRechtsgrundlageBaugenehmigungsverfahren": null,

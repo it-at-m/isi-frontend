@@ -82,11 +82,11 @@
       >
         <v-select
           id="stand_verfahren_dropdown"
-          ref="standVerfahrenDropdown"
-          v-model="abfrage.standVerfahren"
+          ref="verfahrensstandDropdown"
+          v-model="abfrage.verfahrensstand"
           :disabled="!isEditable"
           variant="underlined"
-          :items="lookupStore.standVerfahrenBaugenehmigungsverfahren"
+          :items="lookupStore.verfahrensstandBaugenehmigungsverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
@@ -101,10 +101,10 @@
       >
         <v-slide-y-reverse-transition>
           <v-text-field
-            v-if="standVerfahrenFreieEingabeVisible"
+            v-if="verfahrensstandFreieEingabeVisible"
             id="stand_verfahren_freie_eingabe_field"
-            ref="standVerfahrenFreieEingabeField"
-            v-model="abfrage.standVerfahrenFreieEingabe"
+            ref="verfahrensstandFreieEingabeField"
+            v-model="abfrage.verfahrensstandFreieEingabe"
             :readonly="!isEditable"
             variant="underlined"
             label="Freie Eingabe"
@@ -127,7 +127,7 @@
 import { ref, watch, computed } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import { BaugenehmigungsverfahrenDtoStandVerfahrenEnum, BauvorhabenDto } from "@/api/api-client/isi-backend";
+import { BaugenehmigungsverfahrenDtoVerfahrensstandEnum, BauvorhabenDto } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -147,7 +147,7 @@ const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BaugenehmigungsverfahrenModel>({ required: true });
-const standVerfahrenFreieEingabeVisible = ref(false);
+const verfahrensstandFreieEingabeVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);
 
@@ -194,13 +194,13 @@ async function getBauvorhaben(): Promise<void> {
 withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(
-  () => abfrage.value.standVerfahren,
+  () => abfrage.value.verfahrensstand,
   (value) => {
-    if (value?.includes(BaugenehmigungsverfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
+    if (value?.includes(BaugenehmigungsverfahrenDtoVerfahrensstandEnum.FreieEingabe)) {
+      verfahrensstandFreieEingabeVisible.value = true;
     } else {
-      standVerfahrenFreieEingabeVisible.value = false;
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
+      verfahrensstandFreieEingabeVisible.value = false;
+      abfrage.value.verfahrensstandFreieEingabe = undefined;
     }
   },
   { immediate: true },

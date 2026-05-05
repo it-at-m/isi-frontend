@@ -82,16 +82,16 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
     sobonJahr?: BauleitplanverfahrenAngelegtDtoSobonJahrEnum;
     /**
      * 
-     * @type {BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum}
+     * @type {BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
-    standVerfahren: BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum;
+    verfahrensstand: BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {AdresseDto}
@@ -149,14 +149,19 @@ export type BauleitplanverfahrenAngelegtDtoSobonJahrEnum = typeof Bauleitplanver
 /**
  * @export
  */
-export const BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = {
+export const BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
     VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
@@ -170,7 +175,7 @@ export const BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = typeof BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum[keyof typeof BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum];
+export type BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum = typeof BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum[keyof typeof BauleitplanverfahrenAngelegtDtoVerfahrensstandEnum];
 
 
 /**
@@ -178,7 +183,7 @@ export type BauleitplanverfahrenAngelegtDtoStandVerfahrenEnum = typeof Bauleitpl
  */
 export function instanceOfBauleitplanverfahrenAngelegtDto(value: object): value is BauleitplanverfahrenAngelegtDto {
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
-    if (!('standVerfahren' in value) || value['standVerfahren'] === undefined) return false;
+    if (!('verfahrensstand' in value) || value['verfahrensstand'] === undefined) return false;
     if (!('fristBearbeitung' in value) || value['fristBearbeitung'] === undefined) return false;
     if (!('mitzeichnungBeschlussentwurf' in value) || value['mitzeichnungBeschlussentwurf'] === undefined) return false;
     if (!('abfragevariantenBauleitplanverfahren' in value) || value['abfragevariantenBauleitplanverfahren'] === undefined) return false;
@@ -204,8 +209,8 @@ export function BauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDi
         'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
-        'standVerfahren': json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
@@ -236,8 +241,8 @@ export function BauleitplanverfahrenAngelegtDtoToJSONTyped(value?: Bauleitplanve
         'bebauungsplannummer': value['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
         'sobonJahr': value['sobonJahr'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),

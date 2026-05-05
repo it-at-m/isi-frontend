@@ -21,10 +21,10 @@ import {
 } from "@/api/api-client/isi-backend";
 import {
   AbfrageDtoArtAbfrageEnum,
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  WeiteresVerfahrenDtoStandVerfahrenEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauleitplanverfahrenDtoVerfahrensstandEnum,
+  BaugenehmigungsverfahrenDtoVerfahrensstandEnum,
+  WeiteresVerfahrenDtoVerfahrensstandEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   InfrastruktureinrichtungDtoStatusEnum,
   BaugebietDtoArtBaulicheNutzungEnum,
@@ -428,7 +428,7 @@ export function findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | nu
     return "Bitte eine Auswahl zur Flächennutzung laut Flächennutzungsplan treffen";
   }
 
-  if (bauvorhaben.standVerfahren === BauvorhabenDtoStandVerfahrenEnum.Unspecified) {
+  if (bauvorhaben.verfahrensstand === BauvorhabenDtoVerfahrensstandEnum.Unspecified) {
     return "Bitte den Stand des Verfahrens angeben";
   }
 
@@ -577,11 +577,11 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
   }
   if (
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
-      abfrage.standVerfahren === BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+      abfrage.verfahrensstand === BauleitplanverfahrenDtoVerfahrensstandEnum.Unspecified) ||
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
-      abfrage.standVerfahren === BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+      abfrage.verfahrensstand === BaugenehmigungsverfahrenDtoVerfahrensstandEnum.Unspecified) ||
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
-      abfrage.standVerfahren === WeiteresVerfahrenDtoStandVerfahrenEnum.Unspecified)
+      abfrage.verfahrensstand === WeiteresVerfahrenDtoVerfahrensstandEnum.Unspecified)
   ) {
     return "Bitte Stand des Verfahrens angeben";
   }

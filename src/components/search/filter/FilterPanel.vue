@@ -108,8 +108,8 @@
             <template #activator="{ props: activatorProps }">
               <v-autocomplete
                 id="stand_verfahren_bauvorhaben"
-                v-model="searchQueryAndSorting.filterStandVerfahren"
-                :items="standVerfahrenList"
+                v-model="searchQueryAndSorting.filterVerfahrensstand"
+                :items="verfahrensstandList"
                 chips
                 item-title="value"
                 item-value="key"
@@ -526,13 +526,15 @@ const statusInfrastruktureinrichtungList = computed(() => {
   }
   return statusList;
 });
-const standVerfahrenList = computed(() => {
-  var standVerfahrenList = lookupStore.standVerfahren;
-  const index = standVerfahrenList.findIndex((standVerfahren) => standVerfahren.key === UncertainBoolean.Unspecified);
+const verfahrensstandList = computed(() => {
+  var verfahrensstandList = lookupStore.verfahrensstand;
+  const index = verfahrensstandList.findIndex(
+    (verfahrensstand) => verfahrensstand.key === UncertainBoolean.Unspecified,
+  );
   if (index > -1) {
-    standVerfahrenList.splice(index, 1);
+    verfahrensstandList.splice(index, 1);
   }
-  return standVerfahrenList;
+  return verfahrensstandList;
 });
 
 function alleFiltereinstellungenAufheben(): void {
@@ -549,7 +551,7 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterWeGesamtBis = undefined;
   searchQueryAndSorting.value.filterGfWohnenGeplantVon = undefined;
   searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
-  searchQueryAndSorting.value.filterStandVerfahren = undefined;
+  searchQueryAndSorting.value.filterVerfahrensstand = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
   sobonRelevant.value = UncertainBoolean.Unspecified;
 }

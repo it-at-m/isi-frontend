@@ -58,7 +58,7 @@ export interface PagedModelEntityModelKommentar {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelKommentar
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

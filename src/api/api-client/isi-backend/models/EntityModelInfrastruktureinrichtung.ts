@@ -134,13 +134,13 @@ export interface EntityModelInfrastruktureinrichtung {
     infrastruktureinrichtungTyp?: EntityModelInfrastruktureinrichtungInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {EntityModelInfrastruktureinrichtungResultTypeEnum}
+     * @type {string}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     bauvorhabenName?: string;
     /**
      * 
-     * @type {string}
+     * @type {EntityModelInfrastruktureinrichtungResultTypeEnum}
      * @memberof EntityModelInfrastruktureinrichtung
      */
     resultType?: EntityModelInfrastruktureinrichtungResultTypeEnum;

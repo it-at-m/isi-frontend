@@ -139,13 +139,13 @@ export interface InfrastruktureinrichtungRequestBody {
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
+     * @type {string}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     bauvorhabenName?: string;
     /**
      * 
-     * @type {string}
+     * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;

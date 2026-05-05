@@ -52,42 +52,42 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setStandVerfahrenBauleitplanverfahren updates standVerfahrenBauleitplanverfahren correctly", () => {
+  test("setVerfahrensstandBauleitplanverfahren updates verfahrensstandBauleitplanverfahren correctly", () => {
     const store = useLookupStore();
-    store.setStandVerfahrenBauleitplanverfahren(examplePayload);
-    expect(store.standVerfahrenBauleitplanverfahren).toEqual(examplePayload.list);
-    store.setStandVerfahrenBauleitplanverfahren(examplePayloadListUndefined);
-    expect(store.standVerfahrenBauleitplanverfahren).toEqual([]);
+    store.setVerfahrensstandBauleitplanverfahren(examplePayload);
+    expect(store.verfahrensstandBauleitplanverfahren).toEqual(examplePayload.list);
+    store.setVerfahrensstandBauleitplanverfahren(examplePayloadListUndefined);
+    expect(store.verfahrensstandBauleitplanverfahren).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setStandVerfahrenBaugenehmigungsverfahren updates standVerfahrenBaugenehmigungsverfahren correctly", () => {
+  test("setVerfahrensstandBaugenehmigungsverfahren updates verfahrensstandBaugenehmigungsverfahren correctly", () => {
     const store = useLookupStore();
-    store.setStandVerfahrenBaugenehmigungsverfahren(examplePayload);
-    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual(examplePayload.list);
-    store.setStandVerfahrenBaugenehmigungsverfahren(examplePayloadListUndefined);
-    expect(store.standVerfahrenBaugenehmigungsverfahren).toEqual([]);
+    store.setVerfahrensstandBaugenehmigungsverfahren(examplePayload);
+    expect(store.verfahrensstandBaugenehmigungsverfahren).toEqual(examplePayload.list);
+    store.setVerfahrensstandBaugenehmigungsverfahren(examplePayloadListUndefined);
+    expect(store.verfahrensstandBaugenehmigungsverfahren).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setStandVerfahrenWeiteresVerfahren updates standVerfahrenWeiteresVerfahren correctly", () => {
+  test("setVerfahrensstandWeiteresVerfahren updates verfahrensstandWeiteresVerfahren correctly", () => {
     const store = useLookupStore();
-    store.setStandVerfahrenWeiteresVerfahren(examplePayload);
-    expect(store.standVerfahrenWeiteresVerfahren).toEqual(examplePayload.list);
-    store.setStandVerfahrenWeiteresVerfahren(examplePayloadListUndefined);
-    expect(store.standVerfahrenWeiteresVerfahren).toEqual([]);
+    store.setVerfahrensstandWeiteresVerfahren(examplePayload);
+    expect(store.verfahrensstandWeiteresVerfahren).toEqual(examplePayload.list);
+    store.setVerfahrensstandWeiteresVerfahren(examplePayloadListUndefined);
+    expect(store.verfahrensstandWeiteresVerfahren).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setStandVerfahren updates standVerfahren correctly", () => {
+  test("setVerfahrensstand updates verfahrensstand correctly", () => {
     const store = useLookupStore();
-    store.setStandVerfahren(examplePayload);
-    expect(store.standVerfahren).toEqual(examplePayload.list);
-    store.setStandVerfahren(examplePayloadListUndefined);
-    expect(store.standVerfahren).toEqual([]);
+    store.setVerfahrensstand(examplePayload);
+    expect(store.verfahrensstand).toEqual(examplePayload.list);
+    store.setVerfahrensstand(examplePayloadListUndefined);
+    expect(store.verfahrensstand).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);
   });

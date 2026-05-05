@@ -120,7 +120,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBauleitplanverfahrenDtoPlanartEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import NumField from "@/components/common/NumField.vue";
@@ -175,7 +175,7 @@ watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsg
 function wesentlicheRechtsgrundlageChanged(): void {
   if (
     abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
-      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
+      AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.FreieEingabe,
     )
   ) {
     wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;

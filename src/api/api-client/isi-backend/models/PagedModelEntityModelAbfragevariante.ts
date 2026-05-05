@@ -58,7 +58,7 @@ export interface PagedModelEntityModelAbfragevariante {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelAbfragevariante
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

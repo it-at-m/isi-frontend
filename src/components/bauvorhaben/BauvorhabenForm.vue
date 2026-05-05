@@ -7,10 +7,10 @@
           md="6"
         >
           <v-select
-            id="bauvorhaben_standVerfahren_dropdown"
-            v-model="bauvorhaben.standVerfahren"
+            id="bauvorhaben_verfahrensstand_dropdown"
+            v-model="bauvorhaben.verfahrensstand"
             variant="underlined"
-            :items="lookupStore.standVerfahren"
+            :items="lookupStore.verfahrensstand"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
@@ -26,10 +26,10 @@
         >
           <v-slide-y-reverse-transition>
             <v-text-field
-              v-if="standVerfahrenFreieEingabeVisible"
+              v-if="verfahrensstandFreieEingabeVisible"
               id="stand_verfahren_freie_eingabe_field"
-              ref="standVerfahrenFreieEingabeField"
-              v-model="bauvorhaben.standVerfahrenFreieEingabe"
+              ref="verfahrensstandFreieEingabeField"
+              v-model="bauvorhaben.verfahrensstandFreieEingabe"
               variant="underlined"
               :readonly="!isEditable"
               label="Freie Eingabe für Stand des Verfahrens"
@@ -276,7 +276,7 @@ import {
   type FlurstueckDto,
   UncertainBoolean,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   BauvorhabenDtoArtFnpEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
@@ -304,7 +304,7 @@ const componentSercurity = useComponentSecurity();
 const { formChanged } = useSaveLeave();
 const bauvorhaben = defineModel<BauvorhabenModel>({ required: true });
 const sobonJahrVisible = ref(false);
-const standVerfahrenFreieEingabeVisible = ref(false);
+const verfahrensstandFreieEingabeVisible = ref(false);
 const artFnpFreieEingabeVisible = ref(false);
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref(false);
 const grundstuecksgroesse = ref(Number.NaN);
@@ -363,13 +363,13 @@ watch(
 );
 
 watch(
-  () => bauvorhaben.value.standVerfahren,
+  () => bauvorhaben.value.verfahrensstand,
   () => {
-    if (bauvorhaben.value.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
+    if (bauvorhaben.value.verfahrensstand?.includes(BauvorhabenDtoVerfahrensstandEnum.FreieEingabe)) {
+      verfahrensstandFreieEingabeVisible.value = true;
     } else {
-      bauvorhaben.value.standVerfahrenFreieEingabe = undefined;
-      standVerfahrenFreieEingabeVisible.value = false;
+      bauvorhaben.value.verfahrensstandFreieEingabe = undefined;
+      verfahrensstandFreieEingabeVisible.value = false;
     }
   },
   { immediate: true },

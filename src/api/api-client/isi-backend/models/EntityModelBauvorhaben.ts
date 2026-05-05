@@ -93,16 +93,16 @@ export interface EntityModelBauvorhaben {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {EntityModelBauvorhabenStandVerfahrenEnum}
+     * @type {EntityModelBauvorhabenVerfahrensstandEnum}
      * @memberof EntityModelBauvorhaben
      */
-    standVerfahren?: EntityModelBauvorhabenStandVerfahrenEnum;
+    verfahrensstand?: EntityModelBauvorhabenVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof EntityModelBauvorhaben
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {string}
@@ -205,14 +205,19 @@ export interface EntityModelBauvorhaben {
 /**
  * @export
  */
-export const EntityModelBauvorhabenStandVerfahrenEnum = {
+export const EntityModelBauvorhabenVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
     VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
@@ -226,7 +231,7 @@ export const EntityModelBauvorhabenStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type EntityModelBauvorhabenStandVerfahrenEnum = typeof EntityModelBauvorhabenStandVerfahrenEnum[keyof typeof EntityModelBauvorhabenStandVerfahrenEnum];
+export type EntityModelBauvorhabenVerfahrensstandEnum = typeof EntityModelBauvorhabenVerfahrensstandEnum[keyof typeof EntityModelBauvorhabenVerfahrensstandEnum];
 
 /**
  * @export
@@ -309,8 +314,8 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': json['nameVorhaben'] == null ? undefined : json['nameVorhaben'],
         'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': json['bauvorhabenNummer'] == null ? undefined : json['bauvorhabenNummer'],
         'adresse': json['adresse'] == null ? undefined : AdresseFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortung']),
@@ -347,8 +352,8 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
         'nameVorhaben': value['nameVorhaben'],
         'grundstuecksgroesse': value['grundstuecksgroesse'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': value['bauvorhabenNummer'],
         'adresse': AdresseToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonToJSON(value['verortung']),
