@@ -107,7 +107,7 @@
         md="6"
       >
         <v-select
-          id="stand_verfahren_dropdown"
+          id="verfahrensstand_dropdown"
           ref="verfahrensstandDropdown"
           v-model="abfrage.verfahrensstand"
           variant="underlined"
@@ -128,7 +128,7 @@
         <v-slide-y-reverse-transition>
           <v-text-field
             v-if="verfahrensstandFreieEingabeVisible"
-            id="stand_verfahren_freie_eingabe_field"
+            id="verfahrensstand_freie_eingabe_field"
             ref="verfahrensstandFreieEingabeField"
             v-model="abfrage.verfahrensstandFreieEingabe"
             variant="underlined"

@@ -107,7 +107,7 @@
           >
             <template #activator="{ props: activatorProps }">
               <v-autocomplete
-                id="stand_verfahren_bauvorhaben"
+                id="verfahrensstand_bauvorhaben"
                 v-model="searchQueryAndSorting.filterVerfahrensstand"
                 :items="verfahrensstandList"
                 chips

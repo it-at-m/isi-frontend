@@ -27,7 +27,7 @@
           <v-slide-y-reverse-transition>
             <v-text-field
               v-if="verfahrensstandFreieEingabeVisible"
-              id="stand_verfahren_freie_eingabe_field"
+              id="verfahrensstand_freie_eingabe_field"
               ref="verfahrensstandFreieEingabeField"
               v-model="bauvorhaben.verfahrensstandFreieEingabe"
               variant="underlined"
