@@ -167,7 +167,7 @@
           </v-col>
           <v-col
             cols="12"
-            md="4"
+            md="8"
           >
             <num-field
               id="gf_nicht_infrastruktur_relevantes_wohnen_field"
