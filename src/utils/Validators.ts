@@ -173,14 +173,22 @@ export function findFaultInAbfragevariante(
     return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
   }
   if (
-    (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren ||
-      abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) &&
-    _.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteBaugenehmigungsverfahrenModel).wesentlicheRechtsgrundlage)
   ) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
-  if (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren && _.isEmpty(abfragevariante.planart)) {
+  if (
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteBauleitplanverfahrenModel).planart)
+  ) {
     return "Bitte die Planart angeben";
+  }
+  if (
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteWeiteresVerfahrenModel).wesentlicheRechtsgrundlage)
+  ) {
+    return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
   if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
     return `Bitte das Jahr für 'Realisierung von' angeben`;
