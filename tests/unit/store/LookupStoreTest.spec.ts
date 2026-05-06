@@ -102,11 +102,11 @@ describe("Lookup Store Setters", () => {
     expect(store.artDokument).toEqual([]);
   });
 
-  test("setplanart updates planart correctly", () => {
+  test("setPlanart updates planart correctly", () => {
     const store = useLookupStore();
-    store.setplanart(examplePayload);
+    store.setPlanart(examplePayload);
     expect(store.planart).toEqual(examplePayload.list);
-    store.setplanart(examplePayloadListUndefined);
+    store.setPlanart(examplePayloadListUndefined);
     expect(store.planart).toEqual([]);
     store.setArtDokument(examplePayloadUndefined);
     expect(store.artDokument).toEqual([]);

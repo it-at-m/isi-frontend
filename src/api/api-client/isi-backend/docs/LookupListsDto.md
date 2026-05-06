@@ -15,7 +15,7 @@ Name | Type
 `verfahrensstandWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
 `verfahrensstand` | [LookupListDto](LookupListDto.md)
 `statusAbfrage` | [LookupListDto](LookupListDto.md)
-`wesentlicheRechtsgrundlageBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
+`planart` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlage` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzung` | [LookupListDto](LookupListDto.md)
@@ -44,7 +44,7 @@ const example = {
   "verfahrensstandWeiteresVerfahren": null,
   "verfahrensstand": null,
   "statusAbfrage": null,
-  "wesentlicheRechtsgrundlageBauleitplanverfahren": null,
+  "planart": null,
   "wesentlicheRechtsgrundlageBaugenehmigungsverfahren": null,
   "wesentlicheRechtsgrundlage": null,
   "artBaulicheNutzung": null,

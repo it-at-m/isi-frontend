@@ -97,16 +97,16 @@ export interface EntityModelAbfrage {
     bearbeitungshistorie?: Array<Bearbeitungshistorie>;
     /**
      * 
-     * @type {string}
-     * @memberof EntityModelAbfrage
-     */
-    bauvorhabenUuid?: string;
-    /**
-     * 
      * @type {EntityModelAbfrageArtAbfrageEnum}
      * @memberof EntityModelAbfrage
      */
     artAbfrage?: EntityModelAbfrageArtAbfrageEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntityModelAbfrage
+     */
+    bauvorhabenUuid?: string;
     /**
      * 
      * @type {EntityModelAbfrageResultTypeEnum}
@@ -170,8 +170,8 @@ export function EntityModelAbfrageFromJSONTyped(json: any, ignoreDiscriminator: 
         'sub': json['sub'] == null ? undefined : json['sub'],
         'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
         'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
-        'bauvorhabenUuid': json['bauvorhabenUuid'] == null ? undefined : json['bauvorhabenUuid'],
         'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
+        'bauvorhabenUuid': json['bauvorhabenUuid'] == null ? undefined : json['bauvorhabenUuid'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
@@ -197,8 +197,8 @@ export function EntityModelAbfrageToJSONTyped(value?: EntityModelAbfrage | null,
         'sub': value['sub'],
         'linkEakte': value['linkEakte'],
         'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieToJSON)),
-        'bauvorhabenUuid': value['bauvorhabenUuid'],
         'artAbfrage': value['artAbfrage'],
+        'bauvorhabenUuid': value['bauvorhabenUuid'],
         'resultType': value['resultType'],
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };

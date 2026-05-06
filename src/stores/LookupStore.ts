@@ -66,7 +66,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setVerfahrensstandWeiteresVerfahren(lookupLists.verfahrensstandWeiteresVerfahren);
         this.setVerfahrensstand(lookupLists.verfahrensstand);
         this.setStatusAbfrage(lookupLists.statusAbfrage);
-        this.setplanart(lookupLists.planart);
+        this.setPlanart(lookupLists.planart);
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
@@ -123,7 +123,7 @@ export const useLookupStore = defineStore("lookup", {
     setStatusAbfrage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list) ? (this.statusAbfrage = payload?.list) : (this.statusAbfrage = []);
     },
-    setplanart(payload: LookupListDto | undefined): void {
+    setPlanart(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list) ? (this.planart = payload?.list) : (this.planart = []);
     },
     setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {

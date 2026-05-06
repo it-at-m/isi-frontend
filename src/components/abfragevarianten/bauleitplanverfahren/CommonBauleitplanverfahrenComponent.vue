@@ -45,8 +45,8 @@
         md="6"
       >
         <v-autocomplete
-          id="wesentliche_rechtsgrundlage_dropdown"
-          v-model="abfragevariante.wesentlicheRechtsgrundlage"
+          id="planart_dropdown"
+          v-model="abfragevariante.planart"
           :items="planartList"
           variant="underlined"
           item-value="key"
@@ -70,9 +70,9 @@
       >
         <v-slide-y-reverse-transition>
           <v-text-field
-            v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
-            id="wesentliche_rechtsgrundlage_freie_eingabe_field"
-            v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
+            v-if="planartFreieEingabeVisible"
+            id="planart_freie_eingabe_field"
+            v-model="abfragevariante.planartFreieEingabe"
             :readonly="!isEditable"
             variant="underlined"
             label="Freie Eingabe"
@@ -136,7 +136,7 @@ interface Props {
 
 const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
+const planartFreieEingabeVisible = ref<boolean | null>();
 
 const lookupStore = useLookupStore();
 
@@ -168,18 +168,14 @@ function datumSatzungsbeschlussChanged(): void {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
+watch(() => abfragevariante.value.planart, planartChanged, { immediate: true });
 
-function wesentlicheRechtsgrundlageChanged(): void {
-  if (
-    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
-      AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.FreieEingabe,
-    )
-  ) {
-    wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
+function planartChanged(): void {
+  if (abfragevariante.value.planart?.includes(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.FreieEingabe)) {
+    planartFreieEingabeVisible.value = true;
   } else {
-    abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-    wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
+    abfragevariante.value.planartFreieEingabe = undefined;
+    planartFreieEingabeVisible.value = false;
   }
 }
 </script>
