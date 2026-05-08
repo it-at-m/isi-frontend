@@ -18,8 +18,8 @@ Name | Type
 `linkEakte` | string
 `bearbeitungshistorie` | [Array&lt;Bearbeitungshistorie&gt;](Bearbeitungshistorie.md)
 `artAbfrage` | string
-`bauvorhabenUuid` | string
 `resultType` | string
+`bauvorhabenUuid` | string
 
 ## Example
 
@@ -40,8 +40,8 @@ const example = {
   "linkEakte": null,
   "bearbeitungshistorie": null,
   "artAbfrage": null,
-  "bauvorhabenUuid": null,
   "resultType": null,
+  "bauvorhabenUuid": null,
 } satisfies AbfrageRequestBody
 
 console.log(example)
