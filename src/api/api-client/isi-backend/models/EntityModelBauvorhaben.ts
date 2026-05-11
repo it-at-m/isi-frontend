@@ -177,12 +177,6 @@ export interface EntityModelBauvorhaben {
     artFnpFreieEingabe?: string;
     /**
      * 
-     * @type {EntityModelBauvorhabenResultTypeEnum}
-     * @memberof EntityModelBauvorhaben
-     */
-    resultType?: EntityModelBauvorhabenResultTypeEnum;
-    /**
-     * 
      * @type {VerortungMultiPolygon}
      * @memberof EntityModelBauvorhaben
      */
@@ -193,6 +187,12 @@ export interface EntityModelBauvorhaben {
      * @memberof EntityModelBauvorhaben
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {EntityModelBauvorhabenResultTypeEnum}
+     * @memberof EntityModelBauvorhaben
+     */
+    resultType?: EntityModelBauvorhabenResultTypeEnum;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -331,9 +331,9 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -369,9 +369,9 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
-        'resultType': value['resultType'],
         'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
+        'resultType': value['resultType'],
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
