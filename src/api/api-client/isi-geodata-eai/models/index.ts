@@ -1,6 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './BaublockDto';
+export * from './BebauungsplanUmgriffDto';
 export * from './BezirksteilDto';
+export * from './FeatureCollectionDtoFeatureDtoBaublockDto';
+export * from './FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto';
 export * from './FeatureCollectionDtoFeatureDtoBezirksteilDto';
 export * from './FeatureCollectionDtoFeatureDtoFlurstueckDto';
 export * from './FeatureCollectionDtoFeatureDtoGemarkungDto';
@@ -10,6 +14,8 @@ export * from './FeatureCollectionDtoFeatureDtoMittelschulsprengelDto';
 export * from './FeatureCollectionDtoFeatureDtoSchulstandortDto';
 export * from './FeatureCollectionDtoFeatureDtoStadtbezirkDto';
 export * from './FeatureCollectionDtoFeatureDtoViertelDto';
+export * from './FeatureDtoBaublockDto';
+export * from './FeatureDtoBebauungsplanUmgriffDto';
 export * from './FeatureDtoBezirksteilDto';
 export * from './FeatureDtoFlurstueckDto';
 export * from './FeatureDtoGemarkungDto';

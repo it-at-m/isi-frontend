@@ -1,32 +1,24 @@
 
-# Dokument
+# FeatureCollectionDtoFeatureDtoBaublockDto
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`id` | string
-`version` | number
-`createdDateTime` | Date
-`lastModifiedDateTime` | Date
-`filePath` | [Filepath](Filepath.md)
-`artDokument` | string
+`type` | string
+`features` | [Array&lt;FeatureDtoBaublockDto&gt;](FeatureDtoBaublockDto.md)
 
 ## Example
 
 ```typescript
-import type { Dokument } from ''
+import type { FeatureCollectionDtoFeatureDtoBaublockDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "id": null,
-  "version": null,
-  "createdDateTime": null,
-  "lastModifiedDateTime": null,
-  "filePath": null,
-  "artDokument": null,
-} satisfies Dokument
+  "type": null,
+  "features": null,
+} satisfies FeatureCollectionDtoFeatureDtoBaublockDto
 
 console.log(example)
 
@@ -35,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as Dokument
+const exampleParsed = JSON.parse(exampleJSON) as FeatureCollectionDtoFeatureDtoBaublockDto
 console.log(exampleParsed)
 ```
 
