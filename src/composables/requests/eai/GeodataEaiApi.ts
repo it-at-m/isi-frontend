@@ -1,7 +1,11 @@
 import type {
   MultiPolygonGeometryDto,
   FeatureDtoFlurstueckDto,
+  FeatureDtoBaublockDto,
+  FeatureDtoBebauungsplanUmgriffDto,
   GetFlurstuecke1Request,
+  GetBaubloeckeRequest,
+  GetBebauungsplaeneRequest,
   PointGeometryDto,
   FeatureDtoGemarkungDto,
   GetGemarkungenRequest,
@@ -134,6 +138,38 @@ export function useGeodataEaiApi() {
     }
   }
 
+  async function getBaubloeckeForPoint(point: PointGeometryDto): Promise<Array<FeatureDtoBaublockDto>> {
+    const request: GetBaubloeckeRequest = { pointGeometryDto: point };
+    const maxIterations = 3;
+    for (let i = 0; i < maxIterations; i++) {
+      try {
+        const response = await punktApi.getBaubloecke(request, RequestUtils.getPOSTConfig());
+        return response.features ?? [];
+      } catch (error) {
+        if (i === maxIterations - 1) {
+          throw handleErrorInternal(error);
+        }
+      }
+    }
+  }
+
+  async function getBebauungsplaeneForPoint(
+    point: PointGeometryDto,
+  ): Promise<Array<FeatureDtoBebauungsplanUmgriffDto>> {
+    const request: GetBebauungsplaeneRequest = { pointGeometryDto: point };
+    const maxIterations = 3;
+    for (let i = 0; i < maxIterations; i++) {
+      try {
+        const response = await punktApi.getBebauungsplaene(request, RequestUtils.getPOSTConfig());
+        return response.features ?? [];
+      } catch (error) {
+        if (i === maxIterations - 1) {
+          throw handleErrorInternal(error);
+        }
+      }
+    }
+  }
+
   async function getFlurstueckeForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
   ): Promise<Array<FeatureDtoFlurstueckDto>> {
@@ -251,6 +287,8 @@ export function useGeodataEaiApi() {
 
   return {
     getFlurstueckeForPoint,
+    getBaubloeckeForPoint,
+    getBebauungsplaeneForPoint,
     getStadtbezirkeForPoint,
     getGemarkungenForPoint,
     getBezirksteileForPoint,
