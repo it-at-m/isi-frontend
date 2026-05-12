@@ -107,18 +107,18 @@
         md="6"
       >
         <v-select
-          id="stand_verfahren_dropdown"
-          ref="standVerfahrenDropdown"
-          v-model="abfrage.standVerfahren"
+          id="verfahrensstand_dropdown"
+          ref="verfahrensstandDropdown"
+          v-model="abfrage.verfahrensstand"
           variant="underlined"
           :disabled="!isEditable"
-          :items="lookupStore.standVerfahrenBauleitplanverfahren"
+          :items="lookupStore.verfahrensstandBauleitplanverfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
+          <template #label> Verfahrensstand <span class="text-secondary">*</span></template>
         </v-select>
       </v-col>
       <v-col
@@ -127,10 +127,10 @@
       >
         <v-slide-y-reverse-transition>
           <v-text-field
-            v-if="standVerfahrenFreieEingabeVisible"
-            id="stand_verfahren_freie_eingabe_field"
-            ref="standVerfahrenFreieEingabeField"
-            v-model="abfrage.standVerfahrenFreieEingabe"
+            v-if="verfahrensstandFreieEingabeVisible"
+            id="verfahrensstand_freie_eingabe_field"
+            ref="verfahrensstandFreieEingabeField"
+            v-model="abfrage.verfahrensstandFreieEingabe"
             variant="underlined"
             :readonly="!isEditable"
             label="Freie Eingabe"
@@ -174,7 +174,7 @@ const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<BauleitplanverfahrenModel>({ required: true });
-const standVerfahrenFreieEingabeVisible = ref(false);
+const verfahrensstandFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);

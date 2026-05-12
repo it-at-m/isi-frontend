@@ -102,16 +102,16 @@ export interface WeiteresVerfahrenDto extends AbfrageDto {
     sobonJahr?: WeiteresVerfahrenDtoSobonJahrEnum;
     /**
      * 
-     * @type {WeiteresVerfahrenDtoStandVerfahrenEnum}
+     * @type {WeiteresVerfahrenDtoVerfahrensstandEnum}
      * @memberof WeiteresVerfahrenDto
      */
-    standVerfahren?: WeiteresVerfahrenDtoStandVerfahrenEnum;
+    verfahrensstand?: WeiteresVerfahrenDtoVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof WeiteresVerfahrenDto
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {AdresseDto}
@@ -175,14 +175,19 @@ export type WeiteresVerfahrenDtoSobonJahrEnum = typeof WeiteresVerfahrenDtoSobon
 /**
  * @export
  */
-export const WeiteresVerfahrenDtoStandVerfahrenEnum = {
+export const WeiteresVerfahrenDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
     VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
@@ -196,7 +201,7 @@ export const WeiteresVerfahrenDtoStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type WeiteresVerfahrenDtoStandVerfahrenEnum = typeof WeiteresVerfahrenDtoStandVerfahrenEnum[keyof typeof WeiteresVerfahrenDtoStandVerfahrenEnum];
+export type WeiteresVerfahrenDtoVerfahrensstandEnum = typeof WeiteresVerfahrenDtoVerfahrensstandEnum[keyof typeof WeiteresVerfahrenDtoVerfahrensstandEnum];
 
 
 /**
@@ -226,8 +231,8 @@ export function WeiteresVerfahrenDtoFromJSONTyped(json: any, ignoreDiscriminator
         'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
         'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
@@ -260,8 +265,8 @@ export function WeiteresVerfahrenDtoToJSONTyped(value?: WeiteresVerfahrenDto | n
         'bebauungsplannummer': value['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
         'sobonJahr': value['sobonJahr'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),

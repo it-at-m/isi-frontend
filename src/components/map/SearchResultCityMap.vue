@@ -19,7 +19,7 @@ import {
   SearchResultDtoTypeEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   AbfrageDtoArtAbfrageEnum,
-  AbfrageSearchResultDtoStandVerfahrenEnum,
+  AbfrageSearchResultDtoVerfahrensstandEnum,
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
   LookupEntryDto,
 } from "@/api/api-client/isi-backend";
@@ -41,13 +41,13 @@ type EntityFeature = Feature<
     infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     zugehoerigesBauvorhaben: string | undefined;
     artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
-    standVerfahren: AbfrageSearchResultDtoStandVerfahrenEnum | undefined;
+    verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
   }
 >;
 
 const router = useRouter();
 const lookupStore = useLookupStore();
-const standVerfahrenList = computed(() => lookupStore.standVerfahren);
+const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
 const geoJsonOptions: GeoJSONOptions = {
@@ -75,8 +75,8 @@ const geoJsonOptions: GeoJSONOptions = {
                      feature.properties.artAbfrage as AbfrageDtoArtAbfrageEnum,
                    )}<br>
                    Stand: ${getLookupValue(
-                     feature.properties.standVerfahren as AbfrageSearchResultDtoStandVerfahrenEnum,
-                     standVerfahrenList.value,
+                     feature.properties.verfahrensstand as AbfrageSearchResultDtoVerfahrensstandEnum,
+                     verfahrensstandList.value,
                    )}`;
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
       contentTooltip = `<b>${feature.properties.name}</b>`;
@@ -140,14 +140,14 @@ const geoJson = computed(() => {
     let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     let zugehoerigesBauvorhaben: string | undefined;
     let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
-    let standVerfahren: AbfrageSearchResultDtoStandVerfahrenEnum | undefined;
+    let verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
 
     if (type === SearchResultDtoTypeEnum.Abfrage) {
       id = (result as AbfrageSearchResultDto).id;
       name = (result as AbfrageSearchResultDto).name;
       coordinate = (result as AbfrageSearchResultDto).coordinate;
       artAbfrage = (result as AbfrageSearchResultDto).artAbfrage;
-      standVerfahren = (result as AbfrageSearchResultDto).standVerfahren;
+      verfahrensstand = (result as AbfrageSearchResultDto).verfahrensstand;
     } else if (type === SearchResultDtoTypeEnum.Bauvorhaben) {
       id = (result as BauvorhabenSearchResultDto).id;
       name = (result as BauvorhabenSearchResultDto).nameVorhaben;
@@ -171,7 +171,7 @@ const geoJson = computed(() => {
           infrastruktureinrichtungTyp,
           zugehoerigesBauvorhaben,
           artAbfrage,
-          standVerfahren,
+          verfahrensstand,
         },
       });
     }

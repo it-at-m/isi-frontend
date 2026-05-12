@@ -58,7 +58,7 @@ export interface PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

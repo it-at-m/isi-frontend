@@ -24,19 +24,19 @@ export interface WohneinheitenProFoerderartProJahrDto {
      * @type {string}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    foerderart?: string;
+    foerderart?: string | null;
     /**
      * 
      * @type {string}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    jahr?: string;
+    jahr?: string | null;
     /**
      * 
      * @type {number}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    wohneinheiten?: number;
+    wohneinheiten?: number | null;
 }
 
 /**

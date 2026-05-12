@@ -105,16 +105,16 @@ export interface AbfragevarianteBauleitplanverfahrenDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>}
+     * @type {Array<AbfragevarianteBauleitplanverfahrenDtoPlanartEnum>}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    wesentlicheRechtsgrundlage?: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>;
+    planart?: Array<AbfragevarianteBauleitplanverfahrenDtoPlanartEnum>;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
-    wesentlicheRechtsgrundlageFreieEingabe?: string;
+    planartFreieEingabe?: string;
     /**
      * 
      * @type {number}
@@ -378,19 +378,14 @@ export type AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = typeo
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum = {
+export const AbfragevarianteBauleitplanverfahrenDtoPlanartEnum = {
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Innenbereich: 'INNENBEREICH',
-    Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum];
+export type AbfragevarianteBauleitplanverfahrenDtoPlanartEnum = typeof AbfragevarianteBauleitplanverfahrenDtoPlanartEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoPlanartEnum];
 
 /**
  * @export
@@ -432,8 +427,8 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'name': json['name'] == null ? undefined : json['name'],
         'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': json['planart'] == null ? undefined : json['planart'],
+        'planartFreieEingabe': json['planartFreieEingabe'] == null ? undefined : json['planartFreieEingabe'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': json['gfWohnenSobonUrsaechlich'] == null ? undefined : json['gfWohnenSobonUrsaechlich'],
@@ -497,8 +492,8 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSONTyped(value?: Abfrag
         'artAbfragevariante': value['artAbfragevariante'],
         'name': value['name'],
         'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
-        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': value['planart'],
+        'planartFreieEingabe': value['planartFreieEingabe'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': value['gfWohnenSobonUrsaechlich'],

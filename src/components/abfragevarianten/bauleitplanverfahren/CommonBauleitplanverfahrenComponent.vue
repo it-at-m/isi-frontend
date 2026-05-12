@@ -45,9 +45,9 @@
         md="6"
       >
         <v-autocomplete
-          id="wesentliche_rechtsgrundlage_dropdown"
-          v-model="abfragevariante.wesentlicheRechtsgrundlage"
-          :items="wesentlicheRechtsgrundlageBauleitplanverfahrenList"
+          id="planart_dropdown"
+          v-model="abfragevariante.planart"
+          :items="planartList"
           variant="underlined"
           item-value="key"
           item-title="value"
@@ -59,7 +59,7 @@
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         >
           <template #label>
-            Wesentliche Rechtsgrundlage
+            Planart
             <span class="text-secondary">*</span>
           </template>
         </v-autocomplete>
@@ -70,9 +70,9 @@
       >
         <v-slide-y-reverse-transition>
           <v-text-field
-            v-if="wesentlicheRechtsgrundlageFreieEingabeVisible"
-            id="wesentliche_rechtsgrundlage_freie_eingabe_field"
-            v-model="abfragevariante.wesentlicheRechtsgrundlageFreieEingabe"
+            v-if="planartFreieEingabeVisible"
+            id="planart_freie_eingabe_field"
+            v-model="abfragevariante.planartFreieEingabe"
             :readonly="!isEditable"
             variant="underlined"
             label="Freie Eingabe"
@@ -120,7 +120,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBauleitplanverfahrenDtoPlanartEnum } from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import NumField from "@/components/common/NumField.vue";
@@ -136,15 +136,13 @@ interface Props {
 
 const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
-const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
+const planartFreieEingabeVisible = ref<boolean | null>();
 
 const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
 
-const wesentlicheRechtsgrundlageBauleitplanverfahrenList = computed(
-  () => lookupStore.wesentlicheRechtsgrundlageBauleitplanverfahren,
-);
+const planartList = computed(() => lookupStore.planart);
 
 const calcRealisierungBis = computed(() => {
   const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
@@ -170,18 +168,14 @@ function datumSatzungsbeschlussChanged(): void {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-watch(() => abfragevariante.value.wesentlicheRechtsgrundlage, wesentlicheRechtsgrundlageChanged, { immediate: true });
+watch(() => abfragevariante.value.planart, planartChanged, { immediate: true });
 
-function wesentlicheRechtsgrundlageChanged(): void {
-  if (
-    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
-      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.FreieEingabe,
-    )
-  ) {
-    wesentlicheRechtsgrundlageFreieEingabeVisible.value = true;
+function planartChanged(): void {
+  if (abfragevariante.value.planart?.includes(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.FreieEingabe)) {
+    planartFreieEingabeVisible.value = true;
   } else {
-    abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
-    wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
+    abfragevariante.value.planartFreieEingabe = undefined;
+    planartFreieEingabeVisible.value = false;
   }
 }
 </script>

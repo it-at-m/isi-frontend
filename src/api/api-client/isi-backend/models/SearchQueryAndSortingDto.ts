@@ -180,10 +180,10 @@ export interface SearchQueryAndSortingDto {
     filterGfWohnenGeplantBis?: number;
     /**
      * 
-     * @type {Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>}
+     * @type {Array<SearchQueryAndSortingDtoFilterVerfahrensstandEnum>}
      * @memberof SearchQueryAndSortingDto
      */
-    filterStandVerfahren?: Array<SearchQueryAndSortingDtoFilterStandVerfahrenEnum>;
+    filterVerfahrensstand?: Array<SearchQueryAndSortingDtoFilterVerfahrensstandEnum>;
     /**
      * 
      * @type {Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>}
@@ -220,14 +220,19 @@ export interface SearchQueryAndSortingDto {
 /**
  * @export
  */
-export const SearchQueryAndSortingDtoFilterStandVerfahrenEnum = {
+export const SearchQueryAndSortingDtoFilterVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
     VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
@@ -241,7 +246,7 @@ export const SearchQueryAndSortingDtoFilterStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type SearchQueryAndSortingDtoFilterStandVerfahrenEnum = typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum[keyof typeof SearchQueryAndSortingDtoFilterStandVerfahrenEnum];
+export type SearchQueryAndSortingDtoFilterVerfahrensstandEnum = typeof SearchQueryAndSortingDtoFilterVerfahrensstandEnum[keyof typeof SearchQueryAndSortingDtoFilterVerfahrensstandEnum];
 
 /**
  * @export
@@ -333,7 +338,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'filterWeGesamtBis': json['filterWeGesamtBis'] == null ? undefined : json['filterWeGesamtBis'],
         'filterGfWohnenGeplantVon': json['filterGfWohnenGeplantVon'] == null ? undefined : json['filterGfWohnenGeplantVon'],
         'filterGfWohnenGeplantBis': json['filterGfWohnenGeplantBis'] == null ? undefined : json['filterGfWohnenGeplantBis'],
-        'filterStandVerfahren': json['filterStandVerfahren'] == null ? undefined : json['filterStandVerfahren'],
+        'filterVerfahrensstand': json['filterVerfahrensstand'] == null ? undefined : json['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': json['filterInfrastruktureinrichtungStatus'] == null ? undefined : json['filterInfrastruktureinrichtungStatus'],
         'page': json['page'] == null ? undefined : json['page'],
         'pageSize': json['pageSize'] == null ? undefined : json['pageSize'],
@@ -377,7 +382,7 @@ export function SearchQueryAndSortingDtoToJSONTyped(value?: SearchQueryAndSortin
         'filterWeGesamtBis': value['filterWeGesamtBis'],
         'filterGfWohnenGeplantVon': value['filterGfWohnenGeplantVon'],
         'filterGfWohnenGeplantBis': value['filterGfWohnenGeplantBis'],
-        'filterStandVerfahren': value['filterStandVerfahren'],
+        'filterVerfahrensstand': value['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': value['filterInfrastruktureinrichtungStatus'],
         'page': value['page'],
         'pageSize': value['pageSize'],

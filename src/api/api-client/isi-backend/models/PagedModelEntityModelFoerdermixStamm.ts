@@ -58,7 +58,7 @@ export interface PagedModelEntityModelFoerdermixStamm {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelFoerdermixStamm
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**
