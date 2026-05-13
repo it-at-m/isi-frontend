@@ -93,16 +93,16 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum>}
+     * @type {Array<EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum>}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
-    wesentlicheRechtsgrundlage?: Array<EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum>;
+    planart?: Array<EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum>;
     /**
      * 
      * @type {string}
      * @memberof EntityModelAbfragevarianteBauleitplanverfahren
      */
-    wesentlicheRechtsgrundlageFreieEingabe?: string;
+    planartFreieEingabe?: string;
     /**
      * 
      * @type {number}
@@ -349,19 +349,14 @@ export interface EntityModelAbfragevarianteBauleitplanverfahren {
 /**
  * @export
  */
-export const EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum = {
+export const EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum = {
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Innenbereich: 'INNENBEREICH',
-    Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenWesentlicheRechtsgrundlageEnum];
+export type EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum = typeof EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum[keyof typeof EntityModelAbfragevarianteBauleitplanverfahrenPlanartEnum];
 
 /**
  * @export
@@ -412,8 +407,8 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenFromJSONTyped(json
         'abfragevariantenNr': json['abfragevariantenNr'] == null ? undefined : json['abfragevariantenNr'],
         'name': json['name'] == null ? undefined : json['name'],
         'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': json['planart'] == null ? undefined : json['planart'],
+        'planartFreieEingabe': json['planartFreieEingabe'] == null ? undefined : json['planartFreieEingabe'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': json['gfWohnenSobonUrsaechlich'] == null ? undefined : json['gfWohnenSobonUrsaechlich'],
@@ -474,8 +469,8 @@ export function EntityModelAbfragevarianteBauleitplanverfahrenToJSONTyped(value?
         'abfragevariantenNr': value['abfragevariantenNr'],
         'name': value['name'],
         'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
-        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': value['planart'],
+        'planartFreieEingabe': value['planartFreieEingabe'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': value['gfWohnenSobonUrsaechlich'],

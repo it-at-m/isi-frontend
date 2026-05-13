@@ -58,7 +58,7 @@ export interface PagedModelEntityModelBauvorhaben {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelBauvorhaben
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

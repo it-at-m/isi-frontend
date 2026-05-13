@@ -58,7 +58,7 @@ export interface PagedModelEntityModelVersorgungsquoteGruppenstaerke {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelVersorgungsquoteGruppenstaerke
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

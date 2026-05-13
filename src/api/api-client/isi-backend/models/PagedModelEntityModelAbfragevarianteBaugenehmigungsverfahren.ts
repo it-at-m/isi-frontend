@@ -58,7 +58,7 @@ export interface PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

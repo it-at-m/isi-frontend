@@ -12,8 +12,8 @@ Name | Type
 `bearbeitendePerson` | [BearbeitendePerson](BearbeitendePerson.md)
 `nameVorhaben` | string
 `grundstuecksgroesse` | number
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `bauvorhabenNummer` | string
 `adresse` | [Adresse](Adresse.md)
 `verortung` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
@@ -26,9 +26,9 @@ Name | Type
 `wesentlicheRechtsgrundlageFreieEingabe` | string
 `artFnp` | Array&lt;string&gt;
 `artFnpFreieEingabe` | string
+`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `resultType` | string
 `adresseJson` | [Adresse](Adresse.md)
-`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -44,8 +44,8 @@ const example = {
   "bearbeitendePerson": null,
   "nameVorhaben": null,
   "grundstuecksgroesse": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "bauvorhabenNummer": null,
   "adresse": null,
   "verortung": null,
@@ -58,9 +58,9 @@ const example = {
   "wesentlicheRechtsgrundlageFreieEingabe": null,
   "artFnp": null,
   "artFnpFreieEingabe": null,
+  "verortungJson": null,
   "resultType": null,
   "adresseJson": null,
-  "verortungJson": null,
   "links": null,
 } satisfies EntityModelBauvorhaben
 

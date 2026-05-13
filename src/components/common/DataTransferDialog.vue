@@ -197,7 +197,7 @@ function getItemText(searchResult: AbfrageSearchResultDto): string {
     _.defaultTo(getLookupValue(searchResult.statusAbfrage, lookupStore.statusAbfrage), "Kein Abfragestatus vorhanden") +
     " - Stand: " +
     _.defaultTo(
-      getLookupValue(searchResult.standVerfahren, lookupStore.standVerfahren),
+      getLookupValue(searchResult.verfahrensstand, lookupStore.verfahrensstand),
       "Kein Verfahrensstand vorhanden",
     )
   );

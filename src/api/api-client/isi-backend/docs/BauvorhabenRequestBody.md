@@ -13,8 +13,8 @@ Name | Type
 `bearbeitendePerson` | [BearbeitendePerson](BearbeitendePerson.md)
 `nameVorhaben` | string
 `grundstuecksgroesse` | number
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `bauvorhabenNummer` | string
 `adresse` | [Adresse](Adresse.md)
 `verortung` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
@@ -29,9 +29,9 @@ Name | Type
 `artFnpFreieEingabe` | string
 `dokumente` | Array&lt;string&gt;
 `relevanteAbfragevariante` | string
+`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `resultType` | string
 `adresseJson` | [Adresse](Adresse.md)
-`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 
 ## Example
 
@@ -47,8 +47,8 @@ const example = {
   "bearbeitendePerson": null,
   "nameVorhaben": null,
   "grundstuecksgroesse": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "bauvorhabenNummer": null,
   "adresse": null,
   "verortung": null,
@@ -63,9 +63,9 @@ const example = {
   "artFnpFreieEingabe": null,
   "dokumente": null,
   "relevanteAbfragevariante": null,
+  "verortungJson": null,
   "resultType": null,
   "adresseJson": null,
-  "verortungJson": null,
 } satisfies BauvorhabenRequestBody
 
 console.log(example)

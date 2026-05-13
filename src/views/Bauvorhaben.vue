@@ -146,7 +146,7 @@ import {
   type BauleitplanverfahrenDto,
   type WeiteresVerfahrenDto,
   AbfrageDtoArtAbfrageEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   UncertainBoolean,
 } from "@/api/api-client/isi-backend";
 import type { AnyAbfrageDto } from "@/types/common/Abfrage";
@@ -300,8 +300,8 @@ function abfrageUebernehmen(abfrage: AbfrageDto): void {
     const newBauvorhaben = _.cloneDeep(bauvorhaben.value);
     newBauvorhaben.adresse = _.isNil(verfahren.adresse) ? createAdresseDto() : _.cloneDeep(verfahren.adresse);
     newBauvorhaben.verortung = _.isNil(verfahren.verortung) ? undefined : _.cloneDeep(verfahren.verortung);
-    newBauvorhaben.standVerfahren = verfahren.standVerfahren as BauvorhabenDtoStandVerfahrenEnum;
-    newBauvorhaben.standVerfahrenFreieEingabe = verfahren.standVerfahrenFreieEingabe;
+    newBauvorhaben.verfahrensstand = verfahren.verfahrensstand as BauvorhabenDtoVerfahrensstandEnum;
+    newBauvorhaben.verfahrensstandFreieEingabe = verfahren.verfahrensstandFreieEingabe;
     newBauvorhaben.bebauungsplannummer = verfahren.bebauungsplannummer;
     if (verfahren.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
       newBauvorhaben.sobonRelevant = UncertainBoolean.Unspecified;

@@ -58,7 +58,7 @@ export interface PagedModelEntityModelGlobalCounter {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelGlobalCounter
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

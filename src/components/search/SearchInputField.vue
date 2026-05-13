@@ -119,7 +119,7 @@ function checkCurrentFilter(): boolean {
     "filterGrundschulsprengelNummer",
     "filterMittelschulsprengelNummer",
     "filterStatusAbfrage",
-    "filterStandVerfahren",
+    "filterVerfahrensstand",
     "filterInfrastruktureinrichtungStatus",
     // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
     "filterSobonRelevant",
@@ -135,7 +135,7 @@ function checkCurrentFilter(): boolean {
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterGrundschulsprengelNummer) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterMittelschulsprengelNummer) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStatusAbfrage) &&
-    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterStandVerfahren) &&
+    _.isEmpty(searchStore.requestSearchQueryAndSorting.filterVerfahrensstand) &&
     _.isEmpty(searchStore.requestSearchQueryAndSorting.filterInfrastruktureinrichtungStatus) &&
     // Abhängig von der Eingabe in der GUI kann die Filtereinstellung undefined sein oder die Ausprägung Unspecified besitzen.
     (_.isNil(searchStore.requestSearchQueryAndSorting.filterSobonRelevant) ||
