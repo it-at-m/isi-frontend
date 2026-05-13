@@ -21,10 +21,10 @@ import {
 } from "@/api/api-client/isi-backend";
 import {
   AbfrageDtoArtAbfrageEnum,
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  WeiteresVerfahrenDtoStandVerfahrenEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauleitplanverfahrenDtoVerfahrensstandEnum,
+  BaugenehmigungsverfahrenDtoVerfahrensstandEnum,
+  WeiteresVerfahrenDtoVerfahrensstandEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   BedarfsmeldungDtoInfrastruktureinrichtungTypEnum,
   InfrastruktureinrichtungDtoStatusEnum,
   BaugebietDtoArtBaulicheNutzungEnum,
@@ -172,7 +172,22 @@ export function findFaultInAbfragevariante(
   if (_.size(abfragevariante.name) > 30) {
     return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
   }
-  if (_.isEmpty(abfragevariante.wesentlicheRechtsgrundlage)) {
+  if (
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteBaugenehmigungsverfahrenModel).wesentlicheRechtsgrundlage)
+  ) {
+    return "Bitte die wesentliche Rechtsgrundlage angeben";
+  }
+  if (
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteBauleitplanverfahrenModel).planart)
+  ) {
+    return "Bitte die Planart angeben";
+  }
+  if (
+    abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+    _.isEmpty((abfragevariante as AbfragevarianteWeiteresVerfahrenModel).wesentlicheRechtsgrundlage)
+  ) {
     return "Bitte die wesentliche Rechtsgrundlage angeben";
   }
   if (_.isNil(abfragevariante.realisierungVon) || _.isNaN(abfragevariante.realisierungVon)) {
@@ -428,8 +443,8 @@ export function findFaultInBauvorhaben(bauvorhaben: BauvorhabenDto): string | nu
     return "Bitte eine Auswahl zur Flächennutzung laut Flächennutzungsplan treffen";
   }
 
-  if (bauvorhaben.standVerfahren === BauvorhabenDtoStandVerfahrenEnum.Unspecified) {
-    return "Bitte den Stand des Verfahrens angeben";
+  if (bauvorhaben.verfahrensstand === BauvorhabenDtoVerfahrensstandEnum.Unspecified) {
+    return "Bitte den Verfahrensstand angeben";
   }
 
   if (_.isEmpty(bauvorhaben.wesentlicheRechtsgrundlage)) {
@@ -577,13 +592,13 @@ function findFaultInAbfrage(abfrage: AnyAbfrageModel): string | null {
   }
   if (
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
-      abfrage.standVerfahren === BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+      abfrage.verfahrensstand === BauleitplanverfahrenDtoVerfahrensstandEnum.Unspecified) ||
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren &&
-      abfrage.standVerfahren === BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified) ||
+      abfrage.verfahrensstand === BaugenehmigungsverfahrenDtoVerfahrensstandEnum.Unspecified) ||
     (abfrage.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
-      abfrage.standVerfahren === WeiteresVerfahrenDtoStandVerfahrenEnum.Unspecified)
+      abfrage.verfahrensstand === WeiteresVerfahrenDtoVerfahrensstandEnum.Unspecified)
   ) {
-    return "Bitte Stand des Verfahrens angeben";
+    return "Bitte Verfahrensstand angeben";
   }
   const date = moment(abfrage.fristBearbeitung, "DD.MM.YYYY", true);
   if (!date.isValid() || abfrage.fristBearbeitung?.toISOString() == new Date(0).toISOString()) {

@@ -74,7 +74,7 @@
           <v-spacer />
           <span>
             Stand:
-            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).standVerfahren, standVerfahrenList) }}
+            {{ getLookupValueBauvorhaben(castToBauvorhabenSearchResultDto(item).verfahrensstand, verfahrensstandList) }}
           </span>
         </v-card-text>
       </v-card>
@@ -158,7 +158,7 @@ const { searchForEntities } = useSearchApi();
 const { hasOnlyRoleAnwender } = useSecurity();
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
-const standVerfahrenList = computed(() => lookupStore.standVerfahren);
+const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
 

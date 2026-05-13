@@ -13,8 +13,8 @@ Name | Type
 `bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
 `nameVorhaben` | string
 `grundstuecksgroesse` | number
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `bauvorhabenNummer` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
@@ -44,8 +44,8 @@ const example = {
   "bearbeitendePerson": null,
   "nameVorhaben": null,
   "grundstuecksgroesse": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "bauvorhabenNummer": null,
   "adresse": null,
   "verortung": null,

@@ -8,12 +8,12 @@ interface State {
   artDokument: LookupEntryDto[];
   artAbfrage: LookupEntryDto[];
   sobonVerfahrensgrundsaetzeJahr: LookupEntryDto[];
-  standVerfahrenBauleitplanverfahren: LookupEntryDto[];
-  standVerfahrenBaugenehmigungsverfahren: LookupEntryDto[];
-  standVerfahrenWeiteresVerfahren: LookupEntryDto[];
-  standVerfahren: LookupEntryDto[];
+  verfahrensstandBauleitplanverfahren: LookupEntryDto[];
+  verfahrensstandBaugenehmigungsverfahren: LookupEntryDto[];
+  verfahrensstandWeiteresVerfahren: LookupEntryDto[];
+  verfahrensstand: LookupEntryDto[];
   statusAbfrage: LookupEntryDto[];
-  wesentlicheRechtsgrundlageBauleitplanverfahren: LookupEntryDto[];
+  planart: LookupEntryDto[];
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: LookupEntryDto[];
   wesentlicheRechtsgrundlage: LookupEntryDto[];
   artBaulicheNutzung: LookupEntryDto[];
@@ -34,12 +34,12 @@ export const useLookupStore = defineStore("lookup", {
       artDokument: [],
       artAbfrage: [],
       sobonVerfahrensgrundsaetzeJahr: [],
-      standVerfahrenBauleitplanverfahren: [],
-      standVerfahrenBaugenehmigungsverfahren: [],
-      standVerfahrenWeiteresVerfahren: [],
-      standVerfahren: [],
+      verfahrensstandBauleitplanverfahren: [],
+      verfahrensstandBaugenehmigungsverfahren: [],
+      verfahrensstandWeiteresVerfahren: [],
+      verfahrensstand: [],
       statusAbfrage: [],
-      wesentlicheRechtsgrundlageBauleitplanverfahren: [],
+      planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
@@ -61,14 +61,12 @@ export const useLookupStore = defineStore("lookup", {
         this.setArtDokument(lookupLists.artDokument);
         this.setArtAbfrage(lookupLists.artAbfrage);
         this.setSobonVerfahrensgrundsaetzeJahr(lookupLists.sobonVerfahrensgrundsaetzeJahr);
-        this.setStandVerfahrenBauleitplanverfahren(lookupLists.standVerfahrenBauleitplanverfahren);
-        this.setStandVerfahrenBaugenehmigungsverfahren(lookupLists.standVerfahrenBaugenehmigungsverfahren);
-        this.setStandVerfahrenWeiteresVerfahren(lookupLists.standVerfahrenWeiteresVerfahren);
-        this.setStandVerfahren(lookupLists.standVerfahren);
+        this.setVerfahrensstandBauleitplanverfahren(lookupLists.verfahrensstandBauleitplanverfahren);
+        this.setVerfahrensstandBaugenehmigungsverfahren(lookupLists.verfahrensstandBaugenehmigungsverfahren);
+        this.setVerfahrensstandWeiteresVerfahren(lookupLists.verfahrensstandWeiteresVerfahren);
+        this.setVerfahrensstand(lookupLists.verfahrensstand);
         this.setStatusAbfrage(lookupLists.statusAbfrage);
-        this.setWesentlicheRechtsgrundlageBauleitplanverfahren(
-          lookupLists.wesentlicheRechtsgrundlageBauleitplanverfahren,
-        );
+        this.setPlanart(lookupLists.planart);
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
@@ -102,31 +100,31 @@ export const useLookupStore = defineStore("lookup", {
         ? (this.sobonVerfahrensgrundsaetzeJahr = payload?.list)
         : (this.sobonVerfahrensgrundsaetzeJahr = []);
     },
-    setStandVerfahrenBauleitplanverfahren(payload: LookupListDto | undefined): void {
+    setVerfahrensstandBauleitplanverfahren(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.standVerfahrenBauleitplanverfahren = payload?.list)
-        : (this.standVerfahrenBauleitplanverfahren = []);
+        ? (this.verfahrensstandBauleitplanverfahren = payload?.list)
+        : (this.verfahrensstandBauleitplanverfahren = []);
     },
-    setStandVerfahrenBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
+    setVerfahrensstandBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.standVerfahrenBaugenehmigungsverfahren = payload?.list)
-        : (this.standVerfahrenBaugenehmigungsverfahren = []);
+        ? (this.verfahrensstandBaugenehmigungsverfahren = payload?.list)
+        : (this.verfahrensstandBaugenehmigungsverfahren = []);
     },
-    setStandVerfahrenWeiteresVerfahren(payload: LookupListDto | undefined): void {
+    setVerfahrensstandWeiteresVerfahren(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.standVerfahrenWeiteresVerfahren = payload?.list)
-        : (this.standVerfahrenWeiteresVerfahren = []);
+        ? (this.verfahrensstandWeiteresVerfahren = payload?.list)
+        : (this.verfahrensstandWeiteresVerfahren = []);
     },
-    setStandVerfahren(payload: LookupListDto | undefined): void {
-      !_.isNil(payload) && !_.isNil(payload.list) ? (this.standVerfahren = payload?.list) : (this.standVerfahren = []);
+    setVerfahrensstand(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.verfahrensstand = payload?.list)
+        : (this.verfahrensstand = []);
     },
     setStatusAbfrage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list) ? (this.statusAbfrage = payload?.list) : (this.statusAbfrage = []);
     },
-    setWesentlicheRechtsgrundlageBauleitplanverfahren(payload: LookupListDto | undefined): void {
-      !_.isNil(payload) && !_.isNil(payload.list)
-        ? (this.wesentlicheRechtsgrundlageBauleitplanverfahren = payload?.list)
-        : (this.wesentlicheRechtsgrundlageBauleitplanverfahren = []);
+    setPlanart(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.planart = payload?.list) : (this.planart = []);
     },
     setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)

@@ -14,8 +14,8 @@ Name | Type
 `artAbfragevariante` | string
 `name` | string
 `satzungsbeschluss` | Date
-`wesentlicheRechtsgrundlage` | Array&lt;string&gt;
-`wesentlicheRechtsgrundlageFreieEingabe` | string
+`planart` | Array&lt;string&gt;
+`planartFreieEingabe` | string
 `realisierungVon` | number
 `gfWohnenGesamt` | number
 `gfWohnenSobonUrsaechlich` | number
@@ -71,8 +71,8 @@ const example = {
   "artAbfragevariante": null,
   "name": null,
   "satzungsbeschluss": null,
-  "wesentlicheRechtsgrundlage": null,
-  "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "planart": null,
+  "planartFreieEingabe": null,
   "realisierungVon": null,
   "gfWohnenGesamt": null,
   "gfWohnenSobonUrsaechlich": null,

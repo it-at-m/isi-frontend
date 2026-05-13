@@ -99,16 +99,16 @@ export interface BauvorhabenDto {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {BauvorhabenDtoStandVerfahrenEnum}
+     * @type {BauvorhabenDtoVerfahrensstandEnum}
      * @memberof BauvorhabenDto
      */
-    standVerfahren: BauvorhabenDtoStandVerfahrenEnum;
+    verfahrensstand: BauvorhabenDtoVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof BauvorhabenDto
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {string}
@@ -199,14 +199,19 @@ export interface BauvorhabenDto {
 /**
  * @export
  */
-export const BauvorhabenDtoStandVerfahrenEnum = {
+export const BauvorhabenDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
+    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
+    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
     VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
+    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
     RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
     Aufteilungsplan: 'AUFTEILUNGSPLAN',
     VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
@@ -220,7 +225,7 @@ export const BauvorhabenDtoStandVerfahrenEnum = {
     FreieEingabe: 'FREIE_EINGABE',
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
-export type BauvorhabenDtoStandVerfahrenEnum = typeof BauvorhabenDtoStandVerfahrenEnum[keyof typeof BauvorhabenDtoStandVerfahrenEnum];
+export type BauvorhabenDtoVerfahrensstandEnum = typeof BauvorhabenDtoVerfahrensstandEnum[keyof typeof BauvorhabenDtoVerfahrensstandEnum];
 
 /**
  * @export
@@ -275,7 +280,7 @@ export type BauvorhabenDtoArtFnpEnum = typeof BauvorhabenDtoArtFnpEnum[keyof typ
  */
 export function instanceOfBauvorhabenDto(value: object): value is BauvorhabenDto {
     if (!('nameVorhaben' in value) || value['nameVorhaben'] === undefined) return false;
-    if (!('standVerfahren' in value) || value['standVerfahren'] === undefined) return false;
+    if (!('verfahrensstand' in value) || value['verfahrensstand'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     if (!('wesentlicheRechtsgrundlage' in value) || value['wesentlicheRechtsgrundlage'] === undefined) return false;
     if (!('artFnp' in value) || value['artFnp'] === undefined) return false;
@@ -299,8 +304,8 @@ export function BauvorhabenDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': json['nameVorhaben'],
         'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': json['bauvorhabenNummer'] == null ? undefined : json['bauvorhabenNummer'],
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
@@ -336,8 +341,8 @@ export function BauvorhabenDtoToJSONTyped(value?: BauvorhabenDto | null, ignoreD
         'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
         'nameVorhaben': value['nameVorhaben'],
         'grundstuecksgroesse': value['grundstuecksgroesse'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': value['bauvorhabenNummer'],
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),

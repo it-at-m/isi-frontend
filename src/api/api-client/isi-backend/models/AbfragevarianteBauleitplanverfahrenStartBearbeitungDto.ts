@@ -86,16 +86,16 @@ export interface AbfragevarianteBauleitplanverfahrenStartBearbeitungDto {
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>}
+     * @type {Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum>}
      * @memberof AbfragevarianteBauleitplanverfahrenStartBearbeitungDto
      */
-    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>;
+    planart: Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum>;
     /**
      * 
      * @type {string}
      * @memberof AbfragevarianteBauleitplanverfahrenStartBearbeitungDto
      */
-    wesentlicheRechtsgrundlageFreieEingabe?: string;
+    planartFreieEingabe?: string;
     /**
      * 
      * @type {number}
@@ -263,19 +263,14 @@ export type AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoArtAbfragevari
 /**
  * @export
  */
-export const AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum = {
+export const AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum = {
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Innenbereich: 'INNENBEREICH',
-    Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
     FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum];
+export type AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum = typeof AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum[keyof typeof AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoPlanartEnum];
 
 /**
  * @export
@@ -298,7 +293,7 @@ export type AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoSobonOrientier
 export function instanceOfAbfragevarianteBauleitplanverfahrenStartBearbeitungDto(value: object): value is AbfragevarianteBauleitplanverfahrenStartBearbeitungDto {
     if (!('abfragevariantenNr' in value) || value['abfragevariantenNr'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('wesentlicheRechtsgrundlage' in value) || value['wesentlicheRechtsgrundlage'] === undefined) return false;
+    if (!('planart' in value) || value['planart'] === undefined) return false;
     if (!('realisierungVon' in value) || value['realisierungVon'] === undefined) return false;
     if (!('gfWohnenSonderwohnformen' in value) || value['gfWohnenSonderwohnformen'] === undefined) return false;
     if (!('weSonderwohnformen' in value) || value['weSonderwohnformen'] === undefined) return false;
@@ -324,8 +319,8 @@ export function AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoFromJSONTy
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
         'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
-        'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': json['planart'],
+        'planartFreieEingabe': json['planartFreieEingabe'] == null ? undefined : json['planartFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': json['gfWohnenSobonUrsaechlich'] == null ? undefined : json['gfWohnenSobonUrsaechlich'],
@@ -371,8 +366,8 @@ export function AbfragevarianteBauleitplanverfahrenStartBearbeitungDtoToJSONType
         'abfragevariantenNr': value['abfragevariantenNr'],
         'name': value['name'],
         'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
-        'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
-        'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'planart': value['planart'],
+        'planartFreieEingabe': value['planartFreieEingabe'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenSobonUrsaechlich': value['gfWohnenSobonUrsaechlich'],

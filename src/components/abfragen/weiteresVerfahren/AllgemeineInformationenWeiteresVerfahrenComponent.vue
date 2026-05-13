@@ -123,18 +123,18 @@
         md="6"
       >
         <v-select
-          id="stand_verfahren_dropdown"
-          ref="standVerfahrenDropdown"
-          v-model="abfrage.standVerfahren"
+          id="verfahrensstand_dropdown"
+          ref="verfahrensstandDropdown"
+          v-model="abfrage.verfahrensstand"
           :disabled="!isEditable"
           variant="underlined"
-          :items="lookupStore.standVerfahrenWeiteresVerfahren"
+          :items="lookupStore.verfahrensstandWeiteresVerfahren"
           item-value="key"
           item-title="value"
           :rules="[pflichtfeld, notUnspecified]"
           @update:model-value="formChanged"
         >
-          <template #label> Stand des Verfahrens <span class="text-secondary">*</span></template>
+          <template #label> Verfahrensstand <span class="text-secondary">*</span></template>
         </v-select>
       </v-col>
       <v-col
@@ -143,10 +143,10 @@
       >
         <v-slide-y-reverse-transition>
           <v-text-field
-            v-if="standVerfahrenFreieEingabeVisible"
-            id="stand_verfahren_freie_eingabe_field"
-            ref="standVerfahrenFreieEingabeField"
-            v-model="abfrage.standVerfahrenFreieEingabe"
+            v-if="verfahrensstandFreieEingabeVisible"
+            id="verfahrensstand_freie_eingabe_field"
+            ref="verfahrensstandFreieEingabeField"
+            v-model="abfrage.verfahrensstandFreieEingabe"
             :readonly="!isEditable"
             variant="underlined"
             label="Freie Eingabe"
@@ -169,7 +169,11 @@
 import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
-import { WeiteresVerfahrenDtoStandVerfahrenEnum, UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
+import {
+  WeiteresVerfahrenDtoVerfahrensstandEnum,
+  UncertainBoolean,
+  BauvorhabenDto,
+} from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useLookupStore } from "@/stores/LookupStore";
@@ -190,7 +194,7 @@ const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const { isEditableByAbfrageerstellung, isEditableBySachbearbeitung } = useAbfrageSecurity();
 const abfrage = defineModel<WeiteresVerfahrenModel>({ required: true });
-const standVerfahrenFreieEingabeVisible = ref(false);
+const verfahrensstandFreieEingabeVisible = ref(false);
 const sobonJahrVisible = ref(false);
 const bauvorhaben = ref<BauvorhabenDto>(createBauvorhabenDto());
 const isAuswahlBauvorhabenDialogOpen = ref(false);
@@ -238,13 +242,13 @@ async function getBauvorhaben(): Promise<void> {
 withDefaults(defineProps<Props>(), { isEditable: false });
 
 watch(
-  () => abfrage.value.standVerfahren,
+  () => abfrage.value.verfahrensstand,
   (value) => {
-    if (value?.includes(WeiteresVerfahrenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
+    if (value?.includes(WeiteresVerfahrenDtoVerfahrensstandEnum.FreieEingabe)) {
+      verfahrensstandFreieEingabeVisible.value = true;
     } else {
-      standVerfahrenFreieEingabeVisible.value = false;
-      abfrage.value.standVerfahrenFreieEingabe = undefined;
+      verfahrensstandFreieEingabeVisible.value = false;
+      abfrage.value.verfahrensstandFreieEingabe = undefined;
     }
   },
   { immediate: true },

@@ -9,8 +9,8 @@ Name | Type
 `bebauungsplannummer` | string
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `sobonJahr` | string
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
@@ -29,8 +29,8 @@ const example = {
   "bebauungsplannummer": null,
   "sobonRelevant": null,
   "sobonJahr": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "adresse": null,
   "verortung": null,
   "dokumente": null,
