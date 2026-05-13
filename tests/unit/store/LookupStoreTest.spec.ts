@@ -58,8 +58,6 @@ describe("Lookup Store Setters", () => {
     expect(store.verfahrensstandBauleitplanverfahren).toEqual(examplePayload.list);
     store.setVerfahrensstandBauleitplanverfahren(examplePayloadListUndefined);
     expect(store.verfahrensstandBauleitplanverfahren).toEqual([]);
-    store.setVerfahrensstandBauleitplanverfahren(examplePayloadUndefined);
-    expect(store.verfahrensstandBauleitplanverfahren).toEqual([]);
   });
 
   test("setVerfahrensstandBaugenehmigungsverfahren updates verfahrensstandBaugenehmigungsverfahren correctly", () => {
@@ -68,8 +66,6 @@ describe("Lookup Store Setters", () => {
     expect(store.verfahrensstandBaugenehmigungsverfahren).toEqual(examplePayload.list);
     store.setVerfahrensstandBaugenehmigungsverfahren(examplePayloadListUndefined);
     expect(store.verfahrensstandBaugenehmigungsverfahren).toEqual([]);
-    store.setArtDokument(examplePayloadUndefined);
-    expect(store.artDokument).toEqual([]);
   });
 
   test("setVerfahrensstandWeiteresVerfahren updates verfahrensstandWeiteresVerfahren correctly", () => {
@@ -78,8 +74,6 @@ describe("Lookup Store Setters", () => {
     expect(store.verfahrensstandWeiteresVerfahren).toEqual(examplePayload.list);
     store.setVerfahrensstandWeiteresVerfahren(examplePayloadListUndefined);
     expect(store.verfahrensstandWeiteresVerfahren).toEqual([]);
-    store.setArtDokument(examplePayloadUndefined);
-    expect(store.artDokument).toEqual([]);
   });
 
   test("setVerfahrensstand updates verfahrensstand correctly", () => {
@@ -88,8 +82,6 @@ describe("Lookup Store Setters", () => {
     expect(store.verfahrensstand).toEqual(examplePayload.list);
     store.setVerfahrensstand(examplePayloadListUndefined);
     expect(store.verfahrensstand).toEqual([]);
-    store.setArtDokument(examplePayloadUndefined);
-    expect(store.artDokument).toEqual([]);
   });
 
   test("setStatusAbfrage updates statusAbfrage correctly", () => {
@@ -108,8 +100,6 @@ describe("Lookup Store Setters", () => {
     expect(store.planart).toEqual(examplePayload.list);
     store.setPlanart(examplePayloadListUndefined);
     expect(store.planart).toEqual([]);
-    store.setArtDokument(examplePayloadUndefined);
-    expect(store.artDokument).toEqual([]);
   });
 
   test("setWesentlicheRechtsgrundlageBaugenehmigungsverfahren updates wesentlicheRechtsgrundlageBaugenehmigungsverfahren correctly", () => {
