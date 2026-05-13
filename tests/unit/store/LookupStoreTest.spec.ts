@@ -58,8 +58,8 @@ describe("Lookup Store Setters", () => {
     expect(store.verfahrensstandBauleitplanverfahren).toEqual(examplePayload.list);
     store.setVerfahrensstandBauleitplanverfahren(examplePayloadListUndefined);
     expect(store.verfahrensstandBauleitplanverfahren).toEqual([]);
-    store.setArtDokument(examplePayloadUndefined);
-    expect(store.artDokument).toEqual([]);
+    store.setVerfahrensstandBauleitplanverfahren(examplePayloadUndefined);
+    expect(store.verfahrensstandBauleitplanverfahren).toEqual([]);
   });
 
   test("setVerfahrensstandBaugenehmigungsverfahren updates verfahrensstandBaugenehmigungsverfahren correctly", () => {

@@ -74,10 +74,12 @@ const geoJsonOptions: GeoJSONOptions = {
                    Art: ${getArtAbfrageEnumFormattedString(
                      feature.properties.artAbfrage as AbfrageDtoArtAbfrageEnum,
                    )}<br>
-                   Stand: ${getLookupValue(
-                     feature.properties.verfahrensstand as AbfrageSearchResultDtoVerfahrensstandEnum,
-                     verfahrensstandList.value,
-                   )}`;
+                   Stand: ${
+                     getLookupValue(
+                       feature.properties.verfahrensstand as AbfrageSearchResultDtoVerfahrensstandEnum,
+                       verfahrensstandList.value,
+                     ) ?? "—"
+                   }`;
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
       contentTooltip = `<b>${feature.properties.name}</b>`;
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {

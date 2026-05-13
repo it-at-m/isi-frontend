@@ -526,16 +526,10 @@ const statusInfrastruktureinrichtungList = computed(() => {
   }
   return statusList;
 });
-const verfahrensstandList = computed(() => {
-  var verfahrensstandList = lookupStore.verfahrensstand;
-  const index = verfahrensstandList.findIndex(
-    (verfahrensstand) => verfahrensstand.key === UncertainBoolean.Unspecified,
-  );
-  if (index > -1) {
-    verfahrensstandList.splice(index, 1);
-  }
-  return verfahrensstandList;
-});
+
+const verfahrensstandList = computed(() =>
+  lookupStore.verfahrensstand.filter((verfahrensstand) => verfahrensstand.key !== UncertainBoolean.Unspecified),
+);
 
 function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterStadtbezirkNummer = undefined;
