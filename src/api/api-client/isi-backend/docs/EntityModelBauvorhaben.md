@@ -26,8 +26,8 @@ Name | Type
 `wesentlicheRechtsgrundlageFreieEingabe` | string
 `artFnp` | Array&lt;string&gt;
 `artFnpFreieEingabe` | string
-`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `adresseJson` | [Adresse](Adresse.md)
+`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `resultType` | string
 `links` | [{ [key: string]: Link; }](Link.md)
 
@@ -58,8 +58,8 @@ const example = {
   "wesentlicheRechtsgrundlageFreieEingabe": null,
   "artFnp": null,
   "artFnpFreieEingabe": null,
-  "verortungJson": null,
   "adresseJson": null,
+  "verortungJson": null,
   "resultType": null,
   "links": null,
 } satisfies EntityModelBauvorhaben
