@@ -121,7 +121,7 @@
           />
           <v-col
             cols="12"
-            md="4"
+            md="8"
           >
             <num-field
               id="we_nicht_infrastruktur_relevante_wohnungen_field"
