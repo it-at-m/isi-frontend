@@ -22,7 +22,6 @@ Name | Type
 `gfWohnenSonderwohnformen` | boolean
 `gfWohnenStudentischesWohnen` | number
 `gfWohnenSeniorinnenWohnen` | number
-`gfWohnenGenossenschaftlichesWohnen` | number
 `gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `gfAnmerkung` | string
 `weGesamt` | number
@@ -31,7 +30,6 @@ Name | Type
 `weSonderwohnformen` | boolean
 `weStudentischesWohnen` | number
 `weSeniorinnenWohnen` | number
-`weGenossenschaftlichesWohnen` | number
 `weWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `weAnmerkung` | string
 `bauabschnitte` | [Array&lt;BauabschnittDto&gt;](BauabschnittDto.md)
@@ -59,7 +57,6 @@ const example = {
   "gfWohnenSonderwohnformen": null,
   "gfWohnenStudentischesWohnen": null,
   "gfWohnenSeniorinnenWohnen": null,
-  "gfWohnenGenossenschaftlichesWohnen": null,
   "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "gfAnmerkung": null,
   "weGesamt": null,
@@ -68,7 +65,6 @@ const example = {
   "weSonderwohnformen": null,
   "weStudentischesWohnen": null,
   "weSeniorinnenWohnen": null,
-  "weGenossenschaftlichesWohnen": null,
   "weWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "weAnmerkung": null,
   "bauabschnitte": null,

@@ -4,6 +4,8 @@ All URIs are relative to *http://localhost:8085*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**getBaubloecke**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbaubloecke) | **POST** /point/baubloecke | Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
+| [**getBebauungsplaene**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbebauungsplaene) | **POST** /point/bebauungsplaene | Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getBezirksteile1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getbezirksteile1) | **POST** /point/bezirksteile | Holt die Bezirksteile die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getFlurstuecke1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getflurstuecke1) | **POST** /point/flurstuecke | Holt die Flurstücke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getGemarkungen1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getgemarkungen1) | **POST** /point/gemarkungen | Holt die Gemarkungen die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
@@ -13,6 +15,138 @@ All URIs are relative to *http://localhost:8085*
 | [**getStadtbezirke1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getstadtbezirke1) | **POST** /point/stadtbezirke | Holt die Stadtbezirke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getViertel1**](ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api.md#getviertel1) | **POST** /point/viertel | Holt die Viertel die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden. |
 
+
+
+## getBaubloecke
+
+> FeatureCollectionDtoFeatureDtoBaublockDto getBaubloecke(pointGeometryDto)
+
+Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api,
+} from '';
+import type { GetBaubloeckeRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api();
+
+  const body = {
+    // PointGeometryDto
+    pointGeometryDto: ...,
+  } satisfies GetBaubloeckeRequest;
+
+  try {
+    const data = await api.getBaubloecke(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **pointGeometryDto** | [PointGeometryDto](PointGeometryDto.md) |  | |
+
+### Return type
+
+[**FeatureCollectionDtoFeatureDtoBaublockDto**](FeatureCollectionDtoFeatureDtoBaublockDto.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/hal+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Baublöcke erfolgreich abgefragt. |  -  |
+| **500** | Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## getBebauungsplaene
+
+> FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto getBebauungsplaene(pointGeometryDto)
+
+Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api,
+} from '';
+import type { GetBebauungsplaeneRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api();
+
+  const body = {
+    // PointGeometryDto
+    pointGeometryDto: ...,
+  } satisfies GetBebauungsplaeneRequest;
+
+  try {
+    const data = await api.getBebauungsplaene(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **pointGeometryDto** | [PointGeometryDto](PointGeometryDto.md) |  | |
+
+### Return type
+
+[**FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto**](FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/hal+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Bebauungsplan-Umgriffe erfolgreich abgefragt. |  -  |
+| **500** | Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## getBezirksteile1

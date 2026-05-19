@@ -148,12 +148,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
      * @type {number}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
-    gfWohnenGenossenschaftlichesWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
-     */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
@@ -197,12 +191,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
     weSeniorinnenWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
-     */
-    weGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
@@ -442,7 +430,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'] == null ? undefined : json['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
         'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
@@ -451,7 +438,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'weSonderwohnformen': json['weSonderwohnformen'] == null ? undefined : json['weSonderwohnformen'],
         'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'] == null ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
@@ -509,7 +495,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSONTyped(va
         'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': value['gfAnmerkung'],
         'weGesamt': value['weGesamt'],
@@ -518,7 +503,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSONTyped(va
         'weSonderwohnformen': value['weSonderwohnformen'],
         'weStudentischesWohnen': value['weStudentischesWohnen'],
         'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': value['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],

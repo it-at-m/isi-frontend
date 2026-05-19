@@ -1,5 +1,5 @@
 
-# ViertelDto
+# BaublockDto
 
 
 ## Properties
@@ -7,24 +7,20 @@
 Name | Type
 ------------ | -------------
 `objectId` | number
-`viertelNummer` | string
+`blNummer` | string
 `flaecheQm` | number
-`ycoordinate` | number
-`xcoordinate` | number
 
 ## Example
 
 ```typescript
-import type { ViertelDto } from ''
+import type { BaublockDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
   "objectId": null,
-  "viertelNummer": null,
+  "blNummer": null,
   "flaecheQm": null,
-  "ycoordinate": null,
-  "xcoordinate": null,
-} satisfies ViertelDto
+} satisfies BaublockDto
 
 console.log(example)
 
@@ -33,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ViertelDto
+const exampleParsed = JSON.parse(exampleJSON) as BaublockDto
 console.log(exampleParsed)
 ```
 

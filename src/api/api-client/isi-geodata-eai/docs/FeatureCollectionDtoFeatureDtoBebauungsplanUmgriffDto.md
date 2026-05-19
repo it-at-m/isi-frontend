@@ -1,30 +1,24 @@
 
-# ViertelDto
+# FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`objectId` | number
-`viertelNummer` | string
-`flaecheQm` | number
-`ycoordinate` | number
-`xcoordinate` | number
+`type` | string
+`features` | [Array&lt;FeatureDtoBebauungsplanUmgriffDto&gt;](FeatureDtoBebauungsplanUmgriffDto.md)
 
 ## Example
 
 ```typescript
-import type { ViertelDto } from ''
+import type { FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "objectId": null,
-  "viertelNummer": null,
-  "flaecheQm": null,
-  "ycoordinate": null,
-  "xcoordinate": null,
-} satisfies ViertelDto
+  "type": null,
+  "features": null,
+} satisfies FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto
 
 console.log(example)
 
@@ -33,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ViertelDto
+const exampleParsed = JSON.parse(exampleJSON) as FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto
 console.log(exampleParsed)
 ```
 

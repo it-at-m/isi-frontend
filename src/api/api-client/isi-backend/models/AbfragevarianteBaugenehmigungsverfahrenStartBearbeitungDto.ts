@@ -142,12 +142,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto {
      * @type {number}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto
      */
-    gfWohnenGenossenschaftlichesWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto
-     */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
@@ -191,12 +185,6 @@ export interface AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto {
      * @memberof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto
      */
     weSeniorinnenWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto
-     */
-    weGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
@@ -354,7 +342,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoFromJS
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
         'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
@@ -363,7 +350,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoFromJS
         'weSonderwohnformen': json['weSonderwohnformen'],
         'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'bauabschnitte': ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
@@ -405,7 +391,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoToJSON
         'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': value['gfAnmerkung'],
         'weGesamt': value['weGesamt'],
@@ -414,7 +399,6 @@ export function AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDtoToJSON
         'weSonderwohnformen': value['weSonderwohnformen'],
         'weStudentischesWohnen': value['weStudentischesWohnen'],
         'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': value['weAnmerkung'],
         'bauabschnitte': ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),

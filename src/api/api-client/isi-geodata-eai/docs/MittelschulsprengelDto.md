@@ -13,8 +13,8 @@ Name | Type
 `verbundnummer` | string
 `verbundname` | string
 `ebeneBedeutung` | string
-`xcoordinate` | number
 `ycoordinate` | number
+`xcoordinate` | number
 
 ## Example
 
@@ -30,8 +30,8 @@ const example = {
   "verbundnummer": null,
   "verbundname": null,
   "ebeneBedeutung": null,
-  "xcoordinate": null,
   "ycoordinate": null,
+  "xcoordinate": null,
 } satisfies MittelschulsprengelDto
 
 console.log(example)

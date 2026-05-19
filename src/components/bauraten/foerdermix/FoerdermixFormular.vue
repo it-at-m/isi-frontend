@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <field-group-card :card-title="anteileFMCardTitle">
+    <field-group-card
+      :card-title="anteileFMCardTitle"
+      :mark-card-title-as-required="true"
+    >
       <v-row>
         <v-col
           cols="12"
