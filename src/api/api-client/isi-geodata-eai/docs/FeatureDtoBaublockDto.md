@@ -1,30 +1,26 @@
 
-# ViertelDto
+# FeatureDtoBaublockDto
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`objectId` | number
-`viertelNummer` | string
-`flaecheQm` | number
-`ycoordinate` | number
-`xcoordinate` | number
+`type` | string
+`geometry` | [FeatureDtoViertelDtoGeometry](FeatureDtoViertelDtoGeometry.md)
+`properties` | [BaublockDto](BaublockDto.md)
 
 ## Example
 
 ```typescript
-import type { ViertelDto } from ''
+import type { FeatureDtoBaublockDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "objectId": null,
-  "viertelNummer": null,
-  "flaecheQm": null,
-  "ycoordinate": null,
-  "xcoordinate": null,
-} satisfies ViertelDto
+  "type": null,
+  "geometry": null,
+  "properties": null,
+} satisfies FeatureDtoBaublockDto
 
 console.log(example)
 
@@ -33,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ViertelDto
+const exampleParsed = JSON.parse(exampleJSON) as FeatureDtoBaublockDto
 console.log(exampleParsed)
 ```
 

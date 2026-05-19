@@ -9,8 +9,8 @@ Name | Type
 `objectId` | number
 `bezirksteilNummer` | string
 `flaecheQm` | number
-`xcoordinate` | number
 `ycoordinate` | number
+`xcoordinate` | number
 
 ## Example
 
@@ -22,8 +22,8 @@ const example = {
   "objectId": null,
   "bezirksteilNummer": null,
   "flaecheQm": null,
-  "xcoordinate": null,
   "ycoordinate": null,
+  "xcoordinate": null,
 } satisfies BezirksteilDto
 
 console.log(example)
