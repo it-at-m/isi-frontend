@@ -27,7 +27,7 @@
         <v-autocomplete
           id="wesentliche_rechtsgrundlage_dropdown"
           v-model="abfragevariante.wesentlicheRechtsgrundlage"
-          :items="wesentlicheRechtsgrundlageList"
+          :items="wesentlicheRechtsgrundlageWeiteresVerfahrenList"
           variant="underlined"
           item-value="key"
           item-title="value"
@@ -117,7 +117,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
+import {
+  AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
+} from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -134,11 +137,15 @@ const abfragevariante = defineModel<AbfragevarianteWeiteresVerfahrenModel>({ req
 
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
+const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
+
 const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
 
-const wesentlicheRechtsgrundlageList = computed(() => lookupStore.wesentlicheRechtsgrundlage);
+const wesentlicheRechtsgrundlageWeiteresVerfahrenList = computed(
+  () => lookupStore.wesentlicheRechtsgrundlageWeiteresVerfahren,
+);
 
 const calcRealisierungBis = computed(() => {
   const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
@@ -162,6 +169,16 @@ function wesentlicheRechtsgrundlageChanged(): void {
   } else {
     abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
     wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
+  }
+  if (
+    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
+      AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum.Befreiung,
+    )
+  ) {
+    wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = true;
+  } else {
+    abfragevariante.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
+    wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
   }
 }
 </script>

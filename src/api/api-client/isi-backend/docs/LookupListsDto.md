@@ -17,6 +17,7 @@ Name | Type
 `statusAbfrage` | [LookupListDto](LookupListDto.md)
 `planart` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
+`wesentlicheRechtsgrundlageWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlage` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzung` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzungBauvorhaben` | [LookupListDto](LookupListDto.md)
@@ -46,6 +47,7 @@ const example = {
   "statusAbfrage": null,
   "planart": null,
   "wesentlicheRechtsgrundlageBaugenehmigungsverfahren": null,
+  "wesentlicheRechtsgrundlageWeiteresVerfahren": null,
   "wesentlicheRechtsgrundlage": null,
   "artBaulicheNutzung": null,
   "artBaulicheNutzungBauvorhaben": null,
