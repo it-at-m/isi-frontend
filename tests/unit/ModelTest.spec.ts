@@ -22,7 +22,7 @@ describe("ModelTest.spec.ts", () => {
     const abfrageDto = createBauleitplanverfahrenDto();
     const abfragevarianteDto = createAbfragevarianteBauleitplanverfahrenDto();
     abfragevarianteDto.abfragevariantenNr = 1;
-    abfragevarianteDto.wesentlicheRechtsgrundlage?.push(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich);
+    abfragevarianteDto.planart?.push(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich);
     abfragevarianteDto.realisierungVon = 2022;
     abfragevarianteDto.gfWohnenGesamt = 123.45;
     abfragevarianteDto.gfWohnenBestandswohnbaurecht = 0.9;
@@ -35,8 +35,6 @@ describe("ModelTest.spec.ts", () => {
     const abfragevarianteModel = abfrageModel
       .abfragevariantenBauleitplanverfahren?.[0] as AbfragevarianteBauleitplanverfahrenModel;
     expect(abfragevarianteModel).not.toBeUndefined();
-    expect(abfragevarianteModel.wesentlicheRechtsgrundlage).contains(
-      AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich,
-    );
+    expect(abfragevarianteModel.planart).contains(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich);
   });
 });

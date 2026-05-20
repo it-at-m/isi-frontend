@@ -91,6 +91,12 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
+     */
+    wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteBaugenehmigungsverfahrenRequestBody
      */
@@ -348,16 +354,19 @@ export interface AbfragevarianteBaugenehmigungsverfahrenRequestBody {
  * @export
  */
 export const AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum = {
+    BeplanterBereichParagraph30: 'BEPLANTER_BEREICH_PARAGRAPH_30',
+    Innenbereich: 'INNENBEREICH',
+    Aussenbereich: 'AUSSENBEREICH',
+    BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
+    BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
+    FreieEingabe: 'FREIE_EINGABE',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
     EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
     SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
     SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Innenbereich: 'INNENBEREICH',
-    Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenRequestBodyWesentlicheRechtsgrundlageEnum];
 
@@ -412,6 +421,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSONTyped(
         'name': json['name'] == null ? undefined : json['name'],
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': json['gfWohnenBaurechtlichGenehmigt'] == null ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
@@ -476,6 +486,7 @@ export function AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSONTyped(va
         'name': value['name'],
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': value['gfWohnenBaurechtlichGenehmigt'],
