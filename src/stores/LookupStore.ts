@@ -15,6 +15,7 @@ interface State {
   statusAbfrage: LookupEntryDto[];
   planart: LookupEntryDto[];
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: LookupEntryDto[];
+  wesentlicheRechtsgrundlageWeiteresVerfahren: LookupEntryDto[];
   wesentlicheRechtsgrundlage: LookupEntryDto[];
   artBaulicheNutzung: LookupEntryDto[];
   artBaulicheNutzungBauvorhaben: LookupEntryDto[];
@@ -41,6 +42,7 @@ export const useLookupStore = defineStore("lookup", {
       statusAbfrage: [],
       planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
+      wesentlicheRechtsgrundlageWeiteresVerfahren: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
       artBaulicheNutzungBauvorhaben: [],
@@ -70,6 +72,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
+        this.setWesentlicheRechtsgrundlageWeiteresVerfahren(lookupLists.wesentlicheRechtsgrundlageWeiteresVerfahren);
         this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage);
         this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
         this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
@@ -130,6 +133,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = payload?.list)
         : (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = []);
+    },
+    setWesentlicheRechtsgrundlageWeiteresVerfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageWeiteresVerfahren = payload?.list)
+        : (this.wesentlicheRechtsgrundlageWeiteresVerfahren = []);
     },
     setWesentlicheRechtsgrundlage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)

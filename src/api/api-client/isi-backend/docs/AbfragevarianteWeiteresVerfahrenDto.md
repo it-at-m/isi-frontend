@@ -16,6 +16,7 @@ Name | Type
 `satzungsbeschluss` | Date
 `wesentlicheRechtsgrundlage` | Array&lt;string&gt;
 `wesentlicheRechtsgrundlageFreieEingabe` | string
+`wesentlicheRechtsgrundlageAngabenZurBefreiung` | string
 `realisierungVon` | number
 `gfWohnenGesamt` | number
 `gfWohnenBaurechtlichGenehmigt` | number
@@ -77,6 +78,7 @@ const example = {
   "satzungsbeschluss": null,
   "wesentlicheRechtsgrundlage": null,
   "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "wesentlicheRechtsgrundlageAngabenZurBefreiung": null,
   "realisierungVon": null,
   "gfWohnenGesamt": null,
   "gfWohnenBaurechtlichGenehmigt": null,
