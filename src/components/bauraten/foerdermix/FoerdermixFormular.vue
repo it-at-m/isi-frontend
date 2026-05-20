@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <field-group-card
-      :card-title="anteileFMCardTitle"
-      :mark-card-title-as-required="true"
-    >
+    <field-group-card :card-title="anteileFMCardTitle">
       <v-row>
         <v-col
           cols="12"
@@ -14,13 +11,14 @@
             v-model="selectedItem"
             :disabled="!isEditable"
             :items="groupedStammdaten"
-            label="Fördermix"
             item-title="foerdermix.bezeichnung"
             return-object
             variant="underlined"
             @update:model-value="foerdermixSelected"
             @update:menu="formChanged"
-          />
+          >
+            <template #label> Fördermix<span class="text-secondary">&nbsp;*</span> </template>
+          </v-select>
         </v-col>
         <v-col
           cols="12"

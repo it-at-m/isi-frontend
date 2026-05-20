@@ -102,16 +102,16 @@ export interface AbfrageRequestBody {
     bearbeitungshistorie?: Array<Bearbeitungshistorie>;
     /**
      * 
-     * @type {AbfrageRequestBodyArtAbfrageEnum}
-     * @memberof AbfrageRequestBody
-     */
-    artAbfrage?: AbfrageRequestBodyArtAbfrageEnum;
-    /**
-     * 
      * @type {string}
      * @memberof AbfrageRequestBody
      */
     bauvorhabenUuid?: string;
+    /**
+     * 
+     * @type {AbfrageRequestBodyArtAbfrageEnum}
+     * @memberof AbfrageRequestBody
+     */
+    artAbfrage?: AbfrageRequestBodyArtAbfrageEnum;
     /**
      * 
      * @type {AbfrageRequestBodyResultTypeEnum}
@@ -171,8 +171,8 @@ export function AbfrageRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: 
         'sub': json['sub'] == null ? undefined : json['sub'],
         'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
         'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
-        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
         'bauvorhabenUuid': json['bauvorhabenUuid'] == null ? undefined : json['bauvorhabenUuid'],
+        'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
     };
 }
@@ -199,8 +199,8 @@ export function AbfrageRequestBodyToJSONTyped(value?: AbfrageRequestBody | null,
         'sub': value['sub'],
         'linkEakte': value['linkEakte'],
         'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieToJSON)),
-        'artAbfrage': value['artAbfrage'],
         'bauvorhabenUuid': value['bauvorhabenUuid'],
+        'artAbfrage': value['artAbfrage'],
         'resultType': value['resultType'],
     };
 }

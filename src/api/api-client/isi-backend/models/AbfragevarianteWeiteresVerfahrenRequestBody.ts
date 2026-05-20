@@ -373,16 +373,19 @@ export interface AbfragevarianteWeiteresVerfahrenRequestBody {
  * @export
  */
 export const AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum = {
+    BeplanterBereichParagraph30: 'BEPLANTER_BEREICH_PARAGRAPH_30',
+    Innenbereich: 'INNENBEREICH',
+    Aussenbereich: 'AUSSENBEREICH',
+    BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
+    BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
+    FreieEingabe: 'FREIE_EINGABE',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
     EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
     SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
     SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Innenbereich: 'INNENBEREICH',
-    Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteWeiteresVerfahrenRequestBodyWesentlicheRechtsgrundlageEnum];
 

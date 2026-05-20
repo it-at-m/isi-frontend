@@ -13,6 +13,7 @@ Name | Type
 `name` | string
 `wesentlicheRechtsgrundlage` | Array&lt;string&gt;
 `wesentlicheRechtsgrundlageFreieEingabe` | string
+`wesentlicheRechtsgrundlageAngabenZurBefreiung` | string
 `realisierungVon` | number
 `gfWohnenGesamt` | number
 `gfWohnenBaurechtlichGenehmigt` | number
@@ -55,6 +56,7 @@ const example = {
   "name": null,
   "wesentlicheRechtsgrundlage": null,
   "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "wesentlicheRechtsgrundlageAngabenZurBefreiung": null,
   "realisierungVon": null,
   "gfWohnenGesamt": null,
   "gfWohnenBaurechtlichGenehmigt": null,
