@@ -167,9 +167,10 @@ function handleOldEntries(): void {
 function isOldEntry(): boolean {
   if (props.isBaugenehmigungsverfahren) {
     return !BGV_FOERDERMIX_WERTE.includes(foerdermix.value.bezeichnung ?? "");
+  } else {
+    return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
+      foerdermix.value.bezeichnung as FoerdermixStammdaten,
+    );
   }
-  return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
-    foerdermix.value.bezeichnung as FoerdermixStammdaten,
-  );
 }
 </script>
