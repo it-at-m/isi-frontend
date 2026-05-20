@@ -77,12 +77,12 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 
-const BGV_FOERDERMIX_WERTE: ReadonlySet<string> = new Set([
+const BGV_FOERDERMIX_WERTE = [
   "Nachverdichtung (§34 und §35 BauGB)",
   "Stadibau",
   "Werkswohnungsmodell",
   FoerdermixStammdaten.FREIE_EINGABE,
-]);
+];
 
 interface Props {
   isEditable?: boolean;
@@ -141,14 +141,20 @@ function setGroupedStammdatenList(): void {
 }
 
 function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
-  const filtered = props.isBaugenehmigungsverfahren
-    ? stammdaten.filter((stammdatum) => BGV_FOERDERMIX_WERTE.has(stammdatum.foerdermix.bezeichnung ?? ""))
-    : stammdaten.filter(
-        (stammdatum) =>
-          stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BESCHLUSS_40 &&
-          stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BEFREIUNG_31_BAUGB,
-      );
-  return _.sortBy(filtered, ["foerdermix.bezeichnungJahr"]);
+  if (props.isBaugenehmigungsverfahren) {
+    const filtered = stammdaten.filter((stammdatum) =>
+      BGV_FOERDERMIX_WERTE.includes(stammdatum.foerdermix.bezeichnung ?? ""),
+    );
+    return _.sortBy(filtered, [(s) => BGV_FOERDERMIX_WERTE.indexOf(s.foerdermix.bezeichnung ?? "")]);
+  }
+  return _.sortBy(
+    stammdaten.filter(
+      (stammdatum) =>
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BESCHLUSS_40 &&
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BEFREIUNG_31_BAUGB,
+    ),
+    ["foerdermix.bezeichnungJahr"],
+  );
 }
 
 function handleOldEntries(): void {
@@ -160,7 +166,7 @@ function handleOldEntries(): void {
 
 function isOldEntry(): boolean {
   if (props.isBaugenehmigungsverfahren) {
-    return !BGV_FOERDERMIX_WERTE.has(foerdermix.value.bezeichnung ?? "");
+    return !BGV_FOERDERMIX_WERTE.includes(foerdermix.value.bezeichnung ?? "");
   }
   return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
     foerdermix.value.bezeichnung as FoerdermixStammdaten,
