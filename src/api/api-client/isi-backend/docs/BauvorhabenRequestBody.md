@@ -30,9 +30,9 @@ Name | Type
 `artFnpFreieEingabe` | string
 `dokumente` | Array&lt;string&gt;
 `relevanteAbfragevariante` | string
-`resultType` | string
 `verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `adresseJson` | [Adresse](Adresse.md)
+`resultType` | string
 
 ## Example
 
@@ -65,9 +65,9 @@ const example = {
   "artFnpFreieEingabe": null,
   "dokumente": null,
   "relevanteAbfragevariante": null,
-  "resultType": null,
   "verortungJson": null,
   "adresseJson": null,
+  "resultType": null,
 } satisfies BauvorhabenRequestBody
 
 console.log(example)

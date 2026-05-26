@@ -43,8 +43,6 @@ export const useLookupStore = defineStore("lookup", {
       statusAbfrage: [],
       planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
-      wesentlicheRechtsgrundlageWeiteresVerfahren: [],
-      wesentlicheRechtsgrundlageBauvorhaben: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
       artBaulicheNutzungBauvorhaben: [],
@@ -74,8 +72,6 @@ export const useLookupStore = defineStore("lookup", {
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
-        this.setWesentlicheRechtsgrundlageWeiteresVerfahren(lookupLists.wesentlicheRechtsgrundlageWeiteresVerfahren);
-        this.setWesentlicheRechtsgrundlageBauvorhaben(lookupLists.wesentlicheRechtsgrundlageBauvorhaben);
         this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage);
         this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
         this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
