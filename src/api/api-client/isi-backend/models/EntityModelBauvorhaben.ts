@@ -177,10 +177,10 @@ export interface EntityModelBauvorhaben {
     artFnpFreieEingabe?: string;
     /**
      * 
-     * @type {EntityModelBauvorhabenResultTypeEnum}
+     * @type {Adresse}
      * @memberof EntityModelBauvorhaben
      */
-    resultType?: EntityModelBauvorhabenResultTypeEnum;
+    adresseJson?: Adresse;
     /**
      * 
      * @type {VerortungMultiPolygon}
@@ -189,10 +189,10 @@ export interface EntityModelBauvorhaben {
     verortungJson?: VerortungMultiPolygon;
     /**
      * 
-     * @type {Adresse}
+     * @type {EntityModelBauvorhabenResultTypeEnum}
      * @memberof EntityModelBauvorhaben
      */
-    adresseJson?: Adresse;
+    resultType?: EntityModelBauvorhabenResultTypeEnum;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -258,13 +258,12 @@ export const EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = {
     BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
     BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
     FreieEingabe: 'FREIE_EINGABE',
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    Befreiung: 'BEFREIUNG'
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
+    Befreiung: 'BEFREIUNG',
+    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30'
 } as const;
 export type EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum];
 
@@ -331,9 +330,9 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -369,9 +368,9 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
-        'resultType': value['resultType'],
-        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
+        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
+        'resultType': value['resultType'],
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

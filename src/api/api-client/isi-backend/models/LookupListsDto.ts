@@ -98,6 +98,12 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
+    wesentlicheRechtsgrundlageWeiteresVerfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
     wesentlicheRechtsgrundlage?: LookupListDto;
     /**
      * 
@@ -183,6 +189,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'statusAbfrage': json['statusAbfrage'] == null ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
         'planart': json['planart'] == null ? undefined : LookupListDtoFromJSON(json['planart']),
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
+        'wesentlicheRechtsgrundlageWeiteresVerfahren': json['wesentlicheRechtsgrundlageWeiteresVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageWeiteresVerfahren']),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlage']),
         'artBaulicheNutzung': json['artBaulicheNutzung'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': json['artBaulicheNutzungBauvorhaben'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
@@ -218,6 +225,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'statusAbfrage': LookupListDtoToJSON(value['statusAbfrage']),
         'planart': LookupListDtoToJSON(value['planart']),
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
+        'wesentlicheRechtsgrundlageWeiteresVerfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageWeiteresVerfahren']),
         'wesentlicheRechtsgrundlage': LookupListDtoToJSON(value['wesentlicheRechtsgrundlage']),
         'artBaulicheNutzung': LookupListDtoToJSON(value['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value['artBaulicheNutzungBauvorhaben']),
