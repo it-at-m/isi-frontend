@@ -75,6 +75,7 @@
           :is-editable="isEditable"
           :baugebiet="baugebietAncestor"
           :abfragevariante="abfragevarianteAncestor"
+          :is-baugenehmigungsverfahren="isBaugenehmigungsverfahren"
         />
         <yes-no-dialog
           id="abfrage_yes_no_dialog_loeschen"
