@@ -3,6 +3,7 @@ import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { HTTPBody, HTTPHeaders, HTTPMethod } from "@/api/api-client/isi-master-eai";
 // import "@/types/common/Leaflet";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
@@ -51,7 +52,9 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   { displayName: "Grundschulsprengel", internalName: "Grundschulsprengel", urlPart: "Bildung_und_Soziales" },
   { displayName: "Mittelschulsprengel", internalName: "Mittelschulsprengel", urlPart: "Bildung_und_Soziales" },
   { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
-  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis" },
+  { displayName: "Bebauungspläne rechtskräftig", internalName: "BB_rechtskräftig3575", urlPart: "basis" },
+  { displayName: "Bebauungspläne in Aufstellung", internalName: "BB_in_Aufstellung62398", urlPart: "basis" },
+  { displayName: "Bauliniengefüge", internalName: "Bauliniengefüge", urlPart: "basis" },
 ];
 
 /**
