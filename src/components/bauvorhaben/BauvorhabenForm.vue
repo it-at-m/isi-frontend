@@ -62,7 +62,7 @@
             v-model="bauvorhaben.bauvorhabenNummer"
             variant="underlined"
             readonly
-            label="Bauvorhabennummer"
+            label="Vorhabennummer"
           />
         </v-col>
       </v-row>
@@ -80,7 +80,7 @@
       :is-editable="isEditable"
       @form-changed="formChanged"
     />
-    <field-group-card card-title="Allgemeine Informationen zum Bauvorhaben">
+    <field-group-card card-title="Allgemeine Informationen zum Vorhaben">
       <v-row>
         <v-col
           cols="12"

@@ -89,14 +89,14 @@
             <template #activator="{ props: activatorProps }">
               <v-checkbox
                 v-model="searchQueryAndSorting.selectBauvorhaben"
-                :label="'Bauvorhaben'"
+                :label="'Vorhaben'"
                 color="grey-darken-1"
                 hide-details
                 density="compact"
                 v-bind="activatorProps"
               />
             </template>
-            <span> Die Bauvorhaben werden in die Suche miteinbezogen. </span>
+            <span> Die Vorhaben werden in die Suche miteinbezogen. </span>
           </v-tooltip>
         </v-col>
         <v-col

@@ -58,7 +58,7 @@
             @click="createBauvorhaben"
           />
         </template>
-        <span>Bauvorhaben erstellen</span>
+        <span>Vorhaben erstellen</span>
       </v-tooltip>
       <v-tooltip location="left">
         <template #activator="{ props }">

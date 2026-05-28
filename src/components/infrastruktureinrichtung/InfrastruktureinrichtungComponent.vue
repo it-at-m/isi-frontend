@@ -77,7 +77,7 @@
             variant="underlined"
             item-title="nameVorhaben"
             item-value="id"
-            label="Bauvorhaben"
+            label="Vorhaben"
             clearable
             :readonly="!isEditable"
             @update:focused="!$event || fetchBauvorhaben()"
