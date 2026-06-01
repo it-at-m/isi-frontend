@@ -304,8 +304,7 @@ export const AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRecht
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    Befreiung: 'BEFREIUNG',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30'
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum];
 

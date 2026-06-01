@@ -16,6 +16,7 @@ interface State {
   planart: LookupEntryDto[];
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: LookupEntryDto[];
   wesentlicheRechtsgrundlageWeiteresVerfahren: LookupEntryDto[];
+  wesentlicheRechtsgrundlageBauvorhaben: LookupEntryDto[];
   wesentlicheRechtsgrundlage: LookupEntryDto[];
   artBaulicheNutzung: LookupEntryDto[];
   artBaulicheNutzungBauvorhaben: LookupEntryDto[];
@@ -43,6 +44,7 @@ export const useLookupStore = defineStore("lookup", {
       planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
       wesentlicheRechtsgrundlageWeiteresVerfahren: [],
+      wesentlicheRechtsgrundlageBauvorhaben: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
       artBaulicheNutzungBauvorhaben: [],
@@ -73,6 +75,7 @@ export const useLookupStore = defineStore("lookup", {
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
         this.setWesentlicheRechtsgrundlageWeiteresVerfahren(lookupLists.wesentlicheRechtsgrundlageWeiteresVerfahren);
+        this.setWesentlicheRechtsgrundlageBauvorhaben(lookupLists.wesentlicheRechtsgrundlageBauvorhaben);
         this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage);
         this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
         this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
@@ -138,6 +141,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.wesentlicheRechtsgrundlageWeiteresVerfahren = payload?.list)
         : (this.wesentlicheRechtsgrundlageWeiteresVerfahren = []);
+    },
+    setWesentlicheRechtsgrundlageBauvorhaben(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageBauvorhaben = payload?.list)
+        : (this.wesentlicheRechtsgrundlageBauvorhaben = []);
     },
     setWesentlicheRechtsgrundlage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
