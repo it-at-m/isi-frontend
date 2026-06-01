@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import _ from "lodash";
 import KommentarBauvorhabenModel from "@/types/model/common/KommentarBauvorhabenModel";
 import KommentarInfrastruktureinrichtungModel from "@/types/model/common/KommentarInfrastruktureinrichtungModel";
@@ -45,6 +45,7 @@ import { useToast } from "vue-toastification";
 interface Props {
   context?: Context;
   isEditable?: boolean;
+  entityId?: string;
 }
 
 const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
@@ -54,6 +55,7 @@ const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
 const openPanel = ref<number | undefined>(0);
+const resolvedId = computed(() => props.entityId ?? routeId);
 let isKommentarListOpen = false;
 
 onMounted(() => {
@@ -74,16 +76,16 @@ function hasDirtyComment(): boolean {
 
 async function getKommentare(): Promise<void> {
   if (!isCommentDirty.value) {
-    if (!isKommentarListOpen && !_.isNil(routeId)) {
+    if (!isKommentarListOpen && !_.isNil(resolvedId.value)) {
       isKommentarListOpen = true;
       if (props.context === Context.BAUVORHABEN) {
-        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(routeId);
+        const fetchedKommentare = await kommentarApi.getKommentareForBauvorhaben(resolvedId.value);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarBauvorhabenModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForBauvorhaben());
         }
       } else if (props.context === Context.INFRASTRUKTUREINRICHTUNG) {
-        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(routeId);
+        const fetchedKommentare = await kommentarApi.getKommentareForInfrastruktureinrichtung(resolvedId.value);
         kommentare.value = fetchedKommentare.map((kommentar) => new KommentarInfrastruktureinrichtungModel(kommentar));
         if (props.isEditable) {
           kommentare.value.unshift(createNewUnsavedKommentarForInfrastruktureinrichtung());
@@ -108,14 +110,14 @@ function createNewUnsavedKommentar(): KommentarBauvorhabenModel | KommentarInfra
 
 function createNewUnsavedKommentarForBauvorhaben(): KommentarBauvorhabenModel {
   const kommentar = new KommentarBauvorhabenModel(createKommentarBauvorhabenDto());
-  kommentar.bauvorhaben = routeId;
+  kommentar.bauvorhaben = resolvedId.value;
   kommentar.isDirty = false;
   return kommentar;
 }
 
 function createNewUnsavedKommentarForInfrastruktureinrichtung(): KommentarInfrastruktureinrichtungModel {
   const kommentar = new KommentarInfrastruktureinrichtungModel(createKommentarInfrastruktureinrichtungDto());
-  kommentar.infrastruktureinrichtung = routeId;
+  kommentar.infrastruktureinrichtung = resolvedId.value;
   return kommentar;
 }
 

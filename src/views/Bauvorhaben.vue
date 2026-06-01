@@ -42,6 +42,7 @@
           id="bauvorhaben_kommentare"
           :context="Context.BAUVORHABEN"
           :is-editable="isEditable"
+          :entity-id="bauvorhaben.id"
         />
       </template>
       <template #action>
@@ -249,9 +250,10 @@ async function fetchBauvorhabenById(): Promise<void> {
  */
 async function saveBauvorhaben(): Promise<void> {
   const dto = await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
+  bauvorhaben.value = _.cloneDeep(dto);
+  isNew.value = false;
   toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
   commonStore.enableButton();
-  router.replace(`/bauvorhaben/${dto.id}`);
 }
 
 /**
