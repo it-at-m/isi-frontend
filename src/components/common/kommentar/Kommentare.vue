@@ -1,6 +1,7 @@
 <template>
   <v-container class="scale-transition pa-0 mb-2">
     <v-expansion-panels
+      v-model="openPanel"
       variant="accordion"
       @update:model-value="getKommentare()"
     >
@@ -28,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import _ from "lodash";
 import KommentarBauvorhabenModel from "@/types/model/common/KommentarBauvorhabenModel";
 import KommentarInfrastruktureinrichtungModel from "@/types/model/common/KommentarInfrastruktureinrichtungModel";
@@ -52,7 +53,12 @@ const toast = useToast();
 const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
+const openPanel = ref<number | undefined>(0);
 let isKommentarListOpen = false;
+
+onMounted(() => {
+  getKommentare();
+});
 
 watch(kommentare, () => {
   if (!hasDirtyComment()) {
