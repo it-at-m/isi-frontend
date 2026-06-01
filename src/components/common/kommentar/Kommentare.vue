@@ -45,7 +45,7 @@ import { useToast } from "vue-toastification";
 interface Props {
   context?: Context;
   isEditable?: boolean;
-  entityId?: string;
+  bauvorhabenId?: string;
 }
 
 const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
@@ -55,7 +55,7 @@ const routeId = useRoute().params.id as string;
 const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
 const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
 const openPanel = ref<number | undefined>(0);
-const resolvedId = computed(() => props.entityId ?? routeId);
+const resolvedId = computed(() => props.bauvorhabenId || routeId);
 let isKommentarListOpen = false;
 
 onMounted(() => {
