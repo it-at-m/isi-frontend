@@ -226,7 +226,7 @@ const vorhabenExists = computed(() => {
 });
 
 const linkVorhaben = computed(() => {
-  return vorhabenExists
+  return vorhabenExists.value
     ? (base ? `${base.replace(/\/+$/, "")}/#/bauvorhaben/` : `/#/bauvorhaben/`) + bauvorhaben.value.id
     : ``;
 });
