@@ -198,7 +198,7 @@ const nameBauvorhaben = computed(() => {
   return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
 });
 
-const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
+const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");
 
 watch(
   () => abfrage.value.bauvorhaben,
@@ -253,8 +253,6 @@ const vorhabenExists = computed(() => {
 });
 
 const linkVorhaben = computed(() => {
-  return vorhabenExists.value
-    ? (base ? `${base.replace(/\/+$/, "")}/#/bauvorhaben/` : `/#/bauvorhaben/`) + bauvorhaben.value.id
-    : ``;
+  return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
 });
 </script>
