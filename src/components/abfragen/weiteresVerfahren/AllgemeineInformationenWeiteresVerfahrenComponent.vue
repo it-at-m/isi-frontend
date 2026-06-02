@@ -38,9 +38,17 @@
         md="4"
         class="d-flex align-center"
       >
+        <span v-if="vorhabenExists">
+          <a
+            target="_blank"
+            :href="linkVorhaben"
+          >
+            {{ nameBauvorhaben }}
+          </a>
+        </span>
         <span
-          v-if="isBauverfahrenEditable"
-          class="v-label theme--light"
+          v-else-if="isBauverfahrenEditable"
+          class="v-label text-grey-lighten"
         >
           {{ nameBauvorhaben }}
         </span>
@@ -211,6 +219,8 @@ const nameBauvorhaben = computed(() => {
   return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
 });
 
+const base = (import.meta.env.VITE_VUE_APP_API_URL ?? "").trim();
+
 watch(
   () => abfrage.value.bauvorhaben,
   async (newValue, oldValue) => {
@@ -271,4 +281,14 @@ function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;
   formChanged();
 }
+
+const vorhabenExists = computed(() => {
+  return !_.isEmpty(bauvorhaben.value.id);
+});
+
+const linkVorhaben = computed(() => {
+  return vorhabenExists
+    ? (base ? `${base.replace(/\/+$/, "")}/#/bauvorhaben/` : `/#/bauvorhaben/`) + bauvorhaben.value.id
+    : ``;
+});
 </script>
