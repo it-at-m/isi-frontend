@@ -35,48 +35,112 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
-export const OVERLAYS_ARCGIS_INTRANSPARENT = new Map([["Flächennutzungsplan", "Flächennutzungsplan"]]);
 export class OverlayUrlMapping {
   displayName: string = "";
   internalName: string = "";
   urlPart: string = "";
-  urlSuffix: string = "";
+  migrated: boolean = false;
 }
+
+export const OVERLAYS_ARCGIS_INTRANSPARENT: OverlayUrlMapping[] = [
+  {
+    displayName: "Flächennutzungsplan",
+    internalName: "Flächennutzungsplan",
+    urlPart: "basis",
+    migrated: false,
+  },
+];
+
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
-  { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis", urlSuffix: "" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis", urlSuffix: "" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis", urlSuffix: "" },
-  { displayName: "Bezirksteile", internalName: "Bezirksteile", urlPart: "basis", urlSuffix: "" },
-  { displayName: "Stadtbezirke", internalName: "Stadtbezirke", urlPart: "basis", urlSuffix: "" },
+  {
+    displayName: "Gemarkungen",
+    internalName: "Gemarkungen",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "Stadtviertel",
+    internalName: "Stadtviertel",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "Stadtviertel",
+    internalName: "Stadtviertel",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "Bezirksteile",
+    internalName: "Bezirksteile",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "Stadtbezirke",
+    internalName: "Stadtbezirke",
+    urlPart: "basis",
+    migrated: false,
+  },
   {
     displayName: "Kitaplanungsbereiche",
     internalName: "Kitaplanungsbereiche",
     urlPart: "Bildung_und_Soziales",
-    urlSuffix: "",
+    migrated: false,
   },
   {
     displayName: "Grundschulsprengel",
     internalName: "Grundschulsprengel",
     urlPart: "Bildung_und_Soziales",
-    urlSuffix: "",
+    migrated: false,
   },
   {
     displayName: "Mittelschulsprengel",
     internalName: "Mittelschulsprengel",
     urlPart: "Bildung_und_Soziales",
-    urlSuffix: "",
+    migrated: false,
   },
-  { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis", urlSuffix: "", urlSuffix: "" },
-  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis", urlSuffix: "" },
-  { displayName: "SFZ Sprengel GS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
-  { displayName: "SFZ Sprengel MS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
-  { displayName: "FZgE Sprengel GS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
-  { displayName: "FZgE Sprengel MS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
   {
-    displayName: "FZesE Sprengel GS und MS",
+    displayName: "Baublöcke",
+    internalName: "Baublöcke",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "Umgriffe Bebauungspläne",
+    internalName: "BB-Umgriff",
+    urlPart: "basis",
+    migrated: false,
+  },
+  {
+    displayName: "SFZ Sprengel GS",
+    internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
+    urlPart: "Förderschulen",
+    migrated: true,
+  },
+  {
+    displayName: "SFZ Sprengel MS",
     internalName: "",
     urlPart: "Förderschulen",
-    urlSuffix: "2",
+    migrated: true,
+  },
+  {
+    displayName: "FZgE Sprengel GS",
+    internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
+    urlPart: "Förderschulen",
+    migrated: true,
+  },
+  {
+    displayName: "FZgE Sprengel MS",
+    internalName: "",
+    urlPart: "Förderschulen",
+    migrated: true,
+  },
+  {
+    displayName: "FZesE Sprengel GS und MS",
+    internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
+    urlPart: "Förderschulen",
+    migrated: true,
   },
 ];
 
@@ -93,12 +157,15 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   const layers: Record<string, TileLayer.WMS> = {};
 
   for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
-    const layer = (L as any).nonTiledLayer.wms(getArcgisUrl("basis"), {
-      layers: overlay[1],
+    const url = !overlay.migrated
+      ? (import.meta.env.VITE_ARCGIS_URL as string)
+      : (import.meta.env.VITE_ARCGIS_URL2 as string);
+    const layerIntransparent = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
+      layers: overlay.internalName,
       transparent: false,
       ...LAYER_OPTIONS,
     });
-    layers[overlay[0]] = layer;
+    layers[overlay.displayName] = layerIntransparent;
   }
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
@@ -111,19 +178,22 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   }
 
   for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
-    const layer = L.nonTiledLayer.wms(getArcgisUrl(overlay.urlPart), {
+    const url = !overlay.migrated
+      ? (import.meta.env.VITE_ARCGIS_URL as string)
+      : (import.meta.env.VITE_ARCGIS_URL2 as string);
+    const layerTransparent = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
       layers: overlay.internalName,
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers[overlay.displayName] = layer;
+    layers[overlay.displayName] = layerTransparent;
   }
 
   return layers;
 }
 
-export function getArcgisUrl(service: string): string {
-  return (import.meta.env.VITE_ARCGIS_URL as string).replace("{1}", service);
+export function getArcgisUrl(url: string, service: string): string {
+  return url.replace("{1}", service);
 }
 
 export function getBackgroundMapUrl(): string {
