@@ -40,18 +40,44 @@ export class OverlayUrlMapping {
   displayName: string = "";
   internalName: string = "";
   urlPart: string = "";
+  urlSuffix: string = "";
 }
 export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
-  { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
-  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis" },
-  { displayName: "Bezirksteile", internalName: "Bezirksteile", urlPart: "basis" },
-  { displayName: "Stadtbezirke", internalName: "Stadtbezirke", urlPart: "basis" },
-  { displayName: "Kitaplanungsbereiche", internalName: "Kitaplanungsbereiche", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Grundschulsprengel", internalName: "Grundschulsprengel", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Mittelschulsprengel", internalName: "Mittelschulsprengel", urlPart: "Bildung_und_Soziales" },
-  { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis" },
-  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis" },
+  { displayName: "Gemarkungen", internalName: "Gemarkungen", urlPart: "basis", urlSuffix: "" },
+  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis", urlSuffix: "" },
+  { displayName: "Stadtviertel", internalName: "Stadtviertel", urlPart: "basis", urlSuffix: "" },
+  { displayName: "Bezirksteile", internalName: "Bezirksteile", urlPart: "basis", urlSuffix: "" },
+  { displayName: "Stadtbezirke", internalName: "Stadtbezirke", urlPart: "basis", urlSuffix: "" },
+  {
+    displayName: "Kitaplanungsbereiche",
+    internalName: "Kitaplanungsbereiche",
+    urlPart: "Bildung_und_Soziales",
+    urlSuffix: "",
+  },
+  {
+    displayName: "Grundschulsprengel",
+    internalName: "Grundschulsprengel",
+    urlPart: "Bildung_und_Soziales",
+    urlSuffix: "",
+  },
+  {
+    displayName: "Mittelschulsprengel",
+    internalName: "Mittelschulsprengel",
+    urlPart: "Bildung_und_Soziales",
+    urlSuffix: "",
+  },
+  { displayName: "Baublöcke", internalName: "Baublöcke", urlPart: "basis", urlSuffix: "", urlSuffix: "" },
+  { displayName: "Umgriffe Bebauungspläne", internalName: "BB-Umgriff", urlPart: "basis", urlSuffix: "" },
+  { displayName: "SFZ Sprengel GS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
+  { displayName: "SFZ Sprengel MS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
+  { displayName: "FZgE Sprengel GS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
+  { displayName: "FZgE Sprengel MS", internalName: "", urlPart: "Förderschulen", urlSuffix: "2" },
+  {
+    displayName: "FZesE Sprengel GS und MS",
+    internalName: "",
+    urlPart: "Förderschulen",
+    urlSuffix: "2",
+  },
 ];
 
 /**
