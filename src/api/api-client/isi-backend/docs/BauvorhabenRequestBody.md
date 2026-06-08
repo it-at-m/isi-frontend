@@ -25,12 +25,13 @@ Name | Type
 `sobonJahr` | string
 `wesentlicheRechtsgrundlage` | Array&lt;string&gt;
 `wesentlicheRechtsgrundlageFreieEingabe` | string
+`wesentlicheRechtsgrundlageAngabenZurBefreiung` | string
 `artFnp` | Array&lt;string&gt;
 `artFnpFreieEingabe` | string
 `dokumente` | Array&lt;string&gt;
 `relevanteAbfragevariante` | string
-`adresseJson` | [Adresse](Adresse.md)
 `verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
+`adresseJson` | [Adresse](Adresse.md)
 `resultType` | string
 
 ## Example
@@ -59,12 +60,13 @@ const example = {
   "sobonJahr": null,
   "wesentlicheRechtsgrundlage": null,
   "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "wesentlicheRechtsgrundlageAngabenZurBefreiung": null,
   "artFnp": null,
   "artFnpFreieEingabe": null,
   "dokumente": null,
   "relevanteAbfragevariante": null,
-  "adresseJson": null,
   "verortungJson": null,
+  "adresseJson": null,
   "resultType": null,
 } satisfies BauvorhabenRequestBody
 

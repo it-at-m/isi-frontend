@@ -164,22 +164,16 @@ export const WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum = {
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
     InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
     InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum = typeof WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum[keyof typeof WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum];
 
