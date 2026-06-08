@@ -84,12 +84,12 @@
       <v-row>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
-            :items="lookupStore.wesentlicheRechtsgrundlage"
+            :items="wesentlicheRechtsgrundlageBauvorhabenList"
             variant="underlined"
             item-value="key"
             item-title="value"
@@ -105,7 +105,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-slide-y-reverse-transition>
             <v-text-field
@@ -116,6 +116,25 @@
               variant="underlined"
               :readonly="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
+              maxlength="1000"
+              @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
+            />
+          </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageAngabenZurBefreiungVisible"
+              id="wesentliche_rechtsgrundlage_angaben_zur_befreiung_field"
+              ref="wesentlicheRechtsgrundlageAngabenZurBefreiungField"
+              v-model="bauvorhaben.wesentlicheRechtsgrundlageAngabenZurBefreiung"
+              variant="underlined"
+              :readonly="!isEditable"
+              label="Angaben zur Befreiung für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @update:model-value="formChanged"
               :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -278,6 +297,7 @@ import {
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauvorhabenDtoVerfahrensstandEnum,
   BauvorhabenDtoArtFnpEnum,
+  AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
@@ -292,7 +312,7 @@ import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 interface Props {
@@ -307,6 +327,7 @@ const sobonJahrVisible = ref(false);
 const verfahrensstandFreieEingabeVisible = ref(false);
 const artFnpFreieEingabeVisible = ref(false);
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref(false);
+const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
 const grundstuecksgroesse = ref(Number.NaN);
 const nameRootFolder = "bauvorhaben";
 
@@ -358,6 +379,14 @@ watch(
       bauvorhaben.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
       wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
     }
+    if (
+      bauvorhaben.value.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.Befreiung)
+    ) {
+      wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = true;
+    } else {
+      bauvorhaben.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
+      wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
+    }
   },
   { immediate: true, deep: true },
 );
@@ -397,4 +426,6 @@ watch(
   },
   { immediate: true, deep: true },
 );
+
+const wesentlicheRechtsgrundlageBauvorhabenList = computed(() => lookupStore.wesentlicheRechtsgrundlageBauvorhaben);
 </script>
