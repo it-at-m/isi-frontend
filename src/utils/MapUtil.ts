@@ -65,12 +65,6 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
     migrated: false,
   },
   {
-    displayName: "Stadtviertel",
-    internalName: "Stadtviertel",
-    urlPart: "basis",
-    migrated: false,
-  },
-  {
     displayName: "Bezirksteile",
     internalName: "Bezirksteile",
     urlPart: "basis",
