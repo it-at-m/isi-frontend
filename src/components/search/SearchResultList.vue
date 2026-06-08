@@ -247,11 +247,11 @@ function getLookupValueAbfrage(key: string | undefined, list: Array<LookupEntryD
 function getIconArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined) {
   let icon = "";
   if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    icon = "mdi-comment-alert";
+    icon = "mdi-map-outline";
   } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    icon = "mdi-account-multiple-plus";
+    icon = "mdi-floor-plan";
   } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
-    icon = "mdi-account-plus";
+    icon = "mdi-notebook-outline";
   }
   return icon;
 }

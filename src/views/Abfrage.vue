@@ -182,6 +182,12 @@
               cols="12"
               sm="11"
             >
+              <v-icon
+                color="green-lighten-1"
+                class="mr-1"
+              >
+                {{ iconArtAbfrage }}
+              </v-icon>
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
@@ -484,6 +490,18 @@ const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
 const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
+const iconArtAbfrage = computed(() => {
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) return "mdi-map-outline";
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) return "mdi-floor-plan";
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) return "mdi-notebook-outline";
+  return "";
+});
+const labelArtAbfrage = computed(() => {
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) return "Bauleitplanverfahren";
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) return "Baugenehmigungsverfahren";
+  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) return "Weiteres Verfahren";
+  return "";
+});
 const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 const isBaugenehmigungsverfahren = computed(
   () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
