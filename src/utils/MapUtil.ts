@@ -120,7 +120,7 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   },
   {
     displayName: "SFZ Sprengel MS",
-    internalName: "",
+    internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
     urlPart: "Förderschulen",
     migrated: true,
   },
@@ -132,7 +132,7 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   },
   {
     displayName: "FZgE Sprengel MS",
-    internalName: "",
+    internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
     urlPart: "Förderschulen",
     migrated: true,
   },
