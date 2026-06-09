@@ -353,6 +353,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import { getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import {
   createAbfragevarianteBauleitplanverfahrenDto,
   createAbfragevarianteBaugenehmigungsverfahrenDto,
@@ -490,12 +491,7 @@ const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
 const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
-const iconArtAbfrage = computed(() => {
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) return "mdi-map-outline";
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) return "mdi-floor-plan";
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) return "mdi-notebook-outline";
-  return "";
-});
+const iconArtAbfrage = computed(() => getAbfrageIcon(artAbfrage.value));
 const labelArtAbfrage = computed(() => {
   if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) return "Bauleitplanverfahren";
   if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) return "Baugenehmigungsverfahren";

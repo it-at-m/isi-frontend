@@ -66,7 +66,7 @@
             id="bauleitplanverfahren_create_button"
             key="bauleitplan-create-btn"
             class="text-h6"
-            icon="mdi-map-outline"
+            :icon="iconBauleitplanverfahren"
             color="green-lighten-1"
             size="large"
             v-bind="props"
@@ -81,7 +81,7 @@
             id="baugenehmigungsverfahren_create_button"
             key="baugenehmigungsverfahren-create-btn"
             class="text-h6"
-            icon="mdi-floor-plan"
+            :icon="iconBaugenehmigungsverfahren"
             color="green-lighten-1"
             size="large"
             v-bind="props"
@@ -96,7 +96,7 @@
             id="weiteres_verfahren_create_button"
             key="weiteres-verfahren-create-btn"
             class="text-h6"
-            icon="mdi-notebook-outline"
+            :icon="iconWeiteresVerfahren"
             color="green-lighten-1"
             size="large"
             v-bind="props"
@@ -114,10 +114,14 @@ import { ref } from "vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
+import { getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const speedDialOpen = ref(false);
+const iconBauleitplanverfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
+const iconBaugenehmigungsverfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
+const iconWeiteresVerfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
 
 function createBauleitplanverfahren(): void {
   router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
