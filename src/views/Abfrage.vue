@@ -492,12 +492,6 @@ const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
 const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
 const iconArtAbfrage = computed(() => getAbfrageIcon(artAbfrage.value));
-const labelArtAbfrage = computed(() => {
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) return "Bauleitplanverfahren";
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) return "Baugenehmigungsverfahren";
-  if (artAbfrage.value === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) return "Weiteres Verfahren";
-  return "";
-});
 const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 const isBaugenehmigungsverfahren = computed(
   () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
