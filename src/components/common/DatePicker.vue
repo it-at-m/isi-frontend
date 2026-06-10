@@ -28,6 +28,14 @@
         </template>
         <template #append>
           <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
+          <template v-if="help">
+            <v-tooltip location="bottom">
+              <template #activator="{ props: helpActivatorProps }">
+                <v-icon v-bind="helpActivatorProps">mdi-help-circle-outline</v-icon>
+              </template>
+              <span>{{ help }}</span>
+            </v-tooltip>
+          </template>
         </template>
       </v-text-field>
     </template>
@@ -73,6 +81,7 @@ interface Props {
   disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
   monthPicker?: boolean; // Ob nur Monat und Jahr auswählbar sein sollen
   rules?: Rule[]; // Welche Validierungsregeln gelten
+  help?: string;
 }
 
 interface Emits {

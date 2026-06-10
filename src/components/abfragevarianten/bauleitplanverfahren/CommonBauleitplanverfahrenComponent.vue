@@ -31,6 +31,7 @@
           label="Datum Satzungsbeschluss"
           month-picker
           @blur="datumSatzungsbeschlussChanged"
+          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, werden alle Bauraten gelöscht."
         />
       </v-col>
       <v-col
@@ -96,7 +97,8 @@
           year
           maxlength="4"
           required
-          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
+          @update:model-value="realisierungVonChanged"
+          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
@@ -116,6 +118,17 @@
       </v-col>
     </v-row>
   </field-group-card>
+  <yes-no-dialog
+    id="bauraten_loeschen_yes_no_dialog"
+    v-model="isDialogBauratenLoeschenOpen"
+    icon="mdi-delete-forever"
+    dialogtitle="Hinweis"
+    dialogtext="Hiermit werden alle Bauraten unwiderruflich gelöscht."
+    no-text="Abbrechen"
+    yes-text="Ändern"
+    @no="yesNoDialogBauratenLoeschenNo"
+    @yes="yesNoDialogBauratenLoeschenYes"
+  />
 </template>
 
 <script setup lang="ts">
@@ -129,6 +142,7 @@ import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
 import _ from "lodash";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -137,6 +151,8 @@ interface Props {
 const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
 const planartFreieEingabeVisible = ref<boolean | null>();
+
+const isDialogBauratenLoeschenOpen = ref(false);
 
 const lookupStore = useLookupStore();
 
@@ -164,6 +180,7 @@ function datumSatzungsbeschlussChanged(): void {
         ? datumSatzungsbeschluss.getFullYear() + 3
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
+  isDialogBauratenLoeschenOpen.value = true;
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
@@ -177,5 +194,26 @@ function planartChanged(): void {
     abfragevariante.value.planartFreieEingabe = undefined;
     planartFreieEingabeVisible.value = false;
   }
+}
+
+function realisierungVonChanged(): void {
+  isDialogBauratenLoeschenOpen.value = true;
+}
+
+function deleteBauraten(): void {
+  abfragevariante.value.bauabschnitte?.forEach((bauabschnitt) => {
+    bauabschnitt.baugebiete.forEach((baugebiet) => {
+      baugebiet.bauraten = [];
+    });
+  });
+}
+
+function yesNoDialogBauratenLoeschenYes(): void {
+  deleteBauraten();
+  yesNoDialogBauratenLoeschenNo();
+}
+
+function yesNoDialogBauratenLoeschenNo(): void {
+  isDialogBauratenLoeschenOpen.value = false;
 }
 </script>
