@@ -19,7 +19,7 @@
                 @update:model-value="formChanged"
                 :class="isEditable ? '' : 'text-grey-lighten-1'"
               >
-                <template #label> Name des Bauvorhabens <span class="text-secondary">*</span> </template>
+                <template #label> Name des Vorhabens <span class="text-secondary">*</span> </template>
               </v-text-field>
             </v-col>
             <v-col
@@ -103,7 +103,7 @@
       v-model="deleteDialogOpen"
       icon="mdi-delete-forever"
       dialogtitle="Hinweis"
-      dialogtext="Hiermit wird das Bauvorhaben unwiderruflich gelöscht."
+      dialogtext="Hiermit wird das Vorhaben unwiderruflich gelöscht."
       no-text="Abbrechen"
       yes-text="Löschen"
       @no="deleteDialogOpen = false"
@@ -251,7 +251,7 @@ async function saveBauvorhaben(): Promise<void> {
   const dto = await postBauvorhaben(bauvorhaben.value, datenuebernahmeAbfrageId);
   bauvorhaben.value = _.cloneDeep(dto);
   isNew.value = false;
-  toast.success("Das Bauvorhaben wurde erfolgreich gespeichert");
+  toast.success("Das Vorhaben wurde erfolgreich gespeichert");
   commonStore.enableButton();
 }
 
@@ -262,7 +262,7 @@ async function saveBauvorhaben(): Promise<void> {
 async function updateBauvorhaben(): Promise<void> {
   const dto = await putBauvorhaben(bauvorhaben.value);
   bauvorhaben.value = _.cloneDeep(dto);
-  toast.success("Das Bauvorhaben wurde erfolgreich aktualisiert");
+  toast.success("Das Vorhaben wurde erfolgreich aktualisiert");
   commonStore.enableButton();
 }
 
@@ -275,7 +275,7 @@ async function removeBauvorhaben(): Promise<void> {
 
   await deleteBauvorhaben(routeId);
   searchStore.removeSearchResultById(routeId);
-  returnToUebersicht("Das Bauvorhaben wurde erfolgreich gelöscht", TYPE.SUCCESS);
+  returnToUebersicht("Das Vorhaben wurde erfolgreich gelöscht", TYPE.SUCCESS);
 }
 
 /**
