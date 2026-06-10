@@ -297,7 +297,6 @@ import {
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
   BauvorhabenDtoVerfahrensstandEnum,
   BauvorhabenDtoArtFnpEnum,
-  AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
