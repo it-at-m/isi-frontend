@@ -1,5 +1,5 @@
 <template>
-  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Vorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -168,7 +168,7 @@ const isBauverfahrenDeleteable = computed(() => {
   );
 });
 const nameBauvorhaben = computed(() => {
-  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Keinem Vorhaben zugeordnet";
 });
 
 const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");

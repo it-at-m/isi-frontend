@@ -73,7 +73,7 @@
                   :value="UncertainBoolean.True"
                 />
               </template>
-              <span> Filtern nach SoBoN-relevanten Abfragen und Bauvorhaben. </span>
+              <span> Filtern nach SoBoN-relevanten Abfragen und Vorhaben. </span>
             </v-tooltip>
             <v-tooltip
               location="top"
@@ -87,7 +87,7 @@
                   :value="UncertainBoolean.False"
                 />
               </template>
-              <span> Filtern nach nicht SoBoN-relevanten Abfragen und Bauvorhaben. </span>
+              <span> Filtern nach nicht SoBoN-relevanten Abfragen und Vorhaben. </span>
             </v-tooltip>
           </v-radio-group>
         </v-col>
@@ -120,7 +120,7 @@
                 <template #label> Verfahrensstand</template>
               </v-autocomplete>
             </template>
-            <span> Auswahl der Verfahrensstände nach denen in Abfragen und Bauvorhaben gefiltert werden soll. </span>
+            <span> Auswahl der Verfahrensstände nach denen in Abfragen und Vorhaben gefiltert werden soll. </span>
           </v-tooltip>
         </v-col>
       </v-row>
