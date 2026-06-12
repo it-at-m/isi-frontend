@@ -95,6 +95,8 @@
             year
             maxlength="4"
             required
+            @blur="realisierungVonChanged"
+            help="Erfolgt bei Datum Realisierung von eine Eingabe, werden alle Bauraten gelöscht."
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
@@ -115,6 +117,17 @@
       </v-row>
     </field-group-card>
   </v-container>
+  <yes-no-dialog
+    id="bauraten_loeschen_yes_no_dialog"
+    v-model="isDialogBauratenLoeschenOpen"
+    icon="mdi-delete-forever"
+    dialogtitle="Hinweis"
+    dialogtext="Hiermit werden alle Bauraten unwiderruflich gelöscht."
+    no-text="Abbrechen"
+    yes-text="Ändern"
+    @no="yesNoDialogBauratenLoeschenNo"
+    @yes="yesNoDialogBauratenLoeschenYes"
+  />
 </template>
 
 <script setup lang="ts">
@@ -127,6 +140,7 @@ import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragev
 import _ from "lodash";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -137,6 +151,8 @@ const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
 const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
+
+const isDialogBauratenLoeschenOpen = ref(false);
 
 const lookupStore = useLookupStore();
 
@@ -179,5 +195,26 @@ function wesentlicheRechtsgrundlageChanged(): void {
     abfragevariante.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
     wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
   }
+}
+
+function realisierungVonChanged(): void {
+  isDialogBauratenLoeschenOpen.value = true;
+}
+
+function deleteBauraten(): void {
+  abfragevariante.value.bauabschnitte?.forEach((bauabschnitt) => {
+    bauabschnitt.baugebiete.forEach((baugebiet) => {
+      baugebiet.bauraten = [];
+    });
+  });
+}
+
+function yesNoDialogBauratenLoeschenYes(): void {
+  deleteBauraten();
+  yesNoDialogBauratenLoeschenNo();
+}
+
+function yesNoDialogBauratenLoeschenNo(): void {
+  isDialogBauratenLoeschenOpen.value = false;
 }
 </script>
