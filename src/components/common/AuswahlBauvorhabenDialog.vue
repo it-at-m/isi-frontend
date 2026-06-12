@@ -8,7 +8,7 @@
       class="rounded-xl"
       elevation="8"
     >
-      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Bauvorhaben verknüpfen </v-card-title>
+      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Vorhaben verknüpfen </v-card-title>
 
       <v-card-text class="px-6 pb-2">
         <v-text-field
@@ -19,7 +19,7 @@
           variant="outlined"
           density="comfortable"
           rounded="lg"
-          label="Bauvorhaben suchen"
+          label="Vorhaben suchen"
           prepend-inner-icon="mdi-magnify"
           :loading="loading"
           @update:model-value="handleSearchInput"

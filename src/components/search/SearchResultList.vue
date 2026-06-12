@@ -145,6 +145,7 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { convertDateForFrontend } from "@/utils/Formatter";
+import { getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
@@ -245,15 +246,7 @@ function getLookupValueAbfrage(key: string | undefined, list: Array<LookupEntryD
 }
 
 function getIconArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined) {
-  let icon = "";
-  if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    icon = "mdi-comment-alert";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    icon = "mdi-account-multiple-plus";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
-    icon = "mdi-account-plus";
-  }
-  return icon;
+  return getAbfrageIcon(artAbfrage);
 }
 
 function getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {

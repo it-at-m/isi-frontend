@@ -194,6 +194,12 @@ export interface BauvorhabenRequestBody {
     relevanteAbfragevariante?: string;
     /**
      * 
+     * @type {BauvorhabenRequestBodyResultTypeEnum}
+     * @memberof BauvorhabenRequestBody
+     */
+    resultType?: BauvorhabenRequestBodyResultTypeEnum;
+    /**
+     * 
      * @type {VerortungMultiPolygon}
      * @memberof BauvorhabenRequestBody
      */
@@ -204,12 +210,6 @@ export interface BauvorhabenRequestBody {
      * @memberof BauvorhabenRequestBody
      */
     adresseJson?: Adresse;
-    /**
-     * 
-     * @type {BauvorhabenRequestBodyResultTypeEnum}
-     * @memberof BauvorhabenRequestBody
-     */
-    resultType?: BauvorhabenRequestBodyResultTypeEnum;
 }
 
 
@@ -338,9 +338,9 @@ export function BauvorhabenRequestBodyFromJSONTyped(json: any, ignoreDiscriminat
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
         'dokumente': json['dokumente'] == null ? undefined : json['dokumente'],
         'relevanteAbfragevariante': json['relevanteAbfragevariante'] == null ? undefined : json['relevanteAbfragevariante'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
     };
 }
 
@@ -379,9 +379,9 @@ export function BauvorhabenRequestBodyToJSONTyped(value?: BauvorhabenRequestBody
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
         'dokumente': value['dokumente'],
         'relevanteAbfragevariante': value['relevanteAbfragevariante'],
+        'resultType': value['resultType'],
         'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
-        'resultType': value['resultType'],
     };
 }
 
