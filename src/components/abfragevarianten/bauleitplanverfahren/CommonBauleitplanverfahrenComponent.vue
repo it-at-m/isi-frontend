@@ -97,7 +97,7 @@
           year
           maxlength="4"
           required
-          @update:model-value="realisierungVonChanged"
+          @blur="realisierungVonChanged"
           help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
