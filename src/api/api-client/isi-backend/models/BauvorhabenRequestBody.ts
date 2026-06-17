@@ -164,6 +164,12 @@ export interface BauvorhabenRequestBody {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
+     * @type {string}
+     * @memberof BauvorhabenRequestBody
+     */
+    wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
+    /**
+     * 
      * @type {Array<BauvorhabenRequestBodyArtFnpEnum>}
      * @memberof BauvorhabenRequestBody
      */
@@ -188,6 +194,12 @@ export interface BauvorhabenRequestBody {
     relevanteAbfragevariante?: string;
     /**
      * 
+     * @type {BauvorhabenRequestBodyResultTypeEnum}
+     * @memberof BauvorhabenRequestBody
+     */
+    resultType?: BauvorhabenRequestBodyResultTypeEnum;
+    /**
+     * 
      * @type {Adresse}
      * @memberof BauvorhabenRequestBody
      */
@@ -198,12 +210,6 @@ export interface BauvorhabenRequestBody {
      * @memberof BauvorhabenRequestBody
      */
     verortungJson?: VerortungMultiPolygon;
-    /**
-     * 
-     * @type {BauvorhabenRequestBodyResultTypeEnum}
-     * @memberof BauvorhabenRequestBody
-     */
-    resultType?: BauvorhabenRequestBodyResultTypeEnum;
 }
 
 
@@ -219,22 +225,16 @@ export const BauvorhabenRequestBodyVerfahrensstandEnum = {
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
     InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
     InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
 export type BauvorhabenRequestBodyVerfahrensstandEnum = typeof BauvorhabenRequestBodyVerfahrensstandEnum[keyof typeof BauvorhabenRequestBodyVerfahrensstandEnum];
 
@@ -267,8 +267,7 @@ export const BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    Befreiung: 'BEFREIUNG',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30'
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum = typeof BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum[keyof typeof BauvorhabenRequestBodyWesentlicheRechtsgrundlageEnum];
 
@@ -334,13 +333,14 @@ export function BauvorhabenRequestBodyFromJSONTyped(json: any, ignoreDiscriminat
         'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
         'dokumente': json['dokumente'] == null ? undefined : json['dokumente'],
         'relevanteAbfragevariante': json['relevanteAbfragevariante'] == null ? undefined : json['relevanteAbfragevariante'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
     };
 }
 
@@ -374,13 +374,14 @@ export function BauvorhabenRequestBodyToJSONTyped(value?: BauvorhabenRequestBody
         'sobonJahr': value['sobonJahr'],
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
         'dokumente': value['dokumente'],
         'relevanteAbfragevariante': value['relevanteAbfragevariante'],
+        'resultType': value['resultType'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
-        'resultType': value['resultType'],
     };
 }
 

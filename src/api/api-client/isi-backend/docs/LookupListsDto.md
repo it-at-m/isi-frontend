@@ -18,6 +18,7 @@ Name | Type
 `planart` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
+`wesentlicheRechtsgrundlageBauvorhaben` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlage` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzung` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzungBauvorhaben` | [LookupListDto](LookupListDto.md)
@@ -48,6 +49,7 @@ const example = {
   "planart": null,
   "wesentlicheRechtsgrundlageBaugenehmigungsverfahren": null,
   "wesentlicheRechtsgrundlageWeiteresVerfahren": null,
+  "wesentlicheRechtsgrundlageBauvorhaben": null,
   "wesentlicheRechtsgrundlage": null,
   "artBaulicheNutzung": null,
   "artBaulicheNutzungBauvorhaben": null,
