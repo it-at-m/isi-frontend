@@ -32,6 +32,9 @@ Name | Type
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `sobonJahr` | string
 `mitzeichnungBeschlussentwurf` | [UncertainBoolean](UncertainBoolean.md)
+`start42Verfahren` | Date
+`start42VerfahrenDatumUnbekannt` | boolean
+`bauratenmethodikVorbelegung` | string
 `abfragevariantenBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 `abfragevariantenSachbearbeitungBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 `abfragevariantenWeiteresVerfahren` | [Array&lt;AbfragevarianteWeiteresVerfahrenDto&gt;](AbfragevarianteWeiteresVerfahrenDto.md)
@@ -70,6 +73,9 @@ const example = {
   "sobonRelevant": null,
   "sobonJahr": null,
   "mitzeichnungBeschlussentwurf": null,
+  "start42Verfahren": null,
+  "start42VerfahrenDatumUnbekannt": null,
+  "bauratenmethodikVorbelegung": null,
   "abfragevariantenBauleitplanverfahren": null,
   "abfragevariantenSachbearbeitungBauleitplanverfahren": null,
   "abfragevariantenWeiteresVerfahren": null,

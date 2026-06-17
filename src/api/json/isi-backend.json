@@ -6787,20 +6787,14 @@
         "type": "object",
         "properties": { "_links": { "$ref": "#/components/schemas/Links" } }
       },
-      "Jahresrate": {
-        "type": "object",
-        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
-      },
-      "EntityModelIdealtypischeBaurate": {
+      "EntityModelVersorgungsquoteSobonHort": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "von": { "type": "number" },
-          "bisExklusiv": { "type": "number" },
-          "typ": { "type": "string", "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"] },
-          "jahresraten": { "type": "array", "items": { "$ref": "#/components/schemas/Jahresrate" } },
+          "beschreibung": { "type": "string" },
+          "versorgungsquoteSobon": { "type": "number" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
@@ -6814,88 +6808,15 @@
         },
         "nullable": true
       },
-      "PagedModelEntityModelIdealtypischeBaurate": {
+      "PagedModelEntityModelVersorgungsquoteSobonHort": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "idealtypischeBaurates": {
+              "versorgungsquoteSobonHorts": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelIdealtypischeBaurate" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelAbfragevariante": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "type": "string" },
-          "artAbfragevariante": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelAbfragevariante": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "abfragevariantes": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelAbfragevariante" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "Foerderart": {
-        "type": "object",
-        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
-      },
-      "Umlegungsschluessel": {
-        "type": "object",
-        "properties": {
-          "foerderarten": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Foerderart" }
-          }
-        }
-      },
-      "EntityModelUmlegungFoerderarten": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bezeichnung": { "type": "string" },
-          "gueltigAb": { "type": "string", "format": "date" },
-          "umlegungsschluessel": { "$ref": "#/components/schemas/Umlegungsschluessel" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelUmlegungFoerderarten": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "umlegungFoerderartens": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelUmlegungFoerderarten" }
+                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteSobonHort" }
               }
             }
           },
@@ -7108,50 +7029,68 @@
           "longitude": { "type": "number", "format": "double" }
         }
       },
-      "EntityModelKommentar": {
+      "EntityModelInfrastruktureinrichtung": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "datum": { "type": "string" },
-          "text": { "type": "string" },
+          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" },
+          "lfdNr": { "type": "integer", "format": "int64" },
+          "adresse": { "$ref": "#/components/schemas/Adresse" },
+          "verortung": { "$ref": "#/components/schemas/VerortungPoint" },
+          "nameEinrichtung": { "type": "string" },
+          "fertigstellungsjahr": { "type": "integer", "format": "int32" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "UNGESICHERTE_PLANUNG",
+              "GESICHERTE_PLANUNG_NEUE_EINR",
+              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
+              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
+              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
+              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
+              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+              "BESTAND"
+            ]
+          },
+          "flaecheGesamtgrundstueck": { "type": "number" },
+          "flaecheTeilgrundstueck": { "type": "number" },
+          "idKibigWeb": { "type": "string" },
+          "infrastruktureinrichtungTyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "bauvorhabenName": { "type": "string" },
+          "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
+          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
+          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelKommentar": {
+      "PagedModelEntityModelInfrastruktureinrichtung": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
+              "infrastruktureinrichtungs": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelInfrastruktureinrichtung" }
+              }
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "CollectionModelDokument": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": { "objects": { "type": "array", "items": { "type": "object" } } }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
       "EntityModelBauvorhaben": {
@@ -7239,52 +7178,57 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "EntityModelInfrastruktureinrichtung": {
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": { "objects": { "type": "array", "items": { "type": "object" } } }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "EntityModelDokument": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" },
-          "lfdNr": { "type": "integer", "format": "int64" },
-          "adresse": { "$ref": "#/components/schemas/Adresse" },
-          "verortung": { "$ref": "#/components/schemas/VerortungPoint" },
-          "nameEinrichtung": { "type": "string" },
-          "fertigstellungsjahr": { "type": "integer", "format": "int32" },
-          "status": {
+          "filePath": { "$ref": "#/components/schemas/Filepath" },
+          "artDokument": {
             "type": "string",
             "enum": [
               "UNSPECIFIED",
-              "UNGESICHERTE_PLANUNG",
-              "GESICHERTE_PLANUNG_NEUE_EINR",
-              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "BESTAND"
+              "EMAIL",
+              "BESCHLUSS",
+              "ANLAGE",
+              "ANTRAG",
+              "KARTE",
+              "STELLUNGNAHME",
+              "DATEN_BAUVORHABEN",
+              "GEBAEUDEPLAN",
+              "BERECHNUNG",
+              "INFOS_BAUGENEHMIGUNG",
+              "PRESSEARTIKEL",
+              "INFOS_ZU_SOZ_INFRASTRUKTUR",
+              "PROTOKOLL",
+              "SONSTIGES"
             ]
           },
-          "flaecheGesamtgrundstueck": { "type": "number" },
-          "flaecheTeilgrundstueck": { "type": "number" },
-          "idKibigWeb": { "type": "string" },
-          "infrastruktureinrichtungTyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "bauvorhabenName": { "type": "string" },
-          "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
-          "adresseJson": { "$ref": "#/components/schemas/Adresse" },
-          "verortungPointJson": { "$ref": "#/components/schemas/VerortungPoint" },
           "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelDokument": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelDokument" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "Bauabschnitt": {
@@ -7378,164 +7322,16 @@
           "anzahlGrundschulzuege": { "type": "integer", "format": "int32" }
         }
       },
+      "Foerderart": {
+        "type": "object",
+        "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
+      },
       "Foerdermix": {
         "type": "object",
         "properties": {
           "bezeichnungJahr": { "type": "string" },
           "bezeichnung": { "type": "string" },
           "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/Foerderart" } }
-        }
-      },
-      "WohneinheitenProFoerderartProJahr": {
-        "type": "object",
-        "properties": {
-          "foerderart": { "type": "string" },
-          "jahr": { "type": "string" },
-          "wohneinheiten": { "type": "number" }
-        }
-      },
-      "EntityModelAbfragevarianteBaugenehmigungsverfahren": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "type": "string" },
-          "wesentlicheRechtsgrundlage": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "BEPLANTER_BEREICH_PARAGRAPH_30",
-                "INNENBEREICH",
-                "AUSSENBEREICH",
-                "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34",
-                "BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31",
-                "FREIE_EINGABE",
-                "EINFACHER_BEBAUUNGSPLAN",
-                "QUALIFIZIERTER_BEBAUUNGSPLAN",
-                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
-                "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
-                "BEFREIUNG"
-              ]
-            }
-          },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string" },
-          "realisierungVon": { "type": "integer", "format": "int32" },
-          "gfWohnenGesamt": { "type": "number" },
-          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
-          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
-          "gfWohnenBestandswohnbaurecht": { "type": "number" },
-          "gfWohnenSonderwohnformen": { "type": "boolean" },
-          "gfWohnenStudentischesWohnen": { "type": "number" },
-          "gfWohnenSeniorinnenWohnen": { "type": "number" },
-          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "type": "string" },
-          "weGesamt": { "type": "integer", "format": "int32" },
-          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
-          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
-          "weSonderwohnformen": { "type": "boolean" },
-          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
-          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
-          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "type": "string" },
-          "sobonOrientierungswertJahrPlanungsursaechlich": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "JAHR_2014",
-              "JAHR_2017",
-              "JAHR_2022",
-              "JAHR_2024",
-              "JAHR_2024_34",
-              "STANDORTABFRAGE"
-            ]
-          },
-          "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "type": "string" },
-          "hasBauratendateiInput": { "type": "boolean" },
-          "anmerkungBauratendateiInput": { "type": "string" },
-          "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInput" },
-          "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInput" } },
-          "bedarfsmeldungFachreferate": { "type": "array", "items": { "$ref": "#/components/schemas/Bedarfsmeldung" } },
-          "bedarfsmeldungAbfrageersteller": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Bedarfsmeldung" }
-          },
-          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/Bauabschnitt" } },
-          "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungImBplanKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenKita": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita": { "type": "boolean" },
-          "ausgeloesterBedarfImBaugebietBeruecksichtigenSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
-          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
-          "anmerkungFachreferate": { "type": "string" },
-          "anmerkungAbfrageersteller": { "type": "string" },
-          "artAbfragevariante": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "abfragevarianteBaugenehmigungsverfahrens": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteBaugenehmigungsverfahren" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "PagedModelEntityModelBauvorhaben": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "bauvorhabens": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelBauvorhaben" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelVersorgungsquoteSobonHort": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "beschreibung": { "type": "string" },
-          "versorgungsquoteSobon": { "type": "number" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelVersorgungsquoteSobonHort": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "versorgungsquoteSobonHorts": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteSobonHort" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "SobonBerechnung": {
@@ -7555,7 +7351,16 @@
               "STANDORTABFRAGE"
             ]
           },
-          "versorgungsquoteHortSobon": { "type": "number" }
+          "versorgungsquoteHortSobon": { "type": "number" },
+          "bauratenmethodik": { "type": "string", "enum": ["ALTE_BAURATENMETHODIK", "NEUE_BAURATENMETHODIK"] }
+        }
+      },
+      "WohneinheitenProFoerderartProJahr": {
+        "type": "object",
+        "properties": {
+          "foerderart": { "type": "string" },
+          "jahr": { "type": "string" },
+          "wohneinheiten": { "type": "number" }
         }
       },
       "EntityModelAbfragevarianteWeiteresVerfahren": {
@@ -7665,104 +7470,95 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "EntityModelGlobalCounter": {
+      "CollectionModelDokument": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentResponse" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "Bearbeitungshistorie": {
+        "type": "object",
+        "properties": {
+          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
+          "zeitpunkt": { "type": "string", "format": "date-time" },
+          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" }
+        }
+      },
+      "StatusAbfrage": {
+        "type": "string",
+        "enum": [
+          "ANGELEGT",
+          "UEBERMITTELT_ZUR_BEARBEITUNG",
+          "START_BEARBEITUNG",
+          "EINPFLEGEN_BEDARFSMELDUNG",
+          "EINPLANUNG_BEDARFE",
+          "ERLEDIGT_MIT_FACHREFERAT",
+          "ERLEDIGT_OHNE_FACHREFERAT",
+          "ABBRUCH"
+        ]
+      },
+      "EntityModelAbfrage": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "counterType": { "type": "string", "enum": ["NUMMER_BAUVORHABEN"] },
-          "counter": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
+          "anmerkung": { "type": "string" },
+          "sub": { "type": "string" },
+          "linkEakte": { "type": "string" },
+          "bearbeitungshistorie": { "type": "array", "items": { "$ref": "#/components/schemas/Bearbeitungshistorie" } },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
+          "bauvorhabenUuid": { "type": "string", "format": "uuid" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelGlobalCounter": {
+      "PagedModelEntityModelAbfrage": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "globalCounters": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelGlobalCounter" }
-              }
+              "abfrages": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelAbfrage" } }
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" },
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "PagedModelEntityModelInfrastruktureinrichtung": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "infrastruktureinrichtungs": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelInfrastruktureinrichtung" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelSobonOrientierungswertSozialeInfrastruktur": {
+      "EntityModelStaedtebaulicheOrientierungswert": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "gueltigAb": { "type": "string", "format": "date" },
-          "jahrBezeichnung": { "type": "string" },
-          "einrichtungstyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "altersklasse": {
-            "type": "string",
-            "enum": [
-              "NULL_ZWEI",
-              "DREI_SECHSEINHALB",
-              "SECHSEINHALB_NEUNEINHALB",
-              "ZEHNEINHALB_FUENFZEHN",
-              "SECHSZEHN_ACHTZEHN",
-              "ALLE_EWO"
-            ]
-          },
           "foerderartBezeichnung": { "type": "string" },
-          "einwohnerJahr1NachErsterstellung": { "type": "number" },
-          "einwohnerJahr2NachErsterstellung": { "type": "number" },
-          "einwohnerJahr3NachErsterstellung": { "type": "number" },
-          "einwohnerJahr4NachErsterstellung": { "type": "number" },
-          "einwohnerJahr5NachErsterstellung": { "type": "number" },
-          "einwohnerJahr6NachErsterstellung": { "type": "number" },
-          "einwohnerJahr7NachErsterstellung": { "type": "number" },
-          "einwohnerJahr8NachErsterstellung": { "type": "number" },
-          "einwohnerJahr9NachErsterstellung": { "type": "number" },
-          "einwohnerJahr10NachErsterstellung": { "type": "number" },
-          "stammwertArbeitsgruppe": { "type": "number" },
+          "durchschnittlicheGrundflaeche": { "type": "number" },
+          "belegungsdichte": { "type": "number" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur": {
+      "PagedModelEntityModelStaedtebaulicheOrientierungswert": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "sobonOrientierungswertSozialeInfrastrukturs": {
+              "staedtebaulicheOrientierungswerts": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelSobonOrientierungswertSozialeInfrastruktur" }
+                "items": { "$ref": "#/components/schemas/EntityModelStaedtebaulicheOrientierungswert" }
               }
             }
           },
@@ -7770,40 +7566,70 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "EntityModelVersorgungsquoteGruppenstaerke": {
+      "Umlegungsschluessel": {
+        "type": "object",
+        "properties": {
+          "foerderarten": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Foerderart" }
+          }
+        }
+      },
+      "EntityModelUmlegungFoerderarten": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "bezeichnung": { "type": "string" },
           "gueltigAb": { "type": "string", "format": "date" },
-          "infrastruktureinrichtungTyp": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "KINDERKRIPPE",
-              "KINDERGARTEN",
-              "GS_NACHMITTAG_BETREUUNG",
-              "HAUS_FUER_KINDER",
-              "GRUNDSCHULE",
-              "MITTELSCHULE"
-            ]
-          },
-          "versorgungsquotePlanungsursaechlich": { "type": "number" },
-          "versorgungsquoteSobonUrsaechlich": { "type": "number" },
-          "gruppenstaerke": { "type": "integer", "format": "int32" },
+          "umlegungsschluessel": { "$ref": "#/components/schemas/Umlegungsschluessel" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelVersorgungsquoteGruppenstaerke": {
+      "PagedModelEntityModelUmlegungFoerderarten": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "versorgungsquoteGruppenstaerkes": {
+              "umlegungFoerderartens": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteGruppenstaerke" }
+                "items": { "$ref": "#/components/schemas/EntityModelUmlegungFoerderarten" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "Jahresrate": {
+        "type": "object",
+        "properties": { "jahr": { "type": "integer", "format": "int32" }, "rate": { "type": "number" } }
+      },
+      "EntityModelIdealtypischeBaurate": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "von": { "type": "number" },
+          "bisExklusiv": { "type": "number" },
+          "typ": { "type": "string", "enum": ["ANZAHL_WOHNEINHEITEN_GESAMT", "GESCHOSSFLAECHE_WOHNEN_GESAMT"] },
+          "jahresraten": { "type": "array", "items": { "$ref": "#/components/schemas/Jahresrate" } },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelIdealtypischeBaurate": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "idealtypischeBaurates": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelIdealtypischeBaurate" }
               }
             }
           },
@@ -7907,126 +7733,26 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "EntityModelDokument": {
+      "EntityModelGlobalCounter": {
         "type": "object",
         "properties": {
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "filePath": { "$ref": "#/components/schemas/Filepath" },
-          "artDokument": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "EMAIL",
-              "BESCHLUSS",
-              "ANLAGE",
-              "ANTRAG",
-              "KARTE",
-              "STELLUNGNAHME",
-              "DATEN_BAUVORHABEN",
-              "GEBAEUDEPLAN",
-              "BERECHNUNG",
-              "INFOS_BAUGENEHMIGUNG",
-              "PRESSEARTIKEL",
-              "INFOS_ZU_SOZ_INFRASTRUKTUR",
-              "PROTOKOLL",
-              "SONSTIGES"
-            ]
-          },
+          "counterType": { "type": "string", "enum": ["NUMMER_BAUVORHABEN"] },
+          "counter": { "type": "integer", "format": "int64" },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "PagedModelEntityModelDokument": {
+      "PagedModelEntityModelGlobalCounter": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "dokuments": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelDokument" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "Bearbeitungshistorie": {
-        "type": "object",
-        "properties": {
-          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
-          "zeitpunkt": { "type": "string", "format": "date-time" },
-          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePerson" }
-        }
-      },
-      "StatusAbfrage": {
-        "type": "string",
-        "enum": [
-          "ANGELEGT",
-          "UEBERMITTELT_ZUR_BEARBEITUNG",
-          "START_BEARBEITUNG",
-          "EINPFLEGEN_BEDARFSMELDUNG",
-          "EINPLANUNG_BEDARFE",
-          "ERLEDIGT_MIT_FACHREFERAT",
-          "ERLEDIGT_OHNE_FACHREFERAT",
-          "ABBRUCH"
-        ]
-      },
-      "EntityModelAbfrage": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "name": { "type": "string" },
-          "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
-          "anmerkung": { "type": "string" },
-          "sub": { "type": "string" },
-          "linkEakte": { "type": "string" },
-          "bearbeitungshistorie": { "type": "array", "items": { "$ref": "#/components/schemas/Bearbeitungshistorie" } },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "resultType": { "type": "string", "enum": ["BAUVORHABEN", "ABFRAGE", "INFRASTRUKTUREINRICHTUNG"] },
-          "bauvorhabenUuid": { "type": "string", "format": "uuid" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelAbfrage": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "abfrages": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelAbfrage" } }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "EntityModelStaedtebaulicheOrientierungswert": {
-        "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "createdDateTime": { "type": "string", "format": "date-time" },
-          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "gueltigAb": { "type": "string", "format": "date" },
-          "foerderartBezeichnung": { "type": "string" },
-          "durchschnittlicheGrundflaeche": { "type": "integer", "format": "int64" },
-          "belegungsdichte": { "type": "number" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelStaedtebaulicheOrientierungswert": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "staedtebaulicheOrientierungswerts": {
+              "globalCounters": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelStaedtebaulicheOrientierungswert" }
+                "items": { "$ref": "#/components/schemas/EntityModelGlobalCounter" }
               }
             }
           },
@@ -8053,6 +7779,281 @@
               "foerdermixStamms": {
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/EntityModelFoerdermixStamm" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "PagedModelEntityModelBauvorhaben": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "bauvorhabens": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelBauvorhaben" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelAbfragevariante": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "EntityModelVersorgungsquoteGruppenstaerke": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "gueltigAb": { "type": "string", "format": "date" },
+          "infrastruktureinrichtungTyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "versorgungsquotePlanungsursaechlich": { "type": "number" },
+          "versorgungsquoteSobonUrsaechlich": { "type": "number" },
+          "gruppenstaerke": { "type": "integer", "format": "int32" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelVersorgungsquoteGruppenstaerke": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "versorgungsquoteGruppenstaerkes": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelVersorgungsquoteGruppenstaerke" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelAbfragevarianteBaugenehmigungsverfahren": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "abfragevariantenNr": { "type": "integer", "format": "int32" },
+          "name": { "type": "string" },
+          "wesentlicheRechtsgrundlage": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BEPLANTER_BEREICH_PARAGRAPH_30",
+                "INNENBEREICH",
+                "AUSSENBEREICH",
+                "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34",
+                "BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31",
+                "FREIE_EINGABE",
+                "EINFACHER_BEBAUUNGSPLAN",
+                "QUALIFIZIERTER_BEBAUUNGSPLAN",
+                "VORHABENSBEZOGENER_BEBAUUNGSPLAN",
+                "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
+                "BEFREIUNG"
+              ]
+            }
+          },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string" },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string" },
+          "realisierungVon": { "type": "integer", "format": "int32" },
+          "gfWohnenGesamt": { "type": "number" },
+          "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
+          "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
+          "gfWohnenBestandswohnbaurecht": { "type": "number" },
+          "gfWohnenSonderwohnformen": { "type": "boolean" },
+          "gfWohnenStudentischesWohnen": { "type": "number" },
+          "gfWohnenSeniorinnenWohnen": { "type": "number" },
+          "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
+          "gfAnmerkung": { "type": "string" },
+          "weGesamt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
+          "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
+          "weSonderwohnformen": { "type": "boolean" },
+          "weStudentischesWohnen": { "type": "integer", "format": "int32" },
+          "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
+          "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
+          "weAnmerkung": { "type": "string" },
+          "sobonOrientierungswertJahrPlanungsursaechlich": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "JAHR_2014",
+              "JAHR_2017",
+              "JAHR_2022",
+              "JAHR_2024",
+              "JAHR_2024_34",
+              "STANDORTABFRAGE"
+            ]
+          },
+          "stammdatenGueltigAb": { "type": "string", "format": "date" },
+          "anmerkung": { "type": "string" },
+          "hasBauratendateiInput": { "type": "boolean" },
+          "anmerkungBauratendateiInput": { "type": "string" },
+          "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInput" },
+          "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInput" } },
+          "bedarfsmeldungFachreferate": { "type": "array", "items": { "$ref": "#/components/schemas/Bedarfsmeldung" } },
+          "bedarfsmeldungAbfrageersteller": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Bedarfsmeldung" }
+          },
+          "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/Bauabschnitt" } },
+          "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungImBplanKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenKita": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita": { "type": "boolean" },
+          "ausgeloesterBedarfImBaugebietBeruecksichtigenSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungImBplanSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule": { "type": "boolean" },
+          "ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule": { "type": "boolean" },
+          "anmerkungFachreferate": { "type": "string" },
+          "anmerkungAbfrageersteller": { "type": "string" },
+          "artAbfragevariante": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "abfragevarianteBaugenehmigungsverfahrens": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelAbfragevarianteBaugenehmigungsverfahren" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelSobonOrientierungswertSozialeInfrastruktur": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "gueltigAb": { "type": "string", "format": "date" },
+          "jahrBezeichnung": { "type": "string" },
+          "einrichtungstyp": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "KINDERKRIPPE",
+              "KINDERGARTEN",
+              "GS_NACHMITTAG_BETREUUNG",
+              "HAUS_FUER_KINDER",
+              "GRUNDSCHULE",
+              "MITTELSCHULE"
+            ]
+          },
+          "altersklasse": {
+            "type": "string",
+            "enum": [
+              "NULL_ZWEI",
+              "DREI_SECHSEINHALB",
+              "SECHSEINHALB_NEUNEINHALB",
+              "ZEHNEINHALB_FUENFZEHN",
+              "SECHSZEHN_ACHTZEHN",
+              "ALLE_EWO"
+            ]
+          },
+          "foerderartBezeichnung": { "type": "string" },
+          "einwohnerJahr1NachErsterstellung": { "type": "number" },
+          "einwohnerJahr2NachErsterstellung": { "type": "number" },
+          "einwohnerJahr3NachErsterstellung": { "type": "number" },
+          "einwohnerJahr4NachErsterstellung": { "type": "number" },
+          "einwohnerJahr5NachErsterstellung": { "type": "number" },
+          "einwohnerJahr6NachErsterstellung": { "type": "number" },
+          "einwohnerJahr7NachErsterstellung": { "type": "number" },
+          "einwohnerJahr8NachErsterstellung": { "type": "number" },
+          "einwohnerJahr9NachErsterstellung": { "type": "number" },
+          "einwohnerJahr10NachErsterstellung": { "type": "number" },
+          "stammwertArbeitsgruppe": { "type": "number" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "sobonOrientierungswertSozialeInfrastrukturs": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelSobonOrientierungswertSozialeInfrastruktur" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelKommentar": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "datum": { "type": "string" },
+          "text": { "type": "string" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelKommentar": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "kommentars": { "type": "array", "items": { "$ref": "#/components/schemas/EntityModelKommentar" } }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "PagedModelEntityModelAbfragevariante": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "abfragevariantes": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelAbfragevariante" }
               }
             }
           },
@@ -8663,7 +8664,7 @@
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "gueltigAb": { "type": "string", "format": "date" },
           "foerderartBezeichnung": { "type": "string" },
-          "durchschnittlicheGrundflaeche": { "type": "integer", "format": "int64" },
+          "durchschnittlicheGrundflaeche": { "type": "number" },
           "belegungsdichte": { "type": "number" }
         }
       },
@@ -10013,6 +10014,7 @@
           "mitzeichnungBeschlussentwurf",
           "name",
           "sobonRelevant",
+          "start42VerfahrenDatumUnbekannt",
           "verfahrensstand"
         ],
         "type": "object",
@@ -10065,6 +10067,8 @@
               "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
               "fristBearbeitung": { "type": "string", "format": "date" },
               "mitzeichnungBeschlussentwurf": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "start42Verfahren": { "type": "string", "format": "date" },
+              "start42VerfahrenDatumUnbekannt": { "type": "boolean" },
               "abfragevariantenBauleitplanverfahren": {
                 "maxItems": 5,
                 "minItems": 1,
@@ -10587,6 +10591,12 @@
               "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
               "fristBearbeitung": { "type": "string", "format": "date" },
               "mitzeichnungBeschlussentwurf": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "start42Verfahren": { "type": "string", "format": "date" },
+              "start42VerfahrenDatumUnbekannt": { "type": "boolean" },
+              "bauratenmethodikVorbelegung": {
+                "type": "string",
+                "enum": ["ALTE_BAURATENMETHODIK", "NEUE_BAURATENMETHODIK"]
+              },
               "abfragevariantenBauleitplanverfahren": {
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenDto" }
@@ -10666,7 +10676,8 @@
               "STANDORTABFRAGE"
             ]
           },
-          "versorgungsquoteHortSobon": { "type": "number" }
+          "versorgungsquoteHortSobon": { "type": "number" },
+          "bauratenmethodik": { "type": "string", "enum": ["ALTE_BAURATENMETHODIK", "NEUE_BAURATENMETHODIK"] }
         }
       },
       "WeiteresVerfahrenDto": {
@@ -11600,7 +11611,8 @@
           "infrastruktureinrichtungTyp": { "$ref": "#/components/schemas/LookupListDto" },
           "artGsNachmittagBetreuung": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonOrientierungswertJahr": { "$ref": "#/components/schemas/LookupListDto" },
-          "sobonOrientierungswertJahrWithoutStandortabfrage": { "$ref": "#/components/schemas/LookupListDto" }
+          "sobonOrientierungswertJahrWithoutStandortabfrage": { "$ref": "#/components/schemas/LookupListDto" },
+          "bauratenmethodik": { "$ref": "#/components/schemas/LookupListDto" }
         }
       },
       "DokumenteDto": {
