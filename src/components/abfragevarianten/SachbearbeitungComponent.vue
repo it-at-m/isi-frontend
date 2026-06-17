@@ -70,6 +70,31 @@
         v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
         v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
       ></sobon-berechnung>
+      <v-row v-if="isBauleitplanverfahren">
+        <v-col
+          cols="12"
+          md="6"
+        />
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-select
+            id="bauratenmethodik_dropdown"
+            ref="bauratenmethodikDropdown"
+            v-model="abfragevarianteSachbearbeitung.sobonBerechnung.bauratenmethodik"
+            variant="underlined"
+            :disabled="!isEditableBySachbearbeitung"
+            :items="lookupStore.bauratenmethodik"
+            item-value="key"
+            item-title="value"
+            :rules="bauratenmethodikValidator"
+            @update:model-value="formChanged"
+          >
+            <template #label> Bauratenmethodik <span class="text-secondary">*</span> </template>
+          </v-select>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col
           cols="12"
@@ -212,6 +237,20 @@ const isBauleitplanverfahrenOrWeiteresVerfahren = computed(() => {
     abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
       AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
   );
+});
+
+const isBauleitplanverfahren = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+  );
+});
+
+const bauratenmethodikValidator = computed(() => {
+  if (isEditableBySachbearbeitung.value) {
+    return [pflichtfeld] as ValidationRule[];
+  }
+  return [];
 });
 
 withDefaults(defineProps<Props>(), { isEditable: false });

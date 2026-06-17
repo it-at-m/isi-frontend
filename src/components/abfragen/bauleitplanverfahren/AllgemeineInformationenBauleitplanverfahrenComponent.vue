@@ -1,5 +1,5 @@
 <template>
-  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Vorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -22,9 +22,17 @@
         md="4"
         class="d-flex align-center"
       >
+        <span v-if="vorhabenExists">
+          <a
+            target="_blank"
+            :href="linkVorhaben"
+          >
+            {{ nameBauvorhaben }}
+          </a>
+        </span>
         <span
-          v-if="isBauverfahrenEditable"
-          class="v-label theme--light"
+          v-else-if="isBauverfahrenEditable"
+          class="v-label text-grey-lighten"
         >
           {{ nameBauvorhaben }}
         </span>
@@ -141,6 +149,47 @@
         </v-slide-y-reverse-transition>
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      />
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex align-center"
+      >
+        <date-picker
+          id="start_42_verfahren_datepicker"
+          ref="start42VerfahrenDatePicker"
+          v-model="abfrage.start42Verfahren"
+          :disabled="!isEditable || abfrage.start42VerfahrenDatumUnbekannt"
+          label="Start 4.2-Verfahren"
+          month-picker
+          required
+          @blur="formChanged"
+        />
+        <v-tooltip location="bottom">
+          <template #activator="{ props: activatorProps }">
+            <v-icon
+              v-bind="activatorProps"
+              class="mx-2"
+            >
+              mdi-help-circle-outline
+            </v-icon>
+          </template>
+          <span>{{ start42VerfahrenTooltip }}</span>
+        </v-tooltip>
+        <v-checkbox
+          id="start_42_verfahren_datum_unbekannt_checkbox"
+          v-model="abfrage.start42VerfahrenDatumUnbekannt"
+          :disabled="!isEditable"
+          label="Datum unbekannt / nicht zutreffend"
+          color="primary"
+          @update:model-value="start42VerfahrenDatumUnbekanntChanged"
+        />
+      </v-col>
+    </v-row>
   </field-group-card>
   <auswahl-bauvorhaben-dialog
     id="auswahl_bauvorhaben_dialog"
@@ -156,6 +205,7 @@ import BauleitplanverfahrenModel from "@/types/model/abfrage/Bauleitplanverfahre
 import { UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
@@ -187,8 +237,10 @@ const isBauverfahrenDeleteable = computed(() => {
   );
 });
 const nameBauvorhaben = computed(() => {
-  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Keinem Vorhaben zugeordnet";
 });
+
+const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");
 
 watch(
   () => abfrage.value.bauvorhaben,
@@ -237,4 +289,22 @@ function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;
   formChanged();
 }
+
+const start42VerfahrenTooltip =
+  "Wenn Datum noch nicht bekannt, bitte Schätzung eintragen. Wenn kein 4.2 Verfahren vorgesehen bitte 'Datum unbekannt / nicht zutreffend' angkreuzen";
+
+function start42VerfahrenDatumUnbekanntChanged(): void {
+  formChanged();
+  if (abfrage.value.start42VerfahrenDatumUnbekannt) {
+    abfrage.value.start42Verfahren = undefined;
+  }
+}
+
+const vorhabenExists = computed(() => {
+  return !_.isEmpty(bauvorhaben.value.id);
+});
+
+const linkVorhaben = computed(() => {
+  return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
+});
 </script>

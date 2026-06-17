@@ -182,6 +182,12 @@
               cols="12"
               sm="11"
             >
+              <v-icon
+                color="green-lighten-1"
+                class="mr-1"
+              >
+                {{ iconArtAbfrage }}
+              </v-icon>
               <span
                 id="abfrage_displayName"
                 class="text-h6 font-weight-bold"
@@ -347,6 +353,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import { getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import {
   createAbfragevarianteBauleitplanverfahrenDto,
   createAbfragevarianteBaugenehmigungsverfahrenDto,
@@ -484,6 +491,7 @@ const yesNoDialogStatusuebergang = ref<typeof YesNoDialog | null>(null);
 
 const isEditable = computed(() => isEditableWithAnzeigeContextAbfragevariante(anzeigeContextAbfragevariante.value));
 const artAbfrage = computed(() => (isNew.value ? (route.query.art as string) : abfrage.value.artAbfrage));
+const iconArtAbfrage = computed(() => getAbfrageIcon(artAbfrage.value));
 const isBauleitplanverfahren = computed(() => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
 const isBaugenehmigungsverfahren = computed(
   () => artAbfrage.value === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
@@ -1010,12 +1018,14 @@ function handleCreateAbfragevarianteSachbearbeitung(parent: AbfrageTreeItem): vo
   const abfragevariante = createAbfragevarianteModel();
   if (!_.isNil(abfragevariante)) {
     if (isBauleitplanverfahren.value) {
-      (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.push(
-        abfragevariante,
-      );
-      renumberingAbfragevarianten(
-        (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren,
-      );
+      const bauleitplanverfahren = abfrage.value as BauleitplanverfahrenModel;
+      const abfragevarianteBauleitplanverfahren = abfragevariante as AbfragevarianteBauleitplanverfahrenModel;
+      if (!_.isNil(bauleitplanverfahren.bauratenmethodikVorbelegung)) {
+        abfragevarianteBauleitplanverfahren.sobonBerechnung.bauratenmethodik =
+          bauleitplanverfahren.bauratenmethodikVorbelegung;
+      }
+      bauleitplanverfahren.abfragevariantenSachbearbeitungBauleitplanverfahren?.push(abfragevariante);
+      renumberingAbfragevarianten(bauleitplanverfahren.abfragevariantenSachbearbeitungBauleitplanverfahren);
     } else if (isBaugenehmigungsverfahren.value) {
       (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.push(
         abfragevariante,
