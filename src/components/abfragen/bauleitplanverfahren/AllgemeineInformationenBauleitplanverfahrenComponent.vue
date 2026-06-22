@@ -173,7 +173,7 @@
           <template #activator="{ props: activatorProps }">
             <v-icon
               v-bind="activatorProps"
-              class="mx-2"
+              class="mx-2 mt-3"
             >
               mdi-help-circle-outline
             </v-icon>
@@ -184,6 +184,7 @@
           id="start_42_verfahren_datum_unbekannt_checkbox"
           v-model="abfrage.start42VerfahrenDatumUnbekannt"
           :disabled="!isEditable"
+          class="mt-3"
           label="Datum unbekannt / nicht zutreffend"
           color="primary"
           @update:model-value="start42VerfahrenDatumUnbekanntChanged"
@@ -291,7 +292,7 @@ function deleteBauvorhaben(): void {
 }
 
 const start42VerfahrenTooltip =
-  "Wenn Datum noch nicht bekannt, bitte Schätzung eintragen. Wenn kein 4.2 Verfahren vorgesehen bitte 'Datum unbekannt / nicht zutreffend' angkreuzen";
+  "Wenn Datum noch nicht bekannt, bitte Schätzung eintragen. Wenn kein 4.2 Verfahren vorgesehen bitte 'Datum unbekannt / nicht zutreffend' ankreuzen";
 
 function start42VerfahrenDatumUnbekanntChanged(): void {
   formChanged();
