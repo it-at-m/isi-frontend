@@ -110,6 +110,8 @@ export function mapToBauleitplanverfahrenAngelegt(
     dokumente: bauleitplanverfahrenDto.dokumente,
     fristBearbeitung: bauleitplanverfahrenDto.fristBearbeitung,
     mitzeichnungBeschlussentwurf: bauleitplanverfahrenDto.mitzeichnungBeschlussentwurf,
+    start42Verfahren: bauleitplanverfahrenDto.start42Verfahren,
+    start42VerfahrenDatumUnbekannt: bauleitplanverfahrenDto.start42VerfahrenDatumUnbekannt,
     abfragevariantenBauleitplanverfahren: abfragevarianten,
   } as BauleitplanverfahrenAngelegtDto;
 }
