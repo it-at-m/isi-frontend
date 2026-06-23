@@ -153,10 +153,6 @@
       <v-col
         cols="12"
         md="6"
-      />
-      <v-col
-        cols="12"
-        md="6"
         class="d-flex align-center"
       >
         <date-picker
@@ -173,7 +169,7 @@
           <template #activator="{ props: activatorProps }">
             <v-icon
               v-bind="activatorProps"
-              class="mx-2 mt-3"
+              class="mx-2 mt-1"
             >
               mdi-help-circle-outline
             </v-icon>
@@ -190,6 +186,10 @@
           @update:model-value="start42VerfahrenDatumUnbekanntChanged"
         />
       </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      />
     </v-row>
   </field-group-card>
   <auswahl-bauvorhaben-dialog
@@ -203,7 +203,11 @@
 import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import { UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
+import {
+  UncertainBoolean,
+  BauvorhabenDto,
+  BauleitplanverfahrenDtoVerfahrensstandEnum,
+} from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import DatePicker from "@/components/common/DatePicker.vue";
@@ -281,6 +285,19 @@ watch(
     } else {
       sobonJahrVisible.value = false;
       abfrage.value.sobonJahr = undefined;
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => abfrage.value.verfahrensstand,
+  (value) => {
+    if (value === BauleitplanverfahrenDtoVerfahrensstandEnum.FreieEingabe) {
+      verfahrensstandFreieEingabeVisible.value = true;
+    } else {
+      verfahrensstandFreieEingabeVisible.value = false;
+      abfrage.value.verfahrensstandFreieEingabe = undefined;
     }
   },
   { immediate: true },
