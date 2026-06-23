@@ -169,7 +169,7 @@
           <template #activator="{ props: activatorProps }">
             <v-icon
               v-bind="activatorProps"
-              class="mx-2 mt-1"
+              class="mx-2 mb-1"
             >
               mdi-help-circle-outline
             </v-icon>
