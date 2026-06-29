@@ -153,7 +153,6 @@
       <v-col
         cols="12"
         md="6"
-        class="d-flex align-center"
       >
         <date-picker
           id="start_42_verfahren_datepicker"
@@ -165,11 +164,17 @@
           required
           @blur="formChanged"
         />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex align-center"
+      >
         <v-tooltip location="bottom">
           <template #activator="{ props: activatorProps }">
             <v-icon
               v-bind="activatorProps"
-              class="mx-2 mb-1"
+              class="mr-2 mb-3"
             >
               mdi-help-circle-outline
             </v-icon>
@@ -186,10 +191,6 @@
           @update:model-value="start42VerfahrenDatumUnbekanntChanged"
         />
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      />
     </v-row>
   </field-group-card>
   <auswahl-bauvorhaben-dialog
