@@ -114,47 +114,6 @@
         cols="12"
         md="6"
       >
-        <v-select
-          id="verfahrensstand_dropdown"
-          ref="verfahrensstandDropdown"
-          v-model="abfrage.verfahrensstand"
-          variant="underlined"
-          :disabled="!isEditable"
-          :items="lookupStore.verfahrensstandBauleitplanverfahren"
-          item-value="key"
-          item-title="value"
-          :rules="[pflichtfeld, notUnspecified]"
-          @update:model-value="formChanged"
-        >
-          <template #label> Verfahrensstand <span class="text-secondary">*</span></template>
-        </v-select>
-      </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <v-slide-y-reverse-transition>
-          <v-text-field
-            v-if="verfahrensstandFreieEingabeVisible"
-            id="verfahrensstand_freie_eingabe_field"
-            ref="verfahrensstandFreieEingabeField"
-            v-model="abfrage.verfahrensstandFreieEingabe"
-            variant="underlined"
-            :readonly="!isEditable"
-            label="Freie Eingabe"
-            maxlength="1000"
-            @update:model-value="formChanged"
-            :class="isEditable ? '' : 'text-grey-lighten-1'"
-          />
-        </v-slide-y-reverse-transition>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        md="6"
-        class="d-flex align-center"
-      >
         <date-picker
           id="start_42_verfahren_datepicker"
           ref="start42VerfahrenDatePicker"
@@ -165,11 +124,17 @@
           required
           @blur="formChanged"
         />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex align-center"
+      >
         <v-tooltip location="bottom">
           <template #activator="{ props: activatorProps }">
             <v-icon
               v-bind="activatorProps"
-              class="mx-2 mb-1"
+              class="mr-2 mb-2"
             >
               mdi-help-circle-outline
             </v-icon>
@@ -186,10 +151,6 @@
           @update:model-value="start42VerfahrenDatumUnbekanntChanged"
         />
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      />
     </v-row>
   </field-group-card>
   <auswahl-bauvorhaben-dialog
