@@ -165,6 +165,12 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     sobonOrientierungswertJahrWithoutStandortabfrage?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    bauratenmethodik?: LookupListDto;
 }
 
 /**
@@ -207,6 +213,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'artGsNachmittagBetreuung': json['artGsNachmittagBetreuung'] == null ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': json['sobonOrientierungswertJahrWithoutStandortabfrage'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : LookupListDtoFromJSON(json['bauratenmethodik']),
     };
 }
 
@@ -244,6 +251,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'artGsNachmittagBetreuung': LookupListDtoToJSON(value['artGsNachmittagBetreuung']),
         'sobonOrientierungswertJahr': LookupListDtoToJSON(value['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'bauratenmethodik': LookupListDtoToJSON(value['bauratenmethodik']),
     };
 }
 

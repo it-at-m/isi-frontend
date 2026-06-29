@@ -27,6 +27,7 @@ interface State {
   artGsNachmittagBetreuung: LookupEntryDto[];
   sobonOrientierungswertJahr: LookupEntryDto[];
   sobonOrientierungswertJahrWithoutStandortabfrage: LookupEntryDto[];
+  bauratenmethodik: LookupEntryDto[];
 }
 
 export const useLookupStore = defineStore("lookup", {
@@ -55,6 +56,7 @@ export const useLookupStore = defineStore("lookup", {
       artGsNachmittagBetreuung: [],
       sobonOrientierungswertJahr: [],
       sobonOrientierungswertJahrWithoutStandortabfrage: [],
+      bauratenmethodik: [],
     }) as State,
   getters: {},
   actions: {
@@ -88,6 +90,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setSobonOrientierungswertJahrWithoutStandortabfrage(
           lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage,
         );
+        this.setBauratenmethodik(lookupLists.bauratenmethodik);
       });
     },
     setUncertainBoolean(payload: LookupListDto | undefined): void {
@@ -196,6 +199,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.sobonOrientierungswertJahrWithoutStandortabfrage = payload?.list)
         : (this.sobonOrientierungswertJahrWithoutStandortabfrage = []);
+    },
+    setBauratenmethodik(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.bauratenmethodik = payload?.list)
+        : (this.bauratenmethodik = []);
     },
   },
 });

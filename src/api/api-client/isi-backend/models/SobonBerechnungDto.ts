@@ -51,6 +51,12 @@ export interface SobonBerechnungDto {
      * @memberof SobonBerechnungDto
      */
     versorgungsquoteHortSobon?: number;
+    /**
+     * 
+     * @type {SobonBerechnungDtoBauratenmethodikEnum}
+     * @memberof SobonBerechnungDto
+     */
+    bauratenmethodik?: SobonBerechnungDtoBauratenmethodikEnum;
 }
 
 
@@ -67,6 +73,15 @@ export const SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = 
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum];
+
+/**
+ * @export
+ */
+export const SobonBerechnungDtoBauratenmethodikEnum = {
+    AlteBauratenmethodik: 'ALTE_BAURATENMETHODIK',
+    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK'
+} as const;
+export type SobonBerechnungDtoBauratenmethodikEnum = typeof SobonBerechnungDtoBauratenmethodikEnum[keyof typeof SobonBerechnungDtoBauratenmethodikEnum];
 
 
 /**
@@ -90,6 +105,7 @@ export function SobonBerechnungDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixDtoFromJSON(json['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
         'versorgungsquoteHortSobon': json['versorgungsquoteHortSobon'] == null ? undefined : json['versorgungsquoteHortSobon'],
+        'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : json['bauratenmethodik'],
     };
 }
 
@@ -108,6 +124,7 @@ export function SobonBerechnungDtoToJSONTyped(value?: SobonBerechnungDto | null,
         'sobonFoerdermix': FoerdermixDtoToJSON(value['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
         'versorgungsquoteHortSobon': value['versorgungsquoteHortSobon'],
+        'bauratenmethodik': value['bauratenmethodik'],
     };
 }
 

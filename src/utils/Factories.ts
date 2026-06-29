@@ -175,6 +175,9 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
     mitzeichnungBeschlussentwurf: UncertainBoolean.Unspecified,
+    start42Verfahren: undefined,
+    start42VerfahrenDatumUnbekannt: false,
+    bauratenmethodikVorbelegung: undefined,
     anmerkung: undefined,
     linkEakte: undefined,
     abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
@@ -427,6 +430,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 
@@ -437,6 +441,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 

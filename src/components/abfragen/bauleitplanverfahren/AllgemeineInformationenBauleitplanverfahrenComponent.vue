@@ -149,6 +149,48 @@
         </v-slide-y-reverse-transition>
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex align-center"
+      >
+        <date-picker
+          id="start_42_verfahren_datepicker"
+          ref="start42VerfahrenDatePicker"
+          v-model="abfrage.start42Verfahren"
+          :disabled="!isEditable || abfrage.start42VerfahrenDatumUnbekannt"
+          label="Start 4.2-Verfahren"
+          month-picker
+          required
+          @blur="formChanged"
+        />
+        <v-tooltip location="bottom">
+          <template #activator="{ props: activatorProps }">
+            <v-icon
+              v-bind="activatorProps"
+              class="mx-2 mb-1"
+            >
+              mdi-help-circle-outline
+            </v-icon>
+          </template>
+          <span>{{ start42VerfahrenTooltip }}</span>
+        </v-tooltip>
+        <v-checkbox
+          id="start_42_verfahren_datum_unbekannt_checkbox"
+          v-model="abfrage.start42VerfahrenDatumUnbekannt"
+          :disabled="!isEditable"
+          class="mt-3"
+          label="Datum unbekannt / nicht zutreffend"
+          color="primary"
+          @update:model-value="start42VerfahrenDatumUnbekanntChanged"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      />
+    </v-row>
   </field-group-card>
   <auswahl-bauvorhaben-dialog
     id="auswahl_bauvorhaben_dialog"
@@ -161,9 +203,14 @@
 import { computed, ref, watch } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import { UncertainBoolean, BauvorhabenDto } from "@/api/api-client/isi-backend";
+import {
+  UncertainBoolean,
+  BauvorhabenDto,
+  BauleitplanverfahrenDtoVerfahrensstandEnum,
+} from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 
@@ -243,9 +290,32 @@ watch(
   { immediate: true },
 );
 
+watch(
+  () => abfrage.value.verfahrensstand,
+  (value) => {
+    if (value === BauleitplanverfahrenDtoVerfahrensstandEnum.FreieEingabe) {
+      verfahrensstandFreieEingabeVisible.value = true;
+    } else {
+      verfahrensstandFreieEingabeVisible.value = false;
+      abfrage.value.verfahrensstandFreieEingabe = undefined;
+    }
+  },
+  { immediate: true },
+);
+
 function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;
   formChanged();
+}
+
+const start42VerfahrenTooltip =
+  "Wenn Datum noch nicht bekannt, bitte Schätzung eintragen. Wenn kein 4.2 Verfahren vorgesehen bitte 'Datum unbekannt / nicht zutreffend' ankreuzen";
+
+function start42VerfahrenDatumUnbekanntChanged(): void {
+  formChanged();
+  if (abfrage.value.start42VerfahrenDatumUnbekannt) {
+    abfrage.value.start42Verfahren = undefined;
+  }
 }
 
 const vorhabenExists = computed(() => {

@@ -1018,12 +1018,14 @@ function handleCreateAbfragevarianteSachbearbeitung(parent: AbfrageTreeItem): vo
   const abfragevariante = createAbfragevarianteModel();
   if (!_.isNil(abfragevariante)) {
     if (isBauleitplanverfahren.value) {
-      (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren?.push(
-        abfragevariante,
-      );
-      renumberingAbfragevarianten(
-        (abfrage.value as BauleitplanverfahrenModel).abfragevariantenSachbearbeitungBauleitplanverfahren,
-      );
+      const bauleitplanverfahren = abfrage.value as BauleitplanverfahrenModel;
+      const abfragevarianteBauleitplanverfahren = abfragevariante as AbfragevarianteBauleitplanverfahrenModel;
+      if (!_.isNil(bauleitplanverfahren.bauratenmethodikVorbelegung)) {
+        abfragevarianteBauleitplanverfahren.sobonBerechnung.bauratenmethodik =
+          bauleitplanverfahren.bauratenmethodikVorbelegung;
+      }
+      bauleitplanverfahren.abfragevariantenSachbearbeitungBauleitplanverfahren?.push(abfragevariante);
+      renumberingAbfragevarianten(bauleitplanverfahren.abfragevariantenSachbearbeitungBauleitplanverfahren);
     } else if (isBaugenehmigungsverfahren.value) {
       (abfrage.value as BaugenehmigungsverfahrenModel).abfragevariantenSachbearbeitungBaugenehmigungsverfahren?.push(
         abfragevariante,

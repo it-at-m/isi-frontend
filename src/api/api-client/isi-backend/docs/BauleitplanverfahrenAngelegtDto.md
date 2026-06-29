@@ -16,6 +16,8 @@ Name | Type
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `fristBearbeitung` | Date
 `mitzeichnungBeschlussentwurf` | [UncertainBoolean](UncertainBoolean.md)
+`start42Verfahren` | Date
+`start42VerfahrenDatumUnbekannt` | boolean
 `abfragevariantenBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenAngelegtDto&gt;](AbfragevarianteBauleitplanverfahrenAngelegtDto.md)
 
 ## Example
@@ -35,6 +37,8 @@ const example = {
   "dokumente": null,
   "fristBearbeitung": null,
   "mitzeichnungBeschlussentwurf": null,
+  "start42Verfahren": null,
+  "start42VerfahrenDatumUnbekannt": null,
   "abfragevariantenBauleitplanverfahren": null,
 } satisfies BauleitplanverfahrenAngelegtDto
 
