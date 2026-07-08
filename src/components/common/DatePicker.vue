@@ -27,11 +27,19 @@
           </span>
         </template>
         <template #append>
-          <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
+          <v-icon
+            v-bind="activatorProps"
+            class="mt-2"
+            >mdi-calendar</v-icon
+          >
           <template v-if="help">
             <v-tooltip location="bottom">
               <template #activator="{ props: helpActivatorProps }">
-                <v-icon v-bind="helpActivatorProps">mdi-help-circle-outline</v-icon>
+                <v-icon
+                  v-bind="helpActivatorProps"
+                  class="mt-2"
+                  >mdi-help-circle-outline</v-icon
+                >
               </template>
               <span>{{ help }}</span>
             </v-tooltip>

@@ -189,16 +189,16 @@ export interface EntityModelBauvorhaben {
     resultType?: EntityModelBauvorhabenResultTypeEnum;
     /**
      * 
-     * @type {VerortungMultiPolygon}
-     * @memberof EntityModelBauvorhaben
-     */
-    verortungJson?: VerortungMultiPolygon;
-    /**
-     * 
      * @type {Adresse}
      * @memberof EntityModelBauvorhaben
      */
     adresseJson?: Adresse;
+    /**
+     * 
+     * @type {VerortungMultiPolygon}
+     * @memberof EntityModelBauvorhaben
+     */
+    verortungJson?: VerortungMultiPolygon;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -331,8 +331,8 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
-        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
+        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -370,8 +370,8 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
         'resultType': value['resultType'],
-        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
+        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

@@ -42,6 +42,7 @@
           id="bauvorhaben_kommentare"
           :context="Context.BAUVORHABEN"
           :is-editable="isEditable"
+          :bauvorhaben-id="bauvorhaben.id"
         />
       </template>
       <template #action>

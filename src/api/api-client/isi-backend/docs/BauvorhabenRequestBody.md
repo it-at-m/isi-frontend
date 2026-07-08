@@ -31,8 +31,8 @@ Name | Type
 `dokumente` | Array&lt;string&gt;
 `relevanteAbfragevariante` | string
 `resultType` | string
-`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `adresseJson` | [Adresse](Adresse.md)
+`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 
 ## Example
 
@@ -66,8 +66,8 @@ const example = {
   "dokumente": null,
   "relevanteAbfragevariante": null,
   "resultType": null,
-  "verortungJson": null,
   "adresseJson": null,
+  "verortungJson": null,
 } satisfies BauvorhabenRequestBody
 
 console.log(example)

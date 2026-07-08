@@ -124,6 +124,18 @@ export interface BauleitplanverfahrenAngelegtDto extends AbfrageAngelegtDto {
     mitzeichnungBeschlussentwurf: UncertainBoolean;
     /**
      * 
+     * @type {Date}
+     * @memberof BauleitplanverfahrenAngelegtDto
+     */
+    start42Verfahren?: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BauleitplanverfahrenAngelegtDto
+     */
+    start42VerfahrenDatumUnbekannt: boolean;
+    /**
+     * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenAngelegtDto>}
      * @memberof BauleitplanverfahrenAngelegtDto
      */
@@ -180,6 +192,7 @@ export function instanceOfBauleitplanverfahrenAngelegtDto(value: object): value 
     if (!('verfahrensstand' in value) || value['verfahrensstand'] === undefined) return false;
     if (!('fristBearbeitung' in value) || value['fristBearbeitung'] === undefined) return false;
     if (!('mitzeichnungBeschlussentwurf' in value) || value['mitzeichnungBeschlussentwurf'] === undefined) return false;
+    if (!('start42VerfahrenDatumUnbekannt' in value) || value['start42VerfahrenDatumUnbekannt'] === undefined) return false;
     if (!('abfragevariantenBauleitplanverfahren' in value) || value['abfragevariantenBauleitplanverfahren'] === undefined) return false;
     return true;
 }
@@ -210,6 +223,8 @@ export function BauleitplanverfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDi
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': (new Date(json['fristBearbeitung'])),
         'mitzeichnungBeschlussentwurf': UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
+        'start42Verfahren': json['start42Verfahren'] == null ? undefined : (new Date(json['start42Verfahren'])),
+        'start42VerfahrenDatumUnbekannt': json['start42VerfahrenDatumUnbekannt'],
         'abfragevariantenBauleitplanverfahren': ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSON)),
     };
 }
@@ -242,6 +257,8 @@ export function BauleitplanverfahrenAngelegtDtoToJSONTyped(value?: Bauleitplanve
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': value['fristBearbeitung'].toISOString().substring(0,10),
         'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
+        'start42Verfahren': value['start42Verfahren'] == null ? value['start42Verfahren'] : value['start42Verfahren'].toISOString().substring(0,10),
+        'start42VerfahrenDatumUnbekannt': value['start42VerfahrenDatumUnbekannt'],
         'abfragevariantenBauleitplanverfahren': ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSON)),
     };
 }

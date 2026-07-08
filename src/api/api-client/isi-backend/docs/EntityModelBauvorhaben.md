@@ -28,8 +28,8 @@ Name | Type
 `artFnp` | Array&lt;string&gt;
 `artFnpFreieEingabe` | string
 `resultType` | string
-`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `adresseJson` | [Adresse](Adresse.md)
+`verortungJson` | [VerortungMultiPolygon](VerortungMultiPolygon.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -61,8 +61,8 @@ const example = {
   "artFnp": null,
   "artFnpFreieEingabe": null,
   "resultType": null,
-  "verortungJson": null,
   "adresseJson": null,
+  "verortungJson": null,
   "links": null,
 } satisfies EntityModelBauvorhaben
 

@@ -13,3 +13,17 @@ export function getAbfrageIcon(artAbfrage: AbfrageDtoArtAbfrageEnum | string | u
       return "";
   }
 }
+
+export function getAbfrageArtLabel(artAbfrage: AbfrageDtoArtAbfrageEnum | string | undefined): string {
+  switch (artAbfrage) {
+    case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+      return "Bauleitplanverfahren";
+    case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+      return "Baugenehmigungsverfahren";
+    case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
+      return "Weiteres Verfahren";
+    case AbfrageDtoArtAbfrageEnum.Unspecified:
+    default:
+      return "";
+  }
+}
