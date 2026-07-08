@@ -180,7 +180,7 @@ function datumSatzungsbeschlussChanged(): void {
         ? datumSatzungsbeschluss.getFullYear() + 3
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
-  isDialogBauratenLoeschenOpen.value = true;
+  isDialogBauratenLoeschenOpen.value = existsBauraten();
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
@@ -197,7 +197,15 @@ function planartChanged(): void {
 }
 
 function realisierungVonChanged(): void {
-  isDialogBauratenLoeschenOpen.value = true;
+  isDialogBauratenLoeschenOpen.value = existsBauraten();
+}
+
+function existsBauraten(): boolean {
+  return (
+    abfragevariante.value.bauabschnitte?.some((bauabschnitt) =>
+      bauabschnitt.baugebiete?.some((baugebiet) => !_.isEmpty(baugebiet.bauraten)),
+    ) ?? false
+  );
 }
 
 function deleteBauraten(): void {

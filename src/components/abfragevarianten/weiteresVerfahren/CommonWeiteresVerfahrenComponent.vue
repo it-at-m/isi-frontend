@@ -199,7 +199,15 @@ function wesentlicheRechtsgrundlageChanged(): void {
 }
 
 function realisierungVonChanged(): void {
-  isDialogBauratenLoeschenOpen.value = true;
+  isDialogBauratenLoeschenOpen.value = existsBauraten();
+}
+
+function existsBauraten(): boolean {
+  return (
+    abfragevariante.value.bauabschnitte?.some((bauabschnitt) =>
+      bauabschnitt.baugebiete?.some((baugebiet) => !_.isEmpty(baugebiet.bauraten)),
+    ) ?? false
+  );
 }
 
 function deleteBauraten(): void {
