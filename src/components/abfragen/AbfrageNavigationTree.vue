@@ -522,8 +522,8 @@ function isTechnicalOhneBauraten(bauabschnitte?: BauabschnittDto[]): boolean {
         isTechnicalOhneBauraten = false;
       }
     });
-    return isTechnicalOhneBauraten;
   }
+  return isTechnicalOhneBauraten;
 }
 
 function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {
