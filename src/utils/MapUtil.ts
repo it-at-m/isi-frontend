@@ -35,6 +35,12 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
+export const LAYER_STRUCTURE = [
+  { gruppe: "Verwaltung", layer: [] },
+  { gruppe: "Planung und Bauen", layer: [] },
+  { gruppe: "Schul- und Kitaplanung", layer: [] },
+];
+
 export class OverlayUrlMapping {
   displayName: string = "";
   internalName: string = "";
