@@ -94,6 +94,7 @@
           year
           maxlength="4"
           required
+          @focus="saveRealisierungVon"
           @blur="realisierungVonChanged"
           help="Erfolgt bei Datum 'Realisierung von' eine Eingabe, werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -160,6 +161,8 @@ const { formChanged } = useSaveLeave();
 
 const isDialogBauratenLoeschenOpen = ref(false);
 
+const originalRealisierungVon = ref<number | null>();
+
 const wesentlicheRechtsgrundlageWeiteresVerfahrenList = computed(
   () => lookupStore.wesentlicheRechtsgrundlageWeiteresVerfahren,
 );
@@ -199,8 +202,14 @@ function wesentlicheRechtsgrundlageChanged(): void {
   }
 }
 
+function saveRealisierungVon(): void {
+  originalRealisierungVon.value = abfragevariante.value.realisierungVon;
+}
+
 function realisierungVonChanged(): void {
-  isDialogBauratenLoeschenOpen.value = existsBauraten(abfragevariante.value.bauabschnitte);
+  isDialogBauratenLoeschenOpen.value =
+    originalRealisierungVon.value != abfragevariante.value.realisierungVon &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 function yesNoDialogBauratenLoeschenYes(): void {

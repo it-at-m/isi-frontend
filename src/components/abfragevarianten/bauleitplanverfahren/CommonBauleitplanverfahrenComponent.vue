@@ -30,6 +30,7 @@
           :disabled="!isEditable"
           label="Datum Satzungsbeschluss"
           month-picker
+          @focus="saveDatumSatzungsbeschluss"
           @blur="datumSatzungsbeschlussChanged"
           help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, werden alle Bauraten gelöscht."
         />
@@ -97,6 +98,7 @@
           year
           maxlength="4"
           required
+          @focus="saveRealisierungVon"
           @blur="realisierungVonChanged"
           help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -161,6 +163,9 @@ const { formChanged } = useSaveLeave();
 
 const planartList = computed(() => lookupStore.planart);
 
+const originalSatzungsbeschluss = ref<Date | null>();
+const originalRealisierungVon = ref<number | null>();
+
 const calcRealisierungBis = computed(() => {
   const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
     ?.flatMap((bauabschnitt) => bauabschnitt.baugebiete)
@@ -181,7 +186,9 @@ function datumSatzungsbeschlussChanged(): void {
         ? datumSatzungsbeschluss.getFullYear() + 3
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
-  isDialogBauratenLoeschenOpen.value = existsBauraten(abfragevariante.value.bauabschnitte);
+  isDialogBauratenLoeschenOpen.value =
+    originalSatzungsbeschluss != abfragevariante.value.satzungsbeschluss &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
@@ -197,8 +204,18 @@ function planartChanged(): void {
   }
 }
 
+function saveDatumSatzungsbeschluss(): void {
+  originalSatzungsbeschluss.value = abfragevariante.value.satzungsbeschluss;
+}
+
+function saveRealisierungVon(): void {
+  originalRealisierungVon.value = abfragevariante.value.realisierungVon;
+}
+
 function realisierungVonChanged(): void {
-  isDialogBauratenLoeschenOpen.value = existsBauraten(abfragevariante.value.bauabschnitte);
+  isDialogBauratenLoeschenOpen.value =
+    originalRealisierungVon.value != abfragevariante.value.realisierungVon &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 function yesNoDialogBauratenLoeschenYes(): void {
