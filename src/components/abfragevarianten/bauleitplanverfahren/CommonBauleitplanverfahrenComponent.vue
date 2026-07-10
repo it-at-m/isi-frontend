@@ -30,7 +30,7 @@
           :disabled="!isEditable"
           label="Datum Satzungsbeschluss"
           month-picker
-          @focus="saveDatumSatzungsbeschluss"
+          @focus="saveSatzungsbeschluss"
           @blur="datumSatzungsbeschlussChanged"
           help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, werden alle Bauraten gelöscht."
         />
@@ -204,7 +204,7 @@ function planartChanged(): void {
   }
 }
 
-function saveDatumSatzungsbeschluss(): void {
+function saveSatzungsbeschluss(): void {
   originalSatzungsbeschluss.value = abfragevariante.value.satzungsbeschluss;
 }
 

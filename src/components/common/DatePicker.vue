@@ -13,6 +13,7 @@
         :hint="displayFormat"
         :readonly="disabled"
         :required="required"
+        @focus="focus()"
         @update:model-value="formChanged"
         @update:focused="$event || blur()"
         :class="disabled ? 'text-grey-lighten-1' : ''"
@@ -94,6 +95,7 @@ interface Props {
 
 interface Emits {
   (event: "blur", value: void): void;
+  (event: "focus", value: void): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -198,6 +200,10 @@ function setTextFieldDateForMonthPicker(monthIndex: number): void {
 function deactivateDatePicker(): void {
   datePickerActive.value = false;
   blur();
+}
+
+function focus(): void {
+  emit("focus");
 }
 
 function blur(): void {
