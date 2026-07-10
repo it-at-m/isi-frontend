@@ -31,7 +31,7 @@
           label="Datum Satzungsbeschluss"
           month-picker
           @blur="datumSatzungsbeschlussChanged"
-          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, werden alle Bauraten gelöscht."
+          help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, werden alle Bauraten gelöscht."
         />
       </v-col>
       <v-col
@@ -98,7 +98,7 @@
           maxlength="4"
           required
           @blur="realisierungVonChanged"
-          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
+          help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
@@ -143,6 +143,7 @@ import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevaria
 import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
 import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import { existsBauraten, deleteBauraten } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;
@@ -180,7 +181,7 @@ function datumSatzungsbeschlussChanged(): void {
         ? datumSatzungsbeschluss.getFullYear() + 3
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
-  isDialogBauratenLoeschenOpen.value = existsBauraten();
+  isDialogBauratenLoeschenOpen.value = existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
@@ -197,27 +198,11 @@ function planartChanged(): void {
 }
 
 function realisierungVonChanged(): void {
-  isDialogBauratenLoeschenOpen.value = existsBauraten();
-}
-
-function existsBauraten(): boolean {
-  return (
-    abfragevariante.value.bauabschnitte?.some((bauabschnitt) =>
-      bauabschnitt.baugebiete?.some((baugebiet) => !_.isEmpty(baugebiet.bauraten)),
-    ) ?? false
-  );
-}
-
-function deleteBauraten(): void {
-  abfragevariante.value.bauabschnitte?.forEach((bauabschnitt) => {
-    bauabschnitt.baugebiete.forEach((baugebiet) => {
-      baugebiet.bauraten = [];
-    });
-  });
+  isDialogBauratenLoeschenOpen.value = existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 function yesNoDialogBauratenLoeschenYes(): void {
-  deleteBauraten();
+  deleteBauraten(abfragevariante.value.bauabschnitte);
   yesNoDialogBauratenLoeschenNo();
 }
 
