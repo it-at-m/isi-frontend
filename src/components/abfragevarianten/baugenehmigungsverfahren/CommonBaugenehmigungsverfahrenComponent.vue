@@ -96,7 +96,7 @@
             maxlength="4"
             required
             @blur="realisierungVonChanged"
-            help="Erfolgt bei Datum Realisierung von eine Eingabe, werden alle Bauraten gelöscht."
+            help="Erfolgt bei Datum 'Realisierung von' eine Eingabe, werden alle Bauraten gelöscht."
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
