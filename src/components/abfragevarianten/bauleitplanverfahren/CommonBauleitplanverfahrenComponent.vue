@@ -187,7 +187,7 @@ function datumSatzungsbeschlussChanged(): void {
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
   isDialogBauratenLoeschenOpen.value =
-    originalSatzungsbeschluss != abfragevariante.value.satzungsbeschluss &&
+    originalSatzungsbeschluss.value != abfragevariante.value.satzungsbeschluss &&
     existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
