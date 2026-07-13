@@ -5,8 +5,15 @@ import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastrukture
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 // import "@/types/common/Leaflet";
 
-interface LayerGroup {
-  gruppe: string;
+enum Gruppe {
+  UNDEFINED = "undefiniert",
+  VERWALTUNG = "Verwaltung",
+  PLANUNG_UND_BAUEN = "Planung und Bauen",
+  SCHUL_UND_KITAPLANUNG = "Schul- und Kitaplanung",
+}
+
+export interface LayerGruppe {
+  gruppe: Gruppe;
   layerDetails: LayerDetail[];
 }
 
@@ -43,27 +50,162 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 
 export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
-export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
+export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]); // old
 
-export const LAYER_STRUCTURE: LayerGroup[] = [
-  { gruppe: "Verwaltung", layerDetails: [] },
-  { gruppe: "Planung und Bauen", layerDetails: [] },
-  { gruppe: "Schul- und Kitaplanung", layerDetails: [] },
+export const LAYER_STRUCTURE: LayerGruppe[] = [
+  { gruppe: Gruppe.VERWALTUNG, layerDetails: [] },
+  { gruppe: Gruppe.PLANUNG_UND_BAUEN, layerDetails: [] },
+  { gruppe: Gruppe.SCHUL_UND_KITAPLANUNG, layerDetails: [] },
 ];
 
 export class OverlayUrlMapping {
   displayName: string = "";
   internalName: string = "";
+  transparent: boolean = false;
   urlPart: string = "";
   migrated: boolean = false;
+  gruppe: Gruppe.UNDEFINED;
 }
 
+export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
+  {
+    displayName: "Flurstücke",
+    internalName: "Flurstücke,Flst.Nr.",
+    transparent: true,
+    urlPart: "Grundkarten",
+    migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
+  },
+  {
+    displayName: "Gemarkungen",
+    internalName: "Gemarkungen",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
+  },
+  {
+    displayName: "Stadtviertel",
+    internalName: "Stadtviertel",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
+  },
+  {
+    displayName: "Bezirksteile",
+    internalName: "Bezirksteile",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
+  },
+  {
+    displayName: "Stadtbezirke",
+    internalName: "Stadtbezirke",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
+  },
+  {
+    displayName: "Flächennutzungsplan",
+    internalName: "Flächennutzungsplan",
+    transparent: false,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
+  },
+  {
+    displayName: "Baublöcke",
+    internalName: "Baublöcke",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
+  },
+  {
+    displayName: "Umgriffe Bebauungspläne",
+    internalName: "BB-Umgriff",
+    transparent: true,
+    urlPart: "basis",
+    migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
+  },
+  {
+    displayName: "Kitaplanungsbereiche",
+    internalName: "Kitaplanungsbereiche",
+    transparent: true,
+    urlPart: "Bildung_und_Soziales",
+    migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "Grundschulsprengel",
+    internalName: "Grundschulsprengel",
+    transparent: true,
+    urlPart: "Bildung_und_Soziales",
+    migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "Mittelschulsprengel",
+    internalName: "Mittelschulsprengel",
+    transparent: true,
+    urlPart: "Bildung_und_Soziales",
+    migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "SFZ Sprengel GS",
+    internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
+    transparent: true,
+    urlPart: "Förderschulen",
+    migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "SFZ Sprengel MS",
+    internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
+    transparent: true,
+    urlPart: "Förderschulen",
+    migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "FZgE Sprengel GS",
+    internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
+    transparent: true,
+    urlPart: "Förderschulen",
+    migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "FZgE Sprengel MS",
+    internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
+    transparent: true,
+    urlPart: "Förderschulen",
+    migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+  {
+    displayName: "FZesE Sprengel GS und MS",
+    internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
+    transparent: true,
+    urlPart: "Förderschulen",
+    migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
+  },
+];
+// old - Anfang
 export const OVERLAYS_ARCGIS_INTRANSPARENT: OverlayUrlMapping[] = [
   {
     displayName: "Flächennutzungsplan",
     internalName: "Flächennutzungsplan",
+    transparent: false,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
   },
 ];
 
@@ -71,89 +213,116 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
   {
     displayName: "Gemarkungen",
     internalName: "Gemarkungen",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
   },
   {
     displayName: "Stadtviertel",
     internalName: "Stadtviertel",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
   },
   {
     displayName: "Bezirksteile",
     internalName: "Bezirksteile",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
   },
   {
     displayName: "Stadtbezirke",
     internalName: "Stadtbezirke",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.VERWALTUNG,
   },
   {
     displayName: "Kitaplanungsbereiche",
     internalName: "Kitaplanungsbereiche",
+    transparent: true,
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Grundschulsprengel",
     internalName: "Grundschulsprengel",
+    transparent: true,
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Mittelschulsprengel",
     internalName: "Mittelschulsprengel",
+    transparent: true,
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Baublöcke",
     internalName: "Baublöcke",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
   },
   {
     displayName: "Umgriffe Bebauungspläne",
     internalName: "BB-Umgriff",
+    transparent: true,
     urlPart: "basis",
     migrated: false,
+    gruppe: Gruppe.PLANUNG_UND_BAUEN,
   },
   {
     displayName: "SFZ Sprengel GS",
     internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
+    transparent: true,
     urlPart: "Förderschulen",
     migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "SFZ Sprengel MS",
     internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
+    transparent: true,
     urlPart: "Förderschulen",
     migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZgE Sprengel GS",
     internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
+    transparent: true,
     urlPart: "Förderschulen",
     migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZgE Sprengel MS",
     internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
+    transparent: true,
     urlPart: "Förderschulen",
     migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZesE Sprengel GS und MS",
     internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
+    transparent: true,
     urlPart: "Förderschulen",
     migrated: true,
+    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
   },
 ];
-
 /**
  * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
  *
@@ -163,7 +332,7 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
  * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
-export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WMS> {
+export function assembleBaseLayersForLayerControl_old(): Record<string, TileLayer.WMS> {
   const layers: Record<string, TileLayer.WMS> = {};
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
@@ -173,7 +342,6 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
       ...LAYER_OPTIONS,
     });
     layers[overlay[0]] = layer;
-    addLayer("Verwaltung", { displayName: overlay[0], layer: layer });
   }
 
   for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
@@ -202,12 +370,37 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
 
   return layers;
 }
+// old - Ende
 
-function addLayer(gruppeName: string, layerDetails: LayerDetail) {
-  const group = LAYER_STRUCTURE.find((g) => g.gruppe === gruppeName);
+/**
+ * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
+ *
+ * Damit ein Overlay-Layer nicht die darunterliegenden Layer verdeckt, ist es wichtig,
+ * `transparent: true` zu setzen sowie ein Bildformat anzufordern welches Transparenz unterstützt.
+ *
+ * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
+ * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
+ */
+export function assembleBaseLayersForLayerControl(): typeof LAYER_STRUCTURE {
+  for (const overlay of OVERLAYS_ARCGIS) {
+    const url = !overlay.migrated
+      ? (import.meta.env.VITE_ARCGIS_URL as string)
+      : (import.meta.env.VITE_ARCGIS_URL2 as string);
+    const layer = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
+      layers: overlay.internalName,
+      transparent: overlay.transparent,
+      ...LAYER_OPTIONS,
+    });
+    addLayer(overlay.gruppe, { displayName: overlay.displayName, layer: layer });
+  }
+  return LAYER_STRUCTURE;
+}
 
-  if (group) {
-    group.layerDetails.push(layerDetails);
+function addLayer(gruppe: Gruppe, layerDetails: LayerDetail) {
+  const currentGruppe = LAYER_STRUCTURE.find((g) => g.gruppe === gruppe);
+
+  if (currentGruppe) {
+    currentGruppe.layerDetails.push(layerDetails);
   }
 }
 
