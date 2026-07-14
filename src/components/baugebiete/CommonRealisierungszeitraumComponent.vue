@@ -17,6 +17,9 @@
           no-grouping
           required
           maxlength="4"
+          @focus="saveRealisierungVon"
+          @blur="realisierungVonChanged"
+          help="Erfolgt bei Datum 'Realisierung von' eine Eingabe, werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
@@ -36,6 +39,17 @@
       </v-col>
     </v-row>
   </field-group-card>
+  <yes-no-dialog
+    id="bauraten_loeschen_yes_no_dialog"
+    v-model="isDialogBauratenLoeschenOpen"
+    icon="mdi-delete-forever"
+    dialogtitle="Hinweis"
+    dialogtext="Hiermit werden alle Bauraten unwiderruflich gelöscht."
+    no-text="Abbrechen"
+    yes-text="Ändern"
+    @no="yesNoDialogBauratenLoeschenNo"
+    @yes="yesNoDialogBauratenLoeschenYes"
+  />
 </template>
 
 <script setup lang="ts">
@@ -44,7 +58,9 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import _ from "lodash";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { deleteBauraten, existsBauraten } from "@/utils/AbfragevarianteUtil";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
 interface Props {
   abfragevariante?: AnyAbfragevarianteDto;
@@ -53,6 +69,8 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const baugebiet = defineModel<BaugebietModel>({ required: true });
+const originalRealisierungVon = ref<number | null>();
+const isDialogBauratenLoeschenOpen = ref(false);
 
 const calcRealisierungBis = computed(() => _.max(baugebiet.value.bauraten.map((baurate) => baurate.jahr)));
 
@@ -61,4 +79,21 @@ const abfragevarianteRealisierungVonOr1900 = computed(() => {
     ? props.abfragevariante.realisierungVon
     : 1900;
 });
+
+function saveRealisierungVon(): void {
+  originalRealisierungVon.value = baugebiet.value.realisierungVon;
+}
+
+function realisierungVonChanged(): void {
+  isDialogBauratenLoeschenOpen.value =
+    originalRealisierungVon.value != baugebiet.value.realisierungVon && !_.isEmpty(baugebiet.value.bauraten);
+}
+function yesNoDialogBauratenLoeschenYes(): void {
+  baugebiet.value.bauraten = [];
+  yesNoDialogBauratenLoeschenNo();
+}
+
+function yesNoDialogBauratenLoeschenNo(): void {
+  isDialogBauratenLoeschenOpen.value = false;
+}
 </script>
