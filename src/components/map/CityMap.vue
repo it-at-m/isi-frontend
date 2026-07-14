@@ -139,7 +139,7 @@ const expanded = ref(false);
 const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 
 let map: L.Map;
-let layerControl: L.Control.Layers;
+let groupedControl: any;
 let alreadyAddedLayersForLayerControl: Map<string, Layer> | undefined;
 let firstGeoJsonFeatureAdded = false;
 let mapMarkerClusterGroup = L.markerClusterGroup();
@@ -161,9 +161,17 @@ function initMap(): void {
     .wms(getBackgroundMapUrl(), { layers: "gsm:g_stadtkarte_gesamt", ...LAYER_OPTIONS })
     .addTo(map);
 
-  // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt.
-  layerControl = L.control.layers({ ["Hintergrund"]: wmsTileLayer }, assembleBaseLayersForLayerControl()).addTo(map);
+  // Basis-Layer Objekt
+  const baseMaps = { ["Hintergrund"]: wmsTileLayer };
 
+  // Erzeuge die strukturierte Layer-Liste (füllt LAYER_STRUCTURE in MapUtil)
+  const LAYER_STRUCTURE = assembleBaseLayersForLayerControl();
+
+  // Erzeuge ein gruppiertes Layer-Control (Gruppen als Überschriften, nicht selektierbar)
+  groupedControl = createGroupedLayerControl(baseMaps, LAYER_STRUCTURE);
+  groupedControl.addTo(map);
+
+  // Füge ggf. zusätzliche Layer aus props hinzu
   updateLayerControlWithCustomLayers();
 
   // Fügt zusätzliche Steuerelement hinzu
@@ -243,23 +251,221 @@ function onGeoJsonChanged() {
   }
 }
 
+/**
+ * Fügt eigene Layer (props.layersForLayerControl) dem gruppierten Control hinzu.
+ * Entfernt zuvor hinzugefügte eigene Layer.
+ */
 function updateLayerControlWithCustomLayers(): void {
   // Entfernen der in einer vorherigen Aktualisierung hinzugefügten Overlays
   if (!_.isNil(alreadyAddedLayersForLayerControl)) {
     alreadyAddedLayersForLayerControl.forEach((layer: Layer) => {
-      // Entfernen aus LayerControl-Element
-      layerControl.removeLayer(layer);
-      // Entfernen aus Karte falls Layer in LayerControl mittels Checkbox aktiviert
-      map.removeLayer(layer);
+      try {
+        groupedControl.removeOverlay(layer);
+      } catch (e) {
+        // ignore
+      }
+      if (map.hasLayer(layer)) map.removeLayer(layer);
     });
   }
-  // Hinzufügen der neuen Layer
+
+  // Hinzufügen der neuen Layer (unter Gruppe "Eigene Layer")
   if (!_.isNil(props.layersForLayerControl)) {
-    props.layersForLayerControl.forEach((layer: L.Layer, name: string) => layerControl.addOverlay(layer, name));
+    props.layersForLayerControl.forEach((layer: L.Layer, name: string) => {
+      groupedControl.addOverlay(layer, name, "Weitere Layer");
+    });
   }
+
   alreadyAddedLayersForLayerControl = props.layersForLayerControl;
 }
 
+/**
+ * Erzeugt ein gruppiertes Layer-Control, das Gruppen als Überschriften darstellt.
+ * Gruppen sind nicht selektierbar; nur einzelne Layer innerhalb der Gruppen besitzen Checkboxen.
+ */
+function createGroupedLayerControl(baseMaps: Record<string, Layer>, layerStructure: any) {
+  const control = L.control({ position: "topright" });
+  const overlayInputs = new Map<Layer, HTMLInputElement>();
+  let containerDiv: HTMLDivElement | null = null;
+
+  control.onAdd = function (mapInstance: L.Map) {
+    const div = L.DomUtil.create("div", "leaflet-control grouped-layer-control") as HTMLDivElement;
+    containerDiv = div;
+    div.style.background = "white";
+    div.style.padding = "6px";
+    div.style.maxHeight = "60vh";
+    div.style.overflow = "auto";
+    /*
+    const title = L.DomUtil.create("div", "glc-title", div);
+    title.innerHTML = "<strong>Layer</strong>";
+
+    // Basiskarten als Radiobuttons
+    const baseDiv = L.DomUtil.create("div", "glc-group", div);
+    const baseTitle = L.DomUtil.create("div", "glc-group-title", baseDiv);
+    baseTitle.innerText = "Basiskarten";
+    let first = true;
+    for (const key of Object.keys(baseMaps)) {
+      const item = L.DomUtil.create("label", "glc-item", baseDiv) as HTMLLabelElement;
+      item.style.display = "flex";
+      item.style.alignItems = "center";
+      const input = L.DomUtil.create("input", "", item) as HTMLInputElement;
+      input.type = "radio";
+      input.name = "glc-baselayer";
+      input.style.marginRight = "6px";
+      input.checked = first;
+      input.onchange = function () {
+        if (input.checked) {
+          Object.values(baseMaps).forEach((b: Layer) => mapInstance.removeLayer(b));
+          (baseMaps as any)[key].addTo(mapInstance);
+        }
+      };
+      const span = L.DomUtil.create("span", "", item);
+      span.innerText = key;
+      first = false;
+    }
+    */
+    // Overlay-Gruppen: Überschrift (klickbar) + Layer-Checkboxen (collapsible)
+    for (const group of layerStructure) {
+      const groupDiv = L.DomUtil.create("div", "glc-group", div);
+
+      // Header mit Titel und Indicator
+      const header = L.DomUtil.create("div", "glc-group-header", groupDiv) as HTMLDivElement;
+      header.style.display = "flex";
+      header.style.alignItems = "center";
+      header.style.justifyContent = "space-between";
+      header.style.cursor = "pointer";
+      header.style.marginTop = "6px";
+
+      const groupTitle = L.DomUtil.create("div", "glc-group-title", header);
+      groupTitle.innerText = (group.gruppe || "Gruppe") as string;
+      groupTitle.style.fontWeight = "600";
+
+      const indicator = L.DomUtil.create("span", "glc-group-indicator", header);
+      indicator.innerText = "▾";
+      indicator.style.marginLeft = "8px";
+
+      // Container für die Items (ein- / ausblendbar)
+      const itemsContainer = L.DomUtil.create("div", "glc-group-items", groupDiv) as HTMLDivElement;
+      itemsContainer.style.marginLeft = "6px";
+      itemsContainer.style.marginTop = "4px";
+
+      // Toggle-Funktion
+      header.onclick = function (ev) {
+        ev.stopPropagation();
+        if (itemsContainer.style.display === "none") {
+          itemsContainer.style.display = "";
+          indicator.innerText = "▾";
+        } else {
+          itemsContainer.style.display = "none";
+          indicator.innerText = "▸";
+        }
+      };
+
+      // standardmäßig geschlossen
+      itemsContainer.style.display = "none"; // geöffnet: ""
+
+      for (const detail of group.layerDetails) {
+        const item = L.DomUtil.create("label", "glc-item", itemsContainer) as HTMLLabelElement;
+        item.style.display = "flex";
+        item.style.alignItems = "center";
+        const input = L.DomUtil.create("input", "", item) as HTMLInputElement;
+        input.type = "checkbox";
+        input.style.marginRight = "6px";
+        input.onchange = function () {
+          if (input.checked) {
+            detail.layer.addTo(mapInstance);
+            overlayInputs.set(detail.layer, input);
+          } else {
+            mapInstance.removeLayer(detail.layer);
+            overlayInputs.delete(detail.layer);
+          }
+        };
+        const span = L.DomUtil.create("span", "", item);
+        span.innerText = detail.displayName;
+      }
+    }
+
+    return div;
+  };
+
+  control.onRemove = function (_map: L.Map) {
+    containerDiv = null;
+    overlayInputs.clear();
+  };
+
+  // Fügt ein Overlay (z.B. props.layersForLayerControl) unter einer Gruppe ein (erstellt Gruppe falls nötig)
+  (control as any).addOverlay = function (layer: Layer, name: string, groupName: string = "Weitere") {
+    if (!containerDiv) return;
+    let groupDiv = Array.from(containerDiv.querySelectorAll(".glc-group")).find((gd) => {
+      const title = gd.querySelector(".glc-group-title");
+      return title && title.textContent === groupName;
+    }) as HTMLDivElement | undefined;
+    if (!groupDiv) {
+      groupDiv = L.DomUtil.create("div", "glc-group", containerDiv) as HTMLDivElement;
+      // Header
+      const header = L.DomUtil.create("div", "glc-group-header", groupDiv) as HTMLDivElement;
+      header.style.display = "flex";
+      header.style.alignItems = "center";
+      header.style.justifyContent = "space-between";
+      header.style.cursor = "pointer";
+      header.style.marginTop = "6px";
+      const groupTitle = L.DomUtil.create("div", "glc-group-title", header);
+      groupTitle.innerText = groupName;
+      groupTitle.style.fontWeight = "600";
+      const indicator = L.DomUtil.create("span", "glc-group-indicator", header);
+      indicator.innerText = "▾";
+      indicator.style.marginLeft = "8px";
+
+      // Items container
+      const itemsContainer = L.DomUtil.create("div", "glc-group-items", groupDiv) as HTMLDivElement;
+      itemsContainer.style.marginLeft = "6px";
+      itemsContainer.style.marginTop = "4px";
+      itemsContainer.style.display = "none";
+
+      header.onclick = function (ev) {
+        ev.stopPropagation();
+        if (itemsContainer.style.display === "none") {
+          itemsContainer.style.display = "";
+          indicator.innerText = "▾";
+        } else {
+          itemsContainer.style.display = "none";
+          indicator.innerText = "▸";
+        }
+      };
+    }
+
+    // Find the group's items container to append the new item
+    let targetGroupItems = groupDiv.querySelector(".glc-group-items") as HTMLDivElement | null;
+    if (!targetGroupItems) {
+      targetGroupItems = L.DomUtil.create("div", "glc-group-items", groupDiv) as HTMLDivElement;
+      targetGroupItems.style.marginLeft = "6px";
+      targetGroupItems.style.marginTop = "4px";
+    }
+
+    const item = L.DomUtil.create("label", "glc-item", targetGroupItems) as HTMLLabelElement;
+    item.style.display = "flex";
+    item.style.alignItems = "center";
+    item.style.marginBottom = "4px";
+    const input = L.DomUtil.create("input", "", item) as HTMLInputElement;
+    input.type = "checkbox";
+    input.style.marginRight = "6px";
+    input.onchange = function () {
+      if (input.checked) map.addLayer(layer);
+      else map.removeLayer(layer);
+    };
+    const span = L.DomUtil.create("span", "", item);
+    span.innerText = name;
+    overlayInputs.set(layer, input);
+  };
+
+  (control as any).removeOverlay = function (layer: Layer) {
+    const input = overlayInputs.get(layer);
+    if (input && input.parentElement) input.parentElement.remove();
+    if ((map as L.Map).hasLayer(layer)) (map as L.Map).removeLayer(layer);
+    overlayInputs.delete(layer);
+  };
+
+  return control;
+}
 function onDeselectGeoJson(event: MouseEvent): void {
   event.preventDefault();
   event.stopPropagation();
