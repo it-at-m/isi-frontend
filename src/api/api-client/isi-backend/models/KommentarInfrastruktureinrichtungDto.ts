@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+    BearbeitendePersonDtoToJSONTyped,
+} from './BearbeitendePersonDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
@@ -53,10 +60,10 @@ export interface KommentarInfrastruktureinrichtungDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof KommentarInfrastruktureinrichtungDto
      */
-    datum?: string;
+    erstellungsdatum?: Date;
     /**
      * 
      * @type {string}
@@ -69,6 +76,12 @@ export interface KommentarInfrastruktureinrichtungDto {
      * @memberof KommentarInfrastruktureinrichtungDto
      */
     dokumente?: Array<DokumentDto>;
+    /**
+     * 
+     * @type {BearbeitendePersonDto}
+     * @memberof KommentarInfrastruktureinrichtungDto
+     */
+    bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
      * @type {string}
@@ -98,9 +111,10 @@ export function KommentarInfrastruktureinrichtungDtoFromJSONTyped(json: any, ign
         'version': json['version'] == null ? undefined : json['version'],
         'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
+        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (new Date(json['erstellungsdatum'])),
         'text': json['text'] == null ? undefined : json['text'],
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'infrastruktureinrichtung': json['infrastruktureinrichtung'] == null ? undefined : json['infrastruktureinrichtung'],
     };
 }
@@ -120,9 +134,10 @@ export function KommentarInfrastruktureinrichtungDtoToJSONTyped(value?: Kommenta
         'version': value['version'],
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
         'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
-        'datum': value['datum'],
+        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : value['erstellungsdatum'].toISOString().substring(0,10),
         'text': value['text'],
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
         'infrastruktureinrichtung': value['infrastruktureinrichtung'],
     };
 }

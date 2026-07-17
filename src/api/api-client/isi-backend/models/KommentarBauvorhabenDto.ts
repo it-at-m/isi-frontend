@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
+import {
+    BearbeitendePersonDtoFromJSON,
+    BearbeitendePersonDtoFromJSONTyped,
+    BearbeitendePersonDtoToJSON,
+    BearbeitendePersonDtoToJSONTyped,
+} from './BearbeitendePersonDto';
 import type { DokumentDto } from './DokumentDto';
 import {
     DokumentDtoFromJSON,
@@ -53,10 +60,10 @@ export interface KommentarBauvorhabenDto {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof KommentarBauvorhabenDto
      */
-    datum?: string;
+    erstellungsdatum?: Date;
     /**
      * 
      * @type {string}
@@ -69,6 +76,12 @@ export interface KommentarBauvorhabenDto {
      * @memberof KommentarBauvorhabenDto
      */
     dokumente?: Array<DokumentDto>;
+    /**
+     * 
+     * @type {BearbeitendePersonDto}
+     * @memberof KommentarBauvorhabenDto
+     */
+    bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
      * @type {string}
@@ -98,9 +111,10 @@ export function KommentarBauvorhabenDtoFromJSONTyped(json: any, ignoreDiscrimina
         'version': json['version'] == null ? undefined : json['version'],
         'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
+        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (new Date(json['erstellungsdatum'])),
         'text': json['text'] == null ? undefined : json['text'],
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
         'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
     };
 }
@@ -120,9 +134,10 @@ export function KommentarBauvorhabenDtoToJSONTyped(value?: KommentarBauvorhabenD
         'version': value['version'],
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
         'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
-        'datum': value['datum'],
+        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : value['erstellungsdatum'].toISOString().substring(0,10),
         'text': value['text'],
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
+        'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
         'bauvorhaben': value['bauvorhaben'],
     };
 }
