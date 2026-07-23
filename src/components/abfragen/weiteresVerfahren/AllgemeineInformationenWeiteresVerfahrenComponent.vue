@@ -170,6 +170,7 @@
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
     v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
+    @vorhaben-uebernehmen="vorhabenUebernehmen"
   />
 </template>
 
@@ -289,4 +290,8 @@ const vorhabenExists = computed(() => {
 const linkVorhaben = computed(() => {
   return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
 });
+
+function vorhabenUebernehmen(value: string | undefined): void {
+  formChanged();
+}
 </script>

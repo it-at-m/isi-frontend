@@ -88,8 +88,14 @@ import {
   type StadtbezirkDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  type AbfrageDto,
+  BauvorhabenDto,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
+
+interface Emits {
+  (event: "vorhabenUebernehmen", value: BauvorhabenDto): void;
+}
 
 type ResultItem = {
   label: string;
@@ -111,6 +117,8 @@ const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
 const pendingSelectedLabel = ref<string>("");
 
 const loading = ref(false);
+
+const emit = defineEmits<Emits>();
 
 let currentSearchRequestId = 0;
 let isComponentActive = true;
@@ -328,6 +336,7 @@ function uebernehmen(): void {
 
   selectedBauvorhabenId.value = pendingSelectedBauvorhabenId.value;
   dialogOpen.value = false;
+  emit("vorhabenUebernehmen", selectedBauvorhabenId.value);
 }
 
 /**

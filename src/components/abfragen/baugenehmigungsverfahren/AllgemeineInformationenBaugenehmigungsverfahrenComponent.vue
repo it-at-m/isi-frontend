@@ -128,6 +128,7 @@
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
     v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
+    @vorhaben-uebernehmen="vorhabenUebernehmen"
   />
 </template>
 
@@ -135,7 +136,11 @@
 import { ref, watch, computed } from "vue";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
-import { BaugenehmigungsverfahrenDtoVerfahrensstandEnum, BauvorhabenDto } from "@/api/api-client/isi-backend";
+import {
+  AbfrageDto,
+  BaugenehmigungsverfahrenDtoVerfahrensstandEnum,
+  BauvorhabenDto,
+} from "@/api/api-client/isi-backend";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -146,6 +151,7 @@ import _ from "lodash";
 import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { createBauvorhabenDto } from "@/utils/Factories";
+import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -228,4 +234,8 @@ const vorhabenExists = computed(() => {
 const linkVorhaben = computed(() => {
   return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
 });
+
+function vorhabenUebernehmen(value: string | undefined): void {
+  formChanged();
+}
 </script>
