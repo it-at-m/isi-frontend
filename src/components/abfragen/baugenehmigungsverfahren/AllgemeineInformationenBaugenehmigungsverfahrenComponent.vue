@@ -148,7 +148,6 @@ import _ from "lodash";
 import AuswahlBauvorhabenDialog from "@/components/common/AuswahlBauvorhabenDialog.vue";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { createBauvorhabenDto } from "@/utils/Factories";
-import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -171,7 +170,7 @@ const isBauverfahrenDeleteable = computed(() => {
   );
 });
 const nameBauvorhaben = computed(() => {
-  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Keinem Vorhaben zugeordnet";
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "";
 });
 
 const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");
