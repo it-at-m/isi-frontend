@@ -60,6 +60,10 @@ export interface GetFlurstueckeRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
+export interface GetFlurstueckeInnerhalbUmgriffRequest {
+    multiPolygonGeometryDto: MultiPolygonGeometryDto;
+}
+
 export interface GetGemarkungenRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
@@ -184,6 +188,53 @@ export class ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandard
      */
     async getFlurstuecke(requestParameters: GetFlurstueckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoFlurstueckDto> {
         const response = await this.getFlurstueckeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getFlurstueckeInnerhalbUmgriff without sending the request
+     */
+    async getFlurstueckeInnerhalbUmgriffRequestOpts(requestParameters: GetFlurstueckeInnerhalbUmgriffRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['multiPolygonGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'multiPolygonGeometryDto',
+                'Required parameter "multiPolygonGeometryDto" was null or undefined when calling getFlurstueckeInnerhalbUmgriff().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/polygon/flurstuecke-innerhalb-umgriff`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MultiPolygonGeometryDtoToJSON(requestParameters['multiPolygonGeometryDto']),
+        };
+    }
+
+    /**
+     * Holt die Flurstücke, deren Zentroid innerhalb des Multipolygons (im Standard EPSG:4326 (WGS84)) liegt, unter Ausschluss von Straßen-Flurstücken.
+     */
+    async getFlurstueckeInnerhalbUmgriffRaw(requestParameters: GetFlurstueckeInnerhalbUmgriffRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoFlurstueckDto>> {
+        const requestOptions = await this.getFlurstueckeInnerhalbUmgriffRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Holt die Flurstücke, deren Zentroid innerhalb des Multipolygons (im Standard EPSG:4326 (WGS84)) liegt, unter Ausschluss von Straßen-Flurstücken.
+     */
+    async getFlurstueckeInnerhalbUmgriff(requestParameters: GetFlurstueckeInnerhalbUmgriffRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoFlurstueckDto> {
+        const response = await this.getFlurstueckeInnerhalbUmgriffRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

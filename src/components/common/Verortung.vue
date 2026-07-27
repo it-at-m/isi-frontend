@@ -370,8 +370,12 @@ async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
   const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const baublock of baublöcke) {
     const baublockMultiPolygon = baublockToMultiPolygon(baublock);
-    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(baublockMultiPolygon);
+    const flurstuecke = await geoApi.getFlurstueckeInnerhalbUmgriffForMultipolygon(baublockMultiPolygon);
     allFlurstueckeEai.push(...flurstuecke);
+  }
+  if (allFlurstueckeEai.length === 0) {
+    toast.warning("Es wurden keine Flurstücke innerhalb des gewählten Baublocks gefunden.");
+    return;
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
@@ -390,8 +394,12 @@ async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<vo
   const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const bebauungsplan of bebauungsplaene) {
     const bebauungsplanMultiPolygon = bebauungsplanToMultiPolygon(bebauungsplan);
-    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(bebauungsplanMultiPolygon);
+    const flurstuecke = await geoApi.getFlurstueckeInnerhalbUmgriffForMultipolygon(bebauungsplanMultiPolygon);
     allFlurstueckeEai.push(...flurstuecke);
+  }
+  if (allFlurstueckeEai.length === 0) {
+    toast.warning("Es wurden keine Flurstücke innerhalb des gewählten Bebauungsplan-Umgriffs gefunden.");
+    return;
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
