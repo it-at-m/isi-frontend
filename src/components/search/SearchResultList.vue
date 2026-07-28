@@ -62,12 +62,18 @@
           class="text-black"
           opacity="1"
         >
-          <v-icon
-            start
-            color="indigo-lighten-1"
-          >
-            mdi-account-hard-hat
-          </v-icon>
+          <v-tooltip location="bottom">
+            <template #activator="{ props: tooltipProps }">
+              <v-icon
+                v-bind="tooltipProps"
+                start
+                color="indigo-lighten-1"
+              >
+                mdi-account-hard-hat
+              </v-icon>
+            </template>
+            <span>{{ "Vorhaben" }}</span>
+          </v-tooltip>
           {{ castToBauvorhabenSearchResultDto(item).nameVorhaben }}
         </v-card-subtitle>
         <v-card-text>
@@ -95,12 +101,18 @@
           class="text-black"
           opacity="1"
         >
-          <v-icon
-            start
-            color="red-lighten-1"
-          >
-            mdi-home
-          </v-icon>
+          <v-tooltip location="bottom">
+            <template #activator="{ props: tooltipProps }">
+              <v-icon
+                v-bind="tooltipProps"
+                start
+                color="red-lighten-1"
+              >
+                mdi-home
+              </v-icon>
+            </template>
+            <span>{{ "Infrastruktureinrichtung" }}</span>
+          </v-tooltip>
           {{ castToInfrastruktureinrichtungSearchResultDto(item).nameEinrichtung }}
         </v-card-subtitle>
         <v-card-text>

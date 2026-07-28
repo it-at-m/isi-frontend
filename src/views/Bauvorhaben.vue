@@ -8,19 +8,33 @@
               cols="12"
               sm="11"
             >
-              <v-text-field
-                id="bauvorhaben_nameVorhaben"
-                v-model.trim="bauvorhaben.nameVorhaben"
-                :rules="[pflichtfeld]"
-                maxlength="255"
-                validate-on="blur"
-                variant="underlined"
-                :readonly="!isEditable"
-                @update:model-value="formChanged"
-                :class="isEditable ? '' : 'text-grey-lighten-1'"
-              >
-                <template #label> Name des Vorhabens <span class="text-secondary">*</span> </template>
-              </v-text-field>
+              <div style="display: flex; align-items: center">
+                <v-tooltip location="bottom">
+                  <template #activator="{ props: tooltipProps }">
+                    <v-icon
+                      v-bind="tooltipProps"
+                      start
+                      color="indigo-lighten-1"
+                    >
+                      mdi-account-hard-hat
+                    </v-icon>
+                  </template>
+                  <span>{{ "Vorhaben" }}</span>
+                </v-tooltip>
+                <v-text-field
+                  id="bauvorhaben_nameVorhaben"
+                  v-model.trim="bauvorhaben.nameVorhaben"
+                  :rules="[pflichtfeld]"
+                  maxlength="255"
+                  validate-on="blur"
+                  variant="underlined"
+                  :readonly="!isEditable"
+                  @update:model-value="formChanged"
+                  :class="isEditable ? '' : 'text-grey-lighten-1'"
+                >
+                  <template #label> Name des Vorhabens <span class="text-secondary">*</span> </template>
+                </v-text-field>
+              </div>
             </v-col>
             <v-col
               cols="12"
