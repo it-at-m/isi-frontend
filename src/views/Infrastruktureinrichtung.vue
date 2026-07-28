@@ -100,18 +100,6 @@
               cols="12"
               sm="11"
             >
-              <v-tooltip location="bottom">
-                <template #activator="{ props: tooltipProps }">
-                  <v-icon
-                    v-bind="tooltipProps"
-                    start
-                    color="red-lighten-1"
-                  >
-                    mdi-home
-                  </v-icon>
-                </template>
-                <span>{{ "Infrastruktureinrichtung" }}</span>
-              </v-tooltip>
               <span
                 id="infrastruktureinrichtung_displayName"
                 class="text-h6 font-weight-bold"
