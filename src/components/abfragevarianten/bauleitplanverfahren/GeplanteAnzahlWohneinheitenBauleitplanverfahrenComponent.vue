@@ -29,7 +29,7 @@
         cols="12"
         md="4"
       >
-        <div>
+        <div class="d-flex align-center">
           <v-checkbox
             id="we_sonderwohnformen_checkbox"
             ref="weSonderwohnformenCheckbox"
@@ -37,23 +37,22 @@
             :disabled="!isEditable"
             class="mx-3"
             color="primary"
-          >
-            <template #label>
-              <span>Zusätzlich Sonderwohnformen</span>
-              <v-tooltip location="top">
-                <template #activator="{ props }">
-                  <v-icon
-                    v-bind="props"
-                    @click.stop.prevent
-                    class="ml-4"
-                  >
-                    mdi-help-circle-outline
-                  </v-icon>
-                </template>
-                <div v-html="helpTextSonderwohnform"></div>
-              </v-tooltip>
+            label="Zusätzlich Sonderwohnformen"
+            hide-details
+          />
+          <v-tooltip location="top">
+            <template #activator="{ props }">
+              <v-icon
+                v-bind="props"
+                @click.stop.prevent
+                class="ml-4"
+                :color="isEditable ? '' : 'grey-lighten-1'"
+              >
+                mdi-help-circle-outline
+              </v-icon>
             </template>
-          </v-checkbox>
+            <div v-html="helpTextSonderwohnform"></div>
+          </v-tooltip>
         </div>
       </v-col>
       <!-- Space für Platzhalter -->
