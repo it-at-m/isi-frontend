@@ -55,9 +55,9 @@
       >
         <div>
           <v-checkbox
-            id="gf_sonderwohnformen_checkbox"
-            ref="gfSonderwohnformenCheckbox"
-            v-model="abfragevariante.gfWohnenSonderwohnformen"
+            id="we_sonderwohnformen_checkbox"
+            ref="weSonderwohnformenCheckbox"
+            v-model="abfragevariante.weSonderwohnformen"
             :disabled="!isEditable"
             class="mx-3"
             color="primary"
