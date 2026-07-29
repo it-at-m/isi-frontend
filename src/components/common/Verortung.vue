@@ -379,7 +379,7 @@ async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
-    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+    (f) => `${f.properties?.gemarkung}/${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
   );
   const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
   selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
@@ -403,7 +403,7 @@ async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<vo
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
-    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+    (f) => `${f.properties?.gemarkung}/${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
   );
   const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
   selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
@@ -449,7 +449,7 @@ async function handleAcceptSelectedGeoJson(): Promise<void> {
 function adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
   const clonedMap = _.cloneDeep(selectedFlurstuecke.value);
   flurstuecke.forEach((flurstueck: FlurstueckDto) => {
-    const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+    const flurstueckNummer: string = getFlurstueckKey(flurstueck);
     const alreadySelected = clonedMap.has(flurstueckNummer);
     if (alreadySelected) {
       clonedMap.delete(flurstueckNummer);
@@ -467,10 +467,18 @@ function adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<
 function createMapForFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
   const flurstueckMap = new Map<string, FlurstueckDto>();
   flurstuecke.forEach((flurstueck: FlurstueckDto) => {
-    const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
-    flurstueckMap.set(flurstueckNummer, flurstueck);
+    flurstueckMap.set(getFlurstueckKey(flurstueck), flurstueck);
   });
   return flurstueckMap;
+}
+
+/**
+ * Ermittelt den eindeutigen Schlüssel eines Flurstücks. Da die Flurstücknummer (Zähler/Nenner) innerhalb
+ * unterschiedlicher Gemarkungen nicht eindeutig ist, wird die Gemarkungsnummer Teil des Schlüssels.
+ */
+function getFlurstueckKey(flurstueck: FlurstueckDto): string {
+  const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+  return `${flurstueck.gemarkungNummer}/${flurstueckNummer}`;
 }
 
 function createPointGeometry(latlng: LatLng): PointGeometryDto {
