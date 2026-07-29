@@ -5,16 +5,36 @@
         cols="12"
         md="4"
       >
-        <num-field
-          id="gf_wohnen_gesamt_field"
-          ref="gfWohnenGesamtField"
-          v-model="abfragevariante.gfWohnenGesamt"
-          :readonly="!isEditable"
-          class="mx-3"
-          label="Gesamt"
-          :suffix="SQUARE_METER"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
-        />
+        <v-row class="align-center">
+          <v-col>
+            <num-field
+              id="gf_wohnen_gesamt_field"
+              ref="gfWohnenGesamtField"
+              v-model="abfragevariante.gfWohnenGesamt"
+              :readonly="!isEditable"
+              class="mx-3"
+              label="Gesamt"
+              :suffix="SQUARE_METER"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
+            />
+          </v-col>
+          <v-col
+            class="pa-0"
+            cols="auto"
+          >
+            <v-tooltip location="top">
+              <template #activator="{ props }">
+                <v-icon
+                  v-bind="props"
+                  color="grey"
+                >
+                  mdi-help-circle-outline
+                </v-icon>
+              </template>
+              <div v-html="helpTextGesamtflaecheWohnen"></div>
+            </v-tooltip>
+          </v-col>
+        </v-row>
       </v-col>
       <!-- Space für Platzhalter -->
       <v-col
@@ -84,6 +104,7 @@
           label="Bestandswohnbaurecht"
           :suffix="SQUARE_METER"
           :class="isEditable ? '' : 'text-grey-lighten-1'"
+          :help="helpTextBestandwohnbaurecht"
         />
       </v-col>
       <v-col
@@ -98,15 +119,26 @@
         cols="12"
         md="4"
       >
-        <v-checkbox
-          id="gf_sonderwohnformen_checkbox"
-          ref="gfSonderwohnformenCheckbox"
-          v-model="abfragevariante.gfWohnenSonderwohnformen"
-          :disabled="!isEditable"
-          class="mx-3"
-          label="Zusätzlich Sonderwohnformen"
-          color="primary"
-        />
+        <div>
+          <v-checkbox
+            id="gf_sonderwohnformen_checkbox"
+            ref="gfSonderwohnformenCheckbox"
+            v-model="abfragevariante.gfWohnenSonderwohnformen"
+            :disabled="!isEditable"
+            class="mx-3"
+            color="primary"
+          >
+            <template #label>
+              <span>Zusätzlich Sonderwohnformen</span>
+              <v-tooltip location="top">
+                <template #activator="{ props }">
+                  <v-icon v-bind="props"> mdi-help-circle-outline </v-icon>
+                </template>
+                <div v-html="helpTextSonderwohnform"></div>
+              </v-tooltip>
+            </template>
+          </v-checkbox>
+        </div>
       </v-col>
       <!-- Space für Platzhalter -->
       <v-col
@@ -206,6 +238,11 @@ import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import {
+  helpTextBestandwohnbaurecht,
+  helpTextGesamtflaecheWohnen,
+  helpTextSonderwohnform,
+} from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;

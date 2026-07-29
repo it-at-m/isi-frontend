@@ -61,17 +61,37 @@
         cols="12"
         md="6"
       >
-        <v-select
-          id="sobon_berechnung_versorgungsquote_hort_sobon"
-          v-model="sobonBerechnung.versorgungsquoteHortSobon"
-          :disabled="!isEditableBySachbearbeitung"
-          :items="versorungsquoteHortSobon"
-          label="SoBoN-ursächliche Versorgungsquote Hort"
-          variant="underlined"
-          item-value="versorgungsquoteSobon"
-          item-title="beschreibung"
-          @update:model-value="formChanged"
-        />
+        <v-row class="align-center">
+          <v-col>
+            <v-select
+              id="sobon_berechnung_versorgungsquote_hort_sobon"
+              v-model="sobonBerechnung.versorgungsquoteHortSobon"
+              :disabled="!isEditableBySachbearbeitung"
+              :items="versorungsquoteHortSobon"
+              label="SoBoN-ursächliche Versorgungsquote Hort"
+              variant="underlined"
+              item-value="versorgungsquoteSobon"
+              item-title="beschreibung"
+              @update:model-value="formChanged"
+            />
+          </v-col>
+          <v-col
+            class="pa-0"
+            cols="auto"
+          >
+            <v-tooltip location="top">
+              <template #activator="{ props }">
+                <v-icon
+                  v-bind="props"
+                  color="primary"
+                >
+                  mdi-help-circle-outline
+                </v-icon>
+              </template>
+              <div v-html="helpTextSoBoNUrsaechlicheVersorgungsquoteHort"></div>
+            </v-tooltip>
+          </v-col>
+        </v-row>
       </v-col>
     </v-expand-transition>
 
@@ -138,6 +158,7 @@ import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
 import { LookupEntryDto, VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
+import { helpTextSoBoNUrsaechlicheVersorgungsquoteHort } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   sobonOrientierungswertJahrList: LookupEntryDto[];
