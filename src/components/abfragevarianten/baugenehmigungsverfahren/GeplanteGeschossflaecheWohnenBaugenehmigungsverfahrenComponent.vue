@@ -135,6 +135,7 @@
                   <v-icon
                     v-bind="props"
                     @click.stop.prevent
+                    class="ml-4"
                   >
                     mdi-help-circle-outline
                   </v-icon>
