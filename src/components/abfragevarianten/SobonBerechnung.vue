@@ -83,7 +83,7 @@
               <template #activator="{ props }">
                 <v-icon
                   v-bind="props"
-                  color="primary"
+                  color="grey"
                 >
                   mdi-help-circle-outline
                 </v-icon>

@@ -132,7 +132,12 @@
               <span>Zusätzlich Sonderwohnformen</span>
               <v-tooltip location="top">
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> mdi-help-circle-outline </v-icon>
+                  <v-icon
+                    v-bind="props"
+                    @click.stop.prevent
+                  >
+                    mdi-help-circle-outline
+                  </v-icon>
                 </template>
                 <div v-html="helpTextSonderwohnform"></div>
               </v-tooltip>
