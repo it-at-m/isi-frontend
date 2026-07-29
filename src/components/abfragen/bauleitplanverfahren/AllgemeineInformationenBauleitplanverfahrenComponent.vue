@@ -19,40 +19,37 @@
       </v-col>
       <v-col
         cols="12"
-        md="4"
-        class="d-flex align-center"
+        md="3"
       >
-        <span v-if="vorhabenExists">
-          <a
-            target="_blank"
-            :href="linkVorhaben"
-          >
-            {{ nameBauvorhaben }}
-          </a>
-        </span>
-        <span
-          v-else-if="isBauverfahrenEditable"
-          class="v-label text-grey-lighten"
-        >
-          {{ nameBauvorhaben }}
-        </span>
-        <span
-          v-else
-          class="v-label text-grey-lighten-1"
-        >
-          {{ nameBauvorhaben }}
-        </span>
+        <v-text-field
+          id="vorhaben_field"
+          ref="vorhabenField"
+          v-model="nameBauvorhaben"
+          :readonly="true"
+          variant="underlined"
+          label="Vorhaben"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
+        />
       </v-col>
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
         <div class="d-flex align-center ml-8">
+          <v-btn
+            id="show_bauvorhaben"
+            class="mt-3"
+            variant="plain"
+            icon="mdi-eye-outline"
+            target="_blank"
+            :disabled="!vorhabenExists"
+            :href="linkVorhaben"
+          />
           <v-btn
             id="open_auswahl_bauvorhaben"
             variant="plain"
             class="mt-3"
-            :icon="isBauverfahrenEditable ? 'mdi-pencil-outline' : 'mdi-eye-outline'"
+            icon="mdi-pencil-outline"
             :disabled="!isBauverfahrenEditable"
             @click="isAuswahlBauvorhabenDialogOpen = true"
           />
@@ -197,6 +194,7 @@
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
     v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
+    @vorhaben-uebernehmen="vorhabenUebernehmen"
   />
 </template>
 
@@ -243,7 +241,7 @@ const isBauverfahrenDeleteable = computed(() => {
   );
 });
 const nameBauvorhaben = computed(() => {
-  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Keinem Vorhaben zugeordnet";
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "";
 });
 
 const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");
@@ -326,4 +324,8 @@ const vorhabenExists = computed(() => {
 const linkVorhaben = computed(() => {
   return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
 });
+
+function vorhabenUebernehmen(value: string | undefined): void {
+  formChanged();
+}
 </script>
