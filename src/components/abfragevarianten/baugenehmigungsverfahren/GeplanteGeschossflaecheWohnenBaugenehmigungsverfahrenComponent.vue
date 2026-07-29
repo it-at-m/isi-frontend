@@ -7,32 +7,26 @@
       >
         <v-row class="align-center">
           <v-col>
-            <num-field
-              id="gf_wohnen_gesamt_field"
-              ref="gfWohnenGesamtField"
-              v-model="abfragevariante.gfWohnenGesamt"
-              :readonly="!isEditable"
-              class="mx-3"
-              label="Gesamt"
-              :suffix="SQUARE_METER"
+            <div
               :class="isEditable ? '' : 'text-grey-lighten-1'"
-            />
-          </v-col>
-          <v-col
-            class="pa-0"
-            cols="auto"
-          >
-            <v-tooltip location="top">
-              <template #activator="{ props }">
-                <v-icon
-                  v-bind="props"
-                  color="grey"
-                >
-                  mdi-help-circle-outline
-                </v-icon>
-              </template>
-              <div v-html="helpTextGesamtflaecheWohnen"></div>
-            </v-tooltip>
+              class="d-flex align-center"
+            >
+              <num-field
+                id="gf_wohnen_gesamt_field"
+                ref="gfWohnenGesamtField"
+                v-model="abfragevariante.gfWohnenGesamt"
+                :readonly="!isEditable"
+                class="mx-3"
+                label="Gesamt"
+                :suffix="SQUARE_METER"
+              />
+              <v-tooltip location="top">
+                <template #activator="{ props }">
+                  <v-icon v-bind="props"> mdi-help-circle-outline </v-icon>
+                </template>
+                <div v-html="helpTextGesamtflaecheWohnen"></div>
+              </v-tooltip>
+            </div>
           </v-col>
         </v-row>
       </v-col>
