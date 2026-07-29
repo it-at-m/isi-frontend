@@ -46,7 +46,7 @@
                 v-bind="props"
                 @click.stop.prevent
                 class="ml-4"
-                :color="isEditable ? '' : 'grey-lighten-1'"
+                :color="isEditable ? 'primary' : 'grey-lighten-1'"
               >
                 mdi-help-circle-outline
               </v-icon>

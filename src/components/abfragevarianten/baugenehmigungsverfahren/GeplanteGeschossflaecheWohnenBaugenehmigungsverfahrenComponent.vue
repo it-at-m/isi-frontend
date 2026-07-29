@@ -22,7 +22,12 @@
               />
               <v-tooltip location="top">
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> mdi-help-circle-outline </v-icon>
+                  <v-icon
+                    v-bind="props"
+                    :color="isEditable ? 'primary' : 'grey-lighten-1'"
+                  >
+                    mdi-help-circle-outline
+                  </v-icon>
                 </template>
                 <div v-html="helpTextGesamtflaecheWohnen"></div>
               </v-tooltip>
@@ -130,7 +135,7 @@
                 v-bind="props"
                 @click.stop.prevent
                 class="ml-4"
-                :color="isEditable ? '' : 'grey-lighten-1'"
+                :color="isEditable ? 'primary' : 'grey-lighten-1'"
               >
                 mdi-help-circle-outline
               </v-icon>
