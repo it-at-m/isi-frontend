@@ -7,7 +7,11 @@ export function useComponentSecurity() {
   function areDokumenteVisible(context: Context): boolean {
     switch (context) {
       case Context.ABFRAGE:
-        return security.isRoleAdminOrAbfrageerstellung.value || security.isRoleAdminOrSachbearbeitung.value;
+        return (
+          security.isRoleAdminOrAbfrageerstellung.value ||
+          security.isRoleAdminOrSachbearbeitung.value ||
+          security.isRoleAdminOrBedarfsmeldung.value
+        );
       case Context.ABFRAGEVARIANTE_SACHBEARBEITUNG:
         return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldung.value;
       case Context.BAUVORHABEN:
