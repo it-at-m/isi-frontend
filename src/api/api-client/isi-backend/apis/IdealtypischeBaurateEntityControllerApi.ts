@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelIdealtypischeBaurate,
-  IdealtypischeBaurateRequestBody,
-  PagedModelEntityModelIdealtypischeBaurate,
-} from '../models/index';
 import {
+    type EntityModelIdealtypischeBaurate,
     EntityModelIdealtypischeBaurateFromJSON,
     EntityModelIdealtypischeBaurateToJSON,
+} from '../models/EntityModelIdealtypischeBaurate';
+import {
+    type IdealtypischeBaurateRequestBody,
     IdealtypischeBaurateRequestBodyFromJSON,
     IdealtypischeBaurateRequestBodyToJSON,
+} from '../models/IdealtypischeBaurateRequestBody';
+import {
+    type PagedModelEntityModelIdealtypischeBaurate,
     PagedModelEntityModelIdealtypischeBaurateFromJSON,
     PagedModelEntityModelIdealtypischeBaurateToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelIdealtypischeBaurate';
 
 export interface DeleteItemResourceIdealtypischebaurateDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class IdealtypischeBaurateEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/idealtypischeBaurates/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

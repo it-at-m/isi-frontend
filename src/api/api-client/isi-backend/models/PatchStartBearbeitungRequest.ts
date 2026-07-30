@@ -71,11 +71,11 @@ export function PatchStartBearbeitungRequestToJSONTyped(value?: PatchStartBearbe
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return Object.assign({}, BaugenehmigungsverfahrenStartBearbeitungDtoToJSON(value), { 'artAbfrage': 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return Object.assign({}, BauleitplanverfahrenStartBearbeitungDtoToJSON(value), { 'artAbfrage': 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenStartBearbeitungDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return Object.assign({}, WeiteresVerfahrenStartBearbeitungDtoToJSON(value), { 'artAbfrage': 'WEITERES_VERFAHREN' } as const);
         default:
             return value;
     }

@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelVersorgungsquoteGruppenstaerke,
-} from '../models/index';
 import {
+    type EntityModelVersorgungsquoteGruppenstaerke,
     EntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     EntityModelVersorgungsquoteGruppenstaerkeToJSON,
-} from '../models/index';
+} from '../models/EntityModelVersorgungsquoteGruppenstaerke';
 
 export interface ExecuteSearchVersorgungsquotegruppenstaerkeGetRequest {
     infrastruktureinrichtungTyp?: ExecuteSearchVersorgungsquotegruppenstaerkeGetInfrastruktureinrichtungTypEnum;

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AdressSucheDto,
-  InformationResponseDto,
-  MuenchenAdressenDto,
-} from '../models/index';
 import {
+    type AdressSucheDto,
     AdressSucheDtoFromJSON,
     AdressSucheDtoToJSON,
+} from '../models/AdressSucheDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type MuenchenAdressenDto,
     MuenchenAdressenDtoFromJSON,
     MuenchenAdressenDtoToJSON,
-} from '../models/index';
+} from '../models/MuenchenAdressenDto';
 
 export interface GetAdressenRequest {
     adressSucheDto: AdressSucheDto;

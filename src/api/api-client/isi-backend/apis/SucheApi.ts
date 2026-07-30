@@ -12,27 +12,32 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  SearchQueryAndSortingDto,
-  SearchQueryDto,
-  SearchResultsDto,
-  SuchwortSuggestionsDto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type SearchQueryAndSortingDto,
     SearchQueryAndSortingDtoFromJSON,
     SearchQueryAndSortingDtoToJSON,
+} from '../models/SearchQueryAndSortingDto';
+import {
+    type SearchQueryDto,
     SearchQueryDtoFromJSON,
     SearchQueryDtoToJSON,
+} from '../models/SearchQueryDto';
+import {
+    type SearchResultsDto,
     SearchResultsDtoFromJSON,
     SearchResultsDtoToJSON,
+} from '../models/SearchResultsDto';
+import {
+    type SuchwortSuggestionsDto,
     SuchwortSuggestionsDtoFromJSON,
     SuchwortSuggestionsDtoToJSON,
-} from '../models/index';
+} from '../models/SuchwortSuggestionsDto';
 
 export interface SearchForEntitiesRequest {
     searchQueryAndSortingDto: SearchQueryAndSortingDto;

@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AbfrageSearchResultDto,
-  BauvorhabenDto,
-  InformationResponseDto,
-  InfrastruktureinrichtungSearchResultDto,
-} from '../models/index';
 import {
+    type AbfrageSearchResultDto,
     AbfrageSearchResultDtoFromJSON,
     AbfrageSearchResultDtoToJSON,
+} from '../models/AbfrageSearchResultDto';
+import {
+    type BauvorhabenDto,
     BauvorhabenDtoFromJSON,
     BauvorhabenDtoToJSON,
+} from '../models/BauvorhabenDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type InfrastruktureinrichtungSearchResultDto,
     InfrastruktureinrichtungSearchResultDtoFromJSON,
     InfrastruktureinrichtungSearchResultDtoToJSON,
-} from '../models/index';
+} from '../models/InfrastruktureinrichtungSearchResultDto';
 
 export interface CreateBauvorhabenRequest {
     bauvorhabenDto: BauvorhabenDto;
@@ -133,7 +136,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhaben/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -177,7 +180,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhaben/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -222,7 +225,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhaben/referenced/abfragen/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -269,7 +272,7 @@ export class BauvorhabenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhaben/referenced/infrastruktureinrichtung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
