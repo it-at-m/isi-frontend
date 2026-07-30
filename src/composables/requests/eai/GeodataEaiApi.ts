@@ -12,7 +12,6 @@ import type {
   FeatureDtoStadtbezirkDto,
   GetStadtbezirkeRequest,
   UnifyRequest,
-  GetFlurstueckeRequest,
   GetFlurstueckeInnerhalbUmgriffRequest,
   GetStadtbezirke1Request,
   GetGemarkungen1Request,
@@ -171,18 +170,6 @@ export function useGeodataEaiApi() {
     }
   }
 
-  async function getFlurstueckeForMultipolygon(
-    multiPolygon: MultiPolygonGeometryDto,
-  ): Promise<Array<FeatureDtoFlurstueckDto>> {
-    const request: GetFlurstueckeRequest = { multiPolygonGeometryDto: multiPolygon };
-    try {
-      const response = await polygonApi.getFlurstuecke(request, RequestUtils.getPOSTConfig());
-      return response.features ?? [];
-    } catch (error) {
-      throw handleErrorInternal(error);
-    }
-  }
-
   async function getFlurstueckeInnerhalbUmgriffForMultipolygon(
     multiPolygon: MultiPolygonGeometryDto,
   ): Promise<Array<FeatureDtoFlurstueckDto>> {
@@ -309,7 +296,6 @@ export function useGeodataEaiApi() {
     getKitaplanungsbereicheForPoint,
     getGrundschulsprengelForPoint,
     getMittelschulsprengelForPoint,
-    getFlurstueckeForMultipolygon,
     getFlurstueckeInnerhalbUmgriffForMultipolygon,
     getStadtbezirkeForMultipolygon,
     getGemarkungenForMultipolygon,
