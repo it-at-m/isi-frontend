@@ -10,13 +10,15 @@ Name | Type
 `artDokument` | [LookupListDto](LookupListDto.md)
 `artAbfrage` | [LookupListDto](LookupListDto.md)
 `sobonVerfahrensgrundsaetzeJahr` | [LookupListDto](LookupListDto.md)
-`standVerfahrenBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahrenBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahrenWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
-`standVerfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstandWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
+`verfahrensstand` | [LookupListDto](LookupListDto.md)
 `statusAbfrage` | [LookupListDto](LookupListDto.md)
-`wesentlicheRechtsgrundlageBauleitplanverfahren` | [LookupListDto](LookupListDto.md)
+`planart` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlageBaugenehmigungsverfahren` | [LookupListDto](LookupListDto.md)
+`wesentlicheRechtsgrundlageWeiteresVerfahren` | [LookupListDto](LookupListDto.md)
+`wesentlicheRechtsgrundlageBauvorhaben` | [LookupListDto](LookupListDto.md)
 `wesentlicheRechtsgrundlage` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzung` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzungBauvorhaben` | [LookupListDto](LookupListDto.md)
@@ -27,6 +29,7 @@ Name | Type
 `artGsNachmittagBetreuung` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahr` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahrWithoutStandortabfrage` | [LookupListDto](LookupListDto.md)
+`bauratenmethodik` | [LookupListDto](LookupListDto.md)
 
 ## Example
 
@@ -39,13 +42,15 @@ const example = {
   "artDokument": null,
   "artAbfrage": null,
   "sobonVerfahrensgrundsaetzeJahr": null,
-  "standVerfahrenBauleitplanverfahren": null,
-  "standVerfahrenBaugenehmigungsverfahren": null,
-  "standVerfahrenWeiteresVerfahren": null,
-  "standVerfahren": null,
+  "verfahrensstandBauleitplanverfahren": null,
+  "verfahrensstandBaugenehmigungsverfahren": null,
+  "verfahrensstandWeiteresVerfahren": null,
+  "verfahrensstand": null,
   "statusAbfrage": null,
-  "wesentlicheRechtsgrundlageBauleitplanverfahren": null,
+  "planart": null,
   "wesentlicheRechtsgrundlageBaugenehmigungsverfahren": null,
+  "wesentlicheRechtsgrundlageWeiteresVerfahren": null,
+  "wesentlicheRechtsgrundlageBauvorhaben": null,
   "wesentlicheRechtsgrundlage": null,
   "artBaulicheNutzung": null,
   "artBaulicheNutzungBauvorhaben": null,
@@ -56,6 +61,7 @@ const example = {
   "artGsNachmittagBetreuung": null,
   "sobonOrientierungswertJahr": null,
   "sobonOrientierungswertJahrWithoutStandortabfrage": null,
+  "bauratenmethodik": null,
 } satisfies LookupListsDto
 
 console.log(example)

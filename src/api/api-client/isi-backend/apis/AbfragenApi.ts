@@ -12,30 +12,37 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  PatchEinpflegenBedarfsmeldungRequest,
-  PatchEinplanungBedarfeRequest,
-  PatchStartBearbeitungRequest,
-  Save201Response,
-  SaveRequest,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type PatchEinpflegenBedarfsmeldungRequest,
     PatchEinpflegenBedarfsmeldungRequestFromJSON,
     PatchEinpflegenBedarfsmeldungRequestToJSON,
+} from '../models/PatchEinpflegenBedarfsmeldungRequest';
+import {
+    type PatchEinplanungBedarfeRequest,
     PatchEinplanungBedarfeRequestFromJSON,
     PatchEinplanungBedarfeRequestToJSON,
+} from '../models/PatchEinplanungBedarfeRequest';
+import {
+    type PatchStartBearbeitungRequest,
     PatchStartBearbeitungRequestFromJSON,
     PatchStartBearbeitungRequestToJSON,
+} from '../models/PatchStartBearbeitungRequest';
+import {
+    type Save201Response,
     Save201ResponseFromJSON,
     Save201ResponseToJSON,
+} from '../models/Save201Response';
+import {
+    type SaveRequest,
     SaveRequestFromJSON,
     SaveRequestToJSON,
-} from '../models/index';
+} from '../models/SaveRequest';
 
 export interface DeleteByIdRequest {
     id: string;
@@ -91,7 +98,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -135,7 +142,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -189,7 +196,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/angelegt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -244,7 +251,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/in-bearbeitung-fachreferate/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -299,7 +306,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/bedarfsmeldung-erfolgt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -354,7 +361,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/in-bearbeitung-sachbearbeitung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

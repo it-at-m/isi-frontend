@@ -66,13 +66,13 @@ export interface MittelschulsprengelDto {
      * @type {number}
      * @memberof MittelschulsprengelDto
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
     /**
      * 
      * @type {number}
      * @memberof MittelschulsprengelDto
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
 }
 
 /**
@@ -99,8 +99,8 @@ export function MittelschulsprengelDtoFromJSONTyped(json: any, ignoreDiscriminat
         'verbundnummer': json['verbundnummer'] == null ? undefined : json['verbundnummer'],
         'verbundname': json['verbundname'] == null ? undefined : json['verbundname'],
         'ebeneBedeutung': json['ebeneBedeutung'] == null ? undefined : json['ebeneBedeutung'],
-        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
         'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
+        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
     };
 }
 
@@ -122,8 +122,8 @@ export function MittelschulsprengelDtoToJSONTyped(value?: MittelschulsprengelDto
         'verbundnummer': value['verbundnummer'],
         'verbundname': value['verbundname'],
         'ebeneBedeutung': value['ebeneBedeutung'],
-        'xcoordinate': value['xcoordinate'],
         'ycoordinate': value['ycoordinate'],
+        'xcoordinate': value['xcoordinate'],
     };
 }
 

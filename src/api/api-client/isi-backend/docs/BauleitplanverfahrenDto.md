@@ -9,13 +9,16 @@ Name | Type
 `bebauungsplannummer` | string
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `sobonJahr` | string
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `fristBearbeitung` | Date
 `mitzeichnungBeschlussentwurf` | [UncertainBoolean](UncertainBoolean.md)
+`start42Verfahren` | Date
+`start42VerfahrenDatumUnbekannt` | boolean
+`bauratenmethodikVorbelegung` | string
 `abfragevariantenBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 `abfragevariantenSachbearbeitungBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 
@@ -29,13 +32,16 @@ const example = {
   "bebauungsplannummer": null,
   "sobonRelevant": null,
   "sobonJahr": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "adresse": null,
   "verortung": null,
   "dokumente": null,
   "fristBearbeitung": null,
   "mitzeichnungBeschlussentwurf": null,
+  "start42Verfahren": null,
+  "start42VerfahrenDatumUnbekannt": null,
+  "bauratenmethodikVorbelegung": null,
   "abfragevariantenBauleitplanverfahren": null,
   "abfragevariantenSachbearbeitungBauleitplanverfahren": null,
 } satisfies BauleitplanverfahrenDto

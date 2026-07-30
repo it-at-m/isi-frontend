@@ -96,16 +96,16 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
     sobonJahr?: BauleitplanverfahrenDtoSobonJahrEnum;
     /**
      * 
-     * @type {BauleitplanverfahrenDtoStandVerfahrenEnum}
+     * @type {BauleitplanverfahrenDtoVerfahrensstandEnum}
      * @memberof BauleitplanverfahrenDto
      */
-    standVerfahren?: BauleitplanverfahrenDtoStandVerfahrenEnum;
+    verfahrensstand?: BauleitplanverfahrenDtoVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof BauleitplanverfahrenDto
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {AdresseDto}
@@ -136,6 +136,24 @@ export interface BauleitplanverfahrenDto extends AbfrageDto {
      * @memberof BauleitplanverfahrenDto
      */
     mitzeichnungBeschlussentwurf?: UncertainBoolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof BauleitplanverfahrenDto
+     */
+    start42Verfahren?: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BauleitplanverfahrenDto
+     */
+    start42VerfahrenDatumUnbekannt?: boolean;
+    /**
+     * 
+     * @type {BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum}
+     * @memberof BauleitplanverfahrenDto
+     */
+    bauratenmethodikVorbelegung?: BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum;
     /**
      * 
      * @type {Array<AbfragevarianteBauleitplanverfahrenDto>}
@@ -169,28 +187,36 @@ export type BauleitplanverfahrenDtoSobonJahrEnum = typeof BauleitplanverfahrenDt
 /**
  * @export
  */
-export const BauleitplanverfahrenDtoStandVerfahrenEnum = {
+export const BauleitplanverfahrenDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BauleitplanverfahrenDtoStandVerfahrenEnum = typeof BauleitplanverfahrenDtoStandVerfahrenEnum[keyof typeof BauleitplanverfahrenDtoStandVerfahrenEnum];
+export type BauleitplanverfahrenDtoVerfahrensstandEnum = typeof BauleitplanverfahrenDtoVerfahrensstandEnum[keyof typeof BauleitplanverfahrenDtoVerfahrensstandEnum];
+
+/**
+ * @export
+ */
+export const BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum = {
+    AlteBauratenmethodik: 'ALTE_BAURATENMETHODIK',
+    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK'
+} as const;
+export type BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum = typeof BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum[keyof typeof BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum];
 
 
 /**
@@ -219,13 +245,16 @@ export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscrimina
         'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
         'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
         'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
         'mitzeichnungBeschlussentwurf': json['mitzeichnungBeschlussentwurf'] == null ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
+        'start42Verfahren': json['start42Verfahren'] == null ? undefined : (new Date(json['start42Verfahren'])),
+        'start42VerfahrenDatumUnbekannt': json['start42VerfahrenDatumUnbekannt'] == null ? undefined : json['start42VerfahrenDatumUnbekannt'],
+        'bauratenmethodikVorbelegung': json['bauratenmethodikVorbelegung'] == null ? undefined : json['bauratenmethodikVorbelegung'],
         'abfragevariantenBauleitplanverfahren': json['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': json['abfragevariantenSachbearbeitungBauleitplanverfahren'] == null ? undefined : ((json['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
     };
@@ -252,13 +281,16 @@ export function BauleitplanverfahrenDtoToJSONTyped(value?: BauleitplanverfahrenD
         'bebauungsplannummer': value['bebauungsplannummer'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
         'sobonJahr': value['sobonJahr'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
         'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
         'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
+        'start42Verfahren': value['start42Verfahren'] == null ? value['start42Verfahren'] : value['start42Verfahren'].toISOString().substring(0,10),
+        'start42VerfahrenDatumUnbekannt': value['start42VerfahrenDatumUnbekannt'],
+        'bauratenmethodikVorbelegung': value['bauratenmethodikVorbelegung'],
         'abfragevariantenBauleitplanverfahren': value['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
         'abfragevariantenSachbearbeitungBauleitplanverfahren': value['abfragevariantenSachbearbeitungBauleitplanverfahren'] == null ? undefined : ((value['abfragevariantenSachbearbeitungBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),
     };

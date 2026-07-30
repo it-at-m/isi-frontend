@@ -24,8 +24,8 @@ Name | Type
 `infrastruktureinrichtungTyp` | string
 `bauvorhabenName` | string
 `resultType` | string
-`verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 `adresseJson` | [Adresse](Adresse.md)
+`verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 
 ## Example
 
@@ -52,8 +52,8 @@ const example = {
   "infrastruktureinrichtungTyp": null,
   "bauvorhabenName": null,
   "resultType": null,
-  "verortungPointJson": null,
   "adresseJson": null,
+  "verortungPointJson": null,
 } satisfies InfrastruktureinrichtungRequestBody
 
 console.log(example)

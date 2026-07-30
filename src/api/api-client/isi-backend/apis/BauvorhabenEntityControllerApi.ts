@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  BauvorhabenRequestBody,
-  EntityModelBauvorhaben,
-  PagedModelEntityModelBauvorhaben,
-} from '../models/index';
 import {
+    type BauvorhabenRequestBody,
     BauvorhabenRequestBodyFromJSON,
     BauvorhabenRequestBodyToJSON,
+} from '../models/BauvorhabenRequestBody';
+import {
+    type EntityModelBauvorhaben,
     EntityModelBauvorhabenFromJSON,
     EntityModelBauvorhabenToJSON,
+} from '../models/EntityModelBauvorhaben';
+import {
+    type PagedModelEntityModelBauvorhaben,
     PagedModelEntityModelBauvorhabenFromJSON,
     PagedModelEntityModelBauvorhabenToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelBauvorhaben';
 
 export interface DeleteItemResourceBauvorhabenDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class BauvorhabenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

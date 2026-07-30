@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  JsonSchema,
-  RepresentationModelObject,
-} from '../models/index';
 import {
+    type JsonSchema,
     JsonSchemaFromJSON,
     JsonSchemaToJSON,
+} from '../models/JsonSchema';
+import {
+    type RepresentationModelObject,
     RepresentationModelObjectFromJSON,
     RepresentationModelObjectToJSON,
-} from '../models/index';
+} from '../models/RepresentationModelObject';
 
 /**
  * 

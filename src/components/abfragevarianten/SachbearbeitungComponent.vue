@@ -26,28 +26,24 @@
           </v-slide-y-reverse-transition>
         </v-col>
         <v-col
+          v-if="isBauleitplanverfahren"
           cols="12"
           md="6"
         >
-          <v-slide-y-reverse-transition>
-            <v-select
-              v-if="
-                isBauleitplanverfahrenOrWeiteresVerfahren &&
-                abfragevarianteSachbearbeitung.sobonBerechnung?.isASobonBerechnung
-              "
-              id="sobon_orientierungswert_jahr_sobonursaechlich_dropdown"
-              ref="sobonOrientierungswertJahrSobonursaechlichDropdown"
-              v-model="abfragevarianteSachbearbeitung.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich"
-              variant="underlined"
-              :disabled="!isEditableBySachbearbeitung"
-              :items="sobonOrientierungswertJahrList"
-              item-value="key"
-              item-title="value"
-              @update:model-value="formChanged"
-            >
-              <template #label> Jahr für SoBoN-Orientierungwerte (SoBoN-ursächlich) </template>
-            </v-select>
-          </v-slide-y-reverse-transition>
+          <v-select
+            id="bauratenmethodik_dropdown"
+            ref="bauratenmethodikDropdown"
+            v-model="abfragevarianteSachbearbeitung.sobonBerechnung.bauratenmethodik"
+            variant="underlined"
+            :disabled="!isEditableBySachbearbeitung"
+            :items="lookupStore.bauratenmethodik"
+            item-value="key"
+            item-title="value"
+            :rules="bauratenmethodikValidator"
+            @update:model-value="formChanged"
+          >
+            <template #label> Bauratenmethodik <span class="text-secondary">*</span> </template>
+          </v-select>
         </v-col>
         <!-- Das Datum wird in ISI 2.0 relevant werden
         <v-col
@@ -69,6 +65,7 @@
       <sobon-berechnung
         v-if="isBauleitplanverfahrenOrWeiteresVerfahren"
         v-model="abfragevarianteSachbearbeitung.sobonBerechnung"
+        :sobon-orientierungswert-jahr-list="sobonOrientierungswertJahrList"
       ></sobon-berechnung>
       <v-row>
         <v-col
@@ -83,7 +80,7 @@
             variant="underlined"
             auto-grow
             rows="1"
-            maxlength="1000"
+            maxlength="2000"
             @update:model-value="formChanged"
             :class="isEditableBySachbearbeitung ? '' : 'text-grey-lighten-1'"
           />
@@ -212,6 +209,20 @@ const isBauleitplanverfahrenOrWeiteresVerfahren = computed(() => {
     abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
       AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.WeiteresVerfahren
   );
+});
+
+const isBauleitplanverfahren = computed(() => {
+  return (
+    abfragevarianteSachbearbeitung.value?.artAbfragevariante ===
+    AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren
+  );
+});
+
+const bauratenmethodikValidator = computed(() => {
+  if (isEditableBySachbearbeitung.value) {
+    return [pflichtfeld] as ValidationRule[];
+  }
+  return [];
 });
 
 withDefaults(defineProps<Props>(), { isEditable: false });

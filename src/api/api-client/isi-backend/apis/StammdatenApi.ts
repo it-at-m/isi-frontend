@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models/index';
+} from '../models/InformationResponseDto';
 
 export interface ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest {
     file: Blob;

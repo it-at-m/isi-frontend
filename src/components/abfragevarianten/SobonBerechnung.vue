@@ -22,16 +22,18 @@
         md="6"
       >
         <v-select
-          id="sobon_berechnung_versorgungsquote_hort_sobon"
-          v-model="sobonBerechnung.versorgungsquoteHortSobon"
-          :disabled="!isEditableBySachbearbeitung"
-          :items="versorungsquoteHortSobon"
-          label="SoBoN-ursächliche Versorgungsquote Hort"
+          id="sobon_orientierungswert_jahr_sobonursaechlich_dropdown"
+          ref="sobonOrientierungswertJahrSobonursaechlichDropdown"
+          v-model="sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich"
           variant="underlined"
-          item-value="versorgungsquoteSobon"
-          item-title="beschreibung"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="sobonOrientierungswertJahrList"
+          item-value="key"
+          item-title="value"
           @update:model-value="formChanged"
-        />
+        >
+          <template #label> Jahr für SoBoN-Orientierungwerte (SoBoN-ursächlich) </template>
+        </v-select>
       </v-col>
     </v-expand-transition>
     <v-expand-transition>
@@ -49,6 +51,25 @@
           variant="underlined"
           item-title="foerdermix.bezeichnung"
           return-object
+          @update:model-value="formChanged"
+        />
+      </v-col>
+    </v-expand-transition>
+    <v-expand-transition>
+      <v-col
+        v-if="sobonBerechnung.isASobonBerechnung"
+        cols="12"
+        md="6"
+      >
+        <v-select
+          id="sobon_berechnung_versorgungsquote_hort_sobon"
+          v-model="sobonBerechnung.versorgungsquoteHortSobon"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="versorungsquoteHortSobon"
+          label="SoBoN-ursächliche Versorgungsquote Hort"
+          variant="underlined"
+          item-value="versorgungsquoteSobon"
+          item-title="beschreibung"
           @update:model-value="formChanged"
         />
       </v-col>
@@ -115,8 +136,14 @@ import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
-import { VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
+
+interface Props {
+  sobonOrientierungswertJahrList: LookupEntryDto[];
+}
+
+defineProps<Props>();
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();
@@ -126,6 +153,8 @@ const stammdatenStore = useStammdatenStore();
 const { getVersorgungsquoteHortSobon } = useVersorgungsquoteSobonHortApi();
 const versorungsquoteHortSobon = ref<VersorgungsquoteSobonHortDto[] | undefined>(undefined);
 const { handleError } = useErrorHandler();
+
+let stammdaten: FoerdermixStammDto[] = [];
 
 onMounted(() => {
   setGroupedStammdatenList();
@@ -142,14 +171,12 @@ const sobonFoerdermix = computed({
     return undefined;
   },
   set(item: FoerdermixStammModel | undefined) {
-    sobonBerechnung.value.sobonFoerdermix = mapFoerdermixStammModelToFoerderMix(item as FoerdermixStammModel);
+    sobonBerechnung.value.sobonFoerdermix = item ? mapFoerdermixStammModelToFoerderMix(item) : undefined;
   },
 });
 
 const foerderarten = computed(() => {
-  if (!_.isNil(sobonBerechnung.value.sobonFoerdermix)) {
-    return sobonBerechnung.value.sobonFoerdermix.foerderarten;
-  }
+  return sobonBerechnung.value.sobonFoerdermix?.foerderarten ?? [];
 });
 
 const isFreieEingabe = computed(() => {
@@ -161,21 +188,52 @@ const isFreieEingabe = computed(() => {
 
 const gesamtsumme = computed(() => {
   if (!_.isNil(sobonBerechnung.value.sobonFoerdermix)) {
-    const foerdermixe = new FoerdermixModel(sobonBerechnung.value.sobonFoerdermix);
-    return addiereAnteile(foerdermixe);
+    return addiereAnteile(new FoerdermixModel(sobonBerechnung.value.sobonFoerdermix));
   }
   return 0;
 });
 
 function setGroupedStammdatenList(): void {
-  let stammdaten = stammdatenStore.foerdermixStammdaten;
-  stammdaten = stammdaten.filter((fm: FoerdermixStammDto) => {
-    return (
-      fm.foerdermix.bezeichnung !== FoerdermixStammdaten.PRIVATE_FLAECHE &&
-      fm.foerdermix.bezeichnung !== FoerdermixStammdaten.STAEDTISCHE_FLAECHE
-    );
-  });
-  groupedStammdaten.value = _.sortBy(stammdaten, ["foerdermix.bezeichnungJahr"]);
+  stammdaten = stammdatenStore.foerdermixStammdaten;
+  groupedStammdaten.value = getFilteredAndSortedStammdaten();
+  handleOldEntries();
+}
+
+function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
+  return _.sortBy(
+    stammdaten.filter(
+      (stammdatum) =>
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.PRIVATE_FLAECHE &&
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.STAEDTISCHE_FLAECHE &&
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BESCHLUSS_40 &&
+        stammdatum.foerdermix.bezeichnung !== FoerdermixStammdaten.BEFREIUNG_31_BAUGB,
+    ),
+    ["foerdermix.bezeichnungJahr"],
+  );
+}
+
+function handleOldEntries(): void {
+  if (isOldEntry()) {
+    const matchedDatum = findMatchingStammdatum();
+    if (matchedDatum) {
+      groupedStammdaten.value.push(matchedDatum);
+      groupedStammdaten.value = _.sortBy(groupedStammdaten.value, ["foerdermix.bezeichnungJahr"]);
+    }
+  }
+}
+
+function findMatchingStammdatum(): FoerdermixStammDto | undefined {
+  return stammdaten.find(
+    (stammdatum) =>
+      stammdatum.foerdermix.bezeichnung === sobonBerechnung.value.sobonFoerdermix?.bezeichnung &&
+      stammdatum.foerdermix.bezeichnungJahr === sobonBerechnung.value.sobonFoerdermix?.bezeichnungJahr,
+  );
+}
+
+function isOldEntry(): boolean {
+  return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
+    sobonBerechnung.value.sobonFoerdermix?.bezeichnung as FoerdermixStammdaten,
+  );
 }
 
 function sobonBerechnungChanged(): void {

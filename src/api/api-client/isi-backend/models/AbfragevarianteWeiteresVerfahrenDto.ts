@@ -117,6 +117,12 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
+     * @type {string}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
@@ -174,12 +180,6 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @type {number}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
-    gfWohnenGenossenschaftlichesWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenDto
-     */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
@@ -223,12 +223,6 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     weSeniorinnenWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenDto
-     */
-    weGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
@@ -297,10 +291,22 @@ export interface AbfragevarianteWeiteresVerfahrenDto {
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
     /**
      * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    bedarfsmeldungDokumenteFachreferate?: Array<DokumentDto>;
+    /**
+     * 
      * @type {Array<BedarfsmeldungDto>}
      * @memberof AbfragevarianteWeiteresVerfahrenDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
+    /**
+     * 
+     * @type {Array<DokumentDto>}
+     * @memberof AbfragevarianteWeiteresVerfahrenDto
+     */
+    bedarfsmeldungDokumenteAbfrageersteller?: Array<DokumentDto>;
     /**
      * 
      * @type {Array<BauabschnittDto>}
@@ -391,16 +397,17 @@ export type AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum = typeof A
  * @export
  */
 export const AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum = {
-    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
-    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    BeplanterBereichParagraph30: 'BEPLANTER_BEREICH_PARAGRAPH_30',
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
+    BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
+    FreieEingabe: 'FREIE_EINGABE',
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
+    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
+    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum];
 
@@ -446,6 +453,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': json['gfWohnenBaurechtlichGenehmigt'] == null ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
@@ -455,7 +463,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'] == null ? undefined : json['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
         'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
@@ -464,7 +471,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'weSonderwohnformen': json['weSonderwohnformen'] == null ? undefined : json['weSonderwohnformen'],
         'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'] == null ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
@@ -476,7 +482,9 @@ export function AbfragevarianteWeiteresVerfahrenDtoFromJSONTyped(json: any, igno
         'bauratendateiInputBasis': json['bauratendateiInputBasis'] == null ? undefined : BauratendateiInputDtoFromJSON(json['bauratendateiInputBasis']),
         'bauratendateiInput': json['bauratendateiInput'] == null ? undefined : ((json['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoFromJSON)),
         'bedarfsmeldungFachreferate': json['bedarfsmeldungFachreferate'] == null ? undefined : ((json['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bedarfsmeldungDokumenteFachreferate': json['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((json['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoFromJSON)),
         'bedarfsmeldungAbfrageersteller': json['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoFromJSON)),
+        'bedarfsmeldungDokumenteAbfrageersteller': json['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((json['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoFromJSON)),
         'bauabschnitte': json['bauabschnitte'] == null ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'] == null ? undefined : json['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': json['ausgeloesterBedarfMitversorgungImBplanKita'] == null ? undefined : json['ausgeloesterBedarfMitversorgungImBplanKita'],
@@ -513,6 +521,7 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(value?: Abfrageva
         'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': value['gfWohnenBaurechtlichGenehmigt'],
@@ -522,7 +531,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(value?: Abfrageva
         'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': value['gfAnmerkung'],
         'weGesamt': value['weGesamt'],
@@ -531,7 +539,6 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(value?: Abfrageva
         'weSonderwohnformen': value['weSonderwohnformen'],
         'weStudentischesWohnen': value['weStudentischesWohnen'],
         'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': value['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
@@ -543,7 +550,9 @@ export function AbfragevarianteWeiteresVerfahrenDtoToJSONTyped(value?: Abfrageva
         'bauratendateiInputBasis': BauratendateiInputDtoToJSON(value['bauratendateiInputBasis']),
         'bauratendateiInput': value['bauratendateiInput'] == null ? undefined : ((value['bauratendateiInput'] as Array<any>).map(BauratendateiInputDtoToJSON)),
         'bedarfsmeldungFachreferate': value['bedarfsmeldungFachreferate'] == null ? undefined : ((value['bedarfsmeldungFachreferate'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bedarfsmeldungDokumenteFachreferate': value['bedarfsmeldungDokumenteFachreferate'] == null ? undefined : ((value['bedarfsmeldungDokumenteFachreferate'] as Array<any>).map(DokumentDtoToJSON)),
         'bedarfsmeldungAbfrageersteller': value['bedarfsmeldungAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungAbfrageersteller'] as Array<any>).map(BedarfsmeldungDtoToJSON)),
+        'bedarfsmeldungDokumenteAbfrageersteller': value['bedarfsmeldungDokumenteAbfrageersteller'] == null ? undefined : ((value['bedarfsmeldungDokumenteAbfrageersteller'] as Array<any>).map(DokumentDtoToJSON)),
         'bauabschnitte': value['bauabschnitte'] == null ? undefined : ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),
         'ausgeloesterBedarfImBaugebietBeruecksichtigenKita': value['ausgeloesterBedarfImBaugebietBeruecksichtigenKita'],
         'ausgeloesterBedarfMitversorgungImBplanKita': value['ausgeloesterBedarfMitversorgungImBplanKita'],

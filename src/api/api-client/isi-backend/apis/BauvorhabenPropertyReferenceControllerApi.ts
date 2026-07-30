@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CollectionModelDokument,
-  CollectionModelObject,
-  EntityModelAbfragevariante,
-} from '../models/index';
 import {
+    type CollectionModelDokument,
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
+} from '../models/CollectionModelDokument';
+import {
+    type CollectionModelObject,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
+} from '../models/CollectionModelObject';
+import {
+    type EntityModelAbfragevariante,
     EntityModelAbfragevarianteFromJSON,
     EntityModelAbfragevarianteToJSON,
-} from '../models/index';
+} from '../models/EntityModelAbfragevariante';
 
 export interface CreatePropertyReferenceBauvorhabenPatchRequest {
     id: string;
@@ -115,7 +116,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -177,7 +178,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -239,7 +240,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -303,7 +304,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -358,7 +359,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -402,7 +403,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -453,8 +454,8 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -505,8 +506,8 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -550,7 +551,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -602,8 +603,8 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -648,7 +649,7 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -700,8 +701,8 @@ export class BauvorhabenPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/bauvorhabens/{id}/relevanteAbfragevariante/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,

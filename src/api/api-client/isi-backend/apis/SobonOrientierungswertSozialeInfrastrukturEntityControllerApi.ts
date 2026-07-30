@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelSobonOrientierungswertSozialeInfrastruktur,
-  PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur,
-  SobonOrientierungswertSozialeInfrastrukturRequestBody,
-} from '../models/index';
 import {
+    type EntityModelSobonOrientierungswertSozialeInfrastruktur,
     EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON,
     EntityModelSobonOrientierungswertSozialeInfrastrukturToJSON,
+} from '../models/EntityModelSobonOrientierungswertSozialeInfrastruktur';
+import {
+    type PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur,
     PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON,
     PagedModelEntityModelSobonOrientierungswertSozialeInfrastrukturToJSON,
+} from '../models/PagedModelEntityModelSobonOrientierungswertSozialeInfrastruktur';
+import {
+    type SobonOrientierungswertSozialeInfrastrukturRequestBody,
     SobonOrientierungswertSozialeInfrastrukturRequestBodyFromJSON,
     SobonOrientierungswertSozialeInfrastrukturRequestBodyToJSON,
-} from '../models/index';
+} from '../models/SobonOrientierungswertSozialeInfrastrukturRequestBody';
 
 export interface DeleteItemResourceSobonorientierungswertsozialeinfrastrukturDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class SobonOrientierungswertSozialeInfrastrukturEntityControllerApi exten
 
 
         let urlPath = `/sobonOrientierungswertSozialeInfrastrukturs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

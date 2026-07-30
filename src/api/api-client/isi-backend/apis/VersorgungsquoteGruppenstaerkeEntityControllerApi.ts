@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelVersorgungsquoteGruppenstaerke,
-  PagedModelEntityModelVersorgungsquoteGruppenstaerke,
-  VersorgungsquoteGruppenstaerkeRequestBody,
-} from '../models/index';
 import {
+    type EntityModelVersorgungsquoteGruppenstaerke,
     EntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     EntityModelVersorgungsquoteGruppenstaerkeToJSON,
+} from '../models/EntityModelVersorgungsquoteGruppenstaerke';
+import {
+    type PagedModelEntityModelVersorgungsquoteGruppenstaerke,
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeFromJSON,
     PagedModelEntityModelVersorgungsquoteGruppenstaerkeToJSON,
+} from '../models/PagedModelEntityModelVersorgungsquoteGruppenstaerke';
+import {
+    type VersorgungsquoteGruppenstaerkeRequestBody,
     VersorgungsquoteGruppenstaerkeRequestBodyFromJSON,
     VersorgungsquoteGruppenstaerkeRequestBodyToJSON,
-} from '../models/index';
+} from '../models/VersorgungsquoteGruppenstaerkeRequestBody';
 
 export interface DeleteItemResourceVersorgungsquotegruppenstaerkeDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
 
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
 
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
 
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class VersorgungsquoteGruppenstaerkeEntityControllerApi extends runtime.B
 
 
         let urlPath = `/versorgungsquoteGruppenstaerkes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

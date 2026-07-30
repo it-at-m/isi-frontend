@@ -86,10 +86,10 @@ export interface AbfrageSearchResultDto extends SearchResultDto {
     fristBearbeitung?: Date;
     /**
      * 
-     * @type {AbfrageSearchResultDtoStandVerfahrenEnum}
+     * @type {AbfrageSearchResultDtoVerfahrensstandEnum}
      * @memberof AbfrageSearchResultDto
      */
-    standVerfahren?: AbfrageSearchResultDtoStandVerfahrenEnum;
+    verfahrensstand?: AbfrageSearchResultDtoVerfahrensstandEnum;
     /**
      * 
      * @type {Date}
@@ -119,28 +119,27 @@ export type AbfrageSearchResultDtoArtAbfrageEnum = typeof AbfrageSearchResultDto
 /**
  * @export
  */
-export const AbfrageSearchResultDtoStandVerfahrenEnum = {
+export const AbfrageSearchResultDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type AbfrageSearchResultDtoStandVerfahrenEnum = typeof AbfrageSearchResultDtoStandVerfahrenEnum[keyof typeof AbfrageSearchResultDtoStandVerfahrenEnum];
+export type AbfrageSearchResultDtoVerfahrensstandEnum = typeof AbfrageSearchResultDtoVerfahrensstandEnum[keyof typeof AbfrageSearchResultDtoVerfahrensstandEnum];
 
 
 /**
@@ -172,7 +171,7 @@ export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminat
         'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': json['statusAbfrage'] == null ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
         'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
         'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
         'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
     };
@@ -202,7 +201,7 @@ export function AbfrageSearchResultDtoToJSONTyped(value?: AbfrageSearchResultDto
         'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value['statusAbfrage']),
         'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
-        'standVerfahren': value['standVerfahren'],
+        'verfahrensstand': value['verfahrensstand'],
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
         'bauvorhaben': value['bauvorhaben'],
     };

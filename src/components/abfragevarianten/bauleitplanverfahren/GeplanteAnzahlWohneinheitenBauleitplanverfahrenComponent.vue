@@ -35,7 +35,7 @@
           v-model="abfragevariante.weSonderwohnformen"
           :disabled="!isEditable"
           class="mx-3"
-          label="Sonderwohnformen"
+          label="Zusätzlich Sonderwohnformen"
           color="primary"
         />
       </v-col>
@@ -54,14 +54,8 @@
         >
           <v-col
             cols="12"
-            md="2"
+            md="4"
           />
-          <v-col
-            cols="12"
-            md="2"
-          >
-            <span>davon</span>
-          </v-col>
           <v-col
             cols="12"
             md="4"
@@ -103,22 +97,7 @@
           />
           <v-col
             cols="12"
-            md="4"
-          >
-            <num-field
-              id="we_genossenschaftswohnungen_field"
-              ref="weGenossenschaftswohnungenField"
-              v-model="abfragevariante.weGenossenschaftlichesWohnen"
-              :readonly="!isEditable"
-              class="mx-3"
-              label="Genossenschaftswohnungen"
-              integer
-              :class="isEditable ? '' : 'text-grey-lighten-1'"
-            />
-          </v-col>
-          <v-col
-            cols="12"
-            md="4"
+            md="8"
           >
             <num-field
               id="we_nicht_infrastruktur_relevante_wohnungen_field"
@@ -175,7 +154,6 @@ function clearSonderwohnformData(): void {
   if (!abfragevariante.value.weSonderwohnformen) {
     abfragevariante.value.weStudentischesWohnen = undefined;
     abfragevariante.value.weSeniorinnenWohnen = undefined;
-    abfragevariante.value.weGenossenschaftlichesWohnen = undefined;
     abfragevariante.value.weWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }

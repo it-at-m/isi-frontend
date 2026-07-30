@@ -74,10 +74,10 @@ export interface BauvorhabenSearchResultDto extends SearchResultDto {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {BauvorhabenSearchResultDtoStandVerfahrenEnum}
+     * @type {BauvorhabenSearchResultDtoVerfahrensstandEnum}
      * @memberof BauvorhabenSearchResultDto
      */
-    standVerfahren?: BauvorhabenSearchResultDtoStandVerfahrenEnum;
+    verfahrensstand?: BauvorhabenSearchResultDtoVerfahrensstandEnum;
     /**
      * 
      * @type {MultiPolygonGeometryDto}
@@ -90,28 +90,27 @@ export interface BauvorhabenSearchResultDto extends SearchResultDto {
 /**
  * @export
  */
-export const BauvorhabenSearchResultDtoStandVerfahrenEnum = {
+export const BauvorhabenSearchResultDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BauvorhabenSearchResultDtoStandVerfahrenEnum = typeof BauvorhabenSearchResultDtoStandVerfahrenEnum[keyof typeof BauvorhabenSearchResultDtoStandVerfahrenEnum];
+export type BauvorhabenSearchResultDtoVerfahrensstandEnum = typeof BauvorhabenSearchResultDtoVerfahrensstandEnum[keyof typeof BauvorhabenSearchResultDtoVerfahrensstandEnum];
 
 
 /**
@@ -141,7 +140,7 @@ export function BauvorhabenSearchResultDtoFromJSONTyped(json: any, ignoreDiscrim
         'nameVorhaben': json['nameVorhaben'] == null ? undefined : json['nameVorhaben'],
         'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
         'umgriff': json['umgriff'] == null ? undefined : MultiPolygonGeometryDtoFromJSON(json['umgriff']),
     };
 }
@@ -168,7 +167,7 @@ export function BauvorhabenSearchResultDtoToJSONTyped(value?: BauvorhabenSearchR
         'nameVorhaben': value['nameVorhaben'],
         'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkDtoToJSON)),
         'grundstuecksgroesse': value['grundstuecksgroesse'],
-        'standVerfahren': value['standVerfahren'],
+        'verfahrensstand': value['verfahrensstand'],
         'umgriff': MultiPolygonGeometryDtoToJSON(value['umgriff']),
     };
 }

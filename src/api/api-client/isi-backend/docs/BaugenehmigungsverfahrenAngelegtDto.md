@@ -8,8 +8,8 @@ Name | Type
 ------------ | -------------
 `aktenzeichenProLbk` | string
 `bebauungsplannummer` | string
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
@@ -25,8 +25,8 @@ import type { BaugenehmigungsverfahrenAngelegtDto } from ''
 const example = {
   "aktenzeichenProLbk": null,
   "bebauungsplannummer": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "adresse": null,
   "verortung": null,
   "dokumente": null,

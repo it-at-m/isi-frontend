@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  MultiPolygonGeometryDto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoToJSON,
-} from '../models/index';
+} from '../models/MultiPolygonGeometryDto';
 
 export interface UnifyRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;

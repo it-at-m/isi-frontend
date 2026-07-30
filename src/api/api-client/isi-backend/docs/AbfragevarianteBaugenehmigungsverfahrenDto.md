@@ -15,6 +15,7 @@ Name | Type
 `name` | string
 `wesentlicheRechtsgrundlage` | Array&lt;string&gt;
 `wesentlicheRechtsgrundlageFreieEingabe` | string
+`wesentlicheRechtsgrundlageAngabenZurBefreiung` | string
 `realisierungVon` | number
 `gfWohnenGesamt` | number
 `gfWohnenBaurechtlichGenehmigt` | number
@@ -23,7 +24,6 @@ Name | Type
 `gfWohnenSonderwohnformen` | boolean
 `gfWohnenStudentischesWohnen` | number
 `gfWohnenSeniorinnenWohnen` | number
-`gfWohnenGenossenschaftlichesWohnen` | number
 `gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `gfAnmerkung` | string
 `weGesamt` | number
@@ -32,7 +32,6 @@ Name | Type
 `weSonderwohnformen` | boolean
 `weStudentischesWohnen` | number
 `weSeniorinnenWohnen` | number
-`weGenossenschaftlichesWohnen` | number
 `weWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `weAnmerkung` | string
 `sobonOrientierungswertJahrPlanungsursaechlich` | string
@@ -43,7 +42,9 @@ Name | Type
 `bauratendateiInputBasis` | [BauratendateiInputDto](BauratendateiInputDto.md)
 `bauratendateiInput` | [Array&lt;BauratendateiInputDto&gt;](BauratendateiInputDto.md)
 `bedarfsmeldungFachreferate` | [Array&lt;BedarfsmeldungDto&gt;](BedarfsmeldungDto.md)
+`bedarfsmeldungDokumenteFachreferate` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `bedarfsmeldungAbfrageersteller` | [Array&lt;BedarfsmeldungDto&gt;](BedarfsmeldungDto.md)
+`bedarfsmeldungDokumenteAbfrageersteller` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 `bauabschnitte` | [Array&lt;BauabschnittDto&gt;](BauabschnittDto.md)
 `ausgeloesterBedarfImBaugebietBeruecksichtigenKita` | boolean
 `ausgeloesterBedarfMitversorgungImBplanKita` | boolean
@@ -73,6 +74,7 @@ const example = {
   "name": null,
   "wesentlicheRechtsgrundlage": null,
   "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "wesentlicheRechtsgrundlageAngabenZurBefreiung": null,
   "realisierungVon": null,
   "gfWohnenGesamt": null,
   "gfWohnenBaurechtlichGenehmigt": null,
@@ -81,7 +83,6 @@ const example = {
   "gfWohnenSonderwohnformen": null,
   "gfWohnenStudentischesWohnen": null,
   "gfWohnenSeniorinnenWohnen": null,
-  "gfWohnenGenossenschaftlichesWohnen": null,
   "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "gfAnmerkung": null,
   "weGesamt": null,
@@ -90,7 +91,6 @@ const example = {
   "weSonderwohnformen": null,
   "weStudentischesWohnen": null,
   "weSeniorinnenWohnen": null,
-  "weGenossenschaftlichesWohnen": null,
   "weWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "weAnmerkung": null,
   "sobonOrientierungswertJahrPlanungsursaechlich": null,
@@ -101,7 +101,9 @@ const example = {
   "bauratendateiInputBasis": null,
   "bauratendateiInput": null,
   "bedarfsmeldungFachreferate": null,
+  "bedarfsmeldungDokumenteFachreferate": null,
   "bedarfsmeldungAbfrageersteller": null,
+  "bedarfsmeldungDokumenteAbfrageersteller": null,
   "bauabschnitte": null,
   "ausgeloesterBedarfImBaugebietBeruecksichtigenKita": null,
   "ausgeloesterBedarfMitversorgungImBplanKita": null,

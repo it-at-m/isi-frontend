@@ -12,42 +12,75 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FeatureCollectionDtoFeatureDtoBezirksteilDto,
-  FeatureCollectionDtoFeatureDtoFlurstueckDto,
-  FeatureCollectionDtoFeatureDtoGemarkungDto,
-  FeatureCollectionDtoFeatureDtoGrundschulsprengelDto,
-  FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto,
-  FeatureCollectionDtoFeatureDtoMittelschulsprengelDto,
-  FeatureCollectionDtoFeatureDtoStadtbezirkDto,
-  FeatureCollectionDtoFeatureDtoViertelDto,
-  InformationResponseDto,
-  PointGeometryDto,
-} from '../models/index';
 import {
+    type FeatureCollectionDtoFeatureDtoBaublockDto,
+    FeatureCollectionDtoFeatureDtoBaublockDtoFromJSON,
+    FeatureCollectionDtoFeatureDtoBaublockDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoBaublockDto';
+import {
+    type FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto,
+    FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoFromJSON,
+    FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto';
+import {
+    type FeatureCollectionDtoFeatureDtoBezirksteilDto,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoBezirksteilDto';
+import {
+    type FeatureCollectionDtoFeatureDtoFlurstueckDto,
     FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON,
     FeatureCollectionDtoFeatureDtoFlurstueckDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoFlurstueckDto';
+import {
+    type FeatureCollectionDtoFeatureDtoGemarkungDto,
     FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON,
     FeatureCollectionDtoFeatureDtoGemarkungDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoGemarkungDto';
+import {
+    type FeatureCollectionDtoFeatureDtoGrundschulsprengelDto,
     FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto';
+import {
+    type FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto,
     FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON,
     FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto';
+import {
+    type FeatureCollectionDtoFeatureDtoMittelschulsprengelDto,
     FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto';
+import {
+    type FeatureCollectionDtoFeatureDtoStadtbezirkDto,
     FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON,
     FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoStadtbezirkDto';
+import {
+    type FeatureCollectionDtoFeatureDtoViertelDto,
     FeatureCollectionDtoFeatureDtoViertelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoViertelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoViertelDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type PointGeometryDto,
     PointGeometryDtoFromJSON,
     PointGeometryDtoToJSON,
-} from '../models/index';
+} from '../models/PointGeometryDto';
+
+export interface GetBaubloeckeRequest {
+    pointGeometryDto: PointGeometryDto;
+}
+
+export interface GetBebauungsplaeneRequest {
+    pointGeometryDto: PointGeometryDto;
+}
 
 export interface GetBezirksteile1Request {
     pointGeometryDto: PointGeometryDto;
@@ -85,6 +118,100 @@ export interface GetViertel1Request {
  * 
  */
 export class ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for getBaubloecke without sending the request
+     */
+    async getBaubloeckeRequestOpts(requestParameters: GetBaubloeckeRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBaubloecke().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/point/baubloecke`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
+        };
+    }
+
+    /**
+     * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBaubloeckeRaw(requestParameters: GetBaubloeckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBaublockDto>> {
+        const requestOptions = await this.getBaubloeckeRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBaublockDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBaubloecke(requestParameters: GetBaubloeckeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBaublockDto> {
+        const response = await this.getBaubloeckeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getBebauungsplaene without sending the request
+     */
+    async getBebauungsplaeneRequestOpts(requestParameters: GetBebauungsplaeneRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['pointGeometryDto'] == null) {
+            throw new runtime.RequiredError(
+                'pointGeometryDto',
+                'Required parameter "pointGeometryDto" was null or undefined when calling getBebauungsplaene().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/point/bebauungsplaene`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PointGeometryDtoToJSON(requestParameters['pointGeometryDto']),
+        };
+    }
+
+    /**
+     * Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBebauungsplaeneRaw(requestParameters: GetBebauungsplaeneRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto>> {
+        const requestOptions = await this.getBebauungsplaeneRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.
+     */
+    async getBebauungsplaene(requestParameters: GetBebauungsplaeneRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto> {
+        const response = await this.getBebauungsplaeneRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for getBezirksteile1 without sending the request

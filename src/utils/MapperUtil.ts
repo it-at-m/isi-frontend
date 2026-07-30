@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -29,6 +29,7 @@ import type {
   AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto,
   AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto,
   AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto,
+  AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum,
@@ -68,8 +69,8 @@ export function mapToBauleitplanverfahrenAngelegt(
       abfragevariantenNr: abfragevariante.abfragevariantenNr,
       name: abfragevariante.name,
       satzungsbeschluss: abfragevariante.satzungsbeschluss,
-      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
-      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      planart: abfragevariante.planart,
+      planartFreieEingabe: abfragevariante.planartFreieEingabe,
       realisierungVon: abfragevariante.realisierungVon,
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
@@ -77,7 +78,6 @@ export function mapToBauleitplanverfahrenAngelegt(
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
       gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
       gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -85,7 +85,6 @@ export function mapToBauleitplanverfahrenAngelegt(
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -104,13 +103,15 @@ export function mapToBauleitplanverfahrenAngelegt(
     bebauungsplannummer: bauleitplanverfahrenDto.bebauungsplannummer,
     sobonRelevant: bauleitplanverfahrenDto.sobonRelevant,
     sobonJahr: bauleitplanverfahrenDto.sobonJahr,
-    standVerfahren: bauleitplanverfahrenDto.standVerfahren,
-    standVerfahrenFreieEingabe: bauleitplanverfahrenDto.standVerfahrenFreieEingabe,
+    verfahrensstand: bauleitplanverfahrenDto.verfahrensstand,
+    verfahrensstandFreieEingabe: bauleitplanverfahrenDto.verfahrensstandFreieEingabe,
     adresse: bauleitplanverfahrenDto.adresse,
     verortung: bauleitplanverfahrenDto.verortung,
     dokumente: bauleitplanverfahrenDto.dokumente,
     fristBearbeitung: bauleitplanverfahrenDto.fristBearbeitung,
     mitzeichnungBeschlussentwurf: bauleitplanverfahrenDto.mitzeichnungBeschlussentwurf,
+    start42Verfahren: bauleitplanverfahrenDto.start42Verfahren,
+    start42VerfahrenDatumUnbekannt: bauleitplanverfahrenDto.start42VerfahrenDatumUnbekannt,
     abfragevariantenBauleitplanverfahren: abfragevarianten,
   } as BauleitplanverfahrenAngelegtDto;
 }
@@ -129,6 +130,7 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
         name: abfragevariante.name,
         wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
         wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+        wesentlicheRechtsgrundlageAngabenZurBefreiung: abfragevariante.wesentlicheRechtsgrundlageAngabenZurBefreiung,
         realisierungVon: abfragevariante.realisierungVon,
         gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
         gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
@@ -137,7 +139,6 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
         gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
         gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
         gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-        gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
         gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
           abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
         gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -147,7 +148,6 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
         weSonderwohnformen: abfragevariante.weSonderwohnformen,
         weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
         weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-        weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
         weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
         weAnmerkung: abfragevariante.weAnmerkung,
         bauabschnitte: abfragevariante.bauabschnitte,
@@ -166,8 +166,8 @@ export function mapToBaugenehmigungsverfahrenAngelegt(
     // BaugenehmigungsverfahrenAngelegtDto
     aktenzeichenProLbk: baugenehmigungsverfahrenDto.aktenzeichenProLbk,
     bebauungsplannummer: baugenehmigungsverfahrenDto.bebauungsplannummer,
-    standVerfahren: baugenehmigungsverfahrenDto.standVerfahren,
-    standVerfahrenFreieEingabe: baugenehmigungsverfahrenDto.standVerfahrenFreieEingabe,
+    verfahrensstand: baugenehmigungsverfahrenDto.verfahrensstand,
+    verfahrensstandFreieEingabe: baugenehmigungsverfahrenDto.verfahrensstandFreieEingabe,
     adresse: baugenehmigungsverfahrenDto.adresse,
     verortung: baugenehmigungsverfahrenDto.verortung,
     dokumente: baugenehmigungsverfahrenDto.dokumente,
@@ -189,6 +189,7 @@ export function mapToWeiteresVerfahrenAngelegt(
       satzungsbeschluss: abfragevariante.satzungsbeschluss,
       wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
       wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      wesentlicheRechtsgrundlageAngabenZurBefreiung: abfragevariante.wesentlicheRechtsgrundlageAngabenZurBefreiung,
       realisierungVon: abfragevariante.realisierungVon,
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
@@ -198,7 +199,6 @@ export function mapToWeiteresVerfahrenAngelegt(
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
       gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
       gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -208,7 +208,6 @@ export function mapToWeiteresVerfahrenAngelegt(
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -228,8 +227,8 @@ export function mapToWeiteresVerfahrenAngelegt(
     bebauungsplannummer: weiteresVerfahrenDto.bebauungsplannummer,
     sobonRelevant: weiteresVerfahrenDto.sobonRelevant,
     sobonJahr: weiteresVerfahrenDto.sobonJahr,
-    standVerfahren: weiteresVerfahrenDto.standVerfahren,
-    standVerfahrenFreieEingabe: weiteresVerfahrenDto.standVerfahrenFreieEingabe,
+    verfahrensstand: weiteresVerfahrenDto.verfahrensstand,
+    verfahrensstandFreieEingabe: weiteresVerfahrenDto.verfahrensstandFreieEingabe,
     adresse: weiteresVerfahrenDto.adresse,
     verortung: weiteresVerfahrenDto.verortung,
     dokumente: weiteresVerfahrenDto.dokumente,
@@ -311,8 +310,8 @@ export function mapToAbfragevarianteBauleitplanverfahrenStartBearbeitungDto(
       abfragevariantenNr: abfragevariante.abfragevariantenNr,
       name: abfragevariante.name,
       satzungsbeschluss: abfragevariante.satzungsbeschluss,
-      wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
-      wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      planart: abfragevariante.planart,
+      planartFreieEingabe: abfragevariante.planartFreieEingabe,
       realisierungVon: abfragevariante.realisierungVon,
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenSobonUrsaechlich: abfragevariante.gfWohnenSobonUrsaechlich,
@@ -320,7 +319,6 @@ export function mapToAbfragevarianteBauleitplanverfahrenStartBearbeitungDto(
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
       gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
       gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -328,7 +326,6 @@ export function mapToAbfragevarianteBauleitplanverfahrenStartBearbeitungDto(
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -357,6 +354,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto(
       name: abfragevariante.name,
       wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
       wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      wesentlicheRechtsgrundlageAngabenZurBefreiung: abfragevariante.wesentlicheRechtsgrundlageAngabenZurBefreiung,
       realisierungVon: abfragevariante.realisierungVon,
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
@@ -365,7 +363,6 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto(
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
       gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
       gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -375,7 +372,6 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto(
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -404,6 +400,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenStartBearbeitungDto(
       satzungsbeschluss: abfragevariante.satzungsbeschluss,
       wesentlicheRechtsgrundlage: abfragevariante.wesentlicheRechtsgrundlage,
       wesentlicheRechtsgrundlageFreieEingabe: abfragevariante.wesentlicheRechtsgrundlageFreieEingabe,
+      wesentlicheRechtsgrundlageAngabenZurBefreiung: abfragevariante.wesentlicheRechtsgrundlageAngabenZurBefreiung,
       realisierungVon: abfragevariante.realisierungVon,
       gfWohnenGesamt: abfragevariante.gfWohnenGesamt,
       gfWohnenBaurechtlichGenehmigt: abfragevariante.gfWohnenBaurechtlichGenehmigt,
@@ -413,7 +410,6 @@ export function mapToAbfragevarianteWeiteresVerfahrenStartBearbeitungDto(
       gfWohnenSonderwohnformen: abfragevariante.gfWohnenSonderwohnformen,
       gfWohnenStudentischesWohnen: abfragevariante.gfWohnenStudentischesWohnen,
       gfWohnenSeniorinnenWohnen: abfragevariante.gfWohnenSeniorinnenWohnen,
-      gfWohnenGenossenschaftlichesWohnen: abfragevariante.gfWohnenGenossenschaftlichesWohnen,
       gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen:
         abfragevariante.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen,
       gfAnmerkung: abfragevariante.gfAnmerkung,
@@ -423,7 +419,6 @@ export function mapToAbfragevarianteWeiteresVerfahrenStartBearbeitungDto(
       weSonderwohnformen: abfragevariante.weSonderwohnformen,
       weStudentischesWohnen: abfragevariante.weStudentischesWohnen,
       weSeniorinnenWohnen: abfragevariante.weSeniorinnenWohnen,
-      weGenossenschaftlichesWohnen: abfragevariante.weGenossenschaftlichesWohnen,
       weWeiteresNichtInfrastrukturrelevantesWohnen: abfragevariante.weWeiteresNichtInfrastrukturrelevantesWohnen,
       weAnmerkung: abfragevariante.weAnmerkung,
       bauabschnitte: abfragevariante.bauabschnitte,
@@ -554,6 +549,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldung
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -582,6 +578,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmel
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -610,6 +607,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungFachreferate: abfragevariante.bedarfsmeldungFachreferate,
+      bedarfsmeldungDokumenteFachreferate: abfragevariante.bedarfsmeldungDokumenteFachreferate,
       anmerkungFachreferate: abfragevariante.anmerkungFachreferate,
       ausgeloesterBedarfImBaugebietBeruecksichtigenKita:
         abfragevariante.ausgeloesterBedarfImBaugebietBeruecksichtigenKita,
@@ -638,6 +636,7 @@ export function mapToAbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto;
   });
@@ -652,6 +651,7 @@ export function mapToAbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto;
   });
@@ -666,6 +666,7 @@ export function mapToAbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto(
       version: abfragevariante.version,
       artAbfragevariante: abfragevariante.artAbfragevariante,
       bedarfsmeldungAbfrageersteller: abfragevariante.bedarfsmeldungAbfrageersteller,
+      bedarfsmeldungDokumenteAbfrageersteller: abfragevariante.bedarfsmeldungDokumenteAbfrageersteller,
       anmerkungAbfrageersteller: abfragevariante.anmerkungAbfrageersteller,
     } as AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto;
   });
@@ -716,11 +717,33 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
  * @returns Die bereinigte Kopie.
  */
-export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(value: T): T {
+export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
+  value: T,
+  options?: { includeSachbearbeitungVarianten?: boolean },
+): T {
   const copy = _.cloneDeep(value);
+  if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
+    sanitizeAbfragevariantenSachbearbeitung(copy);
+  }
   sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
+}
+/*
+ * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Abfragevariante Nr. 1.x) übernommen werden,
+ * nicht aber die der Sachbearbeitung (Abfragevariante Nr. 2.x)
+ */
+function sanitizeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value: T): T {
+  if (value.statusAbfrage === StatusAbfrage.StartBearbeitung) {
+    if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
+      (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
+      (value as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = [];
+    } else if (value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren) {
+      (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren = [];
+    }
+  }
+  return value;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -756,7 +779,9 @@ const sanitizationMap = new Map<string, unknown>([
   ["bauratendateiInputBasis", undefined],
   ["bauratendateiInput", []],
   ["bedarfsmeldungFachreferate", []],
+  ["bedarfsmeldungDokumenteFachreferate", []],
   ["bedarfsmeldungAbfrageersteller", []],
+  ["bedarfsmeldungDokumenteAbfrageersteller", []],
   ["anmerkungFachreferate", undefined],
   ["anmerkungAbfrageersteller", undefined],
   ["ausgeloesterBedarfImBaugebietBeruecksichtigenKita", false],

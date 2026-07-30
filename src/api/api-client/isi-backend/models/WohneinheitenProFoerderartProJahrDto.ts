@@ -24,19 +24,19 @@ export interface WohneinheitenProFoerderartProJahrDto {
      * @type {string}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    foerderart?: string;
+    foerderart?: string | null;
     /**
      * 
      * @type {string}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    jahr?: string;
+    jahr?: string | null;
     /**
      * 
      * @type {number}
      * @memberof WohneinheitenProFoerderartProJahrDto
      */
-    wohneinheiten?: number;
+    wohneinheiten?: number | null;
 }
 
 /**
@@ -56,9 +56,9 @@ export function WohneinheitenProFoerderartProJahrDtoFromJSONTyped(json: any, ign
     }
     return {
         
-        'foerderart': json['foerderart'] == null ? undefined : json['foerderart'],
-        'jahr': json['jahr'] == null ? undefined : json['jahr'],
-        'wohneinheiten': json['wohneinheiten'] == null ? undefined : json['wohneinheiten'],
+        'foerderart': json['foerderart'] === undefined ? undefined : json['foerderart'] === null ? null : json['foerderart'],
+        'jahr': json['jahr'] === undefined ? undefined : json['jahr'] === null ? null : json['jahr'],
+        'wohneinheiten': json['wohneinheiten'] === undefined ? undefined : json['wohneinheiten'] === null ? null : json['wohneinheiten'],
     };
 }
 

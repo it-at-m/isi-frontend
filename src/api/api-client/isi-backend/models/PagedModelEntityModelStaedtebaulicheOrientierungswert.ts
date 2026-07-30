@@ -58,7 +58,7 @@ export interface PagedModelEntityModelStaedtebaulicheOrientierungswert {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelStaedtebaulicheOrientierungswert
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**
@@ -80,7 +80,7 @@ export function PagedModelEntityModelStaedtebaulicheOrientierungswertFromJSONTyp
         
         'embedded': json['_embedded'] == null ? undefined : PagedModelEntityModelStaedtebaulicheOrientierungswertEmbeddedFromJSON(json['_embedded']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
-        'page': json['page'] == null ? undefined : PageMetadataFromJSON(json['page']),
+        'page': json['page'] === undefined ? undefined : json['page'] === null ? null : PageMetadataFromJSON(json['page']),
     };
 }
 
