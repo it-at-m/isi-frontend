@@ -83,7 +83,7 @@
               <template #activator="{ props }">
                 <v-icon
                   v-bind="props"
-                  color="primary"
+                  :color="isEditableBySachbearbeitung ? 'primary' : 'grey-lighten-1'"
                 >
                   mdi-help-circle-outline
                 </v-icon>
