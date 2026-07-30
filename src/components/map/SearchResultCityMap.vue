@@ -22,6 +22,7 @@ import {
   AbfrageSearchResultDtoVerfahrensstandEnum,
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
   LookupEntryDto,
+  InfrastruktureinrichtungSearchResultDtoStatusEnum,
 } from "@/api/api-client/isi-backend";
 import type { Feature, MultiPolygon, Point } from "geojson";
 import L, { type GeoJSONOptions, Layer } from "leaflet";
@@ -39,6 +40,7 @@ type EntityFeature = Feature<
     id: string;
     name: string;
     infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
+    statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
     zugehoerigesBauvorhaben: string | undefined;
     artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
@@ -49,6 +51,7 @@ const router = useRouter();
 const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -93,6 +96,12 @@ const geoJsonOptions: GeoJSONOptions = {
         tooltipLines.push("Vorhaben: Kein zugehöriges Vorhaben");
       }
 
+      console.log(`Feature: ${feature.properties.statusInfrastruktureinrichtung}`);
+      console.log(`List: ${statusInfrastruktureinrichtungList.value}`);
+      tooltipLines.push(
+        `Status: ${getLookupValue(feature.properties.statusInfrastruktureinrichtung, statusInfrastruktureinrichtungList.value)}`,
+      );
+
       contentTooltip = tooltipLines.join("<br>");
     }
     if (feature.geometry.type === "Point") {
@@ -136,6 +145,7 @@ const geoJson = computed(() => {
     let name: string | undefined;
     let coordinate: Wgs84Dto | undefined;
     let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
+    let statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
     let zugehoerigesBauvorhaben: string | undefined;
     let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     let verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
@@ -155,6 +165,7 @@ const geoJson = computed(() => {
       name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
       coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
       infrastruktureinrichtungTyp = (result as InfrastruktureinrichtungSearchResultDto).infrastruktureinrichtungTyp;
+      statusInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).status;
       zugehoerigesBauvorhaben = (result as InfrastruktureinrichtungSearchResultDto).zugehoerigesBauvorhaben;
     }
 
@@ -167,6 +178,7 @@ const geoJson = computed(() => {
           id,
           name,
           infrastruktureinrichtungTyp,
+          statusInfrastruktureinrichtung,
           zugehoerigesBauvorhaben,
           artAbfrage,
           verfahrensstand,
