@@ -30,7 +30,7 @@ Name | Type
 `filterWeGesamtBis` | number
 `filterGfWohnenGeplantVon` | number
 `filterGfWohnenGeplantBis` | number
-`filterStandVerfahren` | Array&lt;string&gt;
+`filterVerfahrensstand` | Array&lt;string&gt;
 `filterInfrastruktureinrichtungStatus` | Array&lt;string&gt;
 `page` | number
 `pageSize` | number
@@ -68,7 +68,7 @@ const example = {
   "filterWeGesamtBis": null,
   "filterGfWohnenGeplantVon": null,
   "filterGfWohnenGeplantBis": null,
-  "filterStandVerfahren": null,
+  "filterVerfahrensstand": null,
   "filterInfrastruktureinrichtungStatus": null,
   "page": null,
   "pageSize": null,

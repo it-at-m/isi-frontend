@@ -57,6 +57,7 @@
         ref="Foerdermix"
         v-model="baurate.foerdermix"
         :is-editable="isEditable"
+        :is-baugenehmigungsverfahren="isBaugenehmigungsverfahren"
       />
     </v-row>
     <v-row>
@@ -103,9 +104,10 @@ interface Props {
   baugebiet?: BaugebietDto;
   abfragevariante?: AbfragevarianteBauleitplanverfahrenDto;
   isEditable?: boolean;
+  isBaugenehmigungsverfahren?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isBaugenehmigungsverfahren: false });
 const baurate = defineModel<BaurateModel>({ required: true });
 const toast = useToast();
 

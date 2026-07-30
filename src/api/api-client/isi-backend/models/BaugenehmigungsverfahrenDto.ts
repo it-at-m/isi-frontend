@@ -83,16 +83,16 @@ export interface BaugenehmigungsverfahrenDto extends AbfrageDto {
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {BaugenehmigungsverfahrenDtoStandVerfahrenEnum}
+     * @type {BaugenehmigungsverfahrenDtoVerfahrensstandEnum}
      * @memberof BaugenehmigungsverfahrenDto
      */
-    standVerfahren?: BaugenehmigungsverfahrenDtoStandVerfahrenEnum;
+    verfahrensstand?: BaugenehmigungsverfahrenDtoVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof BaugenehmigungsverfahrenDto
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {AdresseDto}
@@ -135,28 +135,27 @@ export interface BaugenehmigungsverfahrenDto extends AbfrageDto {
 /**
  * @export
  */
-export const BaugenehmigungsverfahrenDtoStandVerfahrenEnum = {
+export const BaugenehmigungsverfahrenDtoVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type BaugenehmigungsverfahrenDtoStandVerfahrenEnum = typeof BaugenehmigungsverfahrenDtoStandVerfahrenEnum[keyof typeof BaugenehmigungsverfahrenDtoStandVerfahrenEnum];
+export type BaugenehmigungsverfahrenDtoVerfahrensstandEnum = typeof BaugenehmigungsverfahrenDtoVerfahrensstandEnum[keyof typeof BaugenehmigungsverfahrenDtoVerfahrensstandEnum];
 
 
 /**
@@ -184,8 +183,8 @@ export function BaugenehmigungsverfahrenDtoFromJSONTyped(json: any, ignoreDiscri
         ...AbfrageDtoFromJSONTyped(json, true),
         'aktenzeichenProLbk': json['aktenzeichenProLbk'] == null ? undefined : json['aktenzeichenProLbk'],
         'bebauungsplannummer': json['bebauungsplannummer'] == null ? undefined : json['bebauungsplannummer'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
@@ -215,8 +214,8 @@ export function BaugenehmigungsverfahrenDtoToJSONTyped(value?: Baugenehmigungsve
         ...AbfrageDtoToJSONTyped(value, true),
         'aktenzeichenProLbk': value['aktenzeichenProLbk'],
         'bebauungsplannummer': value['bebauungsplannummer'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),

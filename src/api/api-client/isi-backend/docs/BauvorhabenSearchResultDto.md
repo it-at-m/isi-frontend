@@ -10,7 +10,7 @@ Name | Type
 `nameVorhaben` | string
 `stadtbezirke` | [Set&lt;StadtbezirkDto&gt;](StadtbezirkDto.md)
 `grundstuecksgroesse` | number
-`standVerfahren` | string
+`verfahrensstand` | string
 `umgriff` | [MultiPolygonGeometryDto](MultiPolygonGeometryDto.md)
 
 ## Example
@@ -24,7 +24,7 @@ const example = {
   "nameVorhaben": null,
   "stadtbezirke": null,
   "grundstuecksgroesse": null,
-  "standVerfahren": null,
+  "verfahrensstand": null,
   "umgriff": null,
 } satisfies BauvorhabenSearchResultDto
 

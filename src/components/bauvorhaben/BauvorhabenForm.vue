@@ -7,17 +7,17 @@
           md="6"
         >
           <v-select
-            id="bauvorhaben_standVerfahren_dropdown"
-            v-model="bauvorhaben.standVerfahren"
+            id="bauvorhaben_verfahrensstand_dropdown"
+            v-model="bauvorhaben.verfahrensstand"
             variant="underlined"
-            :items="lookupStore.standVerfahren"
+            :items="lookupStore.verfahrensstand"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
             @update:model-value="formChanged"
           >
-            <template #label> Stand des Verfahrens <span class="text-secondary">*</span> </template>
+            <template #label> Verfahrensstand <span class="text-secondary">*</span> </template>
           </v-select>
         </v-col>
         <v-col
@@ -26,13 +26,13 @@
         >
           <v-slide-y-reverse-transition>
             <v-text-field
-              v-if="standVerfahrenFreieEingabeVisible"
-              id="stand_verfahren_freie_eingabe_field"
-              ref="standVerfahrenFreieEingabeField"
-              v-model="bauvorhaben.standVerfahrenFreieEingabe"
+              v-if="verfahrensstandFreieEingabeVisible"
+              id="verfahrensstand_freie_eingabe_field"
+              ref="verfahrensstandFreieEingabeField"
+              v-model="bauvorhaben.verfahrensstandFreieEingabe"
               variant="underlined"
               :readonly="!isEditable"
-              label="Freie Eingabe für Stand des Verfahrens"
+              label="Freie Eingabe für Verfahrensstand"
               maxlength="1000"
               @update:model-value="formChanged"
               :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -62,7 +62,7 @@
             v-model="bauvorhaben.bauvorhabenNummer"
             variant="underlined"
             readonly
-            label="Bauvorhabennummer"
+            label="Vorhabennummer"
           />
         </v-col>
       </v-row>
@@ -80,16 +80,16 @@
       :is-editable="isEditable"
       @form-changed="formChanged"
     />
-    <field-group-card card-title="Allgemeine Informationen zum Bauvorhaben">
+    <field-group-card card-title="Allgemeine Informationen zum Vorhaben">
       <v-row>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-autocomplete
             id="bauvorhaben_wesentliche_rechtsgrundlage_dropdown"
             v-model="bauvorhaben.wesentlicheRechtsgrundlage"
-            :items="lookupStore.wesentlicheRechtsgrundlage"
+            :items="wesentlicheRechtsgrundlageBauvorhabenList"
             variant="underlined"
             item-value="key"
             item-title="value"
@@ -105,7 +105,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-slide-y-reverse-transition>
             <v-text-field
@@ -116,6 +116,25 @@
               variant="underlined"
               :readonly="!isEditable"
               label="Freie Eingabe für Wesentliche Rechtsgrundlage"
+              maxlength="1000"
+              @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
+            />
+          </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageAngabenZurBefreiungVisible"
+              id="wesentliche_rechtsgrundlage_angaben_zur_befreiung_field"
+              ref="wesentlicheRechtsgrundlageAngabenZurBefreiungField"
+              v-model="bauvorhaben.wesentlicheRechtsgrundlageAngabenZurBefreiung"
+              variant="underlined"
+              :readonly="!isEditable"
+              label="Angaben zur Befreiung für Wesentliche Rechtsgrundlage"
               maxlength="1000"
               @update:model-value="formChanged"
               :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -276,8 +295,9 @@ import {
   type FlurstueckDto,
   UncertainBoolean,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   BauvorhabenDtoArtFnpEnum,
+  AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
 } from "@/api/api-client/isi-backend";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
@@ -292,7 +312,7 @@ import Verortung from "@/components/common/Verortung.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 
 interface Props {
@@ -304,9 +324,10 @@ const componentSercurity = useComponentSecurity();
 const { formChanged } = useSaveLeave();
 const bauvorhaben = defineModel<BauvorhabenModel>({ required: true });
 const sobonJahrVisible = ref(false);
-const standVerfahrenFreieEingabeVisible = ref(false);
+const verfahrensstandFreieEingabeVisible = ref(false);
 const artFnpFreieEingabeVisible = ref(false);
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref(false);
+const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
 const grundstuecksgroesse = ref(Number.NaN);
 const nameRootFolder = "bauvorhaben";
 
@@ -358,18 +379,26 @@ watch(
       bauvorhaben.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
       wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
     }
+    if (
+      bauvorhaben.value.wesentlicheRechtsgrundlage?.includes(BauvorhabenDtoWesentlicheRechtsgrundlageEnum.Befreiung)
+    ) {
+      wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = true;
+    } else {
+      bauvorhaben.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
+      wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
+    }
   },
   { immediate: true, deep: true },
 );
 
 watch(
-  () => bauvorhaben.value.standVerfahren,
+  () => bauvorhaben.value.verfahrensstand,
   () => {
-    if (bauvorhaben.value.standVerfahren?.includes(BauvorhabenDtoStandVerfahrenEnum.FreieEingabe)) {
-      standVerfahrenFreieEingabeVisible.value = true;
+    if (bauvorhaben.value.verfahrensstand?.includes(BauvorhabenDtoVerfahrensstandEnum.FreieEingabe)) {
+      verfahrensstandFreieEingabeVisible.value = true;
     } else {
-      bauvorhaben.value.standVerfahrenFreieEingabe = undefined;
-      standVerfahrenFreieEingabeVisible.value = false;
+      bauvorhaben.value.verfahrensstandFreieEingabe = undefined;
+      verfahrensstandFreieEingabeVisible.value = false;
     }
   },
   { immediate: true },
@@ -397,4 +426,6 @@ watch(
   },
   { immediate: true, deep: true },
 );
+
+const wesentlicheRechtsgrundlageBauvorhabenList = computed(() => lookupStore.wesentlicheRechtsgrundlageBauvorhaben);
 </script>

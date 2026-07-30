@@ -10,8 +10,8 @@ Name | Type
 `stadtbezirkNummer` | string
 `name` | string
 `flaecheQm` | number
-`xcoordinate` | number
 `ycoordinate` | number
+`xcoordinate` | number
 
 ## Example
 
@@ -24,8 +24,8 @@ const example = {
   "stadtbezirkNummer": null,
   "name": null,
   "flaecheQm": null,
-  "xcoordinate": null,
   "ycoordinate": null,
+  "xcoordinate": null,
 } satisfies StadtbezirkDto
 
 console.log(example)

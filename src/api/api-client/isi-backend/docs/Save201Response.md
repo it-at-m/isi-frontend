@@ -21,8 +21,8 @@ Name | Type
 `bearbeitungshistorie` | [Array&lt;BearbeitungshistorieDto&gt;](BearbeitungshistorieDto.md)
 `aktenzeichenProLbk` | string
 `bebauungsplannummer` | string
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
@@ -32,6 +32,9 @@ Name | Type
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `sobonJahr` | string
 `mitzeichnungBeschlussentwurf` | [UncertainBoolean](UncertainBoolean.md)
+`start42Verfahren` | Date
+`start42VerfahrenDatumUnbekannt` | boolean
+`bauratenmethodikVorbelegung` | string
 `abfragevariantenBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 `abfragevariantenSachbearbeitungBauleitplanverfahren` | [Array&lt;AbfragevarianteBauleitplanverfahrenDto&gt;](AbfragevarianteBauleitplanverfahrenDto.md)
 `abfragevariantenWeiteresVerfahren` | [Array&lt;AbfragevarianteWeiteresVerfahrenDto&gt;](AbfragevarianteWeiteresVerfahrenDto.md)
@@ -59,8 +62,8 @@ const example = {
   "bearbeitungshistorie": null,
   "aktenzeichenProLbk": null,
   "bebauungsplannummer": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "adresse": null,
   "verortung": null,
   "dokumente": null,
@@ -70,6 +73,9 @@ const example = {
   "sobonRelevant": null,
   "sobonJahr": null,
   "mitzeichnungBeschlussentwurf": null,
+  "start42Verfahren": null,
+  "start42VerfahrenDatumUnbekannt": null,
+  "bauratenmethodikVorbelegung": null,
   "abfragevariantenBauleitplanverfahren": null,
   "abfragevariantenSachbearbeitungBauleitplanverfahren": null,
   "abfragevariantenWeiteresVerfahren": null,

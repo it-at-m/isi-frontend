@@ -11,13 +11,14 @@
             v-model="selectedItem"
             :disabled="!isEditable"
             :items="groupedStammdaten"
-            label="Fördermix"
             item-title="foerdermix.bezeichnung"
             return-object
             variant="underlined"
             @update:model-value="foerdermixSelected"
             @update:menu="formChanged"
-          />
+          >
+            <template #label> Fördermix<span class="text-secondary">&nbsp;*</span> </template>
+          </v-select>
         </v-col>
         <v-col
           cols="12"
@@ -76,11 +77,19 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { FoerdermixStammDto } from "@/api/api-client/isi-backend";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 
+const BGV_FOERDERMIX_WERTE = [
+  "Nachverdichtung (§34 und §35 BauGB)",
+  "Stadibau",
+  "Werkswohnungsmodell",
+  FoerdermixStammdaten.FREIE_EINGABE,
+];
+
 interface Props {
   isEditable?: boolean;
+  isBaugenehmigungsverfahren?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { isEditable: false });
+const props = withDefaults(defineProps<Props>(), { isEditable: false, isBaugenehmigungsverfahren: false });
 const foerdermix = defineModel<FoerdermixModel>({ required: true });
 const anteileFMCardTitle = "Anteile Fördermix";
 let isFreie = false;
@@ -132,6 +141,12 @@ function setGroupedStammdatenList(): void {
 }
 
 function getFilteredAndSortedStammdaten(): FoerdermixStammDto[] {
+  if (props.isBaugenehmigungsverfahren) {
+    const filtered = stammdaten.filter((stammdatum) =>
+      BGV_FOERDERMIX_WERTE.includes(stammdatum.foerdermix.bezeichnung ?? ""),
+    );
+    return _.sortBy(filtered, [(s) => BGV_FOERDERMIX_WERTE.indexOf(s.foerdermix.bezeichnung ?? "")]);
+  }
   return _.sortBy(
     stammdaten.filter(
       (stammdatum) =>
@@ -150,8 +165,12 @@ function handleOldEntries(): void {
 }
 
 function isOldEntry(): boolean {
-  return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
-    foerdermix.value.bezeichnung as FoerdermixStammdaten,
-  );
+  if (props.isBaugenehmigungsverfahren) {
+    return !BGV_FOERDERMIX_WERTE.includes(foerdermix.value.bezeichnung ?? "");
+  } else {
+    return [FoerdermixStammdaten.BESCHLUSS_40, FoerdermixStammdaten.BEFREIUNG_31_BAUGB].includes(
+      foerdermix.value.bezeichnung as FoerdermixStammdaten,
+    );
+  }
 }
 </script>

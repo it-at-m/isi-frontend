@@ -481,6 +481,60 @@
         }
       }
     },
+    "/point/bebauungsplaene": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Bebauungsplan-Umgriffe die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
+        "operationId": "getBebauungsplaene",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Bebauungsplan-Umgriffe erfolgreich abgefragt.",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto" }
+              }
+            }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/point/baubloecke": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von Punkt-Koordinaten im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Baublöcke die sich mit dem Punkt (im Standard EPSG:4326 (WGS84)) überschneiden.",
+        "operationId": "getBaubloecke",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PointGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Baublöcke erfolgreich abgefragt.",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBaublockDto" }
+              }
+            }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          }
+        }
+      }
+    },
     "/geometry/operation/union": {
       "post": {
         "tags": ["Controller für geometriespezifische Operationen im Standard EPSG:4326 (WGS84)"],
@@ -622,8 +676,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "viertelNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
@@ -653,8 +707,8 @@
           "stadtbezirkNummer": { "type": "string" },
           "name": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
@@ -730,8 +784,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto": {
@@ -792,8 +846,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoGemarkungDto": {
@@ -873,8 +927,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "bezirksteilNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoBezirksteilDto": {
@@ -895,6 +949,68 @@
             ]
           },
           "properties": { "$ref": "#/components/schemas/BezirksteilDto" }
+        }
+      },
+      "BebauungsplanUmgriffDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "ebene": { "type": "integer", "format": "int32" },
+          "nrVa": { "type": "string" },
+          "nrPlan": { "type": "string" },
+          "nr": { "type": "string" },
+          "flaecheQm": { "type": "number" },
+          "art": { "type": "string" },
+          "artBedeutung": { "type": "string" },
+          "ebeneBedeutung": { "type": "string" }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoBebauungsplanUmgriffDto" } }
+        }
+      },
+      "FeatureDtoBebauungsplanUmgriffDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "properties": { "$ref": "#/components/schemas/BebauungsplanUmgriffDto" }
+        }
+      },
+      "BaublockDto": {
+        "type": "object",
+        "properties": {
+          "objectId": { "type": "integer", "format": "int64" },
+          "blNummer": { "type": "string" },
+          "flaecheQm": { "type": "number" }
+        }
+      },
+      "FeatureCollectionDtoFeatureDtoBaublockDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "features": { "type": "array", "items": { "$ref": "#/components/schemas/FeatureDtoBaublockDto" } }
+        }
+      },
+      "FeatureDtoBaublockDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "geometry": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
+              { "$ref": "#/components/schemas/PointGeometryDto" }
+            ]
+          },
+          "properties": { "$ref": "#/components/schemas/BaublockDto" }
         }
       }
     }

@@ -23,7 +23,7 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-autocomplete
             id="wesentliche_rechtsgrundlage_dropdown"
@@ -47,7 +47,7 @@
         </v-col>
         <v-col
           cols="12"
-          md="6"
+          md="4"
         >
           <v-slide-y-reverse-transition>
             <v-text-field
@@ -57,6 +57,24 @@
               :readonly="!isEditable"
               variant="underlined"
               label="Freie Eingabe"
+              maxlength="1000"
+              @update:model-value="formChanged"
+              :class="isEditable ? '' : 'text-grey-lighten-1'"
+            />
+          </v-slide-y-reverse-transition>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-slide-y-reverse-transition>
+            <v-text-field
+              v-if="wesentlicheRechtsgrundlageAngabenZurBefreiungVisible"
+              id="wesentliche_rechtsgrundlage_angaben_zur_befreiung_field"
+              v-model="abfragevariante.wesentlicheRechtsgrundlageAngabenZurBefreiung"
+              :readonly="!isEditable"
+              variant="underlined"
+              label="Angaben zur Befreiung"
               maxlength="1000"
               @update:model-value="formChanged"
               :class="isEditable ? '' : 'text-grey-lighten-1'"
@@ -118,6 +136,8 @@ const abfragevariante = defineModel<AbfragevarianteBaugenehmigungsverfahrenModel
 
 const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
+const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
+
 const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
@@ -148,6 +168,16 @@ function wesentlicheRechtsgrundlageChanged(): void {
   } else {
     abfragevariante.value.wesentlicheRechtsgrundlageFreieEingabe = undefined;
     wesentlicheRechtsgrundlageFreieEingabeVisible.value = false;
+  }
+  if (
+    abfragevariante.value.wesentlicheRechtsgrundlage?.includes(
+      AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum.BeplanterBereichParagraph30MitBefreiungParagraph31,
+    )
+  ) {
+    wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = true;
+  } else {
+    abfragevariante.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
+    wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
   }
 }
 </script>

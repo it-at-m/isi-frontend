@@ -58,7 +58,7 @@ export interface PagedModelEntityModelIdealtypischeBaurate {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelIdealtypischeBaurate
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

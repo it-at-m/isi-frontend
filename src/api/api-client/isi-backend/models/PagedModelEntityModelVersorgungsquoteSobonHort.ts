@@ -58,7 +58,7 @@ export interface PagedModelEntityModelVersorgungsquoteSobonHort {
      * @type {PageMetadata}
      * @memberof PagedModelEntityModelVersorgungsquoteSobonHort
      */
-    page?: PageMetadata;
+    page?: PageMetadata | null;
 }
 
 /**

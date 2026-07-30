@@ -104,7 +104,7 @@
           v-model="abfragevariante.gfWohnenSonderwohnformen"
           :disabled="!isEditable"
           class="mx-3"
-          label="Sonderwohnformen"
+          label="Zusätzlich Sonderwohnformen"
           color="primary"
         />
       </v-col>
@@ -122,14 +122,8 @@
         >
           <v-col
             cols="12"
-            md="2"
+            md="4"
           />
-          <v-col
-            cols="12"
-            md="2"
-          >
-            <span>davon</span>
-          </v-col>
           <v-col
             cols="12"
             md="4"
@@ -173,22 +167,7 @@
           </v-col>
           <v-col
             cols="12"
-            md="4"
-          >
-            <num-field
-              id="gf_wohnen_genossenschaftlich_field"
-              ref="gfWohnenField"
-              v-model="abfragevariante.gfWohnenGenossenschaftlichesWohnen"
-              :readonly="!isEditable"
-              class="mx-3"
-              label="Genossenschaftliches Wohnen"
-              :suffix="SQUARE_METER"
-              :class="isEditable ? '' : 'text-grey-lighten-1'"
-            />
-          </v-col>
-          <v-col
-            cols="12"
-            md="4"
+            md="8"
           >
             <num-field
               id="gf_nicht_infrastruktur_relevantes_wohnen_field"
@@ -246,7 +225,6 @@ function clearSonderwohnformData(): void {
   if (!abfragevariante.value.gfWohnenSonderwohnformen) {
     abfragevariante.value.gfWohnenStudentischesWohnen = undefined;
     abfragevariante.value.gfWohnenSeniorinnenWohnen = undefined;
-    abfragevariante.value.gfWohnenGenossenschaftlichesWohnen = undefined;
     abfragevariante.value.gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen = undefined;
   }
 }

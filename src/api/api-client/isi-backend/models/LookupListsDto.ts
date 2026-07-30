@@ -56,25 +56,25 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    standVerfahrenBauleitplanverfahren?: LookupListDto;
+    verfahrensstandBauleitplanverfahren?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    standVerfahrenBaugenehmigungsverfahren?: LookupListDto;
+    verfahrensstandBaugenehmigungsverfahren?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    standVerfahrenWeiteresVerfahren?: LookupListDto;
+    verfahrensstandWeiteresVerfahren?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    standVerfahren?: LookupListDto;
+    verfahrensstand?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
@@ -86,13 +86,25 @@ export interface LookupListsDto {
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
-    wesentlicheRechtsgrundlageBauleitplanverfahren?: LookupListDto;
+    planart?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
      * @memberof LookupListsDto
      */
     wesentlicheRechtsgrundlageBaugenehmigungsverfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    wesentlicheRechtsgrundlageWeiteresVerfahren?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    wesentlicheRechtsgrundlageBauvorhaben?: LookupListDto;
     /**
      * 
      * @type {LookupListDto}
@@ -153,6 +165,12 @@ export interface LookupListsDto {
      * @memberof LookupListsDto
      */
     sobonOrientierungswertJahrWithoutStandortabfrage?: LookupListDto;
+    /**
+     * 
+     * @type {LookupListDto}
+     * @memberof LookupListsDto
+     */
+    bauratenmethodik?: LookupListDto;
 }
 
 /**
@@ -176,13 +194,15 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'artDokument': json['artDokument'] == null ? undefined : LookupListDtoFromJSON(json['artDokument']),
         'artAbfrage': json['artAbfrage'] == null ? undefined : LookupListDtoFromJSON(json['artAbfrage']),
         'sobonVerfahrensgrundsaetzeJahr': json['sobonVerfahrensgrundsaetzeJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonVerfahrensgrundsaetzeJahr']),
-        'standVerfahrenBauleitplanverfahren': json['standVerfahrenBauleitplanverfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenBauleitplanverfahren']),
-        'standVerfahrenBaugenehmigungsverfahren': json['standVerfahrenBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenBaugenehmigungsverfahren']),
-        'standVerfahrenWeiteresVerfahren': json['standVerfahrenWeiteresVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahrenWeiteresVerfahren']),
-        'standVerfahren': json['standVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['standVerfahren']),
+        'verfahrensstandBauleitplanverfahren': json['verfahrensstandBauleitplanverfahren'] == null ? undefined : LookupListDtoFromJSON(json['verfahrensstandBauleitplanverfahren']),
+        'verfahrensstandBaugenehmigungsverfahren': json['verfahrensstandBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['verfahrensstandBaugenehmigungsverfahren']),
+        'verfahrensstandWeiteresVerfahren': json['verfahrensstandWeiteresVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['verfahrensstandWeiteresVerfahren']),
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : LookupListDtoFromJSON(json['verfahrensstand']),
         'statusAbfrage': json['statusAbfrage'] == null ? undefined : LookupListDtoFromJSON(json['statusAbfrage']),
-        'wesentlicheRechtsgrundlageBauleitplanverfahren': json['wesentlicheRechtsgrundlageBauleitplanverfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauleitplanverfahren']),
+        'planart': json['planart'] == null ? undefined : LookupListDtoFromJSON(json['planart']),
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
+        'wesentlicheRechtsgrundlageWeiteresVerfahren': json['wesentlicheRechtsgrundlageWeiteresVerfahren'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageWeiteresVerfahren']),
+        'wesentlicheRechtsgrundlageBauvorhaben': json['wesentlicheRechtsgrundlageBauvorhaben'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlageBauvorhaben']),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : LookupListDtoFromJSON(json['wesentlicheRechtsgrundlage']),
         'artBaulicheNutzung': json['artBaulicheNutzung'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': json['artBaulicheNutzungBauvorhaben'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
@@ -193,6 +213,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'artGsNachmittagBetreuung': json['artGsNachmittagBetreuung'] == null ? undefined : LookupListDtoFromJSON(json['artGsNachmittagBetreuung']),
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': json['sobonOrientierungswertJahrWithoutStandortabfrage'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : LookupListDtoFromJSON(json['bauratenmethodik']),
     };
 }
 
@@ -211,13 +232,15 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'artDokument': LookupListDtoToJSON(value['artDokument']),
         'artAbfrage': LookupListDtoToJSON(value['artAbfrage']),
         'sobonVerfahrensgrundsaetzeJahr': LookupListDtoToJSON(value['sobonVerfahrensgrundsaetzeJahr']),
-        'standVerfahrenBauleitplanverfahren': LookupListDtoToJSON(value['standVerfahrenBauleitplanverfahren']),
-        'standVerfahrenBaugenehmigungsverfahren': LookupListDtoToJSON(value['standVerfahrenBaugenehmigungsverfahren']),
-        'standVerfahrenWeiteresVerfahren': LookupListDtoToJSON(value['standVerfahrenWeiteresVerfahren']),
-        'standVerfahren': LookupListDtoToJSON(value['standVerfahren']),
+        'verfahrensstandBauleitplanverfahren': LookupListDtoToJSON(value['verfahrensstandBauleitplanverfahren']),
+        'verfahrensstandBaugenehmigungsverfahren': LookupListDtoToJSON(value['verfahrensstandBaugenehmigungsverfahren']),
+        'verfahrensstandWeiteresVerfahren': LookupListDtoToJSON(value['verfahrensstandWeiteresVerfahren']),
+        'verfahrensstand': LookupListDtoToJSON(value['verfahrensstand']),
         'statusAbfrage': LookupListDtoToJSON(value['statusAbfrage']),
-        'wesentlicheRechtsgrundlageBauleitplanverfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBauleitplanverfahren']),
+        'planart': LookupListDtoToJSON(value['planart']),
         'wesentlicheRechtsgrundlageBaugenehmigungsverfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBaugenehmigungsverfahren']),
+        'wesentlicheRechtsgrundlageWeiteresVerfahren': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageWeiteresVerfahren']),
+        'wesentlicheRechtsgrundlageBauvorhaben': LookupListDtoToJSON(value['wesentlicheRechtsgrundlageBauvorhaben']),
         'wesentlicheRechtsgrundlage': LookupListDtoToJSON(value['wesentlicheRechtsgrundlage']),
         'artBaulicheNutzung': LookupListDtoToJSON(value['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value['artBaulicheNutzungBauvorhaben']),
@@ -228,6 +251,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'artGsNachmittagBetreuung': LookupListDtoToJSON(value['artGsNachmittagBetreuung']),
         'sobonOrientierungswertJahr': LookupListDtoToJSON(value['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value['sobonOrientierungswertJahrWithoutStandortabfrage']),
+        'bauratenmethodik': LookupListDtoToJSON(value['bauratenmethodik']),
     };
 }
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum } from "@/api/api-client/isi-backend";
+import { AbfragevarianteBauleitplanverfahrenDtoPlanartEnum } from "@/api/api-client/isi-backend";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { createBauleitplanverfahrenDto, createAbfragevarianteBauleitplanverfahrenDto } from "@/utils/Factories";
@@ -22,9 +22,7 @@ describe("ModelTest.spec.ts", () => {
     const abfrageDto = createBauleitplanverfahrenDto();
     const abfragevarianteDto = createAbfragevarianteBauleitplanverfahrenDto();
     abfragevarianteDto.abfragevariantenNr = 1;
-    abfragevarianteDto.wesentlicheRechtsgrundlage?.push(
-      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,
-    );
+    abfragevarianteDto.planart?.push(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich);
     abfragevarianteDto.realisierungVon = 2022;
     abfragevarianteDto.gfWohnenGesamt = 123.45;
     abfragevarianteDto.gfWohnenBestandswohnbaurecht = 0.9;
@@ -37,8 +35,6 @@ describe("ModelTest.spec.ts", () => {
     const abfragevarianteModel = abfrageModel
       .abfragevariantenBauleitplanverfahren?.[0] as AbfragevarianteBauleitplanverfahrenModel;
     expect(abfragevarianteModel).not.toBeUndefined();
-    expect(abfragevarianteModel.wesentlicheRechtsgrundlage).contains(
-      AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum.Innenbereich,
-    );
+    expect(abfragevarianteModel.planart).contains(AbfragevarianteBauleitplanverfahrenDtoPlanartEnum.Innenbereich);
   });
 });

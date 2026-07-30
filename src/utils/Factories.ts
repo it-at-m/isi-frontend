@@ -50,16 +50,16 @@ import {
   StatusAbfrage,
   // AbfrageArtEnum
   AbfrageDtoArtAbfrageEnum,
-  // Abfrage StandVerfahrenEnum's
-  BauleitplanverfahrenDtoStandVerfahrenEnum,
-  BaugenehmigungsverfahrenDtoStandVerfahrenEnum,
-  WeiteresVerfahrenDtoStandVerfahrenEnum,
+  // Abfrage VerfahrensstandEnum's
+  BauleitplanverfahrenDtoVerfahrensstandEnum,
+  BaugenehmigungsverfahrenDtoVerfahrensstandEnum,
+  WeiteresVerfahrenDtoVerfahrensstandEnum,
   // Abfragevariante ArtAbfragevarianteEnum's
   AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoArtAbfragevarianteEnum,
   AbfragevarianteWeiteresVerfahrenDtoArtAbfragevarianteEnum,
   // Abfragevariante WesentlicheRechtsgrundlageEnum's
-  AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum,
+  AbfragevarianteBauleitplanverfahrenDtoPlanartEnum,
   AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum,
   AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum,
   // Abfragevariante SobonOrientierungswertJahrEnum's
@@ -73,7 +73,7 @@ import {
   // Bauvorhaben
   BauvorhabenDtoArtFnpEnum,
   BauvorhabenDtoWesentlicheRechtsgrundlageEnum,
-  BauvorhabenDtoStandVerfahrenEnum,
+  BauvorhabenDtoVerfahrensstandEnum,
   // Infrastruktureinrichtungen
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
@@ -117,7 +117,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     filterWeGesamtBis: undefined,
     filterGfWohnenGeplantVon: undefined,
     filterGfWohnenGeplantBis: undefined,
-    filterStandVerfahren: undefined,
+    filterVerfahrensstand: undefined,
     filterInfrastruktureinrichtungStatus: undefined,
     page: undefined,
     pageSize: undefined,
@@ -168,13 +168,16 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     bebauungsplannummer: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
-    standVerfahren: BauleitplanverfahrenDtoStandVerfahrenEnum.Unspecified,
-    standVerfahrenFreieEingabe: undefined,
+    verfahrensstand: BauleitplanverfahrenDtoVerfahrensstandEnum.Unspecified,
+    verfahrensstandFreieEingabe: undefined,
     adresse: createAdresseDto(),
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
     mitzeichnungBeschlussentwurf: UncertainBoolean.Unspecified,
+    start42Verfahren: undefined,
+    start42VerfahrenDatumUnbekannt: false,
+    bauratenmethodikVorbelegung: undefined,
     anmerkung: undefined,
     linkEakte: undefined,
     abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
@@ -203,8 +206,8 @@ export function createBaugenehmigungsverfahrenDto(): BaugenehmigungsverfahrenDto
     // Subklasse: BaugenehmigungsverfahrenDto
     aktenzeichenProLbk: undefined,
     bebauungsplannummer: undefined,
-    standVerfahren: BaugenehmigungsverfahrenDtoStandVerfahrenEnum.Unspecified,
-    standVerfahrenFreieEingabe: undefined,
+    verfahrensstand: BaugenehmigungsverfahrenDtoVerfahrensstandEnum.Unspecified,
+    verfahrensstandFreieEingabe: undefined,
     adresse: createAdresseDto(),
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
@@ -237,8 +240,8 @@ export function createWeiteresVerfahrenDto(): WeiteresVerfahrenDto {
     bebauungsplannummer: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
     sobonJahr: undefined,
-    standVerfahren: WeiteresVerfahrenDtoStandVerfahrenEnum.Unspecified,
-    standVerfahrenFreieEingabe: undefined,
+    verfahrensstand: WeiteresVerfahrenDtoVerfahrensstandEnum.Unspecified,
+    verfahrensstandFreieEingabe: undefined,
     adresse: createAdresseDto(),
     verortung: undefined,
     dokumente: new Array<DokumentDto>(),
@@ -276,8 +279,8 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     artAbfragevariante: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren,
     name: "",
     satzungsbeschluss: undefined,
-    wesentlicheRechtsgrundlage: Array<AbfragevarianteBauleitplanverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
-    wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    planart: Array<AbfragevarianteBauleitplanverfahrenDtoPlanartEnum>(),
+    planartFreieEingabe: undefined,
     realisierungVon: Number.NaN,
     gfWohnenGesamt: undefined,
     gfWohnenSobonUrsaechlich: undefined,
@@ -285,14 +288,12 @@ export function createAbfragevarianteBauleitplanverfahrenDto(): AbfragevarianteB
     gfWohnenSonderwohnformen: false,
     gfWohnenStudentischesWohnen: undefined,
     gfWohnenSeniorinnenWohnen: undefined,
-    gfWohnenGenossenschaftlichesWohnen: undefined,
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     gfAnmerkung: undefined,
     weGesamt: undefined,
     weSonderwohnformen: false,
     weStudentischesWohnen: undefined,
     weSeniorinnenWohnen: undefined,
-    weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
     sobonOrientierungswertJahrPlanungsursaechlich:
@@ -329,6 +330,7 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     name: "",
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     realisierungVon: Number.NaN,
     gfWohnenGesamt: undefined,
     gfWohnenBaurechtlichGenehmigt: undefined,
@@ -337,7 +339,6 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     gfWohnenSonderwohnformen: false,
     gfWohnenStudentischesWohnen: undefined,
     gfWohnenSeniorinnenWohnen: undefined,
-    gfWohnenGenossenschaftlichesWohnen: undefined,
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     gfAnmerkung: undefined,
     weGesamt: undefined,
@@ -346,7 +347,6 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     weSonderwohnformen: false,
     weStudentischesWohnen: undefined,
     weSeniorinnenWohnen: undefined,
-    weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
     sobonOrientierungswertJahrPlanungsursaechlich:
@@ -383,6 +383,7 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     satzungsbeschluss: undefined,
     wesentlicheRechtsgrundlage: Array<AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     realisierungVon: Number.NaN,
     gfWohnenGesamt: undefined,
     gfWohnenBaurechtlichGenehmigt: undefined,
@@ -392,7 +393,6 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     gfWohnenSonderwohnformen: false,
     gfWohnenStudentischesWohnen: undefined,
     gfWohnenSeniorinnenWohnen: undefined,
-    gfWohnenGenossenschaftlichesWohnen: undefined,
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     gfAnmerkung: undefined,
     weGesamt: undefined,
@@ -401,7 +401,6 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     weSonderwohnformen: false,
     weStudentischesWohnen: undefined,
     weSeniorinnenWohnen: undefined,
-    weGenossenschaftlichesWohnen: undefined,
     weWeiteresNichtInfrastrukturrelevantesWohnen: undefined,
     weAnmerkung: undefined,
     sobonOrientierungswertJahrPlanungsursaechlich:
@@ -431,6 +430,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 
@@ -441,6 +441,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 
@@ -470,7 +471,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     bearbeitendePerson: undefined,
     nameVorhaben: "",
     grundstuecksgroesse: Number.NaN,
-    standVerfahren: BauvorhabenDtoStandVerfahrenEnum.Unspecified,
+    verfahrensstand: BauvorhabenDtoVerfahrensstandEnum.Unspecified,
     bauvorhabenNummer: undefined,
     adresse: createAdresseDto(),
     verortung: undefined,
@@ -481,6 +482,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     sobonJahr: undefined,
     wesentlicheRechtsgrundlage: new Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
     relevanteAbfragevariante: undefined,
@@ -840,14 +842,23 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
   };
 }
 
+function todayAsString(): string {
+  const today = new Date();
+  const day = today.getDate().toString().padStart(2, "0");
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  return `${day}.${month}.${today.getFullYear()}`;
+}
+
 export function createKommentarBauvorhabenDto(): KommentarBauvorhabenDto {
   return {
+    datum: todayAsString(),
     dokumente: [],
   };
 }
 
 export function createKommentarInfrastruktureinrichtungDto(): KommentarInfrastruktureinrichtungDto {
   return {
+    datum: todayAsString(),
     dokumente: [],
   };
 }

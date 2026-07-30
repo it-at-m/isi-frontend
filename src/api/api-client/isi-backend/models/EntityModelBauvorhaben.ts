@@ -93,16 +93,16 @@ export interface EntityModelBauvorhaben {
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {EntityModelBauvorhabenStandVerfahrenEnum}
+     * @type {EntityModelBauvorhabenVerfahrensstandEnum}
      * @memberof EntityModelBauvorhaben
      */
-    standVerfahren?: EntityModelBauvorhabenStandVerfahrenEnum;
+    verfahrensstand?: EntityModelBauvorhabenVerfahrensstandEnum;
     /**
      * 
      * @type {string}
      * @memberof EntityModelBauvorhaben
      */
-    standVerfahrenFreieEingabe?: string;
+    verfahrensstandFreieEingabe?: string;
     /**
      * 
      * @type {string}
@@ -165,6 +165,12 @@ export interface EntityModelBauvorhaben {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
+     * @type {string}
+     * @memberof EntityModelBauvorhaben
+     */
+    wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
+    /**
+     * 
      * @type {Array<EntityModelBauvorhabenArtFnpEnum>}
      * @memberof EntityModelBauvorhaben
      */
@@ -205,28 +211,27 @@ export interface EntityModelBauvorhaben {
 /**
  * @export
  */
-export const EntityModelBauvorhabenStandVerfahrenEnum = {
+export const EntityModelBauvorhabenVerfahrensstandEnum = {
     Unspecified: 'UNSPECIFIED',
-    VorbereitungEckdatenbeschluss: 'VORBEREITUNG_ECKDATENBESCHLUSS',
-    VorbereitungWettbewerbauslobung: 'VORBEREITUNG_WETTBEWERBAUSLOBUNG',
-    VorbereitungAufstellungsbeschluss: 'VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungAufstellungsbeschluss: 'SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS',
+    SimuliertVorbereitungWettbewerbauslobung: 'SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG',
+    VorbereitungFruehzeitigeBeteiligung: 'VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG',
     VorbereitungBilligungsbeschlussStaedtebaulicherVertrag: 'VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG',
     VorbereitungSatzungsbeschluss: 'VORBEREITUNG_SATZUNGSBESCHLUSS',
-    VorliegenderSatzungsbeschluss: 'VORLIEGENDER_SATZUNGSBESCHLUSS',
-    RechtsverbindlichkeitAmtsblatt: 'RECHTSVERBINDLICHKEIT_AMTSBLATT',
-    Aufteilungsplan: 'AUFTEILUNGSPLAN',
-    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
+    InkraftgetretenVeroeffentlichungAmtsblatt: 'INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT',
+    InkraftgetretenFoerdermixplan: 'INKRAFTGETRETEN_FOERDERMIXPLAN',
     VorbereitungBaugenehmigung: 'VORBEREITUNG_BAUGENEHMIGUNG',
+    VorbereitungVorbescheid: 'VORBEREITUNG_VORBESCHEID',
     VorabfrageOhneKonkretenStand: 'VORABFRAGE_OHNE_KONKRETEN_STAND',
     Strukturkonzept: 'STRUKTURKONZEPT',
     Rahmenplanung: 'RAHMENPLANUNG',
     Potentialuntersuchung: 'POTENTIALUNTERSUCHUNG',
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
-    FreieEingabe: 'FREIE_EINGABE',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
+    FreieEingabe: 'FREIE_EINGABE'
 } as const;
-export type EntityModelBauvorhabenStandVerfahrenEnum = typeof EntityModelBauvorhabenStandVerfahrenEnum[keyof typeof EntityModelBauvorhabenStandVerfahrenEnum];
+export type EntityModelBauvorhabenVerfahrensstandEnum = typeof EntityModelBauvorhabenVerfahrensstandEnum[keyof typeof EntityModelBauvorhabenVerfahrensstandEnum];
 
 /**
  * @export
@@ -247,16 +252,17 @@ export type EntityModelBauvorhabenSobonJahrEnum = typeof EntityModelBauvorhabenS
  * @export
  */
 export const EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = {
-    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
-    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    BeplanterBereichParagraph30: 'BEPLANTER_BEREICH_PARAGRAPH_30',
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
+    BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
+    FreieEingabe: 'FREIE_EINGABE',
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
+    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
+    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum = typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelBauvorhabenWesentlicheRechtsgrundlageEnum];
 
@@ -309,8 +315,8 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'nameVorhaben': json['nameVorhaben'] == null ? undefined : json['nameVorhaben'],
         'grundstuecksgroesse': json['grundstuecksgroesse'] == null ? undefined : json['grundstuecksgroesse'],
-        'standVerfahren': json['standVerfahren'] == null ? undefined : json['standVerfahren'],
-        'standVerfahrenFreieEingabe': json['standVerfahrenFreieEingabe'] == null ? undefined : json['standVerfahrenFreieEingabe'],
+        'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
+        'verfahrensstandFreieEingabe': json['verfahrensstandFreieEingabe'] == null ? undefined : json['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': json['bauvorhabenNummer'] == null ? undefined : json['bauvorhabenNummer'],
         'adresse': json['adresse'] == null ? undefined : AdresseFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortung']),
@@ -321,6 +327,7 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'sobonJahr': json['sobonJahr'] == null ? undefined : json['sobonJahr'],
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
@@ -347,8 +354,8 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
         'nameVorhaben': value['nameVorhaben'],
         'grundstuecksgroesse': value['grundstuecksgroesse'],
-        'standVerfahren': value['standVerfahren'],
-        'standVerfahrenFreieEingabe': value['standVerfahrenFreieEingabe'],
+        'verfahrensstand': value['verfahrensstand'],
+        'verfahrensstandFreieEingabe': value['verfahrensstandFreieEingabe'],
         'bauvorhabenNummer': value['bauvorhabenNummer'],
         'adresse': AdresseToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonToJSON(value['verortung']),
@@ -359,6 +366,7 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'sobonJahr': value['sobonJahr'],
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
         'resultType': value['resultType'],

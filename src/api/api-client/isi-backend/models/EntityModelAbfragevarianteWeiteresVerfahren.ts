@@ -105,6 +105,12 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
+     * @type {string}
+     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
+     */
+    wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
+    /**
+     * 
      * @type {number}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
@@ -162,12 +168,6 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @type {number}
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
-    gfWohnenGenossenschaftlichesWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
-     */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
@@ -211,12 +211,6 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
      * @memberof EntityModelAbfragevarianteWeiteresVerfahren
      */
     weSeniorinnenWohnen?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof EntityModelAbfragevarianteWeiteresVerfahren
-     */
-    weGenossenschaftlichesWohnen?: number;
     /**
      * 
      * @type {number}
@@ -374,16 +368,17 @@ export interface EntityModelAbfragevarianteWeiteresVerfahren {
  * @export
  */
 export const EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum = {
-    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
-    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
-    EinfacherBebauungsplanParagraph30: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30',
-    EinfacherBebauungsplanParagraph30Ivm3435: 'EINFACHER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
-    SektoralerBebauungsplanParagraph9: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_9',
-    SektoralerBebauungsplanParagraph30Ivm3435: 'SEKTORALER_BEBAUUNGSPLAN_PARAGRAPH_30_IVM_34_35',
+    BeplanterBereichParagraph30: 'BEPLANTER_BEREICH_PARAGRAPH_30',
     Innenbereich: 'INNENBEREICH',
     Aussenbereich: 'AUSSENBEREICH',
-    Befreiung: 'BEFREIUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    BebauungsplanZurWohnraumversorgungParagraph9Ivm34: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG_PARAGRAPH_9_IVM_34',
+    BeplanterBereichParagraph30MitBefreiungParagraph31: 'BEPLANTER_BEREICH_PARAGRAPH_30_MIT_BEFREIUNG_PARAGRAPH_31',
+    FreieEingabe: 'FREIE_EINGABE',
+    EinfacherBebauungsplan: 'EINFACHER_BEBAUUNGSPLAN',
+    QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
+    VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
+    BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
+    Befreiung: 'BEFREIUNG'
 } as const;
 export type EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum = typeof EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum[keyof typeof EntityModelAbfragevarianteWeiteresVerfahrenWesentlicheRechtsgrundlageEnum];
 
@@ -438,6 +433,7 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'] == null ? undefined : json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
         'gfWohnenGesamt': json['gfWohnenGesamt'] == null ? undefined : json['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': json['gfWohnenBaurechtlichGenehmigt'] == null ? undefined : json['gfWohnenBaurechtlichGenehmigt'],
@@ -447,7 +443,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'gfWohnenSonderwohnformen': json['gfWohnenSonderwohnformen'] == null ? undefined : json['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': json['gfWohnenStudentischesWohnen'] == null ? undefined : json['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': json['gfWohnenSeniorinnenWohnen'] == null ? undefined : json['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': json['gfWohnenGenossenschaftlichesWohnen'] == null ? undefined : json['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': json['gfAnmerkung'] == null ? undefined : json['gfAnmerkung'],
         'weGesamt': json['weGesamt'] == null ? undefined : json['weGesamt'],
@@ -456,7 +451,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenFromJSONTyped(json: a
         'weSonderwohnformen': json['weSonderwohnformen'] == null ? undefined : json['weSonderwohnformen'],
         'weStudentischesWohnen': json['weStudentischesWohnen'] == null ? undefined : json['weStudentischesWohnen'],
         'weSeniorinnenWohnen': json['weSeniorinnenWohnen'] == null ? undefined : json['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': json['weGenossenschaftlichesWohnen'] == null ? undefined : json['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': json['weWeiteresNichtInfrastrukturrelevantesWohnen'] == null ? undefined : json['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'] == null ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
@@ -504,6 +498,7 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped(value?: E
         'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
+        'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'realisierungVon': value['realisierungVon'],
         'gfWohnenGesamt': value['gfWohnenGesamt'],
         'gfWohnenBaurechtlichGenehmigt': value['gfWohnenBaurechtlichGenehmigt'],
@@ -513,7 +508,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped(value?: E
         'gfWohnenSonderwohnformen': value['gfWohnenSonderwohnformen'],
         'gfWohnenStudentischesWohnen': value['gfWohnenStudentischesWohnen'],
         'gfWohnenSeniorinnenWohnen': value['gfWohnenSeniorinnenWohnen'],
-        'gfWohnenGenossenschaftlichesWohnen': value['gfWohnenGenossenschaftlichesWohnen'],
         'gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen': value['gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen'],
         'gfAnmerkung': value['gfAnmerkung'],
         'weGesamt': value['weGesamt'],
@@ -522,7 +516,6 @@ export function EntityModelAbfragevarianteWeiteresVerfahrenToJSONTyped(value?: E
         'weSonderwohnformen': value['weSonderwohnformen'],
         'weStudentischesWohnen': value['weStudentischesWohnen'],
         'weSeniorinnenWohnen': value['weSeniorinnenWohnen'],
-        'weGenossenschaftlichesWohnen': value['weGenossenschaftlichesWohnen'],
         'weWeiteresNichtInfrastrukturrelevantesWohnen': value['weWeiteresNichtInfrastrukturrelevantesWohnen'],
         'weAnmerkung': value['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],

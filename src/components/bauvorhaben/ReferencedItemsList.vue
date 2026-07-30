@@ -12,7 +12,7 @@
         <v-expansion-panel-text v-else>
           <v-list v-if="abfragenEmpty">
             <v-list-item>
-              <v-list-item-subtitle>Dieses Bauvorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
+              <v-list-item-subtitle>Dieses Vorhaben wird nicht durch Abfragen referenziert</v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-list v-else>
@@ -60,7 +60,7 @@
           <v-list v-if="infrastruktureinrichtungenEmpty">
             <v-list-item>
               <v-list-item-subtitle>
-                Dieses Bauvorhaben wird nicht durch Infrastruktureinrichtungen referenziert
+                Dieses Vorhaben wird nicht durch Infrastruktureinrichtungen referenziert
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>

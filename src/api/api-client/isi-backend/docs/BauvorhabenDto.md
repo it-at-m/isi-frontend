@@ -13,8 +13,8 @@ Name | Type
 `bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
 `nameVorhaben` | string
 `grundstuecksgroesse` | number
-`standVerfahren` | string
-`standVerfahrenFreieEingabe` | string
+`verfahrensstand` | string
+`verfahrensstandFreieEingabe` | string
 `bauvorhabenNummer` | string
 `adresse` | [AdresseDto](AdresseDto.md)
 `verortung` | [VerortungMultiPolygonDto](VerortungMultiPolygonDto.md)
@@ -25,6 +25,7 @@ Name | Type
 `sobonJahr` | string
 `wesentlicheRechtsgrundlage` | Array&lt;string&gt;
 `wesentlicheRechtsgrundlageFreieEingabe` | string
+`wesentlicheRechtsgrundlageAngabenZurBefreiung` | string
 `artFnp` | Array&lt;string&gt;
 `artFnpFreieEingabe` | string
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
@@ -44,8 +45,8 @@ const example = {
   "bearbeitendePerson": null,
   "nameVorhaben": null,
   "grundstuecksgroesse": null,
-  "standVerfahren": null,
-  "standVerfahrenFreieEingabe": null,
+  "verfahrensstand": null,
+  "verfahrensstandFreieEingabe": null,
   "bauvorhabenNummer": null,
   "adresse": null,
   "verortung": null,
@@ -56,6 +57,7 @@ const example = {
   "sobonJahr": null,
   "wesentlicheRechtsgrundlage": null,
   "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "wesentlicheRechtsgrundlageAngabenZurBefreiung": null,
   "artFnp": null,
   "artFnpFreieEingabe": null,
   "dokumente": null,

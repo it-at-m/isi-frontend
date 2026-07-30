@@ -14,8 +14,8 @@ Name | Type
 `artAbfragevariante` | string
 `name` | string
 `satzungsbeschluss` | Date
-`wesentlicheRechtsgrundlage` | Array&lt;string&gt;
-`wesentlicheRechtsgrundlageFreieEingabe` | string
+`planart` | Array&lt;string&gt;
+`planartFreieEingabe` | string
 `realisierungVon` | number
 `gfWohnenGesamt` | number
 `gfWohnenSobonUrsaechlich` | number
@@ -23,14 +23,12 @@ Name | Type
 `gfWohnenSonderwohnformen` | boolean
 `gfWohnenStudentischesWohnen` | number
 `gfWohnenSeniorinnenWohnen` | number
-`gfWohnenGenossenschaftlichesWohnen` | number
 `gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `gfAnmerkung` | string
 `weGesamt` | number
 `weSonderwohnformen` | boolean
 `weStudentischesWohnen` | number
 `weSeniorinnenWohnen` | number
-`weGenossenschaftlichesWohnen` | number
 `weWeiteresNichtInfrastrukturrelevantesWohnen` | number
 `weAnmerkung` | string
 `sobonOrientierungswertJahrPlanungsursaechlich` | string
@@ -73,8 +71,8 @@ const example = {
   "artAbfragevariante": null,
   "name": null,
   "satzungsbeschluss": null,
-  "wesentlicheRechtsgrundlage": null,
-  "wesentlicheRechtsgrundlageFreieEingabe": null,
+  "planart": null,
+  "planartFreieEingabe": null,
   "realisierungVon": null,
   "gfWohnenGesamt": null,
   "gfWohnenSobonUrsaechlich": null,
@@ -82,14 +80,12 @@ const example = {
   "gfWohnenSonderwohnformen": null,
   "gfWohnenStudentischesWohnen": null,
   "gfWohnenSeniorinnenWohnen": null,
-  "gfWohnenGenossenschaftlichesWohnen": null,
   "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "gfAnmerkung": null,
   "weGesamt": null,
   "weSonderwohnformen": null,
   "weStudentischesWohnen": null,
   "weSeniorinnenWohnen": null,
-  "weGenossenschaftlichesWohnen": null,
   "weWeiteresNichtInfrastrukturrelevantesWohnen": null,
   "weAnmerkung": null,
   "sobonOrientierungswertJahrPlanungsursaechlich": null,

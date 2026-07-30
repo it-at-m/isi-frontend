@@ -14,7 +14,7 @@ Name | Type
 `stadtbezirke` | [Set&lt;StadtbezirkDto&gt;](StadtbezirkDto.md)
 `statusAbfrage` | [StatusAbfrage](StatusAbfrage.md)
 `fristBearbeitung` | Date
-`standVerfahren` | string
+`verfahrensstand` | string
 `createdDateTime` | Date
 `bauvorhaben` | string
 `nameVorhaben` | string
@@ -39,7 +39,7 @@ const example = {
   "stadtbezirke": null,
   "statusAbfrage": null,
   "fristBearbeitung": null,
-  "standVerfahren": null,
+  "verfahrensstand": null,
   "createdDateTime": null,
   "bauvorhaben": null,
   "nameVorhaben": null,

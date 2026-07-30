@@ -30,37 +30,37 @@ export interface Link {
      * @type {string}
      * @memberof Link
      */
-    hreflang?: string;
+    hreflang?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Link
      */
-    title?: string;
+    title?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Link
      */
-    type?: string;
+    type?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Link
      */
-    deprecation?: string;
+    deprecation?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Link
      */
-    profile?: string;
+    profile?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Link
      */
-    name?: string;
+    name?: string | null;
     /**
      * 
      * @type {boolean}
