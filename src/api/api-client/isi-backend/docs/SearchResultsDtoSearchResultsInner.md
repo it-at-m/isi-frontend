@@ -22,6 +22,7 @@ Name | Type
 `umgriff` | [MultiPolygonGeometryDto](MultiPolygonGeometryDto.md)
 `nameEinrichtung` | string
 `infrastruktureinrichtungTyp` | string
+`status` | string
 `zugehoerigesBauvorhaben` | string
 
 ## Example
@@ -47,6 +48,7 @@ const example = {
   "umgriff": null,
   "nameEinrichtung": null,
   "infrastruktureinrichtungTyp": null,
+  "status": null,
   "zugehoerigesBauvorhaben": null,
 } satisfies SearchResultsDtoSearchResultsInner
 

@@ -54,6 +54,12 @@ export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum;
     /**
      * 
+     * @type {InfrastruktureinrichtungSearchResultDtoStatusEnum}
+     * @memberof InfrastruktureinrichtungSearchResultDto
+     */
+    status?: InfrastruktureinrichtungSearchResultDtoStatusEnum;
+    /**
+     * 
      * @type {string}
      * @memberof InfrastruktureinrichtungSearchResultDto
      */
@@ -74,6 +80,22 @@ export const InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypE
     Mittelschule: 'MITTELSCHULE'
 } as const;
 export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum];
+
+/**
+ * @export
+ */
+export const InfrastruktureinrichtungSearchResultDtoStatusEnum = {
+    Unspecified: 'UNSPECIFIED',
+    UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
+    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
+    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
+    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
+    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
+    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    Bestand: 'BESTAND'
+} as const;
+export type InfrastruktureinrichtungSearchResultDtoStatusEnum = typeof InfrastruktureinrichtungSearchResultDtoStatusEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoStatusEnum];
 
 
 /**
@@ -102,6 +124,7 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, 
         'id': json['id'] == null ? undefined : json['id'],
         'nameEinrichtung': json['nameEinrichtung'] == null ? undefined : json['nameEinrichtung'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
+        'status': json['status'] == null ? undefined : json['status'],
         'zugehoerigesBauvorhaben': json['zugehoerigesBauvorhaben'] == null ? undefined : json['zugehoerigesBauvorhaben'],
     };
 }
@@ -127,6 +150,7 @@ export function InfrastruktureinrichtungSearchResultDtoToJSONTyped(value?: Infra
         'id': value['id'],
         'nameEinrichtung': value['nameEinrichtung'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
+        'status': value['status'],
         'zugehoerigesBauvorhaben': value['zugehoerigesBauvorhaben'],
     };
 }
