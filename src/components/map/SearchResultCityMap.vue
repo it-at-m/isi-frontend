@@ -81,21 +81,19 @@ const geoJsonOptions: GeoJSONOptions = {
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
       contentTooltip = `<b>${feature.properties.name}</b>`;
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
+      let tooltipLines = [];
+      tooltipLines.push(`<b>${feature.properties.name}</b>`);
+
+      const typ = getLookupValue(feature.properties.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList.value);
+      tooltipLines.push(`Typ: ${typ}`);
+
       if (!_.isNil(feature.properties.zugehoerigesBauvorhaben)) {
-        contentTooltip = `<b>${feature.properties.name}</b><br>
-                   Typ: ${getLookupValue(
-                     feature.properties.infrastruktureinrichtungTyp,
-                     infrastruktureinrichtungTypList.value,
-                   )}<br>
-                   Vorhaben: ${feature.properties.zugehoerigesBauvorhaben}`;
+        tooltipLines.push(`Vorhaben: ${feature.properties.zugehoerigesBauvorhaben}`);
       } else {
-        contentTooltip = `<b>${feature.properties.name}</b><br>
-                   Typ: ${getLookupValue(
-                     feature.properties.infrastruktureinrichtungTyp,
-                     infrastruktureinrichtungTypList.value,
-                   )}<br>
-                   Vorhaben: Kein zugehöriges Vorhaben`;
+        tooltipLines.push("Vorhaben: Kein zugehöriges Vorhaben");
       }
+
+      contentTooltip = tooltipLines.join("<br>");
     }
     if (feature.geometry.type === "Point") {
       layer.bindTooltip(contentTooltip);
