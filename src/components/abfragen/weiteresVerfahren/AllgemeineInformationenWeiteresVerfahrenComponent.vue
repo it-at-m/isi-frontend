@@ -1,5 +1,5 @@
 <template>
-  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Bauvorhaben">
+  <field-group-card card-title="Allgemeine Informationen zum Verfahren / Vorhaben">
     <v-row justify="center">
       <v-col
         cols="12"
@@ -38,24 +38,30 @@
         md="4"
         class="d-flex align-center"
       >
-        <span
-          v-if="isBauverfahrenEditable"
-          class="v-label theme--light"
-        >
-          {{ nameBauvorhaben }}
-        </span>
-        <span
-          v-else
-          class="v-label text-grey-lighten-1"
-        >
-          {{ nameBauvorhaben }}
-        </span>
+        <v-text-field
+          id="vorhaben_field"
+          ref="vorhabenField"
+          v-model="nameBauvorhaben"
+          :readonly="true"
+          variant="underlined"
+          label="Vorhaben"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
+        />
       </v-col>
       <v-col
         cols="12"
         md="2"
       >
         <div class="d-flex align-center ml-8">
+          <v-btn
+            id="show_bauvorhaben"
+            class="mt-3"
+            variant="plain"
+            icon="mdi-eye-outline"
+            target="_blank"
+            :disabled="!vorhabenExists"
+            :href="linkVorhaben"
+          />
           <v-btn
             id="open_auswahl_bauvorhaben"
             class="mt-3"
@@ -162,6 +168,7 @@
     id="auswahl_bauvorhaben_dialog"
     v-model="isAuswahlBauvorhabenDialogOpen"
     v-model:selected-bauvorhaben-id="abfrage.bauvorhaben"
+    @vorhaben-uebernehmen="vorhabenUebernehmen"
   />
 </template>
 
@@ -208,8 +215,10 @@ const isBauverfahrenDeleteable = computed(() => {
   );
 });
 const nameBauvorhaben = computed(() => {
-  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "Kein Bauvorhaben zugeordnet";
+  return !_.isEmpty(bauvorhaben.value.nameVorhaben) ? bauvorhaben.value.nameVorhaben : "";
 });
+
+const appBase = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, "");
 
 watch(
   () => abfrage.value.bauvorhaben,
@@ -269,6 +278,18 @@ watch(
 
 function deleteBauvorhaben(): void {
   abfrage.value.bauvorhaben = undefined;
+  formChanged();
+}
+
+const vorhabenExists = computed(() => {
+  return !_.isEmpty(bauvorhaben.value.id);
+});
+
+const linkVorhaben = computed(() => {
+  return vorhabenExists.value ? `${appBase}/#/bauvorhaben/${encodeURIComponent(bauvorhaben.value.id as string)}` : "";
+});
+
+function vorhabenUebernehmen(value: string | undefined): void {
   formChanged();
 }
 </script>

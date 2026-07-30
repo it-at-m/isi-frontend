@@ -22,16 +22,18 @@
         md="6"
       >
         <v-select
-          id="sobon_berechnung_versorgungsquote_hort_sobon"
-          v-model="sobonBerechnung.versorgungsquoteHortSobon"
-          :disabled="!isEditableBySachbearbeitung"
-          :items="versorungsquoteHortSobon"
-          label="SoBoN-ursächliche Versorgungsquote Hort"
+          id="sobon_orientierungswert_jahr_sobonursaechlich_dropdown"
+          ref="sobonOrientierungswertJahrSobonursaechlichDropdown"
+          v-model="sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich"
           variant="underlined"
-          item-value="versorgungsquoteSobon"
-          item-title="beschreibung"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="sobonOrientierungswertJahrList"
+          item-value="key"
+          item-title="value"
           @update:model-value="formChanged"
-        />
+        >
+          <template #label> Jahr für SoBoN-Orientierungwerte (SoBoN-ursächlich) </template>
+        </v-select>
       </v-col>
     </v-expand-transition>
     <v-expand-transition>
@@ -49,6 +51,25 @@
           variant="underlined"
           item-title="foerdermix.bezeichnung"
           return-object
+          @update:model-value="formChanged"
+        />
+      </v-col>
+    </v-expand-transition>
+    <v-expand-transition>
+      <v-col
+        v-if="sobonBerechnung.isASobonBerechnung"
+        cols="12"
+        md="6"
+      >
+        <v-select
+          id="sobon_berechnung_versorgungsquote_hort_sobon"
+          v-model="sobonBerechnung.versorgungsquoteHortSobon"
+          :disabled="!isEditableBySachbearbeitung"
+          :items="versorungsquoteHortSobon"
+          label="SoBoN-ursächliche Versorgungsquote Hort"
+          variant="underlined"
+          item-value="versorgungsquoteSobon"
+          item-title="beschreibung"
           @update:model-value="formChanged"
         />
       </v-col>
@@ -115,8 +136,14 @@ import _ from "lodash";
 import { PERCENT } from "@/utils/FieldPrefixesSuffixes";
 import { FoerdermixStammdaten } from "@/types/common/FördermixStammdatenEnum";
 import { useVersorgungsquoteSobonHortApi } from "@/composables/requests/VersorgungsquoteSobonHortApi";
-import { VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
+import { LookupEntryDto, VersorgungsquoteSobonHortDto } from "@/api/api-client/isi-backend";
 import { useErrorHandler } from "@/composables/requests/ErrorHandler";
+
+interface Props {
+  sobonOrientierungswertJahrList: LookupEntryDto[];
+}
+
+defineProps<Props>();
 
 const sobonBerechnung = defineModel<SobonBerechnungModel>({ required: true });
 const { formChanged } = useSaveLeave();

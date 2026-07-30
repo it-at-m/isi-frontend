@@ -15,6 +15,8 @@ interface State {
   statusAbfrage: LookupEntryDto[];
   planart: LookupEntryDto[];
   wesentlicheRechtsgrundlageBaugenehmigungsverfahren: LookupEntryDto[];
+  wesentlicheRechtsgrundlageWeiteresVerfahren: LookupEntryDto[];
+  wesentlicheRechtsgrundlageBauvorhaben: LookupEntryDto[];
   wesentlicheRechtsgrundlage: LookupEntryDto[];
   artBaulicheNutzung: LookupEntryDto[];
   artBaulicheNutzungBauvorhaben: LookupEntryDto[];
@@ -25,6 +27,7 @@ interface State {
   artGsNachmittagBetreuung: LookupEntryDto[];
   sobonOrientierungswertJahr: LookupEntryDto[];
   sobonOrientierungswertJahrWithoutStandortabfrage: LookupEntryDto[];
+  bauratenmethodik: LookupEntryDto[];
 }
 
 export const useLookupStore = defineStore("lookup", {
@@ -41,6 +44,8 @@ export const useLookupStore = defineStore("lookup", {
       statusAbfrage: [],
       planart: [],
       wesentlicheRechtsgrundlageBaugenehmigungsverfahren: [],
+      wesentlicheRechtsgrundlageWeiteresVerfahren: [],
+      wesentlicheRechtsgrundlageBauvorhaben: [],
       wesentlicheRechtsgrundlage: [],
       artBaulicheNutzung: [],
       artBaulicheNutzungBauvorhaben: [],
@@ -51,6 +56,7 @@ export const useLookupStore = defineStore("lookup", {
       artGsNachmittagBetreuung: [],
       sobonOrientierungswertJahr: [],
       sobonOrientierungswertJahrWithoutStandortabfrage: [],
+      bauratenmethodik: [],
     }) as State,
   getters: {},
   actions: {
@@ -70,6 +76,8 @@ export const useLookupStore = defineStore("lookup", {
         this.setWesentlicheRechtsgrundlageBaugenehmigungsverfahren(
           lookupLists.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
         );
+        this.setWesentlicheRechtsgrundlageWeiteresVerfahren(lookupLists.wesentlicheRechtsgrundlageWeiteresVerfahren);
+        this.setWesentlicheRechtsgrundlageBauvorhaben(lookupLists.wesentlicheRechtsgrundlageBauvorhaben);
         this.setWesentlicheRechtsgrundlage(lookupLists.wesentlicheRechtsgrundlage);
         this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
         this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
@@ -82,6 +90,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setSobonOrientierungswertJahrWithoutStandortabfrage(
           lookupLists.sobonOrientierungswertJahrWithoutStandortabfrage,
         );
+        this.setBauratenmethodik(lookupLists.bauratenmethodik);
       });
     },
     setUncertainBoolean(payload: LookupListDto | undefined): void {
@@ -130,6 +139,16 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = payload?.list)
         : (this.wesentlicheRechtsgrundlageBaugenehmigungsverfahren = []);
+    },
+    setWesentlicheRechtsgrundlageWeiteresVerfahren(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageWeiteresVerfahren = payload?.list)
+        : (this.wesentlicheRechtsgrundlageWeiteresVerfahren = []);
+    },
+    setWesentlicheRechtsgrundlageBauvorhaben(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.wesentlicheRechtsgrundlageBauvorhaben = payload?.list)
+        : (this.wesentlicheRechtsgrundlageBauvorhaben = []);
     },
     setWesentlicheRechtsgrundlage(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
@@ -180,6 +199,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.sobonOrientierungswertJahrWithoutStandortabfrage = payload?.list)
         : (this.sobonOrientierungswertJahrWithoutStandortabfrage = []);
+    },
+    setBauratenmethodik(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.bauratenmethodik = payload?.list)
+        : (this.bauratenmethodik = []);
     },
   },
 });
