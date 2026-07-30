@@ -24,12 +24,18 @@
           class="text-black"
           opacity="1"
         >
-          <v-icon
-            start
-            color="green-lighten-1"
-          >
-            {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
-          </v-icon>
+          <v-tooltip location="bottom">
+            <template #activator="{ props: tooltipProps }">
+              <v-icon
+                v-bind="tooltipProps"
+                start
+                color="green-lighten-1"
+              >
+                {{ getIconArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}
+              </v-icon>
+            </template>
+            <span>{{ getArtAbfrage(castToAbfrageSearchResultDto(item).artAbfrage) }}</span>
+          </v-tooltip>
           {{ castToAbfrageSearchResultDto(item).name }}
         </v-card-subtitle>
         <v-card-text>
@@ -145,6 +151,7 @@ import { useLookupStore } from "@/stores/LookupStore";
 import { useSearchStore } from "@/stores/SearchStore";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { convertDateForFrontend } from "@/utils/Formatter";
+import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
@@ -245,27 +252,11 @@ function getLookupValueAbfrage(key: string | undefined, list: Array<LookupEntryD
 }
 
 function getIconArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined) {
-  let icon = "";
-  if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    icon = "mdi-comment-alert";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    icon = "mdi-account-multiple-plus";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
-    icon = "mdi-account-plus";
-  }
-  return icon;
+  return getAbfrageIcon(artAbfrage);
 }
 
 function getArtAbfrage(artAbfrage: AbfrageSearchResultDtoArtAbfrageEnum | undefined): string {
-  let bezeichnungArtAbfrage = "";
-  if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Bauleitplanverfahren) {
-    bezeichnungArtAbfrage = "Bauleitplanverfahren";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
-    bezeichnungArtAbfrage = "Baugenehmigungsverfahren";
-  } else if (artAbfrage === AbfrageSearchResultDtoArtAbfrageEnum.WeiteresVerfahren) {
-    bezeichnungArtAbfrage = "Weiteres Verfahren";
-  }
-  return bezeichnungArtAbfrage;
+  return getAbfrageArtLabel(artAbfrage);
 }
 
 function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {

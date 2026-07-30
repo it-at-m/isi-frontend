@@ -51,6 +51,12 @@ export interface SobonBerechnung {
      * @memberof SobonBerechnung
      */
     versorgungsquoteHortSobon?: number;
+    /**
+     * 
+     * @type {SobonBerechnungBauratenmethodikEnum}
+     * @memberof SobonBerechnung
+     */
+    bauratenmethodik?: SobonBerechnungBauratenmethodikEnum;
 }
 
 
@@ -67,6 +73,15 @@ export const SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum = {
     Standortabfrage: 'STANDORTABFRAGE'
 } as const;
 export type SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum];
+
+/**
+ * @export
+ */
+export const SobonBerechnungBauratenmethodikEnum = {
+    AlteBauratenmethodik: 'ALTE_BAURATENMETHODIK',
+    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK'
+} as const;
+export type SobonBerechnungBauratenmethodikEnum = typeof SobonBerechnungBauratenmethodikEnum[keyof typeof SobonBerechnungBauratenmethodikEnum];
 
 
 /**
@@ -90,6 +105,7 @@ export function SobonBerechnungFromJSONTyped(json: any, ignoreDiscriminator: boo
         'sobonFoerdermix': json['sobonFoerdermix'] == null ? undefined : FoerdermixFromJSON(json['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': json['sobonOrientierungswertJahrSobonUrsaechlich'] == null ? undefined : json['sobonOrientierungswertJahrSobonUrsaechlich'],
         'versorgungsquoteHortSobon': json['versorgungsquoteHortSobon'] == null ? undefined : json['versorgungsquoteHortSobon'],
+        'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : json['bauratenmethodik'],
     };
 }
 
@@ -108,6 +124,7 @@ export function SobonBerechnungToJSONTyped(value?: SobonBerechnung | null, ignor
         'sobonFoerdermix': FoerdermixToJSON(value['sobonFoerdermix']),
         'sobonOrientierungswertJahrSobonUrsaechlich': value['sobonOrientierungswertJahrSobonUrsaechlich'],
         'versorgungsquoteHortSobon': value['versorgungsquoteHortSobon'],
+        'bauratenmethodik': value['bauratenmethodik'],
     };
 }
 

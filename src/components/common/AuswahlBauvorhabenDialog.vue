@@ -8,7 +8,7 @@
       class="rounded-xl"
       elevation="8"
     >
-      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Bauvorhaben verknüpfen </v-card-title>
+      <v-card-title class="px-6 pt-6 pb-2 text-h6"> Mit Vorhaben verknüpfen </v-card-title>
 
       <v-card-text class="px-6 pb-2">
         <v-text-field
@@ -19,7 +19,7 @@
           variant="outlined"
           density="comfortable"
           rounded="lg"
-          label="Bauvorhaben suchen"
+          label="Vorhaben suchen"
           prepend-inner-icon="mdi-magnify"
           :loading="loading"
           @update:model-value="handleSearchInput"
@@ -88,8 +88,14 @@ import {
   type StadtbezirkDto,
   SearchQueryAndSortingDtoSortByEnum,
   SearchQueryAndSortingDtoSortOrderEnum,
+  type AbfrageDto,
+  BauvorhabenDto,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
+
+interface Emits {
+  (event: "vorhabenUebernehmen", value: BauvorhabenDto): void;
+}
 
 type ResultItem = {
   label: string;
@@ -111,6 +117,8 @@ const pendingSelectedBauvorhabenId = ref<string | undefined>(undefined);
 const pendingSelectedLabel = ref<string>("");
 
 const loading = ref(false);
+
+const emit = defineEmits<Emits>();
 
 let currentSearchRequestId = 0;
 let isComponentActive = true;
@@ -328,6 +336,7 @@ function uebernehmen(): void {
 
   selectedBauvorhabenId.value = pendingSelectedBauvorhabenId.value;
   dialogOpen.value = false;
+  emit("vorhabenUebernehmen", selectedBauvorhabenId.value);
 }
 
 /**

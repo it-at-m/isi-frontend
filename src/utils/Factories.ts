@@ -175,6 +175,9 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     dokumente: new Array<DokumentDto>(),
     fristBearbeitung: new Date(0),
     mitzeichnungBeschlussentwurf: UncertainBoolean.Unspecified,
+    start42Verfahren: undefined,
+    start42VerfahrenDatumUnbekannt: false,
+    bauratenmethodikVorbelegung: undefined,
     anmerkung: undefined,
     linkEakte: undefined,
     abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
@@ -327,6 +330,7 @@ export function createAbfragevarianteBaugenehmigungsverfahrenDto(): Abfragevaria
     name: "",
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     realisierungVon: Number.NaN,
     gfWohnenGesamt: undefined,
     gfWohnenBaurechtlichGenehmigt: undefined,
@@ -379,6 +383,7 @@ export function createAbfragevarianteWeiteresVerfahrenDto(): AbfragevarianteWeit
     satzungsbeschluss: undefined,
     wesentlicheRechtsgrundlage: Array<AbfragevarianteWeiteresVerfahrenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     realisierungVon: Number.NaN,
     gfWohnenGesamt: undefined,
     gfWohnenBaurechtlichGenehmigt: undefined,
@@ -425,6 +430,7 @@ export function createSobonBerechnungBauleitplanverfahren(): SobonBerechnungDto 
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 
@@ -435,6 +441,7 @@ export function createSobonBerechnungWeiteresVerfahren(): SobonBerechnungDto {
     sobonOrientierungswertJahrSobonUrsaechlich:
       AbfragevarianteWeiteresVerfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified,
     versorgungsquoteHortSobon: undefined,
+    bauratenmethodik: undefined,
   };
 }
 
@@ -475,6 +482,7 @@ export function createBauvorhabenDto(): BauvorhabenDto {
     sobonJahr: undefined,
     wesentlicheRechtsgrundlage: new Array<BauvorhabenDtoWesentlicheRechtsgrundlageEnum>(),
     wesentlicheRechtsgrundlageFreieEingabe: undefined,
+    wesentlicheRechtsgrundlageAngabenZurBefreiung: undefined,
     artFnp: new Array<BauvorhabenDtoArtFnpEnum>(),
     dokumente: [],
     relevanteAbfragevariante: undefined,
@@ -834,14 +842,23 @@ export function createMuenchenAdresseDto(): MuenchenAdresseDto {
   };
 }
 
+function todayAsString(): string {
+  const today = new Date();
+  const day = today.getDate().toString().padStart(2, "0");
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  return `${day}.${month}.${today.getFullYear()}`;
+}
+
 export function createKommentarBauvorhabenDto(): KommentarBauvorhabenDto {
   return {
+    datum: todayAsString(),
     dokumente: [],
   };
 }
 
 export function createKommentarInfrastruktureinrichtungDto(): KommentarInfrastruktureinrichtungDto {
   return {
+    datum: todayAsString(),
     dokumente: [],
   };
 }
