@@ -141,7 +141,6 @@
             <template #activator="{ props }">
               <v-icon
                 v-bind="props"
-                @click.stop.prevent
                 class="ml-4"
                 :color="isEditable ? 'primary' : 'grey-lighten-1'"
               >
