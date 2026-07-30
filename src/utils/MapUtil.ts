@@ -35,11 +35,19 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
 export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]);
 
+/**
+ * Thematische Gruppen zur übersichtlicheren Anordnung der Layer im LayerControl der Karte.
+ */
+export const GROUP_VERWALTUNG = "Verwaltung";
+export const GROUP_PLANUNG_UND_BAUEN = "Planung und Bauen";
+export const GROUP_SCHUL_UND_KITAPLANUNG = "Schul- und Kitaplanung";
+
 export class OverlayUrlMapping {
   displayName: string = "";
   internalName: string = "";
   urlPart: string = "";
   migrated: boolean = false;
+  group: string = "";
 }
 
 export const OVERLAYS_ARCGIS_INTRANSPARENT: OverlayUrlMapping[] = [
@@ -48,6 +56,7 @@ export const OVERLAYS_ARCGIS_INTRANSPARENT: OverlayUrlMapping[] = [
     internalName: "Flächennutzungsplan",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_PLANUNG_UND_BAUEN,
   },
 ];
 
@@ -57,84 +66,98 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
     internalName: "Gemarkungen",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_VERWALTUNG,
   },
   {
     displayName: "Stadtviertel",
     internalName: "Stadtviertel",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_VERWALTUNG,
   },
   {
     displayName: "Bezirksteile",
     internalName: "Bezirksteile",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_VERWALTUNG,
   },
   {
     displayName: "Stadtbezirke",
     internalName: "Stadtbezirke",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_VERWALTUNG,
   },
   {
     displayName: "Kitaplanungsbereiche",
     internalName: "Kitaplanungsbereiche",
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Grundschulsprengel",
     internalName: "Grundschulsprengel",
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Mittelschulsprengel",
     internalName: "Mittelschulsprengel",
     urlPart: "Bildung_und_Soziales",
     migrated: false,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "Baublöcke",
     internalName: "Baublöcke",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_PLANUNG_UND_BAUEN,
   },
   {
     displayName: "Umgriffe Bebauungspläne",
     internalName: "BB-Umgriff",
     urlPart: "basis",
     migrated: false,
+    group: GROUP_PLANUNG_UND_BAUEN,
   },
   {
     displayName: "SFZ Sprengel GS",
     internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
     urlPart: "Förderschulen",
     migrated: true,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "SFZ Sprengel MS",
     internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
     urlPart: "Förderschulen",
     migrated: true,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZgE Sprengel GS",
     internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
     urlPart: "Förderschulen",
     migrated: true,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZgE Sprengel MS",
     internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
     urlPart: "Förderschulen",
     migrated: true,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
   {
     displayName: "FZesE Sprengel GS und MS",
     internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
     urlPart: "Förderschulen",
     migrated: true,
+    group: GROUP_SCHUL_UND_KITAPLANUNG,
   },
 ];
 
@@ -147,8 +170,15 @@ export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
  * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
-export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WMS> {
-  const layers: Record<string, TileLayer.WMS> = {};
+export function assembleGroupedOverlayLayersForLayerControl(): Record<string, Record<string, TileLayer.WMS>> {
+  const groups: Record<string, Record<string, TileLayer.WMS>> = {};
+
+  const addLayerToGroup = (group: string, displayName: string, layer: TileLayer.WMS): void => {
+    if (!groups[group]) {
+      groups[group] = {};
+    }
+    groups[group][displayName] = layer;
+  };
 
   for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
     const url = !overlay.migrated
@@ -159,7 +189,7 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
       transparent: false,
       ...LAYER_OPTIONS,
     });
-    layers[overlay.displayName] = layerIntransparent;
+    addLayerToGroup(overlay.group, overlay.displayName, layerIntransparent);
   }
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
@@ -169,7 +199,7 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers[overlay[0]] = layer;
+    addLayerToGroup(GROUP_VERWALTUNG, overlay[0], layer);
   }
 
   for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
@@ -181,10 +211,10 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
       transparent: true,
       ...LAYER_OPTIONS,
     });
-    layers[overlay.displayName] = layerTransparent;
+    addLayerToGroup(overlay.group, overlay.displayName, layerTransparent);
   }
 
-  return layers;
+  return groups;
 }
 
 export function getArcgisUrl(url: string, service: string): string {

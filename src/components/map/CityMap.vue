@@ -67,7 +67,13 @@
 <script setup lang="ts">
 import { onMounted, computed, watch, ref, onBeforeUnmount } from "vue";
 import type { VCard, VSheet } from "vuetify/components";
-import { LAYER_OPTIONS, MAP_OPTIONS, assembleBaseLayersForLayerControl, getBackgroundMapUrl } from "@/utils/MapUtil";
+import {
+  LAYER_OPTIONS,
+  MAP_OPTIONS,
+  GROUP_PLANUNG_UND_BAUEN,
+  assembleGroupedOverlayLayersForLayerControl,
+  getBackgroundMapUrl,
+} from "@/utils/MapUtil";
 import type { Feature } from "geojson";
 import L, { type GeoJSONOptions, type LatLngBoundsLiteral, type LatLngLiteral, Layer, LatLngBounds } from "leaflet";
 import LControl from "./LControl.vue";
@@ -76,6 +82,8 @@ import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet/dist/leaflet.css";
+import "leaflet-groupedlayercontrol";
+import "leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css";
 import _ from "lodash";
 
 /**
@@ -139,7 +147,7 @@ const expanded = ref(false);
 const isGeoJsonNotEmpty = computed(() => !_.isEmpty(props.geoJson));
 
 let map: L.Map;
-let layerControl: L.Control.Layers;
+let layerControl: L.Control.GroupedLayers;
 let alreadyAddedLayersForLayerControl: Map<string, Layer> | undefined;
 let firstGeoJsonFeatureAdded = false;
 let mapMarkerClusterGroup = L.markerClusterGroup();
@@ -161,8 +169,10 @@ function initMap(): void {
     .wms(getBackgroundMapUrl(), { layers: "gsm:g_stadtkarte_gesamt", ...LAYER_OPTIONS })
     .addTo(map);
 
-  // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt.
-  layerControl = L.control.layers({ ["Hintergrund"]: wmsTileLayer }, assembleBaseLayersForLayerControl()).addTo(map);
+  // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von thematisch gruppierten Overlay-Layern aktivieren lässt.
+  layerControl = L.control
+    .groupedLayers({ ["Hintergrund"]: wmsTileLayer }, assembleGroupedOverlayLayersForLayerControl(), {})
+    .addTo(map);
 
   updateLayerControlWithCustomLayers();
 
@@ -255,7 +265,9 @@ function updateLayerControlWithCustomLayers(): void {
   }
   // Hinzufügen der neuen Layer
   if (!_.isNil(props.layersForLayerControl)) {
-    props.layersForLayerControl.forEach((layer: L.Layer, name: string) => layerControl.addOverlay(layer, name));
+    props.layersForLayerControl.forEach((layer: L.Layer, name: string) =>
+      layerControl.addOverlay(layer, name, GROUP_PLANUNG_UND_BAUEN),
+    );
   }
   alreadyAddedLayersForLayerControl = props.layersForLayerControl;
 }
