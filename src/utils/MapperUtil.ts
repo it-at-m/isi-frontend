@@ -715,17 +715,21 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * Außerdem wird an den Namen der Abfrage "- Kopie" oder "- Kopie <Nummer der Kopie>" angehängt.
  *
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
+ * @param options
  * @returns Die bereinigte Kopie.
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
   value: T,
-  options?: { includeSachbearbeitungVarianten?: boolean },
+  options?: {
+    includeSachbearbeitungVarianten?: boolean;
+    sanitizeAttributes?: Map<string, unknown>;
+  },
 ): T {
   const copy = _.cloneDeep(value);
   if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
     sanitizeAbfragevariantenSachbearbeitung(copy);
   }
-  sanitizeCopy(copy);
+  sanitizeCopy(copy, options?.sanitizeAttributes);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
 }
@@ -747,13 +751,16 @@ function sanitizeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value:
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function sanitizeCopy(value: any): void {
+function sanitizeCopy(value: any, sanitizeAttributes?: Map<string, unknown>): void {
   if (typeof value === "object" && value !== null) {
+    const mergedSanitizationMap = _.isNil(sanitizeAttributes)
+      ? sanitizationMap
+      : new Map([...sanitizationMap.entries(), ...sanitizeAttributes.entries()]);
     for (const key of Object.keys(value)) {
-      if (sanitizationMap.has(key)) {
-        value[key] = sanitizationMap.get(key);
+      if (mergedSanitizationMap.has(key)) {
+        value[key] = mergedSanitizationMap.get(key);
       } else {
-        sanitizeCopy(value[key]);
+        sanitizeCopy(value[key], sanitizeAttributes);
       }
     }
   }
@@ -771,6 +778,7 @@ const sanitizationMap = new Map<string, unknown>([
   ["statusAbfrage", StatusAbfrage.Angelegt],
   ["sub", undefined],
   ["bearbeitungshistorie", undefined],
+  ["fristBearbeitung", new Date(0)],
   // Abfragevariante
   ["sobonBerechnung", createSobonBerechnungBauleitplanverfahren()],
   ["stammdatenGueltigAb", new Date()],

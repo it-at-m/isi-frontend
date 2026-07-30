@@ -140,10 +140,11 @@ export function createAbfrageDto(): AbfrageDto {
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
     anmerkung: undefined,
-    linkEakte: undefined,
     bauvorhaben: undefined,
     sub: undefined,
     displayName: undefined,
+    linkEakte: undefined,
+    bearbeitungshistorie: undefined,
   };
 }
 
@@ -161,9 +162,12 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
+    anmerkung: undefined,
     bauvorhaben: undefined,
     sub: undefined,
     displayName: undefined,
+    linkEakte: undefined,
+    bearbeitungshistorie: undefined,
     // Subklasse: BauleitplanverfahrenDto
     bebauungsplannummer: undefined,
     sobonRelevant: UncertainBoolean.Unspecified,
@@ -178,8 +182,6 @@ export function createBauleitplanverfahrenDto(): BauleitplanverfahrenDto {
     start42Verfahren: undefined,
     start42VerfahrenDatumUnbekannt: false,
     bauratenmethodikVorbelegung: undefined,
-    anmerkung: undefined,
-    linkEakte: undefined,
     abfragevariantenBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
     abfragevariantenSachbearbeitungBauleitplanverfahren: new Array<AbfragevarianteBauleitplanverfahrenDto>(),
   };
@@ -199,10 +201,11 @@ export function createBaugenehmigungsverfahrenDto(): BaugenehmigungsverfahrenDto
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
     anmerkung: undefined,
-    linkEakte: undefined,
     bauvorhaben: undefined,
     sub: undefined,
     displayName: undefined,
+    linkEakte: undefined,
+    bearbeitungshistorie: undefined,
     // Subklasse: BaugenehmigungsverfahrenDto
     aktenzeichenProLbk: undefined,
     bebauungsplannummer: undefined,
@@ -231,10 +234,11 @@ export function createWeiteresVerfahrenDto(): WeiteresVerfahrenDto {
     name: "",
     statusAbfrage: StatusAbfrage.Angelegt,
     anmerkung: undefined,
-    linkEakte: undefined,
     bauvorhaben: undefined,
     sub: undefined,
     displayName: undefined,
+    linkEakte: undefined,
+    bearbeitungshistorie: undefined,
     // Subklasse: WeiteresVerfahrenDto
     aktenzeichenProLbk: undefined,
     bebauungsplannummer: undefined,

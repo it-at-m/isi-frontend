@@ -359,6 +359,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import { isAllowedArtAbfrage } from "@/utils/AbfrageUtil";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import {
   createAbfragevarianteBauleitplanverfahrenDto,
@@ -1630,9 +1631,21 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
 }
 
 function abfrageUebernehmen(value: AbfrageDto): void {
-  if (value.artAbfrage === abfrage.value.artAbfrage) {
+  if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
     const copiedAbfrage = copyAbfrageOrAbfragevariante(value, {
       includeSachbearbeitungVarianten: true,
+      sanitizeAttributes:
+        abfrage.value.artAbfrage === value.artAbfrage
+          ? undefined
+          : new Map<string, unknown>([
+              ["artAbfrage", abfrage.value.artAbfrage], // Art der Abfrage beibehalten, falls eine andere Art der Abfrage bei der Abfrageauswahl ausgewählt wurde
+              // folgende Attribute kommen zwar in beiden Abfragearten vor. Sie unterscheiden sich die Ausprägungen. Daher dürfen diese Attribute nicht übernommen werden.
+              ["verfahrensstand", undefined],
+              ["verfahrensstandFreieEingabe", undefined],
+              ["wesentlicheRechtsgrundlage", undefined],
+              ["wesentlicheRechtsgrundlageFreieEingabe", undefined],
+              ["wesentlicheRechtsgrundlageAngabenZurBefreiung", undefined],
+            ]),
     }) as AnyAbfrageModel;
 
     mergeSachbearbeitungsvariantenIntoAbfragevarianten(copiedAbfrage);
