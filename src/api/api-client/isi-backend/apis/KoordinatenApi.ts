@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  UtmDto,
-  Wgs84Dto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type UtmDto,
     UtmDtoFromJSON,
     UtmDtoToJSON,
+} from '../models/UtmDto';
+import {
+    type Wgs84Dto,
     Wgs84DtoFromJSON,
     Wgs84DtoToJSON,
-} from '../models/index';
+} from '../models/Wgs84Dto';
 
 export interface Utm32ToWgs84Request {
     utmDto: UtmDto;

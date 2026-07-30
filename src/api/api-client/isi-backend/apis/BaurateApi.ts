@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  BaurateDto,
-  InformationResponseDto,
-} from '../models/index';
 import {
+    type BaurateDto,
     BaurateDtoFromJSON,
     BaurateDtoToJSON,
+} from '../models/BaurateDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models/index';
+} from '../models/InformationResponseDto';
 
 export interface DetermineBauratenRequest {
     realisierungsbeginn: number;

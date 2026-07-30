@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  DokumentRequestBody,
-  EntityModelDokument,
-  PagedModelEntityModelDokument,
-} from '../models/index';
 import {
+    type DokumentRequestBody,
     DokumentRequestBodyFromJSON,
     DokumentRequestBodyToJSON,
+} from '../models/DokumentRequestBody';
+import {
+    type EntityModelDokument,
     EntityModelDokumentFromJSON,
     EntityModelDokumentToJSON,
+} from '../models/EntityModelDokument';
+import {
+    type PagedModelEntityModelDokument,
     PagedModelEntityModelDokumentFromJSON,
     PagedModelEntityModelDokumentToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelDokument';
 
 export interface DeleteItemResourceDokumentDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/dokuments/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/dokuments/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/dokuments/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class DokumentEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/dokuments/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

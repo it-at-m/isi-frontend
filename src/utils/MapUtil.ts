@@ -163,7 +163,8 @@ export function assembleBaseLayersForLayerControl(): Record<string, TileLayer.WM
   }
 
   for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const layer = L.nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
+    const url = import.meta.env.VITE_ARCGIS_URL as string;
+    const layer = L.nonTiledLayer.wms(getArcgisUrl(url, "Grundkarten"), {
       layers: overlay[1],
       transparent: true,
       ...LAYER_OPTIONS,

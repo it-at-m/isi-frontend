@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FilepathDto,
-  InformationResponseDto,
-  MimeTypeInformationDto,
-} from '../models/index';
 import {
+    type FilepathDto,
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
+} from '../models/FilepathDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type MimeTypeInformationDto,
     MimeTypeInformationDtoFromJSON,
     MimeTypeInformationDtoToJSON,
-} from '../models/index';
+} from '../models/MimeTypeInformationDto';
 
 export interface ExtractMediaTypeInformationForAllowedMediaTypeRequest {
     filepathDto: FilepathDto;
