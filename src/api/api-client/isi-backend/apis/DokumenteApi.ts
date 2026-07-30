@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  DokumenteDto,
-} from '../models/index';
 import {
+    type DokumenteDto,
     DokumenteDtoFromJSON,
     DokumenteDtoToJSON,
-} from '../models/index';
+} from '../models/DokumenteDto';
 
 export interface GetDokumenteRequest {
     pageNumber?: number;

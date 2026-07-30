@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CollectionModelDokument,
-  CollectionModelObject,
-} from '../models/index';
 import {
+    type CollectionModelDokument,
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
+} from '../models/CollectionModelDokument';
+import {
+    type CollectionModelObject,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
-} from '../models/index';
+} from '../models/CollectionModelObject';
 
 export interface CreatePropertyReferenceAbfragevariantebauleitplanverfahrenPatchRequest {
     id: string;
@@ -140,7 +139,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -202,7 +201,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -264,7 +263,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -326,7 +325,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -390,7 +389,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -454,7 +453,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -509,7 +508,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -553,7 +552,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -597,7 +596,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -648,8 +647,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -700,8 +699,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -752,8 +751,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -797,7 +796,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -849,8 +848,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteAbfrageersteller/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -895,7 +894,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -947,8 +946,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/bedarfsmeldungDokumenteFachreferate/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -993,7 +992,7 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -1045,8 +1044,8 @@ export class AbfragevarianteBauleitplanverfahrenPropertyReferenceControllerApi e
 
 
         let urlPath = `/abfragevarianteBauleitplanverfahrens/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,

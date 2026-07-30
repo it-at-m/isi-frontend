@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelFoerdermixStamm,
-} from '../models/index';
 import {
+    type EntityModelFoerdermixStamm,
     EntityModelFoerdermixStammFromJSON,
     EntityModelFoerdermixStammToJSON,
-} from '../models/index';
+} from '../models/EntityModelFoerdermixStamm';
 
 /**
  * 

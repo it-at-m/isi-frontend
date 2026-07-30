@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FoerdermixStammDto,
-  InformationResponseDto,
-} from '../models/index';
 import {
+    type FoerdermixStammDto,
     FoerdermixStammDtoFromJSON,
     FoerdermixStammDtoToJSON,
+} from '../models/FoerdermixStammDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
-} from '../models/index';
+} from '../models/InformationResponseDto';
 
 export interface DeleteFoerdermixStammByIdRequest {
     id: string;
@@ -63,7 +62,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
 
         let urlPath = `/stammdaten/foerdermix/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -146,7 +145,7 @@ export class FoerdermixStammApi extends runtime.BaseAPI {
 
 
         let urlPath = `/stammdaten/foerdermix/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  UpdateInfrastruktureinrichtungRequest,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type UpdateInfrastruktureinrichtungRequest,
     UpdateInfrastruktureinrichtungRequestFromJSON,
     UpdateInfrastruktureinrichtungRequestToJSON,
-} from '../models/index';
+} from '../models/UpdateInfrastruktureinrichtungRequest';
 
 export interface CreateInfrastruktureinrichtungRequest {
     updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
@@ -110,7 +109,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
 
 
         let urlPath = `/infrastruktureinrichtung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -154,7 +153,7 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
 
 
         let urlPath = `/infrastruktureinrichtung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

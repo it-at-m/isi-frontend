@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelInfrastruktureinrichtung,
-} from '../models/index';
 import {
+    type EntityModelInfrastruktureinrichtung,
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models/EntityModelInfrastruktureinrichtung';
 
 export interface ExecuteSearchInfrastruktureinrichtungGetRequest {
     id?: string;
