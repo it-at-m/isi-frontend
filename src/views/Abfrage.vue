@@ -1634,11 +1634,11 @@ function abfrageUebernehmen(value: AbfrageDto): void {
   if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
     const copiedAbfrage = copyAbfrageOrAbfragevariante(value, {
       includeSachbearbeitungVarianten: true,
+      targetArtAbfrage: abfrage.value.artAbfrage,
       sanitizeAttributes:
         abfrage.value.artAbfrage === value.artAbfrage
           ? undefined
           : new Map<string, unknown>([
-              ["artAbfrage", abfrage.value.artAbfrage], // Art der Abfrage beibehalten, falls eine andere Art der Abfrage bei der Abfrageauswahl ausgewählt wurde
               // folgende Attribute kommen zwar in beiden Abfragearten vor. Sie unterscheiden sich die Ausprägungen. Daher dürfen diese Attribute nicht übernommen werden.
               ["verfahrensstand", undefined],
               ["verfahrensstandFreieEingabe", undefined],
