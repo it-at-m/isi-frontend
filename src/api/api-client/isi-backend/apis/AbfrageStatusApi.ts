@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  TransitionDto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type TransitionDto,
     TransitionDtoFromJSON,
     TransitionDtoToJSON,
-} from '../models/index';
+} from '../models/TransitionDto';
 
 export interface AbbrechenAbfrageRequest {
     id: string;
@@ -105,7 +104,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/abbrechen`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -153,7 +152,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/bedarfsmeldung-erfolgt`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -201,7 +200,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/erledigt-mit-fachreferat`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -249,7 +248,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/erledigt-ohne-fachreferat`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -297,7 +296,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/erneute-bearbeitung-sachbearbeitung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -345,7 +344,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/freigabe`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -393,7 +392,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/in-bearbeitung-setzen`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -437,7 +436,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/transitions`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -486,7 +485,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/verschicken-der-stellungnahme`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -534,7 +533,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/zurueck-an-abfrageerstellung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -582,7 +581,7 @@ export class AbfrageStatusApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage-status/{id}/zurueck-an-sachbearbeitung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

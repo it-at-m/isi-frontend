@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  MetabaseReportingDto,
-} from '../models/index';
 import {
+    type MetabaseReportingDto,
     MetabaseReportingDtoFromJSON,
     MetabaseReportingDtoToJSON,
-} from '../models/index';
+} from '../models/MetabaseReportingDto';
 
 /**
  * 

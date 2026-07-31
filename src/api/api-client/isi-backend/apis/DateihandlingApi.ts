@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FilepathDto,
-  InformationResponseDto,
-  PresignedUrlDto,
-} from '../models/index';
 import {
+    type FilepathDto,
     FilepathDtoFromJSON,
     FilepathDtoToJSON,
+} from '../models/FilepathDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type PresignedUrlDto,
     PresignedUrlDtoFromJSON,
     PresignedUrlDtoToJSON,
-} from '../models/index';
+} from '../models/PresignedUrlDto';
 
 export interface GetFileRequest {
     pathToFile: string;

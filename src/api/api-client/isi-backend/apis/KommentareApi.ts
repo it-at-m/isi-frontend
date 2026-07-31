@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  KommentarBauvorhabenDto,
-  KommentarInfrastruktureinrichtungDto,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type KommentarBauvorhabenDto,
     KommentarBauvorhabenDtoFromJSON,
     KommentarBauvorhabenDtoToJSON,
+} from '../models/KommentarBauvorhabenDto';
+import {
+    type KommentarInfrastruktureinrichtungDto,
     KommentarInfrastruktureinrichtungDtoFromJSON,
     KommentarInfrastruktureinrichtungDtoToJSON,
-} from '../models/index';
+} from '../models/KommentarInfrastruktureinrichtungDto';
 
 export interface CreateKommentarForBauvorhabenRequest {
     kommentarBauvorhabenDto: KommentarBauvorhabenDto;
@@ -176,7 +177,7 @@ export class KommentareApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentar/bauvorhaben/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -220,7 +221,7 @@ export class KommentareApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentar/infrastruktureinrichtung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -264,7 +265,7 @@ export class KommentareApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentar/all/bauvorhaben/{bauvorhabenId}`;
-        urlPath = urlPath.replace(`{${"bauvorhabenId"}}`, encodeURIComponent(String(requestParameters['bauvorhabenId'])));
+        urlPath = urlPath.replace('{bauvorhabenId}', encodeURIComponent(String(requestParameters['bauvorhabenId'])));
 
         return {
             path: urlPath,
@@ -309,7 +310,7 @@ export class KommentareApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentar/all/infrastruktureinrichtung/{infrastruktureinrichtungId}`;
-        urlPath = urlPath.replace(`{${"infrastruktureinrichtungId"}}`, encodeURIComponent(String(requestParameters['infrastruktureinrichtungId'])));
+        urlPath = urlPath.replace('{infrastruktureinrichtungId}', encodeURIComponent(String(requestParameters['infrastruktureinrichtungId'])));
 
         return {
             path: urlPath,

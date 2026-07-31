@@ -12,45 +12,62 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FeatureCollectionDtoFeatureDtoBezirksteilDto,
-  FeatureCollectionDtoFeatureDtoFlurstueckDto,
-  FeatureCollectionDtoFeatureDtoGemarkungDto,
-  FeatureCollectionDtoFeatureDtoGrundschulsprengelDto,
-  FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto,
-  FeatureCollectionDtoFeatureDtoMittelschulsprengelDto,
-  FeatureCollectionDtoFeatureDtoSchulstandortDto,
-  FeatureCollectionDtoFeatureDtoStadtbezirkDto,
-  FeatureCollectionDtoFeatureDtoViertelDto,
-  InformationResponseDto,
-  MultiPolygonGeometryDto,
-} from '../models/index';
 import {
+    type FeatureCollectionDtoFeatureDtoBezirksteilDto,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoFromJSON,
     FeatureCollectionDtoFeatureDtoBezirksteilDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoBezirksteilDto';
+import {
+    type FeatureCollectionDtoFeatureDtoFlurstueckDto,
     FeatureCollectionDtoFeatureDtoFlurstueckDtoFromJSON,
     FeatureCollectionDtoFeatureDtoFlurstueckDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoFlurstueckDto';
+import {
+    type FeatureCollectionDtoFeatureDtoGemarkungDto,
     FeatureCollectionDtoFeatureDtoGemarkungDtoFromJSON,
     FeatureCollectionDtoFeatureDtoGemarkungDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoGemarkungDto';
+import {
+    type FeatureCollectionDtoFeatureDtoGrundschulsprengelDto,
     FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoGrundschulsprengelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto';
+import {
+    type FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto,
     FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoFromJSON,
     FeatureCollectionDtoFeatureDtoKitaplanungsbereichDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto';
+import {
+    type FeatureCollectionDtoFeatureDtoMittelschulsprengelDto,
     FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoMittelschulsprengelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto';
+import {
+    type FeatureCollectionDtoFeatureDtoSchulstandortDto,
     FeatureCollectionDtoFeatureDtoSchulstandortDtoFromJSON,
     FeatureCollectionDtoFeatureDtoSchulstandortDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoSchulstandortDto';
+import {
+    type FeatureCollectionDtoFeatureDtoStadtbezirkDto,
     FeatureCollectionDtoFeatureDtoStadtbezirkDtoFromJSON,
     FeatureCollectionDtoFeatureDtoStadtbezirkDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoStadtbezirkDto';
+import {
+    type FeatureCollectionDtoFeatureDtoViertelDto,
     FeatureCollectionDtoFeatureDtoViertelDtoFromJSON,
     FeatureCollectionDtoFeatureDtoViertelDtoToJSON,
+} from '../models/FeatureCollectionDtoFeatureDtoViertelDto';
+import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type MultiPolygonGeometryDto,
     MultiPolygonGeometryDtoFromJSON,
     MultiPolygonGeometryDtoToJSON,
-} from '../models/index';
+} from '../models/MultiPolygonGeometryDto';
 
 export interface GetBezirksteileRequest {
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
