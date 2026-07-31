@@ -16,8 +16,8 @@ Name | Type
 `linkEakte` | string
 `bearbeitungshistorie` | [Array&lt;Bearbeitungshistorie&gt;](Bearbeitungshistorie.md)
 `bauvorhabenUuid` | string
-`resultType` | string
 `artAbfrage` | string
+`resultType` | string
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -37,8 +37,8 @@ const example = {
   "linkEakte": null,
   "bearbeitungshistorie": null,
   "bauvorhabenUuid": null,
-  "resultType": null,
   "artAbfrage": null,
+  "resultType": null,
   "links": null,
 } satisfies EntityModelAbfrage
 

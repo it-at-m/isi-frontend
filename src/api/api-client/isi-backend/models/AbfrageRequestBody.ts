@@ -108,28 +108,18 @@ export interface AbfrageRequestBody {
     bauvorhabenUuid?: string;
     /**
      * 
-     * @type {AbfrageRequestBodyResultTypeEnum}
-     * @memberof AbfrageRequestBody
-     */
-    resultType?: AbfrageRequestBodyResultTypeEnum;
-    /**
-     * 
      * @type {AbfrageRequestBodyArtAbfrageEnum}
      * @memberof AbfrageRequestBody
      */
     artAbfrage?: AbfrageRequestBodyArtAbfrageEnum;
+    /**
+     * 
+     * @type {AbfrageRequestBodyResultTypeEnum}
+     * @memberof AbfrageRequestBody
+     */
+    resultType?: AbfrageRequestBodyResultTypeEnum;
 }
 
-
-/**
- * @export
- */
-export const AbfrageRequestBodyResultTypeEnum = {
-    Bauvorhaben: 'BAUVORHABEN',
-    Abfrage: 'ABFRAGE',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
-} as const;
-export type AbfrageRequestBodyResultTypeEnum = typeof AbfrageRequestBodyResultTypeEnum[keyof typeof AbfrageRequestBodyResultTypeEnum];
 
 /**
  * @export
@@ -141,6 +131,16 @@ export const AbfrageRequestBodyArtAbfrageEnum = {
     WeiteresVerfahren: 'WEITERES_VERFAHREN'
 } as const;
 export type AbfrageRequestBodyArtAbfrageEnum = typeof AbfrageRequestBodyArtAbfrageEnum[keyof typeof AbfrageRequestBodyArtAbfrageEnum];
+
+/**
+ * @export
+ */
+export const AbfrageRequestBodyResultTypeEnum = {
+    Bauvorhaben: 'BAUVORHABEN',
+    Abfrage: 'ABFRAGE',
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+} as const;
+export type AbfrageRequestBodyResultTypeEnum = typeof AbfrageRequestBodyResultTypeEnum[keyof typeof AbfrageRequestBodyResultTypeEnum];
 
 
 /**
@@ -172,8 +172,8 @@ export function AbfrageRequestBodyFromJSONTyped(json: any, ignoreDiscriminator: 
         'linkEakte': json['linkEakte'] == null ? undefined : json['linkEakte'],
         'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieFromJSON)),
         'bauvorhabenUuid': json['bauvorhabenUuid'] == null ? undefined : json['bauvorhabenUuid'],
-        'resultType': json['resultType'] == null ? undefined : json['resultType'],
         'artAbfrage': json['artAbfrage'] == null ? undefined : json['artAbfrage'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
     };
 }
 
@@ -200,8 +200,8 @@ export function AbfrageRequestBodyToJSONTyped(value?: AbfrageRequestBody | null,
         'linkEakte': value['linkEakte'],
         'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieToJSON)),
         'bauvorhabenUuid': value['bauvorhabenUuid'],
-        'resultType': value['resultType'],
         'artAbfrage': value['artAbfrage'],
+        'resultType': value['resultType'],
     };
 }
 
