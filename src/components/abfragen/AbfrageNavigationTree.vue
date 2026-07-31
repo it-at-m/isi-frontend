@@ -502,10 +502,28 @@ function bauratenDeterminableForAbfragevariante(abfragevariante: AnyAbfragevaria
     // Entweder müssen die Geschoßläche Wohnen oder die Wohneinheiten gesetzt sein.
     (!_.isNil(abfragevariante.weGesamt) || !_.isNil(abfragevariante.gfWohnenGesamt)) &&
     // Die Abfragevariante darf keine Bauabschnitte referenzieren.
-    _.isEmpty(abfragevariante.bauabschnitte) &&
+    (_.isEmpty(abfragevariante.bauabschnitte) || isTechnicalOhneBauraten(abfragevariante.bauabschnitte)) &&
     // Das Datum für Realisierung von muss gesetzt sein.
     !_.isNil(abfragevariante.realisierungVon)
   );
+}
+
+function isTechnicalOhneBauraten(bauabschnitte?: BauabschnittDto[]): boolean {
+  let isTechnicalOhneBauraten = true;
+  if (!_.isEmpty(bauabschnitte)) {
+    bauabschnitte?.forEach((bauabschnitt) => {
+      if (bauabschnitt.technical) {
+        bauabschnitt.baugebiete.forEach((baugebiet) => {
+          if (!baugebiet.technical || !_.isEmpty(baugebiet.bauraten)) {
+            isTechnicalOhneBauraten = false;
+          }
+        });
+      } else {
+        isTechnicalOhneBauraten = false;
+      }
+    });
+  }
+  return isTechnicalOhneBauraten;
 }
 
 function bauratenDeterminableForBaugebiet(baugebiet: BaugebietDto): boolean {

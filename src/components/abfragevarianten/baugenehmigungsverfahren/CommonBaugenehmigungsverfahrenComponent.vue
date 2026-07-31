@@ -95,6 +95,9 @@
             year
             maxlength="4"
             required
+            @focus="saveRealisierungVon"
+            @blur="realisierungVonChanged"
+            help="Erfolgt bei Datum 'Realisierung von' eine Eingabe, werden alle Bauraten gelöscht."
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
         </v-col>
@@ -115,6 +118,17 @@
       </v-row>
     </field-group-card>
   </v-container>
+  <yes-no-dialog
+    id="bauraten_loeschen_yes_no_dialog"
+    v-model="isDialogBauratenLoeschenOpen"
+    icon="mdi-delete-forever"
+    dialogtitle="Hinweis"
+    dialogtext="Hiermit werden alle Bauraten unwiderruflich gelöscht."
+    no-text="Abbrechen"
+    yes-text="Ändern"
+    @no="yesNoDialogBauratenLoeschenNo"
+    @yes="yesNoDialogBauratenLoeschenYes"
+  />
 </template>
 
 <script setup lang="ts">
@@ -127,6 +141,8 @@ import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragev
 import _ from "lodash";
 import { pflichtfeld, pflichtfeldMehrfachauswahl, notUnspecified } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import { existsBauraten, deleteBauraten } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;
@@ -138,9 +154,13 @@ const wesentlicheRechtsgrundlageFreieEingabeVisible = ref<boolean | null>();
 
 const wesentlicheRechtsgrundlageAngabenZurBefreiungVisible = ref<boolean | null>();
 
+const isDialogBauratenLoeschenOpen = ref(false);
+
 const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
+
+const originalRealisierungVon = ref<number | null>();
 
 const wesentlicheRechtsgrundlageBaugenehmigungsverfahrenList = computed(
   () => lookupStore.wesentlicheRechtsgrundlageBaugenehmigungsverfahren,
@@ -179,5 +199,24 @@ function wesentlicheRechtsgrundlageChanged(): void {
     abfragevariante.value.wesentlicheRechtsgrundlageAngabenZurBefreiung = undefined;
     wesentlicheRechtsgrundlageAngabenZurBefreiungVisible.value = false;
   }
+}
+
+function saveRealisierungVon(): void {
+  originalRealisierungVon.value = abfragevariante.value.realisierungVon;
+}
+
+function realisierungVonChanged(): void {
+  isDialogBauratenLoeschenOpen.value =
+    originalRealisierungVon.value != abfragevariante.value.realisierungVon &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
+}
+
+function yesNoDialogBauratenLoeschenYes(): void {
+  deleteBauraten(abfragevariante.value.bauabschnitte);
+  yesNoDialogBauratenLoeschenNo();
+}
+
+function yesNoDialogBauratenLoeschenNo(): void {
+  isDialogBauratenLoeschenOpen.value = false;
 }
 </script>
