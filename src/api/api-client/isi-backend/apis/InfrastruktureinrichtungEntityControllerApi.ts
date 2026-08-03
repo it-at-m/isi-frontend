@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelInfrastruktureinrichtung,
-  InfrastruktureinrichtungRequestBody,
-  PagedModelEntityModelInfrastruktureinrichtung,
-} from '../models/index';
 import {
+    type EntityModelInfrastruktureinrichtung,
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
+} from '../models/EntityModelInfrastruktureinrichtung';
+import {
+    type InfrastruktureinrichtungRequestBody,
     InfrastruktureinrichtungRequestBodyFromJSON,
     InfrastruktureinrichtungRequestBodyToJSON,
+} from '../models/InfrastruktureinrichtungRequestBody';
+import {
+    type PagedModelEntityModelInfrastruktureinrichtung,
     PagedModelEntityModelInfrastruktureinrichtungFromJSON,
     PagedModelEntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelInfrastruktureinrichtung';
 
 export interface DeleteItemResourceInfrastruktureinrichtungDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class InfrastruktureinrichtungEntityControllerApi extends runtime.BaseAPI
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

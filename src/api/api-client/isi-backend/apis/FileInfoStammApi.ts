@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FileInformationDto,
-} from '../models/index';
 import {
+    type FileInformationDto,
     FileInformationDtoFromJSON,
     FileInformationDtoToJSON,
-} from '../models/index';
+} from '../models/FileInformationDto';
 
 /**
  * 

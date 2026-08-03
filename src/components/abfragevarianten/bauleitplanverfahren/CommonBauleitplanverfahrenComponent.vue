@@ -30,7 +30,9 @@
           :disabled="!isEditable"
           label="Datum Satzungsbeschluss"
           month-picker
+          @focus="saveSatzungsbeschluss"
           @blur="datumSatzungsbeschlussChanged"
+          help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, werden alle Bauraten gelöscht."
         />
       </v-col>
       <v-col
@@ -96,7 +98,9 @@
           year
           maxlength="4"
           required
-          help="Erfolgt bei Datum Satzungsbeschluss eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden."
+          @focus="saveRealisierungVon"
+          @blur="realisierungVonChanged"
+          help="Erfolgt bei Datum 'Satzungsbeschluss' eine Eingabe, wird das Datum 'Realisierung von' neu berechnet. 'Realisierung von' kann jedoch weiterhin geändert werden. Dabei werden alle Bauraten gelöscht."
           :class="isEditable ? '' : 'text-grey-lighten-1'"
         />
       </v-col>
@@ -116,6 +120,17 @@
       </v-col>
     </v-row>
   </field-group-card>
+  <yes-no-dialog
+    id="bauraten_loeschen_yes_no_dialog"
+    v-model="isDialogBauratenLoeschenOpen"
+    icon="mdi-delete-forever"
+    dialogtitle="Hinweis"
+    dialogtext="Hiermit werden alle Bauraten unwiderruflich gelöscht."
+    no-text="Abbrechen"
+    yes-text="Ändern"
+    @no="yesNoDialogBauratenLoeschenNo"
+    @yes="yesNoDialogBauratenLoeschenYes"
+  />
 </template>
 
 <script setup lang="ts">
@@ -129,6 +144,8 @@ import { useLookupStore } from "@/stores/LookupStore";
 import AbfragevarianteBauleitplanverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBauleitplanverfahrenModel";
 import { notUnspecified, pflichtfeld, pflichtfeldMehrfachauswahl } from "@/utils/FieldValidationRules";
 import _ from "lodash";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import { existsBauraten, deleteBauraten } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;
@@ -138,11 +155,16 @@ const abfragevariante = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ 
 
 const planartFreieEingabeVisible = ref<boolean | null>();
 
+const isDialogBauratenLoeschenOpen = ref(false);
+
 const lookupStore = useLookupStore();
 
 const { formChanged } = useSaveLeave();
 
 const planartList = computed(() => lookupStore.planart);
+
+const originalSatzungsbeschluss = ref<Date | null>();
+const originalRealisierungVon = ref<number | null>();
 
 const calcRealisierungBis = computed(() => {
   const jahre: Array<number> | undefined = abfragevariante.value.bauabschnitte
@@ -164,6 +186,9 @@ function datumSatzungsbeschlussChanged(): void {
         ? datumSatzungsbeschluss.getFullYear() + 3
         : datumSatzungsbeschluss.getFullYear() + 4;
   }
+  isDialogBauratenLoeschenOpen.value =
+    originalSatzungsbeschluss.value != abfragevariante.value.satzungsbeschluss &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
@@ -177,5 +202,28 @@ function planartChanged(): void {
     abfragevariante.value.planartFreieEingabe = undefined;
     planartFreieEingabeVisible.value = false;
   }
+}
+
+function saveSatzungsbeschluss(): void {
+  originalSatzungsbeschluss.value = abfragevariante.value.satzungsbeschluss;
+}
+
+function saveRealisierungVon(): void {
+  originalRealisierungVon.value = abfragevariante.value.realisierungVon;
+}
+
+function realisierungVonChanged(): void {
+  isDialogBauratenLoeschenOpen.value =
+    originalRealisierungVon.value != abfragevariante.value.realisierungVon &&
+    existsBauraten(abfragevariante.value.bauabschnitte);
+}
+
+function yesNoDialogBauratenLoeschenYes(): void {
+  deleteBauraten(abfragevariante.value.bauabschnitte);
+  yesNoDialogBauratenLoeschenNo();
+}
+
+function yesNoDialogBauratenLoeschenNo(): void {
+  isDialogBauratenLoeschenOpen.value = false;
 }
 </script>

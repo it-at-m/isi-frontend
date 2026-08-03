@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelAbfragevarianteBaugenehmigungsverfahren,
-} from '../models/index';
 import {
+    type EntityModelAbfragevarianteBaugenehmigungsverfahren,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON,
-} from '../models/index';
+} from '../models/EntityModelAbfragevarianteBaugenehmigungsverfahren';
 
 export interface ExecuteSearchAbfragevariantebaugenehmigungsverfahrenGetRequest {
     id?: string;
