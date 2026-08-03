@@ -7,23 +7,28 @@
     <v-row class="justify-start">
       <v-col
         cols="12"
-        md="3"
+        md="2"
+        class="d-flex align-center"
       >
-        <v-text-field
-          id="kommentar_datum"
-          v-model.trim="kommentar.datum"
-          maxlength="32"
-          variant="filled"
-          :readonly="!isEditable"
-          @update:model-value="changed"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
-        >
-          <template #label> Datum </template>
-        </v-text-field>
+        <span class="v-label theme--light"> Datum: {{ erstellungsdatumFormatted }} </span>
       </v-col>
       <v-col
         cols="12"
-        md="9"
+        md="3"
+        class="d-flex align-center"
+      >
+        <span class="v-label theme--light"> Letzte Bearbeitung: {{ datumLetzteAenderungFormatted }} </span>
+      </v-col>
+      <v-col
+        cols="12"
+        md="5"
+        class="d-flex align-center"
+      >
+        <span class="v-label theme--light"> Letzter Bearbeiter: {{ letzteBearbeitendePerson }} </span>
+      </v-col>
+      <v-col
+        cols="12"
+        md="2"
       >
         <v-card-actions>
           <v-spacer />
@@ -106,6 +111,7 @@ import _ from "lodash";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import Dokumente from "../dokumente/Dokumente.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import moment from "moment";
 
 interface Props {
   isEditable?: boolean;
@@ -125,8 +131,17 @@ const { commentChanged } = useSaveLeave();
 const emit = defineEmits<Emits>();
 const kommentar = defineModel<KommentarModel>({ required: true });
 const deleteDialog = ref(false);
-const isSaveable = computed(() => !_.isEmpty(kommentar.value.datum) || !_.isEmpty(kommentar.value.text));
+const isSaveable = computed(() => !_.isEmpty(kommentar.value.text));
 const isDeletable = computed(() => !_.isNil(kommentar.value.id) || (_.isNil(kommentar.value.id) && isSaveable.value));
+const erstellungsdatumFormatted = computed(() => moment(kommentar.value.erstellungsdatum).format("DD.MM.YYYY"));
+const datumLetzteAenderungFormatted = computed(() =>
+  !_.isNil(kommentar.value.lastModifiedDateTime)
+    ? moment(kommentar.value.lastModifiedDateTime).format("DD.MM.YYYY")
+    : "",
+);
+const letzteBearbeitendePerson = computed(() =>
+  !_.isNil(kommentar.value.bearbeitendePerson) ? kommentar.value.bearbeitendePerson.name : "",
+);
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 

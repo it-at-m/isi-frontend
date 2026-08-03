@@ -13,6 +13,7 @@
         :hint="displayFormat"
         :readonly="disabled"
         :required="required"
+        @focus="focus()"
         @update:model-value="formChanged"
         @update:focused="$event || blur()"
         :class="disabled ? 'text-grey-lighten-1' : ''"
@@ -27,7 +28,23 @@
           </span>
         </template>
         <template #append>
-          <v-icon v-bind="activatorProps">mdi-calendar</v-icon>
+          <v-icon
+            v-bind="activatorProps"
+            class="mt-2"
+            >mdi-calendar</v-icon
+          >
+          <template v-if="help">
+            <v-tooltip location="bottom">
+              <template #activator="{ props: helpActivatorProps }">
+                <v-icon
+                  v-bind="helpActivatorProps"
+                  class="mt-2"
+                  >mdi-help-circle-outline</v-icon
+                >
+              </template>
+              <span>{{ help }}</span>
+            </v-tooltip>
+          </template>
         </template>
       </v-text-field>
     </template>
@@ -73,10 +90,12 @@ interface Props {
   disabled?: boolean; // Ob das Datumsfeld deaktiviert sein soll
   monthPicker?: boolean; // Ob nur Monat und Jahr auswählbar sein sollen
   rules?: Rule[]; // Welche Validierungsregeln gelten
+  help?: string;
 }
 
 interface Emits {
   (event: "blur", value: void): void;
+  (event: "focus", value: void): void;
 }
 
 const ISO_FORMAT = "YYYY-MM-DD";
@@ -181,6 +200,10 @@ function setTextFieldDateForMonthPicker(monthIndex: number): void {
 function deactivateDatePicker(): void {
   datePickerActive.value = false;
   blur();
+}
+
+function focus(): void {
+  emit("focus");
 }
 
 function blur(): void {

@@ -87,14 +87,14 @@ const geoJsonOptions: GeoJSONOptions = {
                      feature.properties.infrastruktureinrichtungTyp,
                      infrastruktureinrichtungTypList.value,
                    )}<br>
-                   Bauvorhaben: ${feature.properties.zugehoerigesBauvorhaben}`;
+                   Vorhaben: ${feature.properties.zugehoerigesBauvorhaben}`;
       } else {
         contentTooltip = `<b>${feature.properties.name}</b><br>
                    Typ: ${getLookupValue(
                      feature.properties.infrastruktureinrichtungTyp,
                      infrastruktureinrichtungTypList.value,
                    )}<br>
-                   Bauvorhaben: Kein zugehöriges Bauvorhaben`;
+                   Vorhaben: Kein zugehöriges Vorhaben`;
       }
     }
     if (feature.geometry.type === "Point") {
@@ -201,7 +201,7 @@ const layersForLayerControl = computed(() => {
   const layerGroup = new L.LayerGroup();
   L.geoJSON(featureUmgriffe, geoJsonOptions).addTo(layerGroup);
   const layers = new Map<string, Layer>();
-  layers.set("Umgriffe Bauvorhaben", layerGroup);
+  layers.set("Umgriffe Vorhaben", layerGroup);
   return layers;
 });
 

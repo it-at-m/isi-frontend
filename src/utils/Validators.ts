@@ -88,6 +88,9 @@ export function findFaultInBauleitplanverfahrenForSave(abfrage: Bauleitplanverfa
   if (abfrage.sobonRelevant === UncertainBoolean.True && _.isNil(abfrage.sobonJahr)) {
     return "Die Abfrage ist SoBoN-relevant. Bitte das Jahr der anzuwendenden Verfahrensgrundsätze der SoBoN wählen.";
   }
+  if (_.isNil(abfrage.start42Verfahren) === !abfrage.start42VerfahrenDatumUnbekannt) {
+    return "Bitte 'Start 4.2-Verfahren' angeben oder 'Datum unbekannt / nicht zutreffend' ankreuzen";
+  }
   return findFaultInAbfrage(abfrage);
 }
 
@@ -658,6 +661,13 @@ function findFaultInAbfragevarianteStartBearbeitung(abfragevariante: AnyAbfragev
       AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified
   ) {
     return `Bitte geben Sie das 'Jahr für SoBoN-Orientierungswerte' bei Abfragevariante '${abfragevariante.name}' an.`;
+  }
+  if (
+    abfragevariante.artAbfragevariante ===
+      AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum.Bauleitplanverfahren &&
+    _.isNil((abfragevariante as AbfragevarianteBauleitplanverfahrenModel).sobonBerechnung?.bauratenmethodik)
+  ) {
+    return `Bitte geben Sie die 'Bauratenmethodik' bei Abfragevariante '${abfragevariante.name}' an.`;
   }
   return null;
 }

@@ -1,8 +1,39 @@
 import { describe, expect, test } from "vitest";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { findFaultInBaurate } from "@/utils/Validators";
+import { findFaultInBaurate, findFaultInBauleitplanverfahrenForSave } from "@/utils/Validators";
+import { UncertainBoolean } from "@/api/api-client/isi-backend";
+import type BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+
+const ENTWEDER_ODER_FEHLERMELDUNG =
+  "Bitte 'Start 4.2-Verfahren' angeben oder 'Datum unbekannt / nicht zutreffend' ankreuzen";
 
 describe("Validators Test", () => {
+  test("should findFaultInBauleitplanverfahrenForSave enforce Start42Verfahren entweder-oder Regel", () => {
+    const abfrage = {
+      sobonRelevant: UncertainBoolean.False,
+      mitzeichnungBeschlussentwurf: UncertainBoolean.False,
+      sobonJahr: undefined,
+      start42Verfahren: undefined,
+      start42VerfahrenDatumUnbekannt: false,
+    } as BauleitplanverfahrenModel;
+
+    // Weder Datum noch Tickbox gesetzt -> Fehler
+    expect(findFaultInBauleitplanverfahrenForSave(abfrage)).toBe(ENTWEDER_ODER_FEHLERMELDUNG);
+
+    // Nur Tickbox gesetzt -> kein Fehler bzgl. der entweder-oder Regel
+    abfrage.start42VerfahrenDatumUnbekannt = true;
+    expect(findFaultInBauleitplanverfahrenForSave(abfrage)).not.toBe(ENTWEDER_ODER_FEHLERMELDUNG);
+
+    // Nur Datum gesetzt -> kein Fehler bzgl. der entweder-oder Regel
+    abfrage.start42VerfahrenDatumUnbekannt = false;
+    abfrage.start42Verfahren = new Date(2026, 2, 1);
+    expect(findFaultInBauleitplanverfahrenForSave(abfrage)).not.toBe(ENTWEDER_ODER_FEHLERMELDUNG);
+
+    // Beides gesetzt -> Fehler
+    abfrage.start42VerfahrenDatumUnbekannt = true;
+    expect(findFaultInBauleitplanverfahrenForSave(abfrage)).toBe(ENTWEDER_ODER_FEHLERMELDUNG);
+  });
+
   test("should findFaultInBaurate", () => {
     const baurate = new BaurateModel({
       jahr: 2002,

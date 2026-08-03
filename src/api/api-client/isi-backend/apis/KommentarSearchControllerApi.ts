@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelKommentar,
-} from '../models/index';
 import {
+    type EntityModelKommentar,
     EntityModelKommentarFromJSON,
     EntityModelKommentarToJSON,
-} from '../models/index';
+} from '../models/EntityModelKommentar';
 
 export interface ExecuteSearchKommentarGetRequest {
     bauvorhaben?: string;
