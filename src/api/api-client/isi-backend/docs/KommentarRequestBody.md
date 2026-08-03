@@ -10,11 +10,12 @@ Name | Type
 `version` | number
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
-`datum` | string
+`erstellungsdatum` | Date
 `text` | string
 `bauvorhaben` | string
 `infrastruktureinrichtung` | string
 `dokumente` | Array&lt;string&gt;
+`bearbeitendePerson` | [BearbeitendePerson](BearbeitendePerson.md)
 
 ## Example
 
@@ -27,11 +28,12 @@ const example = {
   "version": null,
   "createdDateTime": null,
   "lastModifiedDateTime": null,
-  "datum": null,
+  "erstellungsdatum": null,
   "text": null,
   "bauvorhaben": null,
   "infrastruktureinrichtung": null,
   "dokumente": null,
+  "bearbeitendePerson": null,
 } satisfies KommentarRequestBody
 
 console.log(example)
