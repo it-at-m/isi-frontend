@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  LookupListsDto,
-} from '../models/index';
 import {
+    type LookupListsDto,
     LookupListsDtoFromJSON,
     LookupListsDtoToJSON,
-} from '../models/index';
+} from '../models/LookupListsDto';
 
 /**
  * 

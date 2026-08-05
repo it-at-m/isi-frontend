@@ -98,17 +98,17 @@ export function UpdateInfrastruktureinrichtungRequestToJSONTyped(value?: UpdateI
     }
     switch (value['infrastruktureinrichtungTyp']) {
         case 'GRUNDSCHULE':
-            return Object.assign({}, GrundschuleDtoToJSON(value), { infrastruktureinrichtungTyp: 'GRUNDSCHULE' } as const);
+            return Object.assign({}, GrundschuleDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'GRUNDSCHULE' } as const);
         case 'GS_NACHMITTAG_BETREUUNG':
-            return Object.assign({}, GsNachmittagBetreuungDtoToJSON(value), { infrastruktureinrichtungTyp: 'GS_NACHMITTAG_BETREUUNG' } as const);
+            return Object.assign({}, GsNachmittagBetreuungDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'GS_NACHMITTAG_BETREUUNG' } as const);
         case 'HAUS_FUER_KINDER':
-            return Object.assign({}, HausFuerKinderDtoToJSON(value), { infrastruktureinrichtungTyp: 'HAUS_FUER_KINDER' } as const);
+            return Object.assign({}, HausFuerKinderDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'HAUS_FUER_KINDER' } as const);
         case 'KINDERGARTEN':
-            return Object.assign({}, KindergartenDtoToJSON(value), { infrastruktureinrichtungTyp: 'KINDERGARTEN' } as const);
+            return Object.assign({}, KindergartenDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'KINDERGARTEN' } as const);
         case 'KINDERKRIPPE':
-            return Object.assign({}, KinderkrippeDtoToJSON(value), { infrastruktureinrichtungTyp: 'KINDERKRIPPE' } as const);
+            return Object.assign({}, KinderkrippeDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'KINDERKRIPPE' } as const);
         case 'MITTELSCHULE':
-            return Object.assign({}, MittelschuleDtoToJSON(value), { infrastruktureinrichtungTyp: 'MITTELSCHULE' } as const);
+            return Object.assign({}, MittelschuleDtoToJSON(value), { 'infrastruktureinrichtungTyp': 'MITTELSCHULE' } as const);
         default:
             return value;
     }

@@ -851,15 +851,21 @@ function todayAsString(): string {
 
 export function createKommentarBauvorhabenDto(): KommentarBauvorhabenDto {
   return {
-    datum: todayAsString(),
+    erstellungsdatum: new Date(),
+    bearbeitendePerson: undefined,
     dokumente: [],
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
   };
 }
 
 export function createKommentarInfrastruktureinrichtungDto(): KommentarInfrastruktureinrichtungDto {
   return {
-    datum: todayAsString(),
+    erstellungsdatum: new Date(),
+    bearbeitendePerson: undefined,
     dokumente: [],
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
   };
 }
 
