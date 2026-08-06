@@ -133,12 +133,6 @@ export interface InfrastruktureinrichtungRequestBody {
     idKibigWeb?: string;
     /**
      * 
-     * @type {VerortungPoint}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
-    verortungPointJson?: VerortungPoint;
-    /**
-     * 
      * @type {InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
@@ -155,6 +149,12 @@ export interface InfrastruktureinrichtungRequestBody {
      * @memberof InfrastruktureinrichtungRequestBody
      */
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
+    /**
+     * 
+     * @type {VerortungPoint}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    verortungPointJson?: VerortungPoint;
     /**
      * 
      * @type {Adresse}
@@ -237,10 +237,10 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
-        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
     };
 }
@@ -271,10 +271,10 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
-        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
+        'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
     };
 }
