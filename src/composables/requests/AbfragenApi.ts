@@ -9,6 +9,7 @@ import type {
   PatchAngelegtRequest,
   GetByIdRequest,
   DeleteByIdRequest,
+  WvInBlvUebernehmenRequest,
   BauleitplanverfahrenStartBearbeitungDto,
   BaugenehmigungsverfahrenStartBearbeitungDto,
   WeiteresVerfahrenStartBearbeitungDto,
@@ -205,6 +206,17 @@ export function useAbfragenApi() {
       throw handleError(error);
     }
   }
+  async function wvInBlvUebernehmenById(id: string): Promise<BauleitplanverfahrenDto> {
+    const requestObject: WvInBlvUebernehmenRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.wvInBlvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 
   return {
     save,
@@ -214,5 +226,6 @@ export function useAbfragenApi() {
     patchEinplanungBedarfe,
     getById,
     deleteById,
+    wvInBlvUebernehmenById,
   };
 }

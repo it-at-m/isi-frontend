@@ -11,6 +11,7 @@ All URIs are relative to *http://localhost:8089*
 | [**patchEinplanungBedarfe**](AbfragenApi.md#patcheinplanungbedarfeoperation) | **PATCH** /abfrage/bedarfsmeldung-erfolgt/{id} | Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE. |
 | [**patchStartBearbeitung**](AbfragenApi.md#patchstartbearbeitungoperation) | **PATCH** /abfrage/in-bearbeitung-sachbearbeitung/{id} | Aktualisierung einer Abfrage im Status START_BEARBEITUNG. |
 | [**save**](AbfragenApi.md#saveoperation) | **POST** /abfrage | Anlegen einer neuen Abfrage |
+| [**wvInBlvUebernehmenById**](AbfragenApi.md#wvinblvuebernehmenbyid) | **GET** /abfrage/wv-in-blv-uebernehmen{id} | Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV). |
 
 
 
@@ -505,6 +506,73 @@ No authorization required
 | **400** | BAD_REQUEST -&gt; Abfrage konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
 | **404** | NOT_FOUND -&gt; Das referenzierte Bauvorhaben existiert nicht. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## wvInBlvUebernehmenById
+
+> Save201Response wvInBlvUebernehmenById(id)
+
+Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV).
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AbfragenApi,
+} from '';
+import type { WvInBlvUebernehmenByIdRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new AbfragenApi();
+
+  const body = {
+    // string
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies WvInBlvUebernehmenByIdRequest;
+
+  try {
+    const data = await api.wvInBlvUebernehmenById(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**Save201Response**](Save201Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/hal+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung um die Abfrage zu öffnen. |  -  |
+| **404** | NOT FOUND -&gt; Abfrage mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

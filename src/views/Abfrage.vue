@@ -333,6 +333,7 @@ import {
   BaugenehmigungsverfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenAngelegtDto,
+  BauleitplanverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -444,6 +445,8 @@ const {
   patchEinpflegenBedarfsmeldung,
   patchEinplanungBedarfe,
   getById,
+  wvInBlvUebernehmenById,
+
   deleteById,
 } = useAbfragenApi();
 const { getBauvorhabenById, changeRelevanteAbfragevariante } = useBauvorhabenApi();
@@ -1630,22 +1633,19 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
   }
 }
 
-function abfrageUebernehmen(value: AbfrageDto): void {
+async function abfrageUebernehmen(value: AbfrageDto): void {
+  let dto = undefined;
   if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
-    const copiedAbfrage = copyAbfrageOrAbfragevariante(value, {
+    if (value.artAbfrage != abfrage.value.artAbfrage) {
+      if (
+        value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+        abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+      ) {
+        dto = await wvInBlvUebernehmenById(value.id);
+      }
+    }
+    const copiedAbfrage = copyAbfrageOrAbfragevariante(_.isNil(dto) ? value : dto, {
       includeSachbearbeitungVarianten: true,
-      targetArtAbfrage: abfrage.value.artAbfrage,
-      sanitizeAttributes:
-        abfrage.value.artAbfrage === value.artAbfrage
-          ? undefined
-          : new Map<string, unknown>([
-              // folgende Attribute kommen zwar in beiden Abfragearten vor. Sie unterscheiden sich die Ausprägungen. Daher dürfen diese Attribute nicht übernommen werden.
-              ["verfahrensstand", undefined],
-              ["verfahrensstandFreieEingabe", undefined],
-              ["wesentlicheRechtsgrundlage", undefined],
-              ["wesentlicheRechtsgrundlageFreieEingabe", undefined],
-              ["wesentlicheRechtsgrundlageAngabenZurBefreiung", undefined],
-            ]),
     }) as AnyAbfrageModel;
 
     mergeSachbearbeitungsvariantenIntoAbfragevarianten(copiedAbfrage);

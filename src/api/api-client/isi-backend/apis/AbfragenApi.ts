@@ -76,6 +76,10 @@ export interface SaveOperationRequest {
     saveRequest: SaveRequest;
 }
 
+export interface WvInBlvUebernehmenByIdRequest {
+    id: string;
+}
+
 /**
  * 
  */
@@ -434,6 +438,51 @@ export class AbfragenApi extends runtime.BaseAPI {
      */
     async save(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.saveRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for wvInBlvUebernehmenById without sending the request
+     */
+    async wvInBlvUebernehmenByIdRequestOpts(requestParameters: WvInBlvUebernehmenByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling wvInBlvUebernehmenById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/abfrage/wv-in-blv-uebernehmen{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV).
+     */
+    async wvInBlvUebernehmenByIdRaw(requestParameters: WvInBlvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.wvInBlvUebernehmenByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV).
+     */
+    async wvInBlvUebernehmenById(requestParameters: WvInBlvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.wvInBlvUebernehmenByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

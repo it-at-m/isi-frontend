@@ -9,8 +9,9 @@ Name | Type
 `version` | number
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
-`datum` | string
+`erstellungsdatum` | Date
 `text` | string
+`bearbeitendePerson` | [BearbeitendePerson](BearbeitendePerson.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -23,8 +24,9 @@ const example = {
   "version": null,
   "createdDateTime": null,
   "lastModifiedDateTime": null,
-  "datum": null,
+  "erstellungsdatum": null,
   "text": null,
+  "bearbeitendePerson": null,
   "links": null,
 } satisfies EntityModelKommentar
 

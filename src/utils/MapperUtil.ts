@@ -720,70 +720,15 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
   value: T,
-  options?: {
-    includeSachbearbeitungVarianten?: boolean;
-    targetArtAbfrage?: AbfrageDtoArtAbfrageEnum;
-    sanitizeAttributes?: Map<string, unknown>;
-  },
+  options?: { includeSachbearbeitungVarianten?: boolean },
 ): T {
   const copy = _.cloneDeep(value);
-  if ("statusAbfrage" in value && "artAbfrage" in value) {
-    (copy as AnyAbfrageDto).artAbfrage = options?.targetArtAbfrage;
-    if ((value as AnyAbfrageDto).artAbfrage != options?.targetArtAbfrage) {
-      copyAbfragevarianten(copy, value);
-    }
-    if (!options?.includeSachbearbeitungVarianten) {
-      sanitizeAbfragevariantenSachbearbeitung(copy);
-    }
+  if ("statusAbfrage" in value && "artAbfrage" in value && !options?.includeSachbearbeitungVarianten) {
+    sanitizeAbfragevariantenSachbearbeitung(copy);
   }
-  sanitizeCopy(copy, options?.sanitizeAttributes);
+  sanitizeCopy(copy);
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
-}
-/* Wenn ein anderer Abfragetyp als der Zielabfragetyp übernommen wird, müssen die Abfragevarianten aufgrund
- * der unterschiedlichen Namensgebung nachträglich eingefügt werden
- */
-function copyAbfragevarianten<T extends AnyAbfrageDto>(copy: T, value: T) {
-  switch (copy.artAbfrage) {
-    case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-      switch (value.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          (copy as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren = _.cloneDeep(
-            (value as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren,
-          );
-          (copy as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren = _.cloneDeep(
-            (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren,
-          );
-          break;
-        default:
-          break;
-      }
-      break;
-    case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
-      switch (value.artAbfrage) {
-        case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
-          (copy as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren = _.cloneDeep(
-            (value as BauleitplanverfahrenDto).abfragevariantenBauleitplanverfahren,
-          );
-          (copy as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = _.cloneDeep(
-            (value as BauleitplanverfahrenDto).abfragevariantenSachbearbeitungBauleitplanverfahren,
-          );
-          break;
-        case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
-          (copy as BaugenehmigungsverfahrenDto).abfragevariantenBaugenehmigungsverfahren = _.cloneDeep(
-            (value as WeiteresVerfahrenDto).abfragevariantenWeiteresVerfahren,
-          );
-          (copy as BaugenehmigungsverfahrenDto).abfragevariantenSachbearbeitungBaugenehmigungsverfahren = _.cloneDeep(
-            (value as WeiteresVerfahrenDto).abfragevariantenSachbearbeitungWeiteresVerfahren,
-          );
-          break;
-        default:
-          break;
-      }
-      break;
-    default:
-      break;
-  }
 }
 
 /*
