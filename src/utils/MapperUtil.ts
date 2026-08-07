@@ -749,16 +749,13 @@ function sanitizeAbfragevariantenSachbearbeitung<T extends AnyAbfrageDto>(value:
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function sanitizeCopy(value: any, sanitizeAttributes?: Map<string, unknown>): void {
+function sanitizeCopy(value: any): void {
   if (typeof value === "object" && value !== null) {
-    const mergedSanitizationMap = _.isNil(sanitizeAttributes)
-      ? sanitizationMap
-      : new Map([...sanitizationMap.entries(), ...sanitizeAttributes.entries()]);
     for (const key of Object.keys(value)) {
-      if (mergedSanitizationMap.has(key)) {
-        value[key] = mergedSanitizationMap.get(key);
+      if (sanitizationMap.has(key)) {
+        value[key] = sanitizationMap.get(key);
       } else {
-        sanitizeCopy(value[key], sanitizeAttributes);
+        sanitizeCopy(value[key]);
       }
     }
   }
