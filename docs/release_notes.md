@@ -34,4 +34,4 @@ Die Stammdaten zu den städtebaulichen SoBoN-Orientierungswerten (Geschossfläch
 
 Ein dedizierter Entwicklungsbranch wurde eingerichtet werden, um die zukünftige Entwicklung sauber vom aktuellen Stand zu trennen und eine strukturierte Weiterentwicklung zu ermöglichen. Außerdem wurden zwei neue Datenbank Instanzen auf Test für die Test- und die Demoumgebung erstellt, auf die ein Zugriff möglich ist.
 
-Zur besseren Verwaltung der Reporte sind diese in einem einfachen lesbaren SQL-Abfrage migriert. Dabei werden auch mehrfach genutzte Logiken in spezielle Fragen ausgelager (Modularisierung)
+Zur besseren Verwaltung der Reporte sind diese in einem einfachen lesbaren SQL-Abfrage migriert. Dabei werden auch mehrfach genutzte Logiken in spezielle Fragen ausgelagert (Modularisierung).
