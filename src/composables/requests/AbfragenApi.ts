@@ -206,12 +206,25 @@ export function useAbfragenApi() {
       throw handleError(error);
     }
   }
+
   async function wvInBlvUebernehmenById(id: string): Promise<BauleitplanverfahrenDto> {
     const requestObject: WvInBlvUebernehmenRequest = {
       id: id,
     };
     try {
       const response = await abfragenApi.wvInBlvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function wvInBgvUebernehmenById(id: string): Promise<BaugenehmigungsverfahrenDto> {
+    const requestObject: WvInBlvUebernehmenRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.wvInBgvUebernehmenById(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
       throw handleError(error);
@@ -227,5 +240,6 @@ export function useAbfragenApi() {
     getById,
     deleteById,
     wvInBlvUebernehmenById,
+    wvInBgvUebernehmenById,
   };
 }
