@@ -238,6 +238,33 @@
         }
       }
     },
+    "/polygon/flurstuecke-innerhalb-umgriff": {
+      "post": {
+        "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],
+        "summary": "Holt die Flurstücke, deren Zentroid innerhalb des Multipolygons (im Standard EPSG:4326 (WGS84)) liegt, unter Ausschluss von Straßen-Flurstücken.",
+        "operationId": "getFlurstueckeInnerhalbUmgriff",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Flurstücke erfolgreich abgefragt.",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" }
+              }
+            }
+          },
+          "500": {
+            "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
+            "content": {
+              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
+            }
+          }
+        }
+      }
+    },
     "/polygon/bezirksteile": {
       "post": {
         "tags": ["Controller zur Extraktion von Feature auf Basis von MultiPolygone im Standard EPSG:4326 (WGS84)"],

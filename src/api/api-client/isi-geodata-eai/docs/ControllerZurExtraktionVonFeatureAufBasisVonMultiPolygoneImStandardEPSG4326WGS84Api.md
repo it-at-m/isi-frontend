@@ -6,6 +6,7 @@ All URIs are relative to *http://localhost:8085*
 |------------- | ------------- | -------------|
 | [**getBezirksteile**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getbezirksteile) | **POST** /polygon/bezirksteile | Holt die Bezirksteile die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getFlurstuecke**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getflurstuecke) | **POST** /polygon/flurstuecke | Holt die Flurstücke die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden. |
+| [**getFlurstueckeInnerhalbUmgriff**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getflurstueckeinnerhalbumgriff) | **POST** /polygon/flurstuecke-innerhalb-umgriff | Holt die Flurstücke, deren Zentroid innerhalb des Multipolygons (im Standard EPSG:4326 (WGS84)) liegt, unter Ausschluss von Straßen-Flurstücken. |
 | [**getGemarkungen**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getgemarkungen) | **POST** /polygon/gemarkungen | Holt die Gemarkungen die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getGrundschulsprengel**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getgrundschulsprengel) | **POST** /polygon/grundschulsprengel | Holt die Grundschulsprengel die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden. |
 | [**getKitaplanungsbereiche**](ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api.md#getkitaplanungsbereiche) | **POST** /polygon/kitaplanungsbereiche | Holt die Kitaplanungsbereiche die sich mit den Multipolygon (im Standard EPSG:4326 (WGS84)) überschneiden. |
@@ -108,6 +109,72 @@ async function example() {
 
   try {
     const data = await api.getFlurstuecke(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **multiPolygonGeometryDto** | [MultiPolygonGeometryDto](MultiPolygonGeometryDto.md) |  | |
+
+### Return type
+
+[**FeatureCollectionDtoFeatureDtoFlurstueckDto**](FeatureCollectionDtoFeatureDtoFlurstueckDto.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/hal+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Flurstücke erfolgreich abgefragt. |  -  |
+| **500** | Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## getFlurstueckeInnerhalbUmgriff
+
+> FeatureCollectionDtoFeatureDtoFlurstueckDto getFlurstueckeInnerhalbUmgriff(multiPolygonGeometryDto)
+
+Holt die Flurstücke, deren Zentroid innerhalb des Multipolygons (im Standard EPSG:4326 (WGS84)) liegt, unter Ausschluss von Straßen-Flurstücken.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api,
+} from '';
+import type { GetFlurstueckeInnerhalbUmgriffRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new ControllerZurExtraktionVonFeatureAufBasisVonMultiPolygoneImStandardEPSG4326WGS84Api();
+
+  const body = {
+    // MultiPolygonGeometryDto
+    multiPolygonGeometryDto: ...,
+  } satisfies GetFlurstueckeInnerhalbUmgriffRequest;
+
+  try {
+    const data = await api.getFlurstueckeInnerhalbUmgriff(body);
     console.log(data);
   } catch (error) {
     console.error(error);
