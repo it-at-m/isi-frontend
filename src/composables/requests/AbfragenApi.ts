@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -22,6 +22,8 @@ import type {
   BaugenehmigungsverfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenEinplanungBedarfeDto,
   PatchEinplanungBedarfeOperationRequest,
+  WvInBgvUebernehmenByIdRequest,
+  BlvInBgvUebernehmenByIdRequest,
 } from "@/api/api-client/isi-backend";
 import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -220,11 +222,23 @@ export function useAbfragenApi() {
   }
 
   async function wvInBgvUebernehmenById(id: string): Promise<BaugenehmigungsverfahrenDto> {
-    const requestObject: WvInBlvUebernehmenRequest = {
+    const requestObject: WvInBgvUebernehmenByIdRequest = {
       id: id,
     };
     try {
       const response = await abfragenApi.wvInBgvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function blvInBgvUebernehmenById(id: string): Promise<BaugenehmigungsverfahrenDto> {
+    const requestObject: BlvInBgvUebernehmenByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.blvInBgvUebernehmenById(requestObject, RequestUtils.getGETConfig());
       return response;
     } catch (error) {
       throw handleError(error);
@@ -241,5 +255,6 @@ export function useAbfragenApi() {
     deleteById,
     wvInBlvUebernehmenById,
     wvInBgvUebernehmenById,
+    blvInBgvUebernehmenById,
   };
 }

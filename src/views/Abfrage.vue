@@ -445,9 +445,10 @@ const {
   patchEinpflegenBedarfsmeldung,
   patchEinplanungBedarfe,
   getById,
-  wvInBlvUebernehmenById,
-
   deleteById,
+  wvInBlvUebernehmenById,
+  wvInBgvUebernehmenById,
+  blvInBgvUebernehmenById,
 } = useAbfragenApi();
 const { getBauvorhabenById, changeRelevanteAbfragevariante } = useBauvorhabenApi();
 const { determineBauraten } = useBauratenApi();
@@ -1634,15 +1635,11 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
 }
 
 async function abfrageUebernehmen(value: AbfrageDto): void {
-  let dto = undefined;
+  let dto: AnyAbfrageDto = undefined;
+
   if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
     if (value.artAbfrage != abfrage.value.artAbfrage) {
-      if (
-        value.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
-        abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
-      ) {
-        dto = await wvInBlvUebernehmenById(value.id);
-      }
+      dto = await convertAbfrage(value);
     }
     const copiedAbfrage = copyAbfrageOrAbfragevariante(_.isNil(dto) ? value : dto, {
       includeSachbearbeitungVarianten: true,
@@ -1662,6 +1659,26 @@ async function abfrageUebernehmen(value: AbfrageDto): void {
         { timeout: false },
       );
     }
+  }
+  async function convertAbfrage(source: AnyAbfrageDto): AnyAbfrageDto | undefined {
+    let target: AnyAbfrageDto = undefined;
+    if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+    ) {
+      target = await wvInBlvUebernehmenById(value.id);
+    } else if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+    ) {
+      target = await wvInBgvUebernehmenById(value.id);
+    } else if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+    ) {
+      target = await blvInBgvUebernehmenById(value.id);
+    }
+    return target;
   }
 }
 </script>
