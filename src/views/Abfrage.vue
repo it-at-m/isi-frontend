@@ -1639,7 +1639,12 @@ async function abfrageUebernehmen(value: AbfrageDto): void {
 
   if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
     if (value.artAbfrage != abfrage.value.artAbfrage) {
-      dto = await convertAbfrage(value);
+      try {
+        dto = await convertAbfrage(value);
+      } catch (error) {
+        toast.error("Die Abfrage konnte nicht übernommen werden.");
+        return;
+      }
     }
     const copiedAbfrage = copyAbfrageOrAbfragevariante(_.isNil(dto) ? value : dto, {
       includeSachbearbeitungVarianten: true,
