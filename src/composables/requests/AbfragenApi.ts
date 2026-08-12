@@ -9,7 +9,7 @@ import {
   PatchAngelegtRequest,
   GetByIdRequest,
   DeleteByIdRequest,
-  WvInBlvUebernehmenRequest,
+  WvInBlvUebernehmenByIdRequest,
   BauleitplanverfahrenStartBearbeitungDto,
   BaugenehmigungsverfahrenStartBearbeitungDto,
   WeiteresVerfahrenStartBearbeitungDto,
@@ -210,7 +210,7 @@ export function useAbfragenApi() {
   }
 
   async function wvInBlvUebernehmenById(id: string): Promise<BauleitplanverfahrenDto> {
-    const requestObject: WvInBlvUebernehmenRequest = {
+    const requestObject: WvInBlvUebernehmenByIdRequest = {
       id: id,
     };
     try {

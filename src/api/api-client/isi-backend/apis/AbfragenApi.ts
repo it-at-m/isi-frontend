@@ -109,7 +109,7 @@ export class AbfragenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/abfrage/blv-in-bgv-uebernehmen{id}`;
+        let urlPath = `/abfrage/blv-in-bgv-uebernehmen/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -510,7 +510,7 @@ export class AbfragenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/abfrage/wv-in-bgv-uebernehmen{id}`;
+        let urlPath = `/abfrage/wv-in-bgv-uebernehmen/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -555,7 +555,7 @@ export class AbfragenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/abfrage/wv-in-blv-uebernehmen{id}`;
+        let urlPath = `/abfrage/wv-in-blv-uebernehmen/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {

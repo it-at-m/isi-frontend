@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost:8089*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**blvInBgvUebernehmenById**](AbfragenApi.md#blvinbgvuebernehmenbyid) | **GET** /abfrage/blv-in-bgv-uebernehmen{id} | Datenübernahme von Bauleileitplanverfahren (BLV) in Baugenehmigungsverfahren (BGV). |
+| [**blvInBgvUebernehmenById**](AbfragenApi.md#blvinbgvuebernehmenbyid) | **GET** /abfrage/blv-in-bgv-uebernehmen/{id} | Datenübernahme von Bauleileitplanverfahren (BLV) in Baugenehmigungsverfahren (BGV). |
 | [**deleteById**](AbfragenApi.md#deletebyid) | **DELETE** /abfrage/{id} | Löschen einer Abfrage |
 | [**getById**](AbfragenApi.md#getbyid) | **GET** /abfrage/{id} | Lesen einer Abfrage. |
 | [**patchAngelegt**](AbfragenApi.md#patchangelegt) | **PATCH** /abfrage/angelegt/{id} | Aktualisierung einer Abfrage im Status ANGELEGT. |
@@ -12,8 +12,8 @@ All URIs are relative to *http://localhost:8089*
 | [**patchEinplanungBedarfe**](AbfragenApi.md#patcheinplanungbedarfeoperation) | **PATCH** /abfrage/bedarfsmeldung-erfolgt/{id} | Aktualisierung einer Abfrage im Status EINPLANUNG_BEDARFE. |
 | [**patchStartBearbeitung**](AbfragenApi.md#patchstartbearbeitungoperation) | **PATCH** /abfrage/in-bearbeitung-sachbearbeitung/{id} | Aktualisierung einer Abfrage im Status START_BEARBEITUNG. |
 | [**save**](AbfragenApi.md#saveoperation) | **POST** /abfrage | Anlegen einer neuen Abfrage |
-| [**wvInBgvUebernehmenById**](AbfragenApi.md#wvinbgvuebernehmenbyid) | **GET** /abfrage/wv-in-bgv-uebernehmen{id} | Datenübernahme von Weiteres Verfahren (WV) in Baugenehmigungsverfahren (BGV). |
-| [**wvInBlvUebernehmenById**](AbfragenApi.md#wvinblvuebernehmenbyid) | **GET** /abfrage/wv-in-blv-uebernehmen{id} | Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV). |
+| [**wvInBgvUebernehmenById**](AbfragenApi.md#wvinbgvuebernehmenbyid) | **GET** /abfrage/wv-in-bgv-uebernehmen/{id} | Datenübernahme von Weiteres Verfahren (WV) in Baugenehmigungsverfahren (BGV). |
+| [**wvInBlvUebernehmenById**](AbfragenApi.md#wvinblvuebernehmenbyid) | **GET** /abfrage/wv-in-blv-uebernehmen/{id} | Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV). |
 
 
 
