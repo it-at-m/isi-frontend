@@ -8,9 +8,7 @@
       class="rounded-xl"
       elevation="8"
     >
-      <v-card-title class="px-6 pt-6 pb-2 text-h6">
-        {{ dialogTitle }}
-      </v-card-title>
+      <v-card-title class="px-6 pt-6 pb-2 text-h6"> {{ dialogTitle }} </v-card-title>
 
       <v-card-text class="px-6 pb-2">
         <v-text-field
@@ -99,6 +97,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useAbfragenApi } from "@/composables/requests/AbfragenApi";
 import { Context } from "@/utils/Context";
+import { isAllowedArtAbfrage } from "@/utils/AbfrageUtil";
 
 interface Props {
   context: Context;
@@ -140,17 +139,6 @@ let currentSearchRequestId = 0;
 let isComponentActive = true;
 
 const dialogTitle = computed<string>(() => {
-  if (props.context === Context.BAUVORHABEN) {
-    return "Datenübernahme aus Abfrage";
-  }
-
-  if (props.context === Context.ABFRAGE) {
-    const artAbfrage = searchStore.selectedAbfrage?.artAbfrage;
-    const formattedArtAbfrage = getArtAbfrage(artAbfrage);
-
-    return _.isEmpty(formattedArtAbfrage) ? "Datenübernahme aus Abfrage" : `Datenübernahme aus ${formattedArtAbfrage}`;
-  }
-
   return "Datenübernahme aus Abfrage";
 });
 
@@ -264,9 +252,12 @@ function createQuery(searchText: string) {
     switch (searchStore.selectedAbfrage.artAbfrage) {
       case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
         query.selectBauleitplanverfahren = true;
+        query.selectWeiteresVerfahren = true;
         break;
       case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
         query.selectBaugenehmigungsverfahren = true;
+        query.selectBauleitplanverfahren = true;
+        query.selectWeiteresVerfahren = true;
         break;
       case AbfrageDtoArtAbfrageEnum.WeiteresVerfahren:
         query.selectWeiteresVerfahren = true;
@@ -293,7 +284,7 @@ function searchResultFilter(result: AbfrageSearchResultDto): boolean {
     }
 
     return (
-      result.artAbfrage === searchStore.selectedAbfrage.artAbfrage &&
+      isAllowedArtAbfrage(searchStore.selectedAbfrage.artAbfrage, result.artAbfrage) &&
       result.statusAbfrage !== undefined &&
       result.statusAbfrage !== StatusAbfrage.Angelegt &&
       result.statusAbfrage !== StatusAbfrage.Abbruch
