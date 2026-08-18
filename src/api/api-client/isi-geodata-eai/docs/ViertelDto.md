@@ -9,8 +9,8 @@ Name | Type
 `objectId` | number
 `viertelNummer` | string
 `flaecheQm` | number
-`ycoordinate` | number
 `xcoordinate` | number
+`ycoordinate` | number
 
 ## Example
 
@@ -22,8 +22,8 @@ const example = {
   "objectId": null,
   "viertelNummer": null,
   "flaecheQm": null,
-  "ycoordinate": null,
   "xcoordinate": null,
+  "ycoordinate": null,
 } satisfies ViertelDto
 
 console.log(example)
