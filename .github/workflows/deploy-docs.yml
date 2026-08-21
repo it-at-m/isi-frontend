@@ -21,10 +21,10 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    with:
-      deploy-branch:
-        default: dev
     steps:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
       # Only deploy documentation from the main branch to prevent unauthorized changes
       - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
+        with:
+          deploy-branch:
+            default: "dev"
