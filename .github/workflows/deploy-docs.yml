@@ -3,9 +3,12 @@ name: deploy-docs
 
 on:
   # Runs on pushes to any branch when changes are made to docs or workflow
+  # Zum Testen zusätzlich zu "- dev" den aktuellen Branch mit angeben, damit der Workflow aufgerufen (getriggert) wird
+  # Das Deployment findet nur statt, wenn man in den dev-Branch pushed.
   push:
     branches:
-      - main
+      - dev
+      - ISI2-301-Spring-Boot-4-Hebung
     paths:
       - "docs/**"
       - ".github/workflows/deploy-docs.yml"
@@ -27,4 +30,4 @@ jobs:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
       # Default deploy-branch ist "main". Diesen mit "dev" überschreiben
         with:
-          deploy-branch: "dev"
+          deploy-branch: "ISI2-301-Spring-Boot-4-Hebung" #"dev"
