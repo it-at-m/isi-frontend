@@ -62,9 +62,9 @@ export function FeatureDtoViertelDtoGeometryToJSONTyped(value?: FeatureDtoVierte
     }
     switch (value['type']) {
         case 'MultiPolygon':
-            return Object.assign({}, MultiPolygonGeometryDtoToJSON(value), { type: 'MultiPolygon' } as const);
+            return Object.assign({}, MultiPolygonGeometryDtoToJSON(value), { 'type': 'MultiPolygon' } as const);
         case 'Point':
-            return Object.assign({}, PointGeometryDtoToJSON(value), { type: 'Point' } as const);
+            return Object.assign({}, PointGeometryDtoToJSON(value), { 'type': 'Point' } as const);
         default:
             return value;
     }

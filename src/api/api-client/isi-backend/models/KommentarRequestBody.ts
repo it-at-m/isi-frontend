@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { BearbeitendePerson } from './BearbeitendePerson';
+import {
+    BearbeitendePersonFromJSON,
+    BearbeitendePersonFromJSONTyped,
+    BearbeitendePersonToJSON,
+    BearbeitendePersonToJSONTyped,
+} from './BearbeitendePerson';
+
 /**
  * 
  * @export
@@ -45,10 +53,10 @@ export interface KommentarRequestBody {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof KommentarRequestBody
      */
-    datum?: string;
+    erstellungsdatum?: Date;
     /**
      * 
      * @type {string}
@@ -73,6 +81,12 @@ export interface KommentarRequestBody {
      * @memberof KommentarRequestBody
      */
     dokumente?: Array<string>;
+    /**
+     * 
+     * @type {BearbeitendePerson}
+     * @memberof KommentarRequestBody
+     */
+    bearbeitendePerson?: BearbeitendePerson;
 }
 
 /**
@@ -96,11 +110,12 @@ export function KommentarRequestBodyFromJSONTyped(json: any, ignoreDiscriminator
         'version': json['version'] == null ? undefined : json['version'],
         'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
+        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (new Date(json['erstellungsdatum'])),
         'text': json['text'] == null ? undefined : json['text'],
         'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
         'infrastruktureinrichtung': json['infrastruktureinrichtung'] == null ? undefined : json['infrastruktureinrichtung'],
         'dokumente': json['dokumente'] == null ? undefined : json['dokumente'],
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
     };
 }
 
@@ -119,11 +134,12 @@ export function KommentarRequestBodyToJSONTyped(value?: KommentarRequestBody | n
         'version': value['version'],
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
         'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
-        'datum': value['datum'],
+        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : value['erstellungsdatum'].toISOString().substring(0,10),
         'text': value['text'],
         'bauvorhaben': value['bauvorhaben'],
         'infrastruktureinrichtung': value['infrastruktureinrichtung'],
         'dokumente': value['dokumente'],
+        'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
     };
 }
 

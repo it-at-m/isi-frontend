@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelIdealtypischeBaurate,
-} from '../models/index';
 import {
+    type EntityModelIdealtypischeBaurate,
     EntityModelIdealtypischeBaurateFromJSON,
     EntityModelIdealtypischeBaurateToJSON,
-} from '../models/index';
+} from '../models/EntityModelIdealtypischeBaurate';
 
 export interface ExecuteSearchIdealtypischebaurateGetRequest {
     typ?: ExecuteSearchIdealtypischebaurateGetTypEnum;

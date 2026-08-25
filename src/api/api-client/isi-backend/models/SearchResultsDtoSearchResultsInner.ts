@@ -71,11 +71,11 @@ export function SearchResultsDtoSearchResultsInnerToJSONTyped(value?: SearchResu
     }
     switch (value['type']) {
         case 'ABFRAGE':
-            return Object.assign({}, AbfrageSearchResultDtoToJSON(value), { type: 'ABFRAGE' } as const);
+            return Object.assign({}, AbfrageSearchResultDtoToJSON(value), { 'type': 'ABFRAGE' } as const);
         case 'BAUVORHABEN':
-            return Object.assign({}, BauvorhabenSearchResultDtoToJSON(value), { type: 'BAUVORHABEN' } as const);
+            return Object.assign({}, BauvorhabenSearchResultDtoToJSON(value), { 'type': 'BAUVORHABEN' } as const);
         case 'INFRASTRUKTUREINRICHTUNG':
-            return Object.assign({}, InfrastruktureinrichtungSearchResultDtoToJSON(value), { type: 'INFRASTRUKTUREINRICHTUNG' } as const);
+            return Object.assign({}, InfrastruktureinrichtungSearchResultDtoToJSON(value), { 'type': 'INFRASTRUKTUREINRICHTUNG' } as const);
         default:
             return value;
     }
