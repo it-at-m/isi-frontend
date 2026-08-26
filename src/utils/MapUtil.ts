@@ -5,35 +5,6 @@ import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastrukture
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
 // import "@/types/common/Leaflet";
 
-enum GRUPPE {
-  UNDEFINED,
-  VERWALTUNG,
-  PLANUNG_UND_BAUEN,
-  SCHUL_UND_KITAPLANUNG,
-}
-
-class LayerGruppe {
-  public gruppe: GRUPPE;
-  public displayName: string;
-  public layerDetails: LayerDetail[];
-
-  constructor(gruppe: GRUPPE, displayName: string, layerDetails: LayerDetail[] = []) {
-    this.gruppe = gruppe;
-    this.displayName = displayName;
-    this.layerDetails = layerDetails;
-  }
-}
-
-class LayerDetail {
-  public displayName: string;
-  public layer: TileLayer.WMS;
-
-  constructor(displayName: string, layer: TileLayer.WMS) {
-    this.displayName = displayName;
-    this.layer = layer;
-  }
-}
-
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
 export const DEFAULT_ICON_OPTIONS = {
   shadowUrl: iconShadowUrl,
@@ -62,7 +33,36 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 
 export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
-export const OVERLAYS_GRUNDKARTE = new Map([["Flurstücke", "Flurstücke,Flst.Nr."]]); // old
+export const LAYER_GROUPS: Record<string, Record<string, TileLayer.WMS>> = {};
+
+enum GRUPPE {
+  UNDEFINED,
+  VERWALTUNG,
+  PLANUNG_UND_BAUEN,
+  SCHUL_UND_KITAPLANUNG,
+}
+
+class LayerGruppe {
+  public gruppe: GRUPPE;
+  public displayName: string;
+  public layerDetails: LayerDetail[];
+
+  constructor(gruppe: GRUPPE, displayName: string, layerDetails: LayerDetail[] = []) {
+    this.gruppe = gruppe;
+    this.displayName = displayName;
+    this.layerDetails = layerDetails;
+  }
+}
+
+class LayerDetail {
+  public displayName: string;
+  public layer: TileLayer.WMS;
+
+  constructor(displayName: string, layer: TileLayer.WMS) {
+    this.displayName = displayName;
+    this.layer = layer;
+  }
+}
 
 export const LAYER_STRUCTURE: LayerGruppe[] = [
   new LayerGruppe(GRUPPE.VERWALTUNG, "Verwaltung"),
@@ -118,7 +118,7 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     transparent: true,
     urlPart: "basis",
     migrated: false,
-    gruppe: Gruppe.VERWALTUNG,
+    gruppe: GRUPPE.VERWALTUNG,
   },
   {
     displayName: "Flächennutzungsplan",
@@ -126,7 +126,7 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     transparent: false,
     urlPart: "basis",
     migrated: false,
-    gruppe: Gruppe.PLANUNG_UND_BAUEN,
+    gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
     displayName: "Baublöcke",
@@ -134,7 +134,7 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     transparent: true,
     urlPart: "basis",
     migrated: false,
-    gruppe: Gruppe.PLANUNG_UND_BAUEN,
+    gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
     displayName: "Umgriffe Bebauungspläne",
@@ -209,192 +209,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
 ];
-/* old - Anfang
-export const OVERLAYS_ARCGIS_INTRANSPARENT: OverlayUrlMapping[] = [
-  {
-    displayName: "Flächennutzungsplan",
-    internalName: "Flächennutzungsplan",
-    transparent: false,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.PLANUNG_UND_BAUEN,
-  },
-];
-
-export const OVERLAYS_ARCGIS_TRANSPARENT: OverlayUrlMapping[] = [
-  {
-    displayName: "Gemarkungen",
-    internalName: "Gemarkungen",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.VERWALTUNG,
-  },
-  {
-    displayName: "Stadtviertel",
-    internalName: "Stadtviertel",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.VERWALTUNG,
-  },
-  {
-    displayName: "Bezirksteile",
-    internalName: "Bezirksteile",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.VERWALTUNG,
-  },
-  {
-    displayName: "Stadtbezirke",
-    internalName: "Stadtbezirke",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.VERWALTUNG,
-  },
-  {
-    displayName: "Kitaplanungsbereiche",
-    internalName: "Kitaplanungsbereiche",
-    transparent: true,
-    urlPart: "Bildung_und_Soziales",
-    migrated: false,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "Grundschulsprengel",
-    internalName: "Grundschulsprengel",
-    transparent: true,
-    urlPart: "Bildung_und_Soziales",
-    migrated: false,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "Mittelschulsprengel",
-    internalName: "Mittelschulsprengel",
-    transparent: true,
-    urlPart: "Bildung_und_Soziales",
-    migrated: false,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "Baublöcke",
-    internalName: "Baublöcke",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.PLANUNG_UND_BAUEN,
-  },
-  {
-    displayName: "Umgriffe Bebauungspläne",
-    internalName: "BB-Umgriff",
-    transparent: true,
-    urlPart: "basis",
-    migrated: false,
-    gruppe: Gruppe.PLANUNG_UND_BAUEN,
-  },
-  {
-    displayName: "SFZ Sprengel GS",
-    internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
-    transparent: true,
-    urlPart: "Förderschulen",
-    migrated: true,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "SFZ Sprengel MS",
-    internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
-    transparent: true,
-    urlPart: "Förderschulen",
-    migrated: true,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "FZgE Sprengel GS",
-    internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
-    transparent: true,
-    urlPart: "Förderschulen",
-    migrated: true,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "FZgE Sprengel MS",
-    internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
-    transparent: true,
-    urlPart: "Förderschulen",
-    migrated: true,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-  {
-    displayName: "FZesE Sprengel GS und MS",
-    internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
-    transparent: true,
-    urlPart: "Förderschulen",
-    migrated: true,
-    gruppe: Gruppe.SCHUL_UND_KITAPLANUNG,
-  },
-];
-/**
- * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
- *
- * Damit ein Overlay-Layer nicht die darunterliegenden Layer verdeckt, ist es wichtig,
- * `transparent: true` zu setzen sowie ein Bildformat anzufordern welches Transparenz unterstützt.
- *
- * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
- * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
- */
-/*
-export function assembleBaseLayersForLayerControl_old(): Record<string, TileLayer.WMS> {
-  const layers: Record<string, TileLayer.WMS> = {};
-
-  for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const layer = L.nonTiledLayer.wms(getArcgisUrl("Grundkarten"), {
-      layers: overlay[1],
-      transparent: true,
-      ...LAYER_OPTIONS,
-    });
-    layers[overlay[0]] = layer;
-  }
-
-  for (const overlay of OVERLAYS_ARCGIS_INTRANSPARENT) {
-    const url = !overlay.migrated
-      ? (import.meta.env.VITE_ARCGIS_URL as string)
-      : (import.meta.env.VITE_ARCGIS_URL2 as string);
-    const layerIntransparent = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
-      layers: overlay.internalName,
-      transparent: false,
-      ...LAYER_OPTIONS,
-    });
-    layers[overlay.displayName] = layerIntransparent;
-  }
-
-  for (const overlay of OVERLAYS_GRUNDKARTE) {
-    const url = import.meta.env.VITE_ARCGIS_URL as string;
-    const layer = L.nonTiledLayer.wms(getArcgisUrl(url, "Grundkarten"), {
-      layers: overlay[1],
-      transparent: true,
-      ...LAYER_OPTIONS,
-    });
-    layers[overlay[0]] = layer;
-  }
-
-  for (const overlay of OVERLAYS_ARCGIS_TRANSPARENT) {
-    const url = !overlay.migrated
-      ? (import.meta.env.VITE_ARCGIS_URL as string)
-      : (import.meta.env.VITE_ARCGIS_URL2 as string);
-    const layerTransparent = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
-      layers: overlay.internalName,
-      transparent: true,
-      ...LAYER_OPTIONS,
-    });
-    layers[overlay.displayName] = layerTransparent;
-  }
-
-  return layers;
-}
-// old - Ende
-*/
 
 /**
  * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
@@ -406,21 +220,19 @@ export function assembleBaseLayersForLayerControl_old(): Record<string, TileLaye
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
 export function assembleBaseLayersForLayerControl(): Record<string, Record<string, TileLayer.WMS>> {
-  const groups: Record<string, Record<string, TileLayer.WMS>> = {};
-
-  convertLayerStructure2Record(groups);
-  return groups;
+  convertLayerStructure2Record();
+  return LAYER_GROUPS;
 }
 
-function convertLayerStructure2Record(record: Record<string, Record<string, TileLayer.WMS>>): void {
+function convertLayerStructure2Record(): void {
   buildLayerStructure();
   for (const layerGruppe of LAYER_STRUCTURE) {
-    const groupKey = layerGruppe.gruppe.toString();
-    if (!record[groupKey]) {
-      record[groupKey] = {};
+    const groupKey = layerGruppe.displayName;
+    if (!LAYER_GROUPS[groupKey]) {
+      LAYER_GROUPS[groupKey] = {};
     }
     for (const layerDetail of layerGruppe.layerDetails) {
-      record[groupKey][layerDetail.displayName] = layerDetail.layer;
+      LAYER_GROUPS[groupKey][layerDetail.displayName] = layerDetail.layer;
     }
   }
 }
