@@ -1,31 +1,58 @@
 {
-  "_comment": "TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES",
-  "overrides": {
-    "vitepress": {
-      "vite": "6.4.3"
-    }
-  },
-  "name": "ISI DOCS",
-  "version": "0.0.0",
-  "type": "module",
+  "name": "isi-frontend",
+  "version": "1.5.0",
   "private": true,
-  "license": "MIT",
-  "engines": {
-    "node": ">=24.11 <25",
-    "npm": ">=11.6 <12"
-  },
   "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build",
-    "lint": "prettier . --check --cache && markdownlint .",
-    "fix": "prettier . --write --cache && markdownlint -f ."
+    "serve": "vite",
+    "build": "vite build --out-dir dist",
+    "test:unit": "vitest run",
+    "prepare": "husky",
+    "check": "npx prettier \"**/*\" --check --ignore-unknown",
+    "lint": "npx prettier \"**/*\" --write --ignore-unknown"
+  },
+  "dependencies": {
+    "@fontsource/roboto": "^5.2.9",
+    "async-mutex": "^0.5.0",
+    "core-js": "^3.47.0",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "leaflet.nontiledlayer": "^1.0.9",
+    "lodash": "^4.18.1",
+    "moment": "^2.30.1",
+    "pinia": "^3.0.4",
+    "uuid": "^14.0.0",
+    "vue": "^3.5.13",
+    "vue-currency-input": "^3.2.1",
+    "vue-router": "^5.0.0",
+    "vue-toastification": "^2.0.0-rc.5",
+    "vuetify": "^4.0.0"
   },
   "devDependencies": {
-    "@muenchen/prettier-codeformat": "1.0.2",
-    "markdownlint-cli": "0.49.1",
-    "mermaid": "11.16.1",
-    "prettier": "3.9.6",
-    "vitepress": "1.6.4",
-    "vitepress-plugin-mermaid": "2.0.17"
+    "@muenchen/prettier-codeformat": "^1.0.2",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@mdi/font": "^7.4.47",
+    "@types/leaflet": "^1.9.21",
+    "@types/lodash": "^4.17.21",
+    "@types/node": "^24.10.4",
+    "@types/uuid": "^11.0.0",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^10.0.0",
+    "eslint-plugin-vue": "^10.6.2",
+    "eslint-plugin-vuetify": "^2.5.3",
+    "husky": "9.1.7",
+    "jsdom": "^29.0.0",
+    "lint-staged": "^17.0.0",
+    "prettier": "3.8",
+    "prettier-plugin-java": "2.10",
+    "prettier-plugin-sort-imports": "^1.8.11",
+    "typescript": "^6.0.0",
+    "vite": "^8.1.5",
+    "vite-plugin-vuetify": "^2.1.2",
+    "vitest": "^4.0.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
