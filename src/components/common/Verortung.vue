@@ -370,12 +370,16 @@ async function handleBaublockSelection(point: PointGeometryDto): Promise<void> {
   const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const baublock of baublöcke) {
     const baublockMultiPolygon = baublockToMultiPolygon(baublock);
-    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(baublockMultiPolygon);
+    const flurstuecke = await geoApi.getFlurstueckeInnerhalbUmgriffForMultipolygon(baublockMultiPolygon);
     allFlurstueckeEai.push(...flurstuecke);
+  }
+  if (allFlurstueckeEai.length === 0) {
+    toast.warning("Es wurden keine Flurstücke innerhalb des gewählten Baublocks gefunden.");
+    return;
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
-    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+    (f) => `${f.properties?.gemarkung}/${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
   );
   const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
   selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
@@ -390,12 +394,16 @@ async function handleBebauungsplanSelection(point: PointGeometryDto): Promise<vo
   const allFlurstueckeEai: FeatureDtoFlurstueckDto[] = [];
   for (const bebauungsplan of bebauungsplaene) {
     const bebauungsplanMultiPolygon = bebauungsplanToMultiPolygon(bebauungsplan);
-    const flurstuecke = await geoApi.getFlurstueckeForMultipolygon(bebauungsplanMultiPolygon);
+    const flurstuecke = await geoApi.getFlurstueckeInnerhalbUmgriffForMultipolygon(bebauungsplanMultiPolygon);
     allFlurstueckeEai.push(...flurstuecke);
+  }
+  if (allFlurstueckeEai.length === 0) {
+    toast.warning("Es wurden keine Flurstücke innerhalb des gewählten Bebauungsplan-Umgriffs gefunden.");
+    return;
   }
   const deduplicated = _.uniqBy(
     allFlurstueckeEai,
-    (f) => `${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
+    (f) => `${f.properties?.gemarkung}/${f.properties?.fluerstueckNummerZ}/${f.properties?.fluerstueckNummerN}`,
   );
   const flurstueckeBackend = flurstueckeGeoDataEaiToFlurstueckeBackend(deduplicated);
   selectedFlurstuecke.value = adaptMapForSelectedFlurstuecke(flurstueckeBackend);
@@ -441,7 +449,7 @@ async function handleAcceptSelectedGeoJson(): Promise<void> {
 function adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
   const clonedMap = _.cloneDeep(selectedFlurstuecke.value);
   flurstuecke.forEach((flurstueck: FlurstueckDto) => {
-    const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+    const flurstueckNummer: string = getFlurstueckKey(flurstueck);
     const alreadySelected = clonedMap.has(flurstueckNummer);
     if (alreadySelected) {
       clonedMap.delete(flurstueckNummer);
@@ -459,10 +467,18 @@ function adaptMapForSelectedFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<
 function createMapForFlurstuecke(flurstuecke: Array<FlurstueckDto>): Map<string, FlurstueckDto> {
   const flurstueckMap = new Map<string, FlurstueckDto>();
   flurstuecke.forEach((flurstueck: FlurstueckDto) => {
-    const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
-    flurstueckMap.set(flurstueckNummer, flurstueck);
+    flurstueckMap.set(getFlurstueckKey(flurstueck), flurstueck);
   });
   return flurstueckMap;
+}
+
+/**
+ * Ermittelt den eindeutigen Schlüssel eines Flurstücks. Da die Flurstücknummer (Zähler/Nenner) innerhalb
+ * unterschiedlicher Gemarkungen nicht eindeutig ist, wird die Gemarkungsnummer Teil des Schlüssels.
+ */
+function getFlurstueckKey(flurstueck: FlurstueckDto): string {
+  const flurstueckNummer: string = _.isNil(flurstueck.nummer) ? "" : flurstueck.nummer;
+  return `${flurstueck.gemarkungNummer}/${flurstueckNummer}`;
 }
 
 function createPointGeometry(latlng: LatLng): PointGeometryDto {

@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelSobonOrientierungswertSozialeInfrastruktur,
-} from '../models/index';
 import {
+    type EntityModelSobonOrientierungswertSozialeInfrastruktur,
     EntityModelSobonOrientierungswertSozialeInfrastrukturFromJSON,
     EntityModelSobonOrientierungswertSozialeInfrastrukturToJSON,
-} from '../models/index';
+} from '../models/EntityModelSobonOrientierungswertSozialeInfrastruktur';
 
 export interface ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetRequest {
     einrichtungstyp?: ExecuteSearchSobonorientierungswertsozialeinfrastrukturGetEinrichtungstypEnum;

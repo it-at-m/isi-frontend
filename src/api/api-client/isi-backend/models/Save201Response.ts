@@ -71,11 +71,11 @@ export function Save201ResponseToJSONTyped(value?: Save201Response | null, ignor
     }
     switch (value['artAbfrage']) {
         case 'BAUGENEHMIGUNGSVERFAHREN':
-            return Object.assign({}, BaugenehmigungsverfahrenDtoToJSON(value), { artAbfrage: 'BAUGENEHMIGUNGSVERFAHREN' } as const);
+            return Object.assign({}, BaugenehmigungsverfahrenDtoToJSON(value), { 'artAbfrage': 'BAUGENEHMIGUNGSVERFAHREN' } as const);
         case 'BAULEITPLANVERFAHREN':
-            return Object.assign({}, BauleitplanverfahrenDtoToJSON(value), { artAbfrage: 'BAULEITPLANVERFAHREN' } as const);
+            return Object.assign({}, BauleitplanverfahrenDtoToJSON(value), { 'artAbfrage': 'BAULEITPLANVERFAHREN' } as const);
         case 'WEITERES_VERFAHREN':
-            return Object.assign({}, WeiteresVerfahrenDtoToJSON(value), { artAbfrage: 'WEITERES_VERFAHREN' } as const);
+            return Object.assign({}, WeiteresVerfahrenDtoToJSON(value), { 'artAbfrage': 'WEITERES_VERFAHREN' } as const);
         default:
             return value;
     }

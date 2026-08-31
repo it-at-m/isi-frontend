@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelUmlegungFoerderarten,
-} from '../models/index';
 import {
+    type EntityModelUmlegungFoerderarten,
     EntityModelUmlegungFoerderartenFromJSON,
     EntityModelUmlegungFoerderartenToJSON,
-} from '../models/index';
+} from '../models/EntityModelUmlegungFoerderarten';
 
 export interface ExecuteSearchUmlegungfoerderartenGetRequest {
     bezeichnung?: string;

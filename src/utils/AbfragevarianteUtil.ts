@@ -1,4 +1,6 @@
 import { AnzeigeContextAbfragevariante, type AnyAbfragevarianteModel } from "@/types/common/Abfrage";
+import _ from "lodash";
+import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 
 export const helpTextSoBoNUrsaechlich: string =
   "Es handelt sich um die Geschossfläche neugeschaffenen Wohnbaurechts, die durch den Bebauungsplan entsteht. Bestandswohnbaurecht und anders genutzte Flächen werden nicht eingerechnet (z.B. 10% der Geschossfläche in WA-Gebieten, 40-60% in MI,...)";
@@ -22,4 +24,20 @@ export function getAbfragevariantenNrForContextAnzeigeAbfragevariante(
     numberContext = `2.${abfragevarianteModel.abfragevariantenNr}`;
   }
   return numberContext;
+}
+
+export function existsBauraten(bauabschnitte: BauabschnittModel[]): boolean {
+  return (
+    bauabschnitte?.some((bauabschnitt) =>
+      bauabschnitt.baugebiete?.some((baugebiet) => !_.isEmpty(baugebiet.bauraten)),
+    ) ?? false
+  );
+}
+
+export function deleteBauraten(bauabschnitte: BauabschnittModel[]): void {
+  bauabschnitte?.forEach((bauabschnitt) => {
+    bauabschnitt.baugebiete.forEach((baugebiet) => {
+      baugebiet.bauraten = [];
+    });
+  });
 }

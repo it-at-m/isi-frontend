@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  VersorgungsquoteSobonHortDto,
-} from '../models/index';
 import {
+    type VersorgungsquoteSobonHortDto,
     VersorgungsquoteSobonHortDtoFromJSON,
     VersorgungsquoteSobonHortDtoToJSON,
-} from '../models/index';
+} from '../models/VersorgungsquoteSobonHortDto';
 
 /**
  * 

@@ -1,4 +1,4 @@
-import type {
+import {
   BauleitplanverfahrenDto,
   BaugenehmigungsverfahrenDto,
   WeiteresVerfahrenDto,
@@ -9,6 +9,7 @@ import type {
   PatchAngelegtRequest,
   GetByIdRequest,
   DeleteByIdRequest,
+  WvInBlvUebernehmenByIdRequest,
   BauleitplanverfahrenStartBearbeitungDto,
   BaugenehmigungsverfahrenStartBearbeitungDto,
   WeiteresVerfahrenStartBearbeitungDto,
@@ -21,6 +22,8 @@ import type {
   BaugenehmigungsverfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenEinplanungBedarfeDto,
   PatchEinplanungBedarfeOperationRequest,
+  WvInBgvUebernehmenByIdRequest,
+  BlvInBgvUebernehmenByIdRequest,
 } from "@/api/api-client/isi-backend";
 import { AbfragenApi, AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -206,6 +209,42 @@ export function useAbfragenApi() {
     }
   }
 
+  async function wvInBlvUebernehmenById(id: string): Promise<BauleitplanverfahrenDto> {
+    const requestObject: WvInBlvUebernehmenByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.wvInBlvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function wvInBgvUebernehmenById(id: string): Promise<BaugenehmigungsverfahrenDto> {
+    const requestObject: WvInBgvUebernehmenByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.wvInBgvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function blvInBgvUebernehmenById(id: string): Promise<BaugenehmigungsverfahrenDto> {
+    const requestObject: BlvInBgvUebernehmenByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await abfragenApi.blvInBgvUebernehmenById(requestObject, RequestUtils.getGETConfig());
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   return {
     save,
     patchAngelegt,
@@ -214,5 +253,8 @@ export function useAbfragenApi() {
     patchEinplanungBedarfe,
     getById,
     deleteById,
+    wvInBlvUebernehmenById,
+    wvInBgvUebernehmenById,
+    blvInBgvUebernehmenById,
   };
 }

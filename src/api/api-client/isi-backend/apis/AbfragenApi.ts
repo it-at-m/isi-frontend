@@ -12,30 +12,41 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InformationResponseDto,
-  PatchEinpflegenBedarfsmeldungRequest,
-  PatchEinplanungBedarfeRequest,
-  PatchStartBearbeitungRequest,
-  Save201Response,
-  SaveRequest,
-} from '../models/index';
 import {
+    type InformationResponseDto,
     InformationResponseDtoFromJSON,
     InformationResponseDtoToJSON,
+} from '../models/InformationResponseDto';
+import {
+    type PatchEinpflegenBedarfsmeldungRequest,
     PatchEinpflegenBedarfsmeldungRequestFromJSON,
     PatchEinpflegenBedarfsmeldungRequestToJSON,
+} from '../models/PatchEinpflegenBedarfsmeldungRequest';
+import {
+    type PatchEinplanungBedarfeRequest,
     PatchEinplanungBedarfeRequestFromJSON,
     PatchEinplanungBedarfeRequestToJSON,
+} from '../models/PatchEinplanungBedarfeRequest';
+import {
+    type PatchStartBearbeitungRequest,
     PatchStartBearbeitungRequestFromJSON,
     PatchStartBearbeitungRequestToJSON,
+} from '../models/PatchStartBearbeitungRequest';
+import {
+    type Save201Response,
     Save201ResponseFromJSON,
     Save201ResponseToJSON,
+} from '../models/Save201Response';
+import {
+    type SaveRequest,
     SaveRequestFromJSON,
     SaveRequestToJSON,
-} from '../models/index';
+} from '../models/SaveRequest';
+
+export interface BlvInBgvUebernehmenByIdRequest {
+    id: string;
+}
 
 export interface DeleteByIdRequest {
     id: string;
@@ -69,10 +80,63 @@ export interface SaveOperationRequest {
     saveRequest: SaveRequest;
 }
 
+export interface WvInBgvUebernehmenByIdRequest {
+    id: string;
+}
+
+export interface WvInBlvUebernehmenByIdRequest {
+    id: string;
+}
+
 /**
  * 
  */
 export class AbfragenApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for blvInBgvUebernehmenById without sending the request
+     */
+    async blvInBgvUebernehmenByIdRequestOpts(requestParameters: BlvInBgvUebernehmenByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling blvInBgvUebernehmenById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/abfrage/blv-in-bgv-uebernehmen/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Datenübernahme von Bauleileitplanverfahren (BLV) in Baugenehmigungsverfahren (BGV).
+     */
+    async blvInBgvUebernehmenByIdRaw(requestParameters: BlvInBgvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.blvInBgvUebernehmenByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Datenübernahme von Bauleileitplanverfahren (BLV) in Baugenehmigungsverfahren (BGV).
+     */
+    async blvInBgvUebernehmenById(requestParameters: BlvInBgvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.blvInBgvUebernehmenByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for deleteById without sending the request
@@ -91,7 +155,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -135,7 +199,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -189,7 +253,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/angelegt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -244,7 +308,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/in-bearbeitung-fachreferate/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -299,7 +363,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/bedarfsmeldung-erfolgt/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -354,7 +418,7 @@ export class AbfragenApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrage/in-bearbeitung-sachbearbeitung/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -427,6 +491,96 @@ export class AbfragenApi extends runtime.BaseAPI {
      */
     async save(requestParameters: SaveOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
         const response = await this.saveRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for wvInBgvUebernehmenById without sending the request
+     */
+    async wvInBgvUebernehmenByIdRequestOpts(requestParameters: WvInBgvUebernehmenByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling wvInBgvUebernehmenById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/abfrage/wv-in-bgv-uebernehmen/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Baugenehmigungsverfahren (BGV).
+     */
+    async wvInBgvUebernehmenByIdRaw(requestParameters: WvInBgvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.wvInBgvUebernehmenByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Baugenehmigungsverfahren (BGV).
+     */
+    async wvInBgvUebernehmenById(requestParameters: WvInBgvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.wvInBgvUebernehmenByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for wvInBlvUebernehmenById without sending the request
+     */
+    async wvInBlvUebernehmenByIdRequestOpts(requestParameters: WvInBlvUebernehmenByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling wvInBlvUebernehmenById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/abfrage/wv-in-blv-uebernehmen/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV).
+     */
+    async wvInBlvUebernehmenByIdRaw(requestParameters: WvInBlvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Save201Response>> {
+        const requestOptions = await this.wvInBlvUebernehmenByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => Save201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Datenübernahme von Weiteres Verfahren (WV) in Bauleitplanverfahren (BLV).
+     */
+    async wvInBlvUebernehmenById(requestParameters: WvInBlvUebernehmenByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Save201Response> {
+        const response = await this.wvInBlvUebernehmenByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
