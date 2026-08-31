@@ -5,21 +5,6 @@
 <!-- END OF PROJECT SHIELDS -->
 
 <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="#">
-    <img src="/images/logo.png" alt="Logo" height="200">
-  </a>
-
-<h3 align="center">Informationssystem für soziale Infrastrukturplanung (ISI)</i></h3>
-
-  <p align="center">
-    <i>Frontend Implementierung für die ISI-Anwendung</i>
-        <br /><a href="https://github.com/it-at-m/isi-frontend/issues">Fehler melden</a>
-    ·
-    <a href="https://github.com/it-at-m/isi-frontend/issues">Anforderung einstellen</a>
-  </p>
-</div>
 
 <!-- ABOUT THE PROJECT -->
 
