@@ -25,26 +25,18 @@ import { type WeiteresVerfahrenStartBearbeitungDto, WeiteresVerfahrenStartBearbe
 export interface AbfrageStartBearbeitungDto {
     /**
      * 
-     * @type {number}
-     * @memberof AbfrageStartBearbeitungDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfrageStartBearbeitungDtoArtAbfrageEnum}
-     * @memberof AbfrageStartBearbeitungDto
      */
     artAbfrage?: AbfrageStartBearbeitungDtoArtAbfrageEnum;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageStartBearbeitungDto
      */
     bauvorhaben?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageStartBearbeitungDto
      */
     linkEakte?: string;
 }
@@ -57,7 +49,7 @@ export const AbfrageStartBearbeitungDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfrageStartBearbeitungDtoArtAbfrageEnum = typeof AbfrageStartBearbeitungDtoArtAbfrageEnum[keyof typeof AbfrageStartBearbeitungDtoArtAbfrageEnum];
 

@@ -25,18 +25,30 @@ import {
 } from '../models/InformationResponseDto';
 
 export interface DeleteFoerdermixStammByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetFoerdermixStammByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface SaveFoerdermixStammRequest {
+    /**
+     * 
+     */
     foerdermixStammDto: FoerdermixStammDto;
 }
 
 export interface UpdateFoerdermixStammRequest {
+    /**
+     * 
+     */
     foerdermixStammDto: FoerdermixStammDto;
 }
 

@@ -30,6 +30,9 @@ import {
 } from '../models/MuenchenAdressenDto';
 
 export interface GetAdressenRequest {
+    /**
+     * 
+     */
     adressSucheDto: AdressSucheDto;
 }
 

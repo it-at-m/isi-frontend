@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface PresignedUrlDto {
     /**
      * Die HTTP-Methode für den Request der Presigned-Url
-     * @type {string}
-     * @memberof PresignedUrlDto
      */
     httpMethodToUse?: string;
     /**
      * Die Presigned-Url
-     * @type {string}
-     * @memberof PresignedUrlDto
      */
     url?: string;
 }

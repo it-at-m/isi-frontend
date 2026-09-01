@@ -45,46 +45,88 @@ import {
 } from '../models/SaveRequest';
 
 export interface BlvInBgvUebernehmenByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface DeleteByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface PatchAngelegtRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     saveRequest: SaveRequest;
 }
 
 export interface PatchEinpflegenBedarfsmeldungOperationRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     patchEinpflegenBedarfsmeldungRequest: PatchEinpflegenBedarfsmeldungRequest;
 }
 
 export interface PatchEinplanungBedarfeOperationRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     patchEinplanungBedarfeRequest: PatchEinplanungBedarfeRequest;
 }
 
 export interface PatchStartBearbeitungOperationRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     patchStartBearbeitungRequest: PatchStartBearbeitungRequest;
 }
 
 export interface SaveOperationRequest {
+    /**
+     * 
+     */
     saveRequest: SaveRequest;
 }
 
 export interface WvInBgvUebernehmenByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface WvInBlvUebernehmenByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 

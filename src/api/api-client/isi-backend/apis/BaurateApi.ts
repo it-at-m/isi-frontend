@@ -25,8 +25,17 @@ import {
 } from '../models/InformationResponseDto';
 
 export interface DetermineBauratenRequest {
+    /**
+     * 
+     */
     realisierungsbeginn: number;
+    /**
+     * 
+     */
     wohneinheiten?: number;
+    /**
+     * 
+     */
     geschossflaecheWohnen?: number;
 }
 

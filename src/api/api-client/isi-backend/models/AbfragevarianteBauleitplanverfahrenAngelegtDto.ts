@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { BauabschnittDto } from './BauabschnittDto';
 import {
     BauabschnittDtoFromJSON,
@@ -29,146 +29,98 @@ import {
 export interface AbfragevarianteBauleitplanverfahrenAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     abfragevariantenNr: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     name: string;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum>}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     planart: Array<AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     planartFreieEingabe?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     realisierungVon: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenSobonUrsaechlich?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenBestandswohnbaurecht?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     gfAnmerkung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weGesamt?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     weAnmerkung?: string;
     /**
      * 
-     * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenAngelegtDto
      */
     bauabschnitte: Array<BauabschnittDto>;
 }
@@ -181,7 +133,7 @@ export const AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnu
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoArtAbfragevarianteEnum];
 
@@ -193,7 +145,7 @@ export const AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum = typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum[keyof typeof AbfragevarianteBauleitplanverfahrenAngelegtDtoPlanartEnum];
 
@@ -227,7 +179,7 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoFromJSONTyped(json
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
-        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
+        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (parseDate(json['satzungsbeschluss'])),
         'planart': json['planart'],
         'planartFreieEingabe': json['planartFreieEingabe'] == null ? undefined : json['planartFreieEingabe'],
         'realisierungVon': json['realisierungVon'],
@@ -265,7 +217,7 @@ export function AbfragevarianteBauleitplanverfahrenAngelegtDtoToJSONTyped(value?
         'artAbfragevariante': value['artAbfragevariante'],
         'abfragevariantenNr': value['abfragevariantenNr'],
         'name': value['name'],
-        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
+        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : serializeDate(value['satzungsbeschluss']),
         'planart': value['planart'],
         'planartFreieEingabe': value['planartFreieEingabe'],
         'realisierungVon': value['realisierungVon'],

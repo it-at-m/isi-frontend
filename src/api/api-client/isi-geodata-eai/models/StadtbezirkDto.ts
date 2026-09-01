@@ -21,38 +21,26 @@ import { mapValues } from '../runtime';
 export interface StadtbezirkDto {
     /**
      * 
-     * @type {number}
-     * @memberof StadtbezirkDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof StadtbezirkDto
      */
     stadtbezirkNummer?: string;
     /**
      * 
-     * @type {string}
-     * @memberof StadtbezirkDto
      */
     name?: string;
     /**
      * 
-     * @type {number}
-     * @memberof StadtbezirkDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {number}
-     * @memberof StadtbezirkDto
      */
     xcoordinate?: number;
     /**
      * 
-     * @type {number}
-     * @memberof StadtbezirkDto
      */
     ycoordinate?: number;
 }

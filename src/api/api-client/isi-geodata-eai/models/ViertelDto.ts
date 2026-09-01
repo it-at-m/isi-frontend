@@ -21,32 +21,22 @@ import { mapValues } from '../runtime';
 export interface ViertelDto {
     /**
      * 
-     * @type {number}
-     * @memberof ViertelDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof ViertelDto
      */
     viertelNummer?: string;
     /**
      * 
-     * @type {number}
-     * @memberof ViertelDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {number}
-     * @memberof ViertelDto
      */
     xcoordinate?: number;
     /**
      * 
-     * @type {number}
-     * @memberof ViertelDto
      */
     ycoordinate?: number;
 }

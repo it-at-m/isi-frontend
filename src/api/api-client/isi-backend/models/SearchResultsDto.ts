@@ -29,20 +29,14 @@ import {
 export interface SearchResultsDto {
     /**
      * 
-     * @type {Array<SearchResultsDtoSearchResultsInner>}
-     * @memberof SearchResultsDto
      */
     searchResults?: Array<SearchResultsDtoSearchResultsInner>;
     /**
      * 
-     * @type {number}
-     * @memberof SearchResultsDto
      */
     numberOfPages?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchResultsDto
      */
     page?: number;
 }

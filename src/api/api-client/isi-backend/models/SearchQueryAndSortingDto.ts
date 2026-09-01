@@ -36,182 +36,122 @@ import {
 export interface SearchQueryAndSortingDto {
     /**
      * 
-     * @type {string}
-     * @memberof SearchQueryAndSortingDto
      */
     searchQuery: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectBauleitplanverfahren: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectBaugenehmigungsverfahren: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectWeiteresVerfahren: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectBauvorhaben: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectGrundschule: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectGsNachmittagBetreuung: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectHausFuerKinder: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectKindergarten: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectKinderkrippe: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     selectMittelschule: boolean;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterStadtbezirkNummer?: Array<string>;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterKitaplanungsbereichKitaPlbT?: Array<string>;
     /**
      * 
-     * @type {Array<number>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterGrundschulsprengelNummer?: Array<number>;
     /**
      * 
-     * @type {Array<number>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterMittelschulsprengelNummer?: Array<number>;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterRealisierungsbeginnVon?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterRealisierungsbeginnBis?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof SearchQueryAndSortingDto
      */
     filterNurEigeneAbfragen?: boolean;
     /**
      * 
-     * @type {Array<StatusAbfrage>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterStatusAbfrage?: Array<StatusAbfrage>;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof SearchQueryAndSortingDto
      */
     filterSobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterWeGesamtVon?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterWeGesamtBis?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterGfWohnenGeplantVon?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     filterGfWohnenGeplantBis?: number;
     /**
      * 
-     * @type {Array<SearchQueryAndSortingDtoFilterVerfahrensstandEnum>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterVerfahrensstand?: Array<SearchQueryAndSortingDtoFilterVerfahrensstandEnum>;
     /**
      * 
-     * @type {Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>}
-     * @memberof SearchQueryAndSortingDto
      */
     filterInfrastruktureinrichtungStatus?: Array<SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum>;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     page?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SearchQueryAndSortingDto
      */
     pageSize?: number;
     /**
      * 
-     * @type {SearchQueryAndSortingDtoSortByEnum}
-     * @memberof SearchQueryAndSortingDto
      */
     sortBy: SearchQueryAndSortingDtoSortByEnum;
     /**
      * 
-     * @type {SearchQueryAndSortingDtoSortOrderEnum}
-     * @memberof SearchQueryAndSortingDto
      */
     sortOrder: SearchQueryAndSortingDtoSortOrderEnum;
 }
@@ -238,7 +178,7 @@ export const SearchQueryAndSortingDtoFilterVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type SearchQueryAndSortingDtoFilterVerfahrensstandEnum = typeof SearchQueryAndSortingDtoFilterVerfahrensstandEnum[keyof typeof SearchQueryAndSortingDtoFilterVerfahrensstandEnum];
 
@@ -254,7 +194,7 @@ export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = 
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    Bestand: 'BESTAND'
+    Bestand: 'BESTAND',
 } as const;
 export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
 
@@ -264,7 +204,7 @@ export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = t
 export const SearchQueryAndSortingDtoSortByEnum = {
     Name: 'NAME',
     CreatedDateTime: 'CREATED_DATE_TIME',
-    LastModifiedDateTime: 'LAST_MODIFIED_DATE_TIME'
+    LastModifiedDateTime: 'LAST_MODIFIED_DATE_TIME',
 } as const;
 export type SearchQueryAndSortingDtoSortByEnum = typeof SearchQueryAndSortingDtoSortByEnum[keyof typeof SearchQueryAndSortingDtoSortByEnum];
 
@@ -273,7 +213,7 @@ export type SearchQueryAndSortingDtoSortByEnum = typeof SearchQueryAndSortingDto
  */
 export const SearchQueryAndSortingDtoSortOrderEnum = {
     Asc: 'ASC',
-    Desc: 'DESC'
+    Desc: 'DESC',
 } as const;
 export type SearchQueryAndSortingDtoSortOrderEnum = typeof SearchQueryAndSortingDtoSortOrderEnum[keyof typeof SearchQueryAndSortingDtoSortOrderEnum];
 

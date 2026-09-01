@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface UtmDto {
     /**
      * 
-     * @type {string}
-     * @memberof UtmDto
      */
     zone?: string;
     /**
      * 
-     * @type {number}
-     * @memberof UtmDto
      */
     north?: number;
     /**
      * 
-     * @type {number}
-     * @memberof UtmDto
      */
     east?: number;
 }

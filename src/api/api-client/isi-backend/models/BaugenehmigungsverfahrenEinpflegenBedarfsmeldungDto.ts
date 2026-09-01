@@ -36,14 +36,10 @@ import {
 export interface BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto extends AbfrageEinpflegenBedarfsmeldungDto {
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto>}
-     * @memberof BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto>}
-     * @memberof BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto>;
 }

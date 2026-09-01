@@ -36,38 +36,26 @@ import {
 export interface AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {Array<BedarfsmeldungDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     bedarfsmeldungDokumenteAbfrageersteller?: Array<DokumentDto>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto
      */
     anmerkungAbfrageersteller?: string;
 }
@@ -80,7 +68,7 @@ export const AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfra
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDtoArtAbfragevarianteEnum];
 

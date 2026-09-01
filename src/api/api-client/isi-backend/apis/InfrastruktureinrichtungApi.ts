@@ -25,18 +25,30 @@ import {
 } from '../models/UpdateInfrastruktureinrichtungRequest';
 
 export interface CreateInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
 }
 
 export interface DeleteInfrastruktureinrichtungByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetInfrastruktureinrichtungByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface UpdateInfrastruktureinrichtungOperationRequest {
+    /**
+     * 
+     */
     updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
 }
 

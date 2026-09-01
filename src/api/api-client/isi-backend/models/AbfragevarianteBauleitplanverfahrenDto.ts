@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -57,296 +57,198 @@ import {
 export interface AbfragevarianteBauleitplanverfahrenDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     abfragevariantenNr?: number;
     /**
      * 
-     * @type {AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     artAbfragevariante?: AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     name?: string;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenDtoPlanartEnum>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     planart?: Array<AbfragevarianteBauleitplanverfahrenDtoPlanartEnum>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     planartFreieEingabe?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     realisierungVon?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenSobonUrsaechlich?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenBestandswohnbaurecht?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenSonderwohnformen?: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     gfAnmerkung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weGesamt?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weSonderwohnformen?: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     weAnmerkung?: string;
     /**
      * 
-     * @type {AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich?: AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
-     * @type {SobonBerechnungDto}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     stammdatenGueltigAb?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     anmerkung?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     hasBauratendateiInput?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     anmerkungBauratendateiInput?: string;
     /**
      * 
-     * @type {BauratendateiInputDto}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bauratendateiInputBasis?: BauratendateiInputDto;
     /**
      * 
-     * @type {Array<BauratendateiInputDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bauratendateiInput?: Array<BauratendateiInputDto>;
     /**
      * 
-     * @type {Array<BedarfsmeldungDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bedarfsmeldungDokumenteFachreferate?: Array<DokumentDto>;
     /**
      * 
-     * @type {Array<BedarfsmeldungDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bedarfsmeldungAbfrageersteller?: Array<BedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bedarfsmeldungDokumenteAbfrageersteller?: Array<DokumentDto>;
     /**
      * 
-     * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfImBaugebietBeruecksichtigenKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungImBplanKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfImBaugebietBeruecksichtigenSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungImBplanSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     anmerkungFachreferate?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     anmerkungAbfrageersteller?: string;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBauleitplanverfahrenDto
      */
     dokumente?: Array<DokumentDto>;
 }
@@ -359,7 +261,7 @@ export const AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum = typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoArtAbfragevarianteEnum];
 
@@ -371,7 +273,7 @@ export const AbfragevarianteBauleitplanverfahrenDtoPlanartEnum = {
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoPlanartEnum = typeof AbfragevarianteBauleitplanverfahrenDtoPlanartEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoPlanartEnum];
 
@@ -385,7 +287,7 @@ export const AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPla
     Jahr2022: 'JAHR_2022',
     Jahr2024: 'JAHR_2024',
     Jahr202434: 'JAHR_2024_34',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
 } as const;
 export type AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
@@ -409,12 +311,12 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'abfragevariantenNr': json['abfragevariantenNr'] == null ? undefined : json['abfragevariantenNr'],
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'name': json['name'] == null ? undefined : json['name'],
-        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
+        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (parseDate(json['satzungsbeschluss'])),
         'planart': json['planart'] == null ? undefined : json['planart'],
         'planartFreieEingabe': json['planartFreieEingabe'] == null ? undefined : json['planartFreieEingabe'],
         'realisierungVon': json['realisierungVon'] == null ? undefined : json['realisierungVon'],
@@ -434,7 +336,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoFromJSONTyped(json: any, i
         'weAnmerkung': json['weAnmerkung'] == null ? undefined : json['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'] == null ? undefined : json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': json['sobonBerechnung'] == null ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
-        'stammdatenGueltigAb': json['stammdatenGueltigAb'] == null ? undefined : (new Date(json['stammdatenGueltigAb'])),
+        'stammdatenGueltigAb': json['stammdatenGueltigAb'] == null ? undefined : (parseDate(json['stammdatenGueltigAb'])),
         'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
         'hasBauratendateiInput': json['hasBauratendateiInput'] == null ? undefined : json['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': json['anmerkungBauratendateiInput'] == null ? undefined : json['anmerkungBauratendateiInput'],
@@ -472,12 +374,12 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSONTyped(value?: Abfrag
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'abfragevariantenNr': value['abfragevariantenNr'],
         'artAbfragevariante': value['artAbfragevariante'],
         'name': value['name'],
-        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
+        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : serializeDate(value['satzungsbeschluss']),
         'planart': value['planart'],
         'planartFreieEingabe': value['planartFreieEingabe'],
         'realisierungVon': value['realisierungVon'],
@@ -497,7 +399,7 @@ export function AbfragevarianteBauleitplanverfahrenDtoToJSONTyped(value?: Abfrag
         'weAnmerkung': value['weAnmerkung'],
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': SobonBerechnungDtoToJSON(value['sobonBerechnung']),
-        'stammdatenGueltigAb': value['stammdatenGueltigAb'] == null ? value['stammdatenGueltigAb'] : value['stammdatenGueltigAb'].toISOString().substring(0,10),
+        'stammdatenGueltigAb': value['stammdatenGueltigAb'] == null ? value['stammdatenGueltigAb'] : serializeDate(value['stammdatenGueltigAb']),
         'anmerkung': value['anmerkung'],
         'hasBauratendateiInput': value['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': value['anmerkungBauratendateiInput'],

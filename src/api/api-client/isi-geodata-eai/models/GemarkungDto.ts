@@ -21,26 +21,18 @@ import { mapValues } from '../runtime';
 export interface GemarkungDto {
     /**
      * 
-     * @type {number}
-     * @memberof GemarkungDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof GemarkungDto
      */
     oid1?: string;
     /**
      * 
-     * @type {number}
-     * @memberof GemarkungDto
      */
     gemarkung?: number;
     /**
      * 
-     * @type {string}
-     * @memberof GemarkungDto
      */
     gemarkungName?: string;
 }

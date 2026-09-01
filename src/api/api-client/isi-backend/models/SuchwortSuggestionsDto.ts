@@ -21,8 +21,6 @@ import { mapValues } from '../runtime';
 export interface SuchwortSuggestionsDto {
     /**
      * 
-     * @type {Array<string>}
-     * @memberof SuchwortSuggestionsDto
      */
     suchwortSuggestions?: Array<string>;
 }

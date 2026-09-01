@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 
+import { parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { BaugenehmigungsverfahrenEinplanungBedarfeDto } from './BaugenehmigungsverfahrenEinplanungBedarfeDto';
 import {
     instanceOfBaugenehmigungsverfahrenEinplanungBedarfeDto,

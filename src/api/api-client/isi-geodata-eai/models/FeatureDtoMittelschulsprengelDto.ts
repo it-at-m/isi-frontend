@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoMittelschulsprengelDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoMittelschulsprengelDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoMittelschulsprengelDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {MittelschulsprengelDto}
-     * @memberof FeatureDtoMittelschulsprengelDto
      */
     properties?: MittelschulsprengelDto;
 }

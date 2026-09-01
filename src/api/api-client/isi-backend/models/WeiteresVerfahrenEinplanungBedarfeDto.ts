@@ -36,14 +36,10 @@ import {
 export interface WeiteresVerfahrenEinplanungBedarfeDto extends AbfrageEinplanungBedarfeDto {
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto>}
-     * @memberof WeiteresVerfahrenEinplanungBedarfeDto
      */
     abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto>}
-     * @memberof WeiteresVerfahrenEinplanungBedarfeDto
      */
     abfragevariantenSachbearbeitungWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto>;
 }

@@ -25,6 +25,9 @@ import {
 } from '../models/MultiPolygonGeometryDto';
 
 export interface UnifyRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 

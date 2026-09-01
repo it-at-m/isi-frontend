@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
     VerortungMultiPolygonDtoFromJSON,
@@ -64,74 +64,50 @@ import {
 export interface WeiteresVerfahrenAngelegtDto extends AbfrageAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     aktenzeichenProLbk?: string;
     /**
      * 
-     * @type {string}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     sobonRelevant: UncertainBoolean;
     /**
      * 
-     * @type {WeiteresVerfahrenAngelegtDtoSobonJahrEnum}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     sobonJahr?: WeiteresVerfahrenAngelegtDtoSobonJahrEnum;
     /**
      * 
-     * @type {WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     verfahrensstand: WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {string}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     verfahrensstandFreieEingabe?: string;
     /**
      * 
-     * @type {AdresseDto}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {Date}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     fristBearbeitung: Date;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     mitzeichnungBeschlussentwurf: UncertainBoolean;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>}
-     * @memberof WeiteresVerfahrenAngelegtDto
      */
     abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenAngelegtDto>;
 }
@@ -148,7 +124,7 @@ export const WeiteresVerfahrenAngelegtDtoSobonJahrEnum = {
     Jahr2012: 'JAHR_2012',
     Jahr2017: 'JAHR_2017',
     Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
+    Jahr2021: 'JAHR_2021',
 } as const;
 export type WeiteresVerfahrenAngelegtDtoSobonJahrEnum = typeof WeiteresVerfahrenAngelegtDtoSobonJahrEnum[keyof typeof WeiteresVerfahrenAngelegtDtoSobonJahrEnum];
 
@@ -173,7 +149,7 @@ export const WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum = typeof WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum[keyof typeof WeiteresVerfahrenAngelegtDtoVerfahrensstandEnum];
 
@@ -215,7 +191,7 @@ export function WeiteresVerfahrenAngelegtDtoFromJSONTyped(json: any, ignoreDiscr
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': (new Date(json['fristBearbeitung'])),
+        'fristBearbeitung': (json['fristBearbeitung'] == null ? json['fristBearbeitung'] : parseDate(json['fristBearbeitung'])),
         'mitzeichnungBeschlussentwurf': UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
         'abfragevariantenWeiteresVerfahren': ((json['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoFromJSON)),
     };
@@ -248,7 +224,7 @@ export function WeiteresVerfahrenAngelegtDtoToJSONTyped(value?: WeiteresVerfahre
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value['fristBearbeitung'].toISOString().substring(0,10),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : serializeDate(value['fristBearbeitung']),
         'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
         'abfragevariantenWeiteresVerfahren': ((value['abfragevariantenWeiteresVerfahren'] as Array<any>).map(AbfragevarianteWeiteresVerfahrenAngelegtDtoToJSON)),
     };

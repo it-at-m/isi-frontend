@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 /**
  * 
  * @export
@@ -21,38 +21,26 @@ import { mapValues } from '../runtime';
 export interface VersorgungsquoteSobonHortDto {
     /**
      * 
-     * @type {string}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     beschreibung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof VersorgungsquoteSobonHortDto
      */
     versorgungsquoteSobon?: number;
 }
@@ -76,8 +64,8 @@ export function VersorgungsquoteSobonHortDtoFromJSONTyped(json: any, ignoreDiscr
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'beschreibung': json['beschreibung'] == null ? undefined : json['beschreibung'],
         'versorgungsquoteSobon': json['versorgungsquoteSobon'] == null ? undefined : json['versorgungsquoteSobon'],
     };
@@ -96,8 +84,8 @@ export function VersorgungsquoteSobonHortDtoToJSONTyped(value?: Versorgungsquote
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'beschreibung': value['beschreibung'],
         'versorgungsquoteSobon': value['versorgungsquoteSobon'],
     };

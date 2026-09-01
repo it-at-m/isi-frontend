@@ -29,8 +29,6 @@ import {
 export interface LookupListDto {
     /**
      * 
-     * @type {Array<LookupEntryDto>}
-     * @memberof LookupListDto
      */
     list?: Array<LookupEntryDto>;
 }

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
     VerortungMultiPolygonDtoFromJSON,
@@ -57,56 +57,38 @@ import {
 export interface BaugenehmigungsverfahrenAngelegtDto extends AbfrageAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     aktenzeichenProLbk?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     verfahrensstand: BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     verfahrensstandFreieEingabe?: string;
     /**
      * 
-     * @type {AdresseDto}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {Date}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     fristBearbeitung: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>}
-     * @memberof BaugenehmigungsverfahrenAngelegtDto
      */
     abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDto>;
 }
@@ -133,7 +115,7 @@ export const BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum = typeof BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum[keyof typeof BaugenehmigungsverfahrenAngelegtDtoVerfahrensstandEnum];
 
@@ -171,7 +153,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoFromJSONTyped(json: any, igno
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': (new Date(json['fristBearbeitung'])),
+        'fristBearbeitung': (json['fristBearbeitung'] == null ? json['fristBearbeitung'] : parseDate(json['fristBearbeitung'])),
         'abfragevariantenBaugenehmigungsverfahren': ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoFromJSON)),
     };
 }
@@ -201,7 +183,7 @@ export function BaugenehmigungsverfahrenAngelegtDtoToJSONTyped(value?: Baugenehm
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value['fristBearbeitung'].toISOString().substring(0,10),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : serializeDate(value['fristBearbeitung']),
         'abfragevariantenBaugenehmigungsverfahren': ((value['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoToJSON)),
     };
 }

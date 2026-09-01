@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { FoerdermixDto } from './FoerdermixDto';
 import {
     FoerdermixDtoFromJSON,
@@ -29,50 +29,34 @@ import {
 export interface BaurateDto {
     /**
      * 
-     * @type {string}
-     * @memberof BaurateDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof BaurateDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof BaurateDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
      */
     jahr: number;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
      */
     weGeplant?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BaurateDto
      */
     gfWohnenGeplant?: number;
     /**
      * 
-     * @type {FoerdermixDto}
-     * @memberof BaurateDto
      */
     foerdermix: FoerdermixDto;
 }
@@ -98,8 +82,8 @@ export function BaurateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'jahr': json['jahr'],
         'weGeplant': json['weGeplant'] == null ? undefined : json['weGeplant'],
         'gfWohnenGeplant': json['gfWohnenGeplant'] == null ? undefined : json['gfWohnenGeplant'],
@@ -120,8 +104,8 @@ export function BaurateDtoToJSONTyped(value?: BaurateDto | null, ignoreDiscrimin
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'jahr': value['jahr'],
         'weGeplant': value['weGeplant'],
         'gfWohnenGeplant': value['gfWohnenGeplant'],

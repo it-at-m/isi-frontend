@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoGemarkungDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoGemarkungDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoGemarkungDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoGemarkungDto
      */
     features?: Array<FeatureDtoGemarkungDto>;
 }

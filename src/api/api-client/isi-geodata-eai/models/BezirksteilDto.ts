@@ -21,32 +21,22 @@ import { mapValues } from '../runtime';
 export interface BezirksteilDto {
     /**
      * 
-     * @type {number}
-     * @memberof BezirksteilDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof BezirksteilDto
      */
     bezirksteilNummer?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BezirksteilDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BezirksteilDto
      */
     xcoordinate?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BezirksteilDto
      */
     ycoordinate?: number;
 }

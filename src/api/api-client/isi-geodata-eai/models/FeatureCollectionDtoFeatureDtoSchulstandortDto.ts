@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoSchulstandortDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoSchulstandortDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoSchulstandortDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoSchulstandortDto
      */
     features?: Array<FeatureDtoSchulstandortDto>;
 }

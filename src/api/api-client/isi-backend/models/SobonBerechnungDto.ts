@@ -29,32 +29,22 @@ import {
 export interface SobonBerechnungDto {
     /**
      * 
-     * @type {boolean}
-     * @memberof SobonBerechnungDto
      */
     isASobonBerechnung?: boolean;
     /**
      * 
-     * @type {FoerdermixDto}
-     * @memberof SobonBerechnungDto
      */
     sobonFoerdermix?: FoerdermixDto;
     /**
      * 
-     * @type {SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum}
-     * @memberof SobonBerechnungDto
      */
     sobonOrientierungswertJahrSobonUrsaechlich?: SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum;
     /**
      * 
-     * @type {number}
-     * @memberof SobonBerechnungDto
      */
     versorgungsquoteHortSobon?: number;
     /**
      * 
-     * @type {SobonBerechnungDtoBauratenmethodikEnum}
-     * @memberof SobonBerechnungDto
      */
     bauratenmethodik?: SobonBerechnungDtoBauratenmethodikEnum;
 }
@@ -70,7 +60,7 @@ export const SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = 
     Jahr2022: 'JAHR_2022',
     Jahr2024: 'JAHR_2024',
     Jahr202434: 'JAHR_2024_34',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
 } as const;
 export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum[keyof typeof SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum];
 
@@ -79,7 +69,7 @@ export type SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum = t
  */
 export const SobonBerechnungDtoBauratenmethodikEnum = {
     AlteBauratenmethodik: 'ALTE_BAURATENMETHODIK',
-    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK'
+    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK',
 } as const;
 export type SobonBerechnungDtoBauratenmethodikEnum = typeof SobonBerechnungDtoBauratenmethodikEnum[keyof typeof SobonBerechnungDtoBauratenmethodikEnum];
 

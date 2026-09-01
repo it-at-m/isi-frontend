@@ -30,10 +30,16 @@ import {
 } from '../models/PresignedUrlDto';
 
 export interface GetFileRequest {
+    /**
+     * Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf
+     */
     pathToFile: string;
 }
 
 export interface SaveFileRequest {
+    /**
+     * 
+     */
     filepathDto: FilepathDto;
 }
 

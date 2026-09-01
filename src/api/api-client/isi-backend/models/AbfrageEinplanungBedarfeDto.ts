@@ -25,14 +25,10 @@ import { type WeiteresVerfahrenEinplanungBedarfeDto, WeiteresVerfahrenEinplanung
 export interface AbfrageEinplanungBedarfeDto {
     /**
      * 
-     * @type {number}
-     * @memberof AbfrageEinplanungBedarfeDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfrageEinplanungBedarfeDtoArtAbfrageEnum}
-     * @memberof AbfrageEinplanungBedarfeDto
      */
     artAbfrage?: AbfrageEinplanungBedarfeDtoArtAbfrageEnum;
 }
@@ -45,7 +41,7 @@ export const AbfrageEinplanungBedarfeDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfrageEinplanungBedarfeDtoArtAbfrageEnum = typeof AbfrageEinplanungBedarfeDtoArtAbfrageEnum[keyof typeof AbfrageEinplanungBedarfeDtoArtAbfrageEnum];
 

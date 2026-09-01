@@ -50,38 +50,26 @@ import {
 export interface BauvorhabenSearchResultDto extends SearchResultDto {
     /**
      * 
-     * @type {string}
-     * @memberof BauvorhabenSearchResultDto
      */
     id?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BauvorhabenSearchResultDto
      */
     nameVorhaben?: string;
     /**
      * 
-     * @type {Set<StadtbezirkDto>}
-     * @memberof BauvorhabenSearchResultDto
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
-     * @type {number}
-     * @memberof BauvorhabenSearchResultDto
      */
     grundstuecksgroesse?: number;
     /**
      * 
-     * @type {BauvorhabenSearchResultDtoVerfahrensstandEnum}
-     * @memberof BauvorhabenSearchResultDto
      */
     verfahrensstand?: BauvorhabenSearchResultDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof BauvorhabenSearchResultDto
      */
     umgriff?: MultiPolygonGeometryDto;
 }
@@ -108,7 +96,7 @@ export const BauvorhabenSearchResultDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type BauvorhabenSearchResultDtoVerfahrensstandEnum = typeof BauvorhabenSearchResultDtoVerfahrensstandEnum[keyof typeof BauvorhabenSearchResultDtoVerfahrensstandEnum];
 

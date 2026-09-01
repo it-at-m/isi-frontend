@@ -36,14 +36,10 @@ import {
 export interface PositionDto {
     /**
      * 
-     * @type {UtmDto}
-     * @memberof PositionDto
      */
     utm?: UtmDto;
     /**
      * 
-     * @type {WgsDto}
-     * @memberof PositionDto
      */
     wgs?: WgsDto;
 }

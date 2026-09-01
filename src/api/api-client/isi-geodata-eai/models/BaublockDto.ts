@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface BaublockDto {
     /**
      * 
-     * @type {number}
-     * @memberof BaublockDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof BaublockDto
      */
     blNummer?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BaublockDto
      */
     flaecheQm?: number;
 }

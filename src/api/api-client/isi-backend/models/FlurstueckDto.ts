@@ -29,50 +29,34 @@ import {
 export interface FlurstueckDto {
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     nummer?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     zaehler?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     nenner?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     eigentumsart?: number;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     eigentumsartBedeutung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     gemarkungNummer?: number;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof FlurstueckDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

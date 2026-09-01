@@ -20,10 +20,16 @@ import {
 } from '../models/InformationResponseDto';
 
 export interface ImportSoBoNOrientierungswerteSozialeInfrastrukturRequest {
+    /**
+     * 
+     */
     file: Blob;
 }
 
 export interface ImportStaedtebaulicheOrientierungswerteRequest {
+    /**
+     * 
+     */
     file: Blob;
 }
 

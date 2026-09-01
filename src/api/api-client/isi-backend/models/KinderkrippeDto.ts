@@ -50,26 +50,18 @@ import {
 export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     /**
      * 
-     * @type {number}
-     * @memberof KinderkrippeDto
      */
     anzahlKinderkrippePlaetze: number;
     /**
      * 
-     * @type {number}
-     * @memberof KinderkrippeDto
      */
     anzahlKinderkrippeGruppen: number;
     /**
      * 
-     * @type {number}
-     * @memberof KinderkrippeDto
      */
     wohnungsnaheKinderkrippePlaetze?: number;
     /**
      * 
-     * @type {KinderkrippeDtoEinrichtungstraegerEnum}
-     * @memberof KinderkrippeDto
      */
     einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;
 }
@@ -87,7 +79,7 @@ export const KinderkrippeDtoEinrichtungstraegerEnum = {
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
     PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
-    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinrichtungstraegerEnum[keyof typeof KinderkrippeDtoEinrichtungstraegerEnum];
 

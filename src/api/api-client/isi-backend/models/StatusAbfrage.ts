@@ -25,7 +25,7 @@ export const StatusAbfrage = {
     EinplanungBedarfe: 'EINPLANUNG_BEDARFE',
     ErledigtMitFachreferat: 'ERLEDIGT_MIT_FACHREFERAT',
     ErledigtOhneFachreferat: 'ERLEDIGT_OHNE_FACHREFERAT',
-    Abbruch: 'ABBRUCH'
+    Abbruch: 'ABBRUCH',
 } as const;
 export type StatusAbfrage = typeof StatusAbfrage[keyof typeof StatusAbfrage];
 

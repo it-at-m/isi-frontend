@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -50,230 +50,154 @@ import {
 export interface AbfragevarianteWeiteresVerfahrenStartBearbeitungDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     abfragevariantenNr: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     name: string;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     satzungsbeschluss?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     realisierungVon: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenBaurechtlichGenehmigt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenBaurechtlichFestgesetzt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenSobonUrsaechlich?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenBestandswohnbaurecht?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     gfAnmerkung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weBaurechtlichGenehmigt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weBaurechtlichFestgesetzt?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     weAnmerkung?: string;
     /**
      * 
-     * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     bauabschnitte?: Array<BauabschnittDto>;
     /**
      * 
-     * @type {AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
-     * @type {SobonBerechnungDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     stammdatenGueltigAb: Date;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     anmerkung?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     hasBauratendateiInput?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     anmerkungBauratendateiInput?: string;
     /**
      * 
-     * @type {BauratendateiInputDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     bauratendateiInputBasis?: BauratendateiInputDto;
     /**
      * 
-     * @type {Array<BauratendateiInputDto>}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     bauratendateiInput?: Array<BauratendateiInputDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteWeiteresVerfahrenStartBearbeitungDto
      */
     dokumente?: Array<DokumentDto>;
 }
@@ -286,7 +210,7 @@ export const AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarian
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoArtAbfragevarianteEnum];
 
@@ -304,7 +228,7 @@ export const AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRecht
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    Befreiung: 'BEFREIUNG'
+    Befreiung: 'BEFREIUNG',
 } as const;
 export type AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoWesentlicheRechtsgrundlageEnum];
 
@@ -318,7 +242,7 @@ export const AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierun
     Jahr2022: 'JAHR_2022',
     Jahr2024: 'JAHR_2024',
     Jahr202434: 'JAHR_2024_34',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
 } as const;
 export type AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
@@ -353,7 +277,7 @@ export function AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSONTyped
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'abfragevariantenNr': json['abfragevariantenNr'],
         'name': json['name'],
-        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (new Date(json['satzungsbeschluss'])),
+        'satzungsbeschluss': json['satzungsbeschluss'] == null ? undefined : (parseDate(json['satzungsbeschluss'])),
         'wesentlicheRechtsgrundlage': json['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': json['wesentlicheRechtsgrundlageFreieEingabe'] == null ? undefined : json['wesentlicheRechtsgrundlageFreieEingabe'],
         'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
@@ -379,7 +303,7 @@ export function AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoFromJSONTyped
         'bauabschnitte': json['bauabschnitte'] == null ? undefined : ((json['bauabschnitte'] as Array<any>).map(BauabschnittDtoFromJSON)),
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': json['sobonBerechnung'] == null ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
-        'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
+        'stammdatenGueltigAb': (json['stammdatenGueltigAb'] == null ? json['stammdatenGueltigAb'] : parseDate(json['stammdatenGueltigAb'])),
         'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
         'hasBauratendateiInput': json['hasBauratendateiInput'] == null ? undefined : json['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': json['anmerkungBauratendateiInput'] == null ? undefined : json['anmerkungBauratendateiInput'],
@@ -405,7 +329,7 @@ export function AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSONTyped(v
         'artAbfragevariante': value['artAbfragevariante'],
         'abfragevariantenNr': value['abfragevariantenNr'],
         'name': value['name'],
-        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : value['satzungsbeschluss'].toISOString().substring(0,10),
+        'satzungsbeschluss': value['satzungsbeschluss'] == null ? value['satzungsbeschluss'] : serializeDate(value['satzungsbeschluss']),
         'wesentlicheRechtsgrundlage': value['wesentlicheRechtsgrundlage'],
         'wesentlicheRechtsgrundlageFreieEingabe': value['wesentlicheRechtsgrundlageFreieEingabe'],
         'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
@@ -431,7 +355,7 @@ export function AbfragevarianteWeiteresVerfahrenStartBearbeitungDtoToJSONTyped(v
         'bauabschnitte': value['bauabschnitte'] == null ? undefined : ((value['bauabschnitte'] as Array<any>).map(BauabschnittDtoToJSON)),
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': SobonBerechnungDtoToJSON(value['sobonBerechnung']),
-        'stammdatenGueltigAb': value['stammdatenGueltigAb'].toISOString().substring(0,10),
+        'stammdatenGueltigAb': value['stammdatenGueltigAb'] == null ? value['stammdatenGueltigAb'] : serializeDate(value['stammdatenGueltigAb']),
         'anmerkung': value['anmerkung'],
         'hasBauratendateiInput': value['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': value['anmerkungBauratendateiInput'],

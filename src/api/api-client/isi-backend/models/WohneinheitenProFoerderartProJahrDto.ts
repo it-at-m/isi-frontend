@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface WohneinheitenProFoerderartProJahrDto {
     /**
      * 
-     * @type {string}
-     * @memberof WohneinheitenProFoerderartProJahrDto
      */
     foerderart?: string | null;
     /**
      * 
-     * @type {string}
-     * @memberof WohneinheitenProFoerderartProJahrDto
      */
     jahr?: string | null;
     /**
      * 
-     * @type {number}
-     * @memberof WohneinheitenProFoerderartProJahrDto
      */
     wohneinheiten?: number | null;
 }

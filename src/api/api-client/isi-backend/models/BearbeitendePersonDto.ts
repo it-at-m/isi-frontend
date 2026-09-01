@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface BearbeitendePersonDto {
     /**
      * 
-     * @type {string}
-     * @memberof BearbeitendePersonDto
      */
     name?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BearbeitendePersonDto
      */
     email?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BearbeitendePersonDto
      */
     organisationseinheit?: string;
 }

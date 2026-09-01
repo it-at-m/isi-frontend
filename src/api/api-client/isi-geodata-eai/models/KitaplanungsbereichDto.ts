@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface KitaplanungsbereichDto {
     /**
      * 
-     * @type {number}
-     * @memberof KitaplanungsbereichDto
      */
     objectId?: number;
     /**
      * 
-     * @type {number}
-     * @memberof KitaplanungsbereichDto
      */
     kitaPlb?: number;
     /**
      * 
-     * @type {string}
-     * @memberof KitaplanungsbereichDto
      */
     kitaPlbT?: string;
 }

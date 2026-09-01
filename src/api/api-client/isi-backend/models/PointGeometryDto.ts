@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface PointGeometryDto {
     /**
      * 
-     * @type {string}
-     * @memberof PointGeometryDto
      */
     type: string;
     /**
      * Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84).
-     * @type {Array<number>}
-     * @memberof PointGeometryDto
      */
     coordinates: Array<number>;
 }

@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface FoerderartDto {
     /**
      * 
-     * @type {string}
-     * @memberof FoerderartDto
      */
     bezeichnung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FoerderartDto
      */
     anteilProzent?: number;
 }

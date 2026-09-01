@@ -32,14 +32,10 @@ import { type InfrastruktureinrichtungSearchResultDto, InfrastruktureinrichtungS
 export interface SearchResultDto {
     /**
      * 
-     * @type {SearchResultDtoTypeEnum}
-     * @memberof SearchResultDto
      */
     type?: SearchResultDtoTypeEnum;
     /**
      * 
-     * @type {Wgs84Dto}
-     * @memberof SearchResultDto
      */
     coordinate?: Wgs84Dto;
 }
@@ -51,7 +47,7 @@ export interface SearchResultDto {
 export const SearchResultDtoTypeEnum = {
     Abfrage: 'ABFRAGE',
     Bauvorhaben: 'BAUVORHABEN',
-    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG'
+    Infrastruktureinrichtung: 'INFRASTRUKTUREINRICHTUNG',
 } as const;
 export type SearchResultDtoTypeEnum = typeof SearchResultDtoTypeEnum[keyof typeof SearchResultDtoTypeEnum];
 

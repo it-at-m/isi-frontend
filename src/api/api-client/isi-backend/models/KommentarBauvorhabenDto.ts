@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { BearbeitendePersonDto } from './BearbeitendePersonDto';
 import {
     BearbeitendePersonDtoFromJSON,
@@ -36,56 +36,38 @@ import {
 export interface KommentarBauvorhabenDto {
     /**
      * 
-     * @type {string}
-     * @memberof KommentarBauvorhabenDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof KommentarBauvorhabenDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof KommentarBauvorhabenDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof KommentarBauvorhabenDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof KommentarBauvorhabenDto
      */
     erstellungsdatum?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof KommentarBauvorhabenDto
      */
     text?: string;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof KommentarBauvorhabenDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {BearbeitendePersonDto}
-     * @memberof KommentarBauvorhabenDto
      */
     bearbeitendePerson?: BearbeitendePersonDto;
     /**
      * 
-     * @type {string}
-     * @memberof KommentarBauvorhabenDto
      */
     bauvorhaben?: string;
 }
@@ -109,9 +91,9 @@ export function KommentarBauvorhabenDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (new Date(json['erstellungsdatum'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
+        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (parseDate(json['erstellungsdatum'])),
         'text': json['text'] == null ? undefined : json['text'],
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
@@ -132,9 +114,9 @@ export function KommentarBauvorhabenDtoToJSONTyped(value?: KommentarBauvorhabenD
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
-        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : value['erstellungsdatum'].toISOString().substring(0,10),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
+        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : serializeDate(value['erstellungsdatum']),
         'text': value['text'],
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
         'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),

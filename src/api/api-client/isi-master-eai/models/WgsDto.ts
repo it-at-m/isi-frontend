@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface WgsDto {
     /**
      * 
-     * @type {number}
-     * @memberof WgsDto
      */
     lat?: number;
     /**
      * 
-     * @type {number}
-     * @memberof WgsDto
      */
     lon?: number;
 }

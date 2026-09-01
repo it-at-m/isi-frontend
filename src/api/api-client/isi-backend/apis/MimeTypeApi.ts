@@ -30,6 +30,9 @@ import {
 } from '../models/MimeTypeInformationDto';
 
 export interface ExtractMediaTypeInformationForAllowedMediaTypeRequest {
+    /**
+     * 
+     */
     filepathDto: FilepathDto;
 }
 

@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoFlurstueckDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoFlurstueckDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoFlurstueckDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {FlurstueckDto}
-     * @memberof FeatureDtoFlurstueckDto
      */
     properties?: FlurstueckDto;
 }

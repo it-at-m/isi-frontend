@@ -36,44 +36,30 @@ import {
 export interface AdresseDto {
     /**
      * 
-     * @type {string}
-     * @memberof AdresseDto
      */
     plz?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AdresseDto
      */
     ort?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AdresseDto
      */
     strasse?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AdresseDto
      */
     hausnummer?: string;
     /**
      * 
-     * @type {Wgs84Dto}
-     * @memberof AdresseDto
      */
     coordinate?: Wgs84Dto;
     /**
      * 
-     * @type {UtmDto}
-     * @memberof AdresseDto
      */
     coordinateUtm?: UtmDto;
     /**
      * 
-     * @type {string}
-     * @memberof AdresseDto
      */
     angabeLageErgaenzendeAdressinformation?: string;
 }

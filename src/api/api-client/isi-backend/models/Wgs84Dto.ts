@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface Wgs84Dto {
     /**
      * 
-     * @type {number}
-     * @memberof Wgs84Dto
      */
     latitude: number;
     /**
      * 
-     * @type {number}
-     * @memberof Wgs84Dto
      */
     longitude: number;
 }

@@ -36,14 +36,10 @@ import {
 export interface WeiteresVerfahrenEinpflegenBedarfsmeldungDto extends AbfrageEinpflegenBedarfsmeldungDto {
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto>}
-     * @memberof WeiteresVerfahrenEinpflegenBedarfsmeldungDto
      */
     abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto>}
-     * @memberof WeiteresVerfahrenEinpflegenBedarfsmeldungDto
      */
     abfragevariantenSachbearbeitungWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto>;
 }

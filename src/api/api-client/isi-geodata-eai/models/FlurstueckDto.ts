@@ -21,104 +21,70 @@ import { mapValues } from '../runtime';
 export interface FlurstueckDto {
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     objectId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     oid1?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     gemarkung?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     fluerstueckNummerZ?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     fluerstueckNummerN?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     afl?: number;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     lage?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     gemeinde?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     objektart?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     nutzungsart?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     eigentumsart?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     gemarkungName?: string;
     /**
      * 
-     * @type {number}
-     * @memberof FlurstueckDto
      */
     flurstueckId?: number;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     eigentumsartBedeutung?: string;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     gemeindeBedeutung?: string;
     /**
      * 
-     * @type {string}
-     * @memberof FlurstueckDto
      */
     nutzungsartBedeutung?: string;
 }

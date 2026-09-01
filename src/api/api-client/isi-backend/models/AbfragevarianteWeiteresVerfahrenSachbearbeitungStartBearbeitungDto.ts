@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { SobonBerechnungDto } from './SobonBerechnungDto';
 import {
     SobonBerechnungDtoFromJSON,
@@ -43,74 +43,50 @@ import {
 export interface AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     artAbfragevariante?: AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     sobonOrientierungswertJahrPlanungsursaechlich: AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum;
     /**
      * 
-     * @type {SobonBerechnungDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     sobonBerechnung?: SobonBerechnungDto;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     stammdatenGueltigAb: Date;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     anmerkung?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     hasBauratendateiInput?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     anmerkungBauratendateiInput?: string;
     /**
      * 
-     * @type {BauratendateiInputDto}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     bauratendateiInputBasis?: BauratendateiInputDto;
     /**
      * 
-     * @type {Array<BauratendateiInputDto>}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     bauratendateiInput?: Array<BauratendateiInputDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto
      */
     dokumente?: Array<DokumentDto>;
 }
@@ -123,7 +99,7 @@ export const AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoA
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum = typeof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoArtAbfragevarianteEnum];
 
@@ -137,7 +113,7 @@ export const AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoS
     Jahr2022: 'JAHR_2022',
     Jahr2024: 'JAHR_2024',
     Jahr202434: 'JAHR_2024_34',
-    Standortabfrage: 'STANDORTABFRAGE'
+    Standortabfrage: 'STANDORTABFRAGE',
 } as const;
 export type AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum = typeof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum[keyof typeof AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDtoSobonOrientierungswertJahrPlanungsursaechlichEnum];
 
@@ -166,7 +142,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungD
         'artAbfragevariante': json['artAbfragevariante'] == null ? undefined : json['artAbfragevariante'],
         'sobonOrientierungswertJahrPlanungsursaechlich': json['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': json['sobonBerechnung'] == null ? undefined : SobonBerechnungDtoFromJSON(json['sobonBerechnung']),
-        'stammdatenGueltigAb': (new Date(json['stammdatenGueltigAb'])),
+        'stammdatenGueltigAb': (json['stammdatenGueltigAb'] == null ? json['stammdatenGueltigAb'] : parseDate(json['stammdatenGueltigAb'])),
         'anmerkung': json['anmerkung'] == null ? undefined : json['anmerkung'],
         'hasBauratendateiInput': json['hasBauratendateiInput'] == null ? undefined : json['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': json['anmerkungBauratendateiInput'] == null ? undefined : json['anmerkungBauratendateiInput'],
@@ -192,7 +168,7 @@ export function AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungD
         'artAbfragevariante': value['artAbfragevariante'],
         'sobonOrientierungswertJahrPlanungsursaechlich': value['sobonOrientierungswertJahrPlanungsursaechlich'],
         'sobonBerechnung': SobonBerechnungDtoToJSON(value['sobonBerechnung']),
-        'stammdatenGueltigAb': value['stammdatenGueltigAb'].toISOString().substring(0,10),
+        'stammdatenGueltigAb': value['stammdatenGueltigAb'] == null ? value['stammdatenGueltigAb'] : serializeDate(value['stammdatenGueltigAb']),
         'anmerkung': value['anmerkung'],
         'hasBauratendateiInput': value['hasBauratendateiInput'],
         'anmerkungBauratendateiInput': value['anmerkungBauratendateiInput'],

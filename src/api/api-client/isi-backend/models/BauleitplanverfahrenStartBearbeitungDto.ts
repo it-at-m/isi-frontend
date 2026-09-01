@@ -50,20 +50,14 @@ import {
 export interface BauleitplanverfahrenStartBearbeitungDto extends AbfrageStartBearbeitungDto {
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof BauleitplanverfahrenStartBearbeitungDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto>}
-     * @memberof BauleitplanverfahrenStartBearbeitungDto
      */
     abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDto>}
-     * @memberof BauleitplanverfahrenStartBearbeitungDto
      */
     abfragevariantenSachbearbeitungBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenStartBearbeitungDto>;
 }

@@ -35,31 +35,55 @@ import {
 } from '../models/InfrastruktureinrichtungSearchResultDto';
 
 export interface CreateBauvorhabenRequest {
+    /**
+     * 
+     */
     bauvorhabenDto: BauvorhabenDto;
+    /**
+     * 
+     */
     abfrageId?: string;
 }
 
 export interface DeleteBauvorhabenRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetBauvorhabenByIdRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetReferencedAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetReferencedInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface PutChangeRelevanteAbfragevarianteRequest {
+    /**
+     * 
+     */
     abfragevarianteId: string;
 }
 
 export interface UpdateBauvorhabenRequest {
+    /**
+     * 
+     */
     bauvorhabenDto: BauvorhabenDto;
 }
 

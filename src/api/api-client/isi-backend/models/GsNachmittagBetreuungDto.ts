@@ -50,32 +50,22 @@ import {
 export interface GsNachmittagBetreuungDto extends InfrastruktureinrichtungDto {
     /**
      * 
-     * @type {GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum}
-     * @memberof GsNachmittagBetreuungDto
      */
     artGsNachmittagBetreuung?: GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum;
     /**
      * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
      */
     anzahlHortPlaetze: number;
     /**
      * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
      */
     anzahlHortGruppen: number;
     /**
      * 
-     * @type {number}
-     * @memberof GsNachmittagBetreuungDto
      */
     wohnungsnaheHortPlaetze?: number;
     /**
      * 
-     * @type {GsNachmittagBetreuungDtoEinrichtungstraegerEnum}
-     * @memberof GsNachmittagBetreuungDto
      */
     einrichtungstraeger?: GsNachmittagBetreuungDtoEinrichtungstraegerEnum;
 }
@@ -89,7 +79,7 @@ export const GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum = {
     KooperativerGanztagFlexibleVariante: 'KOOPERATIVER_GANZTAG_FLEXIBLE_VARIANTE',
     KooperativerGanztagRhythmisierteVariante: 'KOOPERATIVER_GANZTAG_RHYTHMISIERTE_VARIANTE',
     Tagesheim: 'TAGESHEIM',
-    Mittagsbetreuung: 'MITTAGSBETREUUNG'
+    Mittagsbetreuung: 'MITTAGSBETREUUNG',
 } as const;
 export type GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum = typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum[keyof typeof GsNachmittagBetreuungDtoArtGsNachmittagBetreuungEnum];
 
@@ -105,7 +95,7 @@ export const GsNachmittagBetreuungDtoEinrichtungstraegerEnum = {
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
     PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
-    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type GsNachmittagBetreuungDtoEinrichtungstraegerEnum = typeof GsNachmittagBetreuungDtoEinrichtungstraegerEnum[keyof typeof GsNachmittagBetreuungDtoEinrichtungstraegerEnum];
 

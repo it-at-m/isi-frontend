@@ -29,14 +29,10 @@ import {
 export interface MittelschulsprengelDto {
     /**
      * 
-     * @type {number}
-     * @memberof MittelschulsprengelDto
      */
     nummer?: number;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof MittelschulsprengelDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

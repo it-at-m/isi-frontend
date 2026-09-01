@@ -36,26 +36,18 @@ import {
 export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto {
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungSearchResultDto
      */
     id?: string;
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungSearchResultDto
      */
     nameEinrichtung?: string;
     /**
      * 
-     * @type {InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum}
-     * @memberof InfrastruktureinrichtungSearchResultDto
      */
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungSearchResultDto
      */
     zugehoerigesBauvorhaben?: string;
 }
@@ -71,7 +63,7 @@ export const InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypE
     GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
-    Mittelschule: 'MITTELSCHULE'
+    Mittelschule: 'MITTELSCHULE',
 } as const;
 export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum];
 

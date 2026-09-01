@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoStadtbezirkDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoStadtbezirkDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoStadtbezirkDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoStadtbezirkDto
      */
     features?: Array<FeatureDtoStadtbezirkDto>;
 }

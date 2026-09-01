@@ -29,20 +29,14 @@ import {
 export interface FoerdermixDto {
     /**
      * 
-     * @type {string}
-     * @memberof FoerdermixDto
      */
     bezeichnungJahr?: string;
     /**
      * 
-     * @type {string}
-     * @memberof FoerdermixDto
      */
     bezeichnung?: string;
     /**
      * 
-     * @type {Array<FoerderartDto>}
-     * @memberof FoerdermixDto
      */
     foerderarten?: Array<FoerderartDto>;
 }

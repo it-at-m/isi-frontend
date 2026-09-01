@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoBebauungsplanUmgriffDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto
      */
     features?: Array<FeatureDtoBebauungsplanUmgriffDto>;
 }

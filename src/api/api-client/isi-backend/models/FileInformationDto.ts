@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface FileInformationDto {
     /**
      * 
-     * @type {number}
-     * @memberof FileInformationDto
      */
     maxFileSizeBytes?: number;
     /**
      * 
-     * @type {number}
-     * @memberof FileInformationDto
      */
     maxNumberOfFiles?: number;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof FileInformationDto
      */
     allowedMimeTypes?: Array<string>;
 }

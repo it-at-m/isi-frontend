@@ -85,56 +85,38 @@ import {
 export interface VerortungPointDto {
     /**
      * 
-     * @type {Set<StadtbezirkDto>}
-     * @memberof VerortungPointDto
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
-     * @type {Set<BezirksteilDto>}
-     * @memberof VerortungPointDto
      */
     bezirksteile?: Set<BezirksteilDto>;
     /**
      * 
-     * @type {Set<ViertelDto>}
-     * @memberof VerortungPointDto
      */
     viertel?: Set<ViertelDto>;
     /**
      * 
-     * @type {Set<GemarkungDto>}
-     * @memberof VerortungPointDto
      */
     gemarkungen?: Set<GemarkungDto>;
     /**
      * 
-     * @type {Set<KitaplanungsbereichDto>}
-     * @memberof VerortungPointDto
      */
     kitaplanungsbereiche?: Set<KitaplanungsbereichDto>;
     /**
      * 
-     * @type {Set<GrundschulsprengelDto>}
-     * @memberof VerortungPointDto
      */
     grundschulsprengel?: Set<GrundschulsprengelDto>;
     /**
      * 
-     * @type {Set<MittelschulsprengelDto>}
-     * @memberof VerortungPointDto
      */
     mittelschulsprengel?: Set<MittelschulsprengelDto>;
     /**
      * 
-     * @type {PointGeometryDto}
-     * @memberof VerortungPointDto
      */
     point: PointGeometryDto;
     /**
      * 
-     * @type {UtmDto}
-     * @memberof VerortungPointDto
      */
     pointUtm?: UtmDto;
 }

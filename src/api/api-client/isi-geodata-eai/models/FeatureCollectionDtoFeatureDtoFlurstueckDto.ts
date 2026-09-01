@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoFlurstueckDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoFlurstueckDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoFlurstueckDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoFlurstueckDto
      */
     features?: Array<FeatureDtoFlurstueckDto>;
 }

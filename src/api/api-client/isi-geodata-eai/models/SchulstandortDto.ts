@@ -21,110 +21,74 @@ import { mapValues } from '../runtime';
 export interface SchulstandortDto {
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     objectId?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     kreisschl?: number;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     kreis?: string;
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     schulnummer?: number;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     schulname?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     linkSchule?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     verbundname?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     verbundnummer?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     schulamt?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     rabl?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     linkRabl?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     schulart?: string;
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     postleitzahl?: number;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     strasse?: string;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     internetadresse?: string;
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     ebene?: number;
     /**
      * 
-     * @type {number}
-     * @memberof SchulstandortDto
      */
     winkel?: number;
     /**
      * 
-     * @type {string}
-     * @memberof SchulstandortDto
      */
     bedeutungEbene?: string;
 }

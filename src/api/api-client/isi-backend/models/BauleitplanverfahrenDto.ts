@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { AbfragevarianteBauleitplanverfahrenDto } from './AbfragevarianteBauleitplanverfahrenDto';
 import {
     AbfragevarianteBauleitplanverfahrenDtoFromJSON,
@@ -78,92 +78,62 @@ import {
 export interface BauleitplanverfahrenDto extends AbfrageDto {
     /**
      * 
-     * @type {string}
-     * @memberof BauleitplanverfahrenDto
      */
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof BauleitplanverfahrenDto
      */
     sobonRelevant?: UncertainBoolean;
     /**
      * 
-     * @type {BauleitplanverfahrenDtoSobonJahrEnum}
-     * @memberof BauleitplanverfahrenDto
      */
     sobonJahr?: BauleitplanverfahrenDtoSobonJahrEnum;
     /**
      * 
-     * @type {BauleitplanverfahrenDtoVerfahrensstandEnum}
-     * @memberof BauleitplanverfahrenDto
      */
     verfahrensstand?: BauleitplanverfahrenDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {string}
-     * @memberof BauleitplanverfahrenDto
      */
     verfahrensstandFreieEingabe?: string;
     /**
      * 
-     * @type {AdresseDto}
-     * @memberof BauleitplanverfahrenDto
      */
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof BauleitplanverfahrenDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof BauleitplanverfahrenDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {Date}
-     * @memberof BauleitplanverfahrenDto
      */
     fristBearbeitung?: Date;
     /**
      * 
-     * @type {UncertainBoolean}
-     * @memberof BauleitplanverfahrenDto
      */
     mitzeichnungBeschlussentwurf?: UncertainBoolean;
     /**
      * 
-     * @type {Date}
-     * @memberof BauleitplanverfahrenDto
      */
     start42Verfahren?: Date;
     /**
      * 
-     * @type {boolean}
-     * @memberof BauleitplanverfahrenDto
      */
     start42VerfahrenDatumUnbekannt?: boolean;
     /**
      * 
-     * @type {BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum}
-     * @memberof BauleitplanverfahrenDto
      */
     bauratenmethodikVorbelegung?: BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenDto>}
-     * @memberof BauleitplanverfahrenDto
      */
     abfragevariantenBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenDto>}
-     * @memberof BauleitplanverfahrenDto
      */
     abfragevariantenSachbearbeitungBauleitplanverfahren?: Array<AbfragevarianteBauleitplanverfahrenDto>;
 }
@@ -180,7 +150,7 @@ export const BauleitplanverfahrenDtoSobonJahrEnum = {
     Jahr2012: 'JAHR_2012',
     Jahr2017: 'JAHR_2017',
     Jahr2017Plus: 'JAHR_2017_PLUS',
-    Jahr2021: 'JAHR_2021'
+    Jahr2021: 'JAHR_2021',
 } as const;
 export type BauleitplanverfahrenDtoSobonJahrEnum = typeof BauleitplanverfahrenDtoSobonJahrEnum[keyof typeof BauleitplanverfahrenDtoSobonJahrEnum];
 
@@ -205,7 +175,7 @@ export const BauleitplanverfahrenDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type BauleitplanverfahrenDtoVerfahrensstandEnum = typeof BauleitplanverfahrenDtoVerfahrensstandEnum[keyof typeof BauleitplanverfahrenDtoVerfahrensstandEnum];
 
@@ -214,7 +184,7 @@ export type BauleitplanverfahrenDtoVerfahrensstandEnum = typeof Bauleitplanverfa
  */
 export const BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum = {
     AlteBauratenmethodik: 'ALTE_BAURATENMETHODIK',
-    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK'
+    NeueBauratenmethodik: 'NEUE_BAURATENMETHODIK',
 } as const;
 export type BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum = typeof BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum[keyof typeof BauleitplanverfahrenDtoBauratenmethodikVorbelegungEnum];
 
@@ -250,9 +220,9 @@ export function BauleitplanverfahrenDtoFromJSONTyped(json: any, ignoreDiscrimina
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
+        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (parseDate(json['fristBearbeitung'])),
         'mitzeichnungBeschlussentwurf': json['mitzeichnungBeschlussentwurf'] == null ? undefined : UncertainBooleanFromJSON(json['mitzeichnungBeschlussentwurf']),
-        'start42Verfahren': json['start42Verfahren'] == null ? undefined : (new Date(json['start42Verfahren'])),
+        'start42Verfahren': json['start42Verfahren'] == null ? undefined : (parseDate(json['start42Verfahren'])),
         'start42VerfahrenDatumUnbekannt': json['start42VerfahrenDatumUnbekannt'] == null ? undefined : json['start42VerfahrenDatumUnbekannt'],
         'bauratenmethodikVorbelegung': json['bauratenmethodikVorbelegung'] == null ? undefined : json['bauratenmethodikVorbelegung'],
         'abfragevariantenBauleitplanverfahren': json['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((json['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoFromJSON)),
@@ -286,9 +256,9 @@ export function BauleitplanverfahrenDtoToJSONTyped(value?: BauleitplanverfahrenD
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : serializeDate(value['fristBearbeitung']),
         'mitzeichnungBeschlussentwurf': UncertainBooleanToJSON(value['mitzeichnungBeschlussentwurf']),
-        'start42Verfahren': value['start42Verfahren'] == null ? value['start42Verfahren'] : value['start42Verfahren'].toISOString().substring(0,10),
+        'start42Verfahren': value['start42Verfahren'] == null ? value['start42Verfahren'] : serializeDate(value['start42Verfahren']),
         'start42VerfahrenDatumUnbekannt': value['start42VerfahrenDatumUnbekannt'],
         'bauratenmethodikVorbelegung': value['bauratenmethodikVorbelegung'],
         'abfragevariantenBauleitplanverfahren': value['abfragevariantenBauleitplanverfahren'] == null ? undefined : ((value['abfragevariantenBauleitplanverfahren'] as Array<any>).map(AbfragevarianteBauleitplanverfahrenDtoToJSON)),

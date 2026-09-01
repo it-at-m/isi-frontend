@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoViertelDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoViertelDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoViertelDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {ViertelDto}
-     * @memberof FeatureDtoViertelDto
      */
     properties?: ViertelDto;
 }

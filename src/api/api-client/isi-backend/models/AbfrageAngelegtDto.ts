@@ -25,38 +25,26 @@ import { type WeiteresVerfahrenAngelegtDto, WeiteresVerfahrenAngelegtDtoFromJSON
 export interface AbfrageAngelegtDto {
     /**
      * 
-     * @type {number}
-     * @memberof AbfrageAngelegtDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfrageAngelegtDtoArtAbfrageEnum}
-     * @memberof AbfrageAngelegtDto
      */
     artAbfrage?: AbfrageAngelegtDtoArtAbfrageEnum;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageAngelegtDto
      */
     name: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageAngelegtDto
      */
     anmerkung?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageAngelegtDto
      */
     bauvorhaben?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageAngelegtDto
      */
     linkEakte?: string;
 }
@@ -69,7 +57,7 @@ export const AbfrageAngelegtDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfrageAngelegtDtoArtAbfrageEnum = typeof AbfrageAngelegtDtoArtAbfrageEnum[keyof typeof AbfrageAngelegtDtoArtAbfrageEnum];
 

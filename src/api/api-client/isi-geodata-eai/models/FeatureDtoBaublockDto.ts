@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoBaublockDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoBaublockDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoBaublockDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {BaublockDto}
-     * @memberof FeatureDtoBaublockDto
      */
     properties?: BaublockDto;
 }

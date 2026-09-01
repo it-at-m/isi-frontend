@@ -29,38 +29,26 @@ import {
 export interface DokumenteDto {
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof DokumenteDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {number}
-     * @memberof DokumenteDto
      */
     pageNumber?: number;
     /**
      * 
-     * @type {number}
-     * @memberof DokumenteDto
      */
     pageSize?: number;
     /**
      * 
-     * @type {number}
-     * @memberof DokumenteDto
      */
     totalElements?: number;
     /**
      * 
-     * @type {number}
-     * @memberof DokumenteDto
      */
     totalPages?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof DokumenteDto
      */
     last?: boolean;
 }

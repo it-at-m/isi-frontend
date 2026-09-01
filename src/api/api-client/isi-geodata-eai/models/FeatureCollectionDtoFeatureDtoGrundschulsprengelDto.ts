@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoGrundschulsprengelDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoGrundschulsprengelDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoGrundschulsprengelDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoGrundschulsprengelDto
      */
     features?: Array<FeatureDtoGrundschulsprengelDto>;
 }

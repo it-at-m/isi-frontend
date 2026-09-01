@@ -21,8 +21,6 @@ import { mapValues } from '../runtime';
 export interface FilepathDto {
     /**
      * Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf
-     * @type {string}
-     * @memberof FilepathDto
      */
     pathToFile: string;
 }

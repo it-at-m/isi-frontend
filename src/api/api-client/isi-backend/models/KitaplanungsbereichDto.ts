@@ -29,20 +29,14 @@ import {
 export interface KitaplanungsbereichDto {
     /**
      * 
-     * @type {number}
-     * @memberof KitaplanungsbereichDto
      */
     kitaPlb?: number;
     /**
      * 
-     * @type {string}
-     * @memberof KitaplanungsbereichDto
      */
     kitaPlbT?: string;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof KitaplanungsbereichDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

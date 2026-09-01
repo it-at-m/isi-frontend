@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoBebauungsplanUmgriffDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoBebauungsplanUmgriffDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoBebauungsplanUmgriffDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {BebauungsplanUmgriffDto}
-     * @memberof FeatureDtoBebauungsplanUmgriffDto
      */
     properties?: BebauungsplanUmgriffDto;
 }

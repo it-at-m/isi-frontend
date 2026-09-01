@@ -70,42 +70,72 @@ import {
 } from '../models/MultiPolygonGeometryDto';
 
 export interface GetBezirksteileRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetFlurstueckeRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetFlurstueckeInnerhalbUmgriffRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetGemarkungenRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetGrundschulsprengelRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetKitaplanungsbereicheRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetMittelschulsprengelRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetSchulstandorteRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetStadtbezirkeRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 
 export interface GetViertelRequest {
+    /**
+     * 
+     */
     multiPolygonGeometryDto: MultiPolygonGeometryDto;
 }
 

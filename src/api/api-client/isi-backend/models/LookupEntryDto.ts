@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface LookupEntryDto {
     /**
      * 
-     * @type {string}
-     * @memberof LookupEntryDto
      */
     key?: string;
     /**
      * 
-     * @type {string}
-     * @memberof LookupEntryDto
      */
     value?: string;
 }

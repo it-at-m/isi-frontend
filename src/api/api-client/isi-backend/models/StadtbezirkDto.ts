@@ -29,20 +29,14 @@ import {
 export interface StadtbezirkDto {
     /**
      * 
-     * @type {string}
-     * @memberof StadtbezirkDto
      */
     nummer?: string;
     /**
      * 
-     * @type {string}
-     * @memberof StadtbezirkDto
      */
     name?: string;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof StadtbezirkDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

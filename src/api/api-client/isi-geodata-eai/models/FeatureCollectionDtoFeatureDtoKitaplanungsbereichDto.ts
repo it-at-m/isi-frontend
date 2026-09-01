@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoKitaplanungsbereichDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto
      */
     features?: Array<FeatureDtoKitaplanungsbereichDto>;
 }

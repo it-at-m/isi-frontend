@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface MimeTypeInformationDto {
     /**
      * 
-     * @type {string}
-     * @memberof MimeTypeInformationDto
      */
     type?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MimeTypeInformationDto
      */
     description?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MimeTypeInformationDto
      */
     acronym?: string;
 }

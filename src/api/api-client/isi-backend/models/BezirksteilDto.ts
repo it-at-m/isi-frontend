@@ -29,14 +29,10 @@ import {
 export interface BezirksteilDto {
     /**
      * 
-     * @type {string}
-     * @memberof BezirksteilDto
      */
     nummer?: string;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof BezirksteilDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

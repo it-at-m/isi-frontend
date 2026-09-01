@@ -50,20 +50,14 @@ import {
 export interface WeiteresVerfahrenStartBearbeitungDto extends AbfrageStartBearbeitungDto {
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof WeiteresVerfahrenStartBearbeitungDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto>}
-     * @memberof WeiteresVerfahrenStartBearbeitungDto
      */
     abfragevariantenWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDto>}
-     * @memberof WeiteresVerfahrenStartBearbeitungDto
      */
     abfragevariantenSachbearbeitungWeiteresVerfahren: Array<AbfragevarianteWeiteresVerfahrenStartBearbeitungDto>;
 }

@@ -36,26 +36,18 @@ import {
 export interface GemarkungDto {
     /**
      * 
-     * @type {number}
-     * @memberof GemarkungDto
      */
     nummer?: number;
     /**
      * 
-     * @type {string}
-     * @memberof GemarkungDto
      */
     name?: string;
     /**
      * 
-     * @type {Set<FlurstueckDto>}
-     * @memberof GemarkungDto
      */
     flurstuecke: Set<FlurstueckDto>;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof GemarkungDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 /**
  * 
  * @export
@@ -21,62 +21,42 @@ import { mapValues } from '../runtime';
 export interface BedarfsmeldungDto {
     /**
      * 
-     * @type {string}
-     * @memberof BedarfsmeldungDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof BedarfsmeldungDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof BedarfsmeldungDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     anzahlEinrichtungen?: number;
     /**
      * 
-     * @type {BedarfsmeldungDtoInfrastruktureinrichtungTypEnum}
-     * @memberof BedarfsmeldungDto
      */
     infrastruktureinrichtungTyp?: BedarfsmeldungDtoInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     anzahlKinderkrippengruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     anzahlKindergartengruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     anzahlHortgruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BedarfsmeldungDto
      */
     anzahlGrundschulzuege?: number;
 }
@@ -92,7 +72,7 @@ export const BedarfsmeldungDtoInfrastruktureinrichtungTypEnum = {
     GsNachmittagBetreuung: 'GS_NACHMITTAG_BETREUUNG',
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
-    Mittelschule: 'MITTELSCHULE'
+    Mittelschule: 'MITTELSCHULE',
 } as const;
 export type BedarfsmeldungDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungDtoInfrastruktureinrichtungTypEnum];
 
@@ -116,8 +96,8 @@ export function BedarfsmeldungDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'anzahlEinrichtungen': json['anzahlEinrichtungen'] == null ? undefined : json['anzahlEinrichtungen'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'anzahlKinderkrippengruppen': json['anzahlKinderkrippengruppen'] == null ? undefined : json['anzahlKinderkrippengruppen'],
@@ -140,8 +120,8 @@ export function BedarfsmeldungDtoToJSONTyped(value?: BedarfsmeldungDto | null, i
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'anzahlEinrichtungen': value['anzahlEinrichtungen'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'anzahlKinderkrippengruppen': value['anzahlKinderkrippengruppen'],

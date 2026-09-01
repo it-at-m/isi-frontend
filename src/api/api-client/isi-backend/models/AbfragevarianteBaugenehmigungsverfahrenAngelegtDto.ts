@@ -29,164 +29,110 @@ import {
 export interface AbfragevarianteBaugenehmigungsverfahrenAngelegtDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     abfragevariantenNr: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     name: string;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlage: Array<AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum>;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlageFreieEingabe?: string;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     wesentlicheRechtsgrundlageAngabenZurBefreiung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     realisierungVon: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenBaurechtlichGenehmigt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenBaurechtlichFestgesetzt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenBestandswohnbaurecht?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     gfAnmerkung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weGesamt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weBaurechtlichGenehmigt?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weBaurechtlichFestgesetzt?: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weSonderwohnformen: boolean;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weStudentischesWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weSeniorinnenWohnen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weWeiteresNichtInfrastrukturrelevantesWohnen?: number;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     weAnmerkung?: string;
     /**
      * 
-     * @type {Array<BauabschnittDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenAngelegtDto
      */
     bauabschnitte: Array<BauabschnittDto>;
 }
@@ -199,7 +145,7 @@ export const AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevariant
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoArtAbfragevarianteEnum];
 
@@ -217,7 +163,7 @@ export const AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechts
     QualifizierterBebauungsplan: 'QUALIFIZIERTER_BEBAUUNGSPLAN',
     VorhabensbezogenerBebauungsplan: 'VORHABENSBEZOGENER_BEBAUUNGSPLAN',
     BebauungsplanZurWohnraumversorgung: 'BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG',
-    Befreiung: 'BEFREIUNG'
+    Befreiung: 'BEFREIUNG',
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum = typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenAngelegtDtoWesentlicheRechtsgrundlageEnum];
 

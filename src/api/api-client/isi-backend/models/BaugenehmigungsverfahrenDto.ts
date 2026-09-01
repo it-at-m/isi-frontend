@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { VerortungMultiPolygonDto } from './VerortungMultiPolygonDto';
 import {
     VerortungMultiPolygonDtoFromJSON,
@@ -71,62 +71,42 @@ import {
 export interface BaugenehmigungsverfahrenDto extends AbfrageDto {
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     aktenzeichenProLbk?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     bebauungsplannummer?: string;
     /**
      * 
-     * @type {BaugenehmigungsverfahrenDtoVerfahrensstandEnum}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     verfahrensstand?: BaugenehmigungsverfahrenDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {string}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     verfahrensstandFreieEingabe?: string;
     /**
      * 
-     * @type {AdresseDto}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     adresse?: AdresseDto;
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     dokumente?: Array<DokumentDto>;
     /**
      * 
-     * @type {Date}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     fristBearbeitung?: Date;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenDto>}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     abfragevariantenBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenDto>}
-     * @memberof BaugenehmigungsverfahrenDto
      */
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren?: Array<AbfragevarianteBaugenehmigungsverfahrenDto>;
 }
@@ -153,7 +133,7 @@ export const BaugenehmigungsverfahrenDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type BaugenehmigungsverfahrenDtoVerfahrensstandEnum = typeof BaugenehmigungsverfahrenDtoVerfahrensstandEnum[keyof typeof BaugenehmigungsverfahrenDtoVerfahrensstandEnum];
 
@@ -188,7 +168,7 @@ export function BaugenehmigungsverfahrenDtoFromJSONTyped(json: any, ignoreDiscri
         'adresse': json['adresse'] == null ? undefined : AdresseDtoFromJSON(json['adresse']),
         'verortung': json['verortung'] == null ? undefined : VerortungMultiPolygonDtoFromJSON(json['verortung']),
         'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
-        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
+        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (parseDate(json['fristBearbeitung'])),
         'abfragevariantenBaugenehmigungsverfahren': json['abfragevariantenBaugenehmigungsverfahren'] == null ? undefined : ((json['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] == null ? undefined : ((json['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoFromJSON)),
     };
@@ -219,7 +199,7 @@ export function BaugenehmigungsverfahrenDtoToJSONTyped(value?: Baugenehmigungsve
         'adresse': AdresseDtoToJSON(value['adresse']),
         'verortung': VerortungMultiPolygonDtoToJSON(value['verortung']),
         'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
-        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : serializeDate(value['fristBearbeitung']),
         'abfragevariantenBaugenehmigungsverfahren': value['abfragevariantenBaugenehmigungsverfahren'] == null ? undefined : ((value['abfragevariantenBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
         'abfragevariantenSachbearbeitungBaugenehmigungsverfahren': value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] == null ? undefined : ((value['abfragevariantenSachbearbeitungBaugenehmigungsverfahren'] as Array<any>).map(AbfragevarianteBaugenehmigungsverfahrenDtoToJSON)),
     };

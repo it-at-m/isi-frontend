@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface AdressSucheDto {
     /**
      * Suchtext mit Adressteilen.
-     * @type {string}
-     * @memberof AdressSucheDto
      */
     query: string;
     /**
      * Seitennummer (optional, default = 0)
-     * @type {number}
-     * @memberof AdressSucheDto
      */
     page?: number;
     /**
      * Seitengröße. Anzahl maximal angezeigter Ergebnisse pro Seite (optional, default = 20)
-     * @type {number}
-     * @memberof AdressSucheDto
      */
     pagesize?: number;
 }

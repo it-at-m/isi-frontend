@@ -29,20 +29,14 @@ import {
 export interface ViertelDto {
     /**
      * 
-     * @type {string}
-     * @memberof ViertelDto
      */
     nummer?: string;
     /**
      * 
-     * @type {number}
-     * @memberof ViertelDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof ViertelDto
      */
     multiPolygon: MultiPolygonGeometryDto;
 }

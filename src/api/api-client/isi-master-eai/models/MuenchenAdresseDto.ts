@@ -36,50 +36,34 @@ import {
 export interface MuenchenAdresseDto {
     /**
      * 
-     * @type {string}
-     * @memberof MuenchenAdresseDto
      */
     adresse?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MuenchenAdresseDto
      */
     adressId?: string;
     /**
      * 
-     * @type {number}
-     * @memberof MuenchenAdresseDto
      */
     hausnummer?: number;
     /**
      * 
-     * @type {string}
-     * @memberof MuenchenAdresseDto
      */
     buchstabe?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MuenchenAdresseDto
      */
     ortsname?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MuenchenAdresseDto
      */
     strassenname?: string;
     /**
      * 
-     * @type {PositionDto}
-     * @memberof MuenchenAdresseDto
      */
     position?: PositionDto;
     /**
      * 
-     * @type {MuenchenAdresseGeoZuordnungenDto}
-     * @memberof MuenchenAdresseDto
      */
     geozuordnungen?: MuenchenAdresseGeoZuordnungenDto;
 }

@@ -25,56 +25,119 @@ import {
 } from '../models/TransitionDto';
 
 export interface AbbrechenAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface BedarfsmeldungErfolgtRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface ErledigtMitFachreferatRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface ErledigtOhneFachreferatRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface ErneuteBearbeitungSachbearbeitungRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface FreigabeAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface InBearbeitungSetzenAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface TransitionsAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface VerschickenDerStellungnahmeRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface ZurueckAnAbfrageerstellungAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 
 export interface ZurueckAnSachbearbeitungAbfrageRequest {
+    /**
+     * 
+     */
     id: string;
+    /**
+     * 
+     */
     anmerkung?: string;
 }
 

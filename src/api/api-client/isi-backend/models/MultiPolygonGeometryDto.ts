@@ -21,14 +21,10 @@ import { mapValues } from '../runtime';
 export interface MultiPolygonGeometryDto {
     /**
      * 
-     * @type {string}
-     * @memberof MultiPolygonGeometryDto
      */
     type: string;
     /**
      * 
-     * @type {Array<Array<Array<Array<number>>>>}
-     * @memberof MultiPolygonGeometryDto
      */
     coordinates: Array<Array<Array<Array<number>>>>;
 }

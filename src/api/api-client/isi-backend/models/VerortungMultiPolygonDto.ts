@@ -92,62 +92,42 @@ import {
 export interface VerortungMultiPolygonDto {
     /**
      * 
-     * @type {Set<StadtbezirkDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
-     * @type {Set<BezirksteilDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     bezirksteile?: Set<BezirksteilDto>;
     /**
      * 
-     * @type {Set<ViertelDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     viertel?: Set<ViertelDto>;
     /**
      * 
-     * @type {Set<GemarkungDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     gemarkungen?: Set<GemarkungDto>;
     /**
      * 
-     * @type {Set<KitaplanungsbereichDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     kitaplanungsbereiche?: Set<KitaplanungsbereichDto>;
     /**
      * 
-     * @type {Set<GrundschulsprengelDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     grundschulsprengel?: Set<GrundschulsprengelDto>;
     /**
      * 
-     * @type {Set<MittelschulsprengelDto>}
-     * @memberof VerortungMultiPolygonDto
      */
     mittelschulsprengel?: Set<MittelschulsprengelDto>;
     /**
      * 
-     * @type {MultiPolygonGeometryDto}
-     * @memberof VerortungMultiPolygonDto
      */
     multiPolygon: MultiPolygonGeometryDto;
     /**
      * 
-     * @type {PointGeometryDto}
-     * @memberof VerortungMultiPolygonDto
      */
     centroid?: PointGeometryDto;
     /**
      * 
-     * @type {UtmDto}
-     * @memberof VerortungMultiPolygonDto
      */
     centroidUtm?: UtmDto;
 }

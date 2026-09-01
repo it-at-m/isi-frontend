@@ -57,8 +57,6 @@ import {
 export interface MittelschuleDto extends InfrastruktureinrichtungDto {
     /**
      * 
-     * @type {SchuleDto}
-     * @memberof MittelschuleDto
      */
     schule: SchuleDto;
 }

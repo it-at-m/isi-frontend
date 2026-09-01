@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { SearchResultDto } from './SearchResultDto';
 import {
     SearchResultDtoFromJSON,
@@ -50,56 +50,38 @@ import {
 export interface AbfrageSearchResultDto extends SearchResultDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageSearchResultDto
      */
     id?: string;
     /**
      * 
-     * @type {AbfrageSearchResultDtoArtAbfrageEnum}
-     * @memberof AbfrageSearchResultDto
      */
     artAbfrage?: AbfrageSearchResultDtoArtAbfrageEnum;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageSearchResultDto
      */
     name?: string;
     /**
      * 
-     * @type {Set<StadtbezirkDto>}
-     * @memberof AbfrageSearchResultDto
      */
     stadtbezirke?: Set<StadtbezirkDto>;
     /**
      * 
-     * @type {StatusAbfrage}
-     * @memberof AbfrageSearchResultDto
      */
     statusAbfrage?: StatusAbfrage;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfrageSearchResultDto
      */
     fristBearbeitung?: Date;
     /**
      * 
-     * @type {AbfrageSearchResultDtoVerfahrensstandEnum}
-     * @memberof AbfrageSearchResultDto
      */
     verfahrensstand?: AbfrageSearchResultDtoVerfahrensstandEnum;
     /**
      * 
-     * @type {Date}
-     * @memberof AbfrageSearchResultDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof AbfrageSearchResultDto
      */
     bauvorhaben?: string;
 }
@@ -112,7 +94,7 @@ export const AbfrageSearchResultDtoArtAbfrageEnum = {
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfrageSearchResultDtoArtAbfrageEnum = typeof AbfrageSearchResultDtoArtAbfrageEnum[keyof typeof AbfrageSearchResultDtoArtAbfrageEnum];
 
@@ -137,7 +119,7 @@ export const AbfrageSearchResultDtoVerfahrensstandEnum = {
     StaedtebaulicheSanierungsmassnahme: 'STAEDTEBAULICHE_SANIERUNGSMASSNAHME',
     StaedtebaulicheEntwicklungsmassnahme: 'STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME',
     Standortabfrage: 'STANDORTABFRAGE',
-    FreieEingabe: 'FREIE_EINGABE'
+    FreieEingabe: 'FREIE_EINGABE',
 } as const;
 export type AbfrageSearchResultDtoVerfahrensstandEnum = typeof AbfrageSearchResultDtoVerfahrensstandEnum[keyof typeof AbfrageSearchResultDtoVerfahrensstandEnum];
 
@@ -170,9 +152,9 @@ export function AbfrageSearchResultDtoFromJSONTyped(json: any, ignoreDiscriminat
         'name': json['name'] == null ? undefined : json['name'],
         'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
         'statusAbfrage': json['statusAbfrage'] == null ? undefined : StatusAbfrageFromJSON(json['statusAbfrage']),
-        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (new Date(json['fristBearbeitung'])),
+        'fristBearbeitung': json['fristBearbeitung'] == null ? undefined : (parseDate(json['fristBearbeitung'])),
         'verfahrensstand': json['verfahrensstand'] == null ? undefined : json['verfahrensstand'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
         'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
     };
 }
@@ -200,9 +182,9 @@ export function AbfrageSearchResultDtoToJSONTyped(value?: AbfrageSearchResultDto
         'name': value['name'],
         'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkDtoToJSON)),
         'statusAbfrage': StatusAbfrageToJSON(value['statusAbfrage']),
-        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : value['fristBearbeitung'].toISOString().substring(0,10),
+        'fristBearbeitung': value['fristBearbeitung'] == null ? value['fristBearbeitung'] : serializeDate(value['fristBearbeitung']),
         'verfahrensstand': value['verfahrensstand'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
         'bauvorhaben': value['bauvorhaben'],
     };
 }

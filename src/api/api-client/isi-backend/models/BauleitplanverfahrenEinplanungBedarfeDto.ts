@@ -36,14 +36,10 @@ import {
 export interface BauleitplanverfahrenEinplanungBedarfeDto extends AbfrageEinplanungBedarfeDto {
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto>}
-     * @memberof BauleitplanverfahrenEinplanungBedarfeDto
      */
     abfragevariantenBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto>}
-     * @memberof BauleitplanverfahrenEinplanungBedarfeDto
      */
     abfragevariantenSachbearbeitungBauleitplanverfahren: Array<AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto>;
 }

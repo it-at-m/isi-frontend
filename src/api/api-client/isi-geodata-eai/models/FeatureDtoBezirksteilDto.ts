@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoBezirksteilDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoBezirksteilDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoBezirksteilDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {BezirksteilDto}
-     * @memberof FeatureDtoBezirksteilDto
      */
     properties?: BezirksteilDto;
 }

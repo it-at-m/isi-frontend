@@ -40,10 +40,16 @@ import {
 } from '../models/SuchwortSuggestionsDto';
 
 export interface SearchForEntitiesRequest {
+    /**
+     * 
+     */
     searchQueryAndSortingDto: SearchQueryAndSortingDto;
 }
 
 export interface SearchForSearchwordSuggestionRequest {
+    /**
+     * 
+     */
     searchQueryDto: SearchQueryDto;
 }
 

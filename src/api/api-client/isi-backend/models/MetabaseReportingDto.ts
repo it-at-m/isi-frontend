@@ -21,50 +21,34 @@ import { mapValues } from '../runtime';
 export interface MetabaseReportingDto {
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     url?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportErgebnissePlanungsursaechlich?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportErgebnisseSobonUrsaechlich?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportWohneinheiten?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportBauratendatei?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportKitaplanungsbereichKrippe?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportKitaplanungsbereichKiga?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MetabaseReportingDto
      */
     reportAndere?: string;
 }

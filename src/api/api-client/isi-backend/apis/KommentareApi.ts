@@ -30,34 +30,58 @@ import {
 } from '../models/KommentarInfrastruktureinrichtungDto';
 
 export interface CreateKommentarForBauvorhabenRequest {
+    /**
+     * 
+     */
     kommentarBauvorhabenDto: KommentarBauvorhabenDto;
 }
 
 export interface CreateKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
 }
 
 export interface DeleteKommentarForBauvorhabenRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface DeleteKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     id: string;
 }
 
 export interface GetKommentareForBauvorhabenRequest {
+    /**
+     * 
+     */
     bauvorhabenId: string;
 }
 
 export interface GetKommentareForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     infrastruktureinrichtungId: string;
 }
 
 export interface UpdateKommentarForBauvorhabenRequest {
+    /**
+     * 
+     */
     kommentarBauvorhabenDto: KommentarBauvorhabenDto;
 }
 
 export interface UpdateKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
 }
 

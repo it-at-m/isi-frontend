@@ -29,14 +29,10 @@ import {
 export interface FeatureCollectionDtoFeatureDtoBaublockDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureCollectionDtoFeatureDtoBaublockDto
      */
     type?: string;
     /**
      * 
-     * @type {Array<FeatureDtoBaublockDto>}
-     * @memberof FeatureCollectionDtoFeatureDtoBaublockDto
      */
     features?: Array<FeatureDtoBaublockDto>;
 }

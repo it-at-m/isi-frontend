@@ -30,10 +30,16 @@ import {
 } from '../models/Wgs84Dto';
 
 export interface Utm32ToWgs84Request {
+    /**
+     * 
+     */
     utmDto: UtmDto;
 }
 
 export interface Wgs84toUtm32Request {
+    /**
+     * 
+     */
     wgs84Dto: Wgs84Dto;
 }
 

@@ -36,86 +36,58 @@ import {
 export interface AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto {
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     version?: number;
     /**
      * 
-     * @type {AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     artAbfragevariante?: AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum;
     /**
      * 
-     * @type {Array<BedarfsmeldungDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     bedarfsmeldungFachreferate?: Array<BedarfsmeldungDto>;
     /**
      * 
-     * @type {Array<DokumentDto>}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     bedarfsmeldungDokumenteFachreferate?: Array<DokumentDto>;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfImBaugebietBeruecksichtigenKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungImBplanKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauKita?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfImBaugebietBeruecksichtigenSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungImBplanSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenSchule?: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     ausgeloesterBedarfMitversorgungInBestEinrichtungenNachAusbauSchule?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto
      */
     anmerkungFachreferate?: string;
 }
@@ -128,7 +100,7 @@ export const AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoA
     Unspecified: 'UNSPECIFIED',
     Bauleitplanverfahren: 'BAULEITPLANVERFAHREN',
     Baugenehmigungsverfahren: 'BAUGENEHMIGUNGSVERFAHREN',
-    WeiteresVerfahren: 'WEITERES_VERFAHREN'
+    WeiteresVerfahren: 'WEITERES_VERFAHREN',
 } as const;
 export type AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum = typeof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum[keyof typeof AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDtoArtAbfragevarianteEnum];
 

@@ -20,7 +20,13 @@ import {
 } from '../models/DokumenteDto';
 
 export interface GetDokumenteRequest {
+    /**
+     * 
+     */
     pageNumber?: number;
+    /**
+     * 
+     */
     pageSize?: number;
 }
 

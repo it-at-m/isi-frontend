@@ -21,56 +21,38 @@ import { mapValues } from '../runtime';
 export interface GrundschulsprengelDto {
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     objectId?: number;
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     ebene?: number;
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     schulnummer?: number;
     /**
      * 
-     * @type {string}
-     * @memberof GrundschulsprengelDto
      */
     verbundnummer?: string;
     /**
      * 
-     * @type {string}
-     * @memberof GrundschulsprengelDto
      */
     verbundname?: string;
     /**
      * 
-     * @type {string}
-     * @memberof GrundschulsprengelDto
      */
     ebeneBedeutung?: string;
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     xcoordinate?: number;
     /**
      * 
-     * @type {number}
-     * @memberof GrundschulsprengelDto
      */
     ycoordinate?: number;
 }

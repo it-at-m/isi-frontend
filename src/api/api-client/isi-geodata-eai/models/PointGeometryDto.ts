@@ -29,8 +29,6 @@ import {
 export interface PointGeometryDto extends GeometryDto {
     /**
      * Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84).
-     * @type {Array<number>}
-     * @memberof PointGeometryDto
      */
     coordinates: Array<number>;
 }

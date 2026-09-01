@@ -20,7 +20,7 @@
 export const UncertainBoolean = {
     Unspecified: 'UNSPECIFIED',
     True: 'TRUE',
-    False: 'FALSE'
+    False: 'FALSE',
 } as const;
 export type UncertainBoolean = typeof UncertainBoolean[keyof typeof UncertainBoolean];
 

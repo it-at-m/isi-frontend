@@ -21,56 +21,38 @@ import { mapValues } from '../runtime';
 export interface BebauungsplanUmgriffDto {
     /**
      * 
-     * @type {number}
-     * @memberof BebauungsplanUmgriffDto
      */
     objectId?: number;
     /**
      * 
-     * @type {number}
-     * @memberof BebauungsplanUmgriffDto
      */
     ebene?: number;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     nrVa?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     nrPlan?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     nr?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BebauungsplanUmgriffDto
      */
     flaecheQm?: number;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     art?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     artBedeutung?: string;
     /**
      * 
-     * @type {string}
-     * @memberof BebauungsplanUmgriffDto
      */
     ebeneBedeutung?: string;
 }

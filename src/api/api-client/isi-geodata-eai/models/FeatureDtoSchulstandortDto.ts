@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoSchulstandortDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoSchulstandortDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoSchulstandortDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {SchulstandortDto}
-     * @memberof FeatureDtoSchulstandortDto
      */
     properties?: SchulstandortDto;
 }

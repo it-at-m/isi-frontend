@@ -36,20 +36,14 @@ import {
 export interface FeatureDtoKitaplanungsbereichDto {
     /**
      * 
-     * @type {string}
-     * @memberof FeatureDtoKitaplanungsbereichDto
      */
     type?: string;
     /**
      * 
-     * @type {FeatureDtoViertelDtoGeometry}
-     * @memberof FeatureDtoKitaplanungsbereichDto
      */
     geometry?: FeatureDtoViertelDtoGeometry;
     /**
      * 
-     * @type {KitaplanungsbereichDto}
-     * @memberof FeatureDtoKitaplanungsbereichDto
      */
     properties?: KitaplanungsbereichDto;
 }

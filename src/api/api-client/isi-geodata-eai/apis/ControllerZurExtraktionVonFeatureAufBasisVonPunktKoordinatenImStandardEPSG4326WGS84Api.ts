@@ -75,42 +75,72 @@ import {
 } from '../models/PointGeometryDto';
 
 export interface GetBaubloeckeRequest {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetBebauungsplaeneRequest {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetBezirksteile1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetFlurstuecke1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetGemarkungen1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetGrundschulsprengel1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetKitaplanungsbereiche1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetMittelschulsprengel1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetStadtbezirke1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 
 export interface GetViertel1Request {
+    /**
+     * 
+     */
     pointGeometryDto: PointGeometryDto;
 }
 

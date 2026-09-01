@@ -50,20 +50,14 @@ import {
 export interface BaugenehmigungsverfahrenStartBearbeitungDto extends AbfrageStartBearbeitungDto {
     /**
      * 
-     * @type {VerortungMultiPolygonDto}
-     * @memberof BaugenehmigungsverfahrenStartBearbeitungDto
      */
     verortung?: VerortungMultiPolygonDto;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto>}
-     * @memberof BaugenehmigungsverfahrenStartBearbeitungDto
      */
     abfragevariantenBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto>;
     /**
      * 
-     * @type {Array<AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto>}
-     * @memberof BaugenehmigungsverfahrenStartBearbeitungDto
      */
     abfragevariantenSachbearbeitungBaugenehmigungsverfahren: Array<AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto>;
 }

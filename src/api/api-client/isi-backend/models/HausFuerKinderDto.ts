@@ -50,62 +50,42 @@ import {
 export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlKinderkrippePlaetze?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlKindergartenPlaetze?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlHortPlaetze?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlKinderkrippeGruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlKindergartenGruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     anzahlHortGruppen?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     wohnungsnaheKinderkrippePlaetze?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     wohnungsnaheKindergartenPlaetze?: number;
     /**
      * 
-     * @type {number}
-     * @memberof HausFuerKinderDto
      */
     wohnungsnaheHortPlaetze?: number;
     /**
      * 
-     * @type {HausFuerKinderDtoEinrichtungstraegerEnum}
-     * @memberof HausFuerKinderDto
      */
     einrichtungstraeger?: HausFuerKinderDtoEinrichtungstraegerEnum;
 }
@@ -123,7 +103,7 @@ export const HausFuerKinderDtoEinrichtungstraegerEnum = {
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
     PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
-    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type HausFuerKinderDtoEinrichtungstraegerEnum = typeof HausFuerKinderDtoEinrichtungstraegerEnum[keyof typeof HausFuerKinderDtoEinrichtungstraegerEnum];
 

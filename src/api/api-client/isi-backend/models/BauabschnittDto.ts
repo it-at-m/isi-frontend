@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
 import type { BaugebietDto } from './BaugebietDto';
 import {
     BaugebietDtoFromJSON,
@@ -29,44 +29,30 @@ import {
 export interface BauabschnittDto {
     /**
      * 
-     * @type {string}
-     * @memberof BauabschnittDto
      */
     id?: string;
     /**
      * 
-     * @type {number}
-     * @memberof BauabschnittDto
      */
     version?: number;
     /**
      * 
-     * @type {Date}
-     * @memberof BauabschnittDto
      */
     createdDateTime?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof BauabschnittDto
      */
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
-     * @memberof BauabschnittDto
      */
     bezeichnung: string;
     /**
      * 
-     * @type {Array<BaugebietDto>}
-     * @memberof BauabschnittDto
      */
     baugebiete: Array<BaugebietDto>;
     /**
      * 
-     * @type {boolean}
-     * @memberof BauabschnittDto
      */
     technical: boolean;
 }
@@ -93,8 +79,8 @@ export function BauabschnittDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'id': json['id'] == null ? undefined : json['id'],
         'version': json['version'] == null ? undefined : json['version'],
-        'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
-        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
+        'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
+        'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'bezeichnung': json['bezeichnung'],
         'baugebiete': ((json['baugebiete'] as Array<any>).map(BaugebietDtoFromJSON)),
         'technical': json['technical'],
@@ -114,8 +100,8 @@ export function BauabschnittDtoToJSONTyped(value?: BauabschnittDto | null, ignor
         
         'id': value['id'],
         'version': value['version'],
-        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
-        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
+        'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
+        'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'bezeichnung': value['bezeichnung'],
         'baugebiete': ((value['baugebiete'] as Array<any>).map(BaugebietDtoToJSON)),
         'technical': value['technical'],

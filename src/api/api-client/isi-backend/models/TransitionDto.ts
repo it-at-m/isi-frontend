@@ -21,26 +21,18 @@ import { mapValues } from '../runtime';
 export interface TransitionDto {
     /**
      * 
-     * @type {string}
-     * @memberof TransitionDto
      */
     url?: string;
     /**
      * 
-     * @type {string}
-     * @memberof TransitionDto
      */
     buttonName?: string;
     /**
      * 
-     * @type {number}
-     * @memberof TransitionDto
      */
     index?: number;
     /**
      * 
-     * @type {string}
-     * @memberof TransitionDto
      */
     dialogText?: string;
 }

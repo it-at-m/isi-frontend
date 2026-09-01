@@ -21,20 +21,14 @@ import { mapValues } from '../runtime';
 export interface SchuleDto {
     /**
      * 
-     * @type {number}
-     * @memberof SchuleDto
      */
     anzahlKlassen: number;
     /**
      * 
-     * @type {number}
-     * @memberof SchuleDto
      */
     anzahlPlaetze: number;
     /**
      * 
-     * @type {SchuleDtoEinrichtungstraegerEnum}
-     * @memberof SchuleDto
      */
     einrichtungstraeger?: SchuleDtoEinrichtungstraegerEnum;
 }
@@ -52,7 +46,7 @@ export const SchuleDtoEinrichtungstraegerEnum = {
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
     PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
-    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT'
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraegerEnum[keyof typeof SchuleDtoEinrichtungstraegerEnum];
 

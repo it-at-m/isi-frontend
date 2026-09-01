@@ -29,8 +29,6 @@ import {
 export interface MuenchenAdressenDto {
     /**
      * 
-     * @type {Array<MuenchenAdresseDto>}
-     * @memberof MuenchenAdressenDto
      */
     adressen?: Array<MuenchenAdresseDto>;
 }

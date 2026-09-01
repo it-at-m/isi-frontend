@@ -24,8 +24,6 @@ import { type PointGeometryDto, PointGeometryDtoFromJSONTyped, PointGeometryDtoT
 export interface GeometryDto {
     /**
      * Definiert den Geometrietyp in der Ausprägung als Multipolygon oder als Point.
-     * @type {string}
-     * @memberof GeometryDto
      */
     type: string;
 }
