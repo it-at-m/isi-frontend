@@ -74,7 +74,7 @@ export interface OverlayUrlMapping {
   displayName: string;
   internalName: string;
   transparent: boolean;
-  urlPar: string;
+  urlPart: string;
   migrated: boolean;
   gruppe: GRUPPE;
 }
@@ -220,6 +220,7 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
 export function assembleBaseLayersForLayerControl(): Record<string, Record<string, TileLayer.WMS>> {
+  Object.keys(LAYER_GROUPS).forEach((key) => delete LAYER_GROUPS[key]);
   convertLayerStructure2Record();
   return LAYER_GROUPS;
 }

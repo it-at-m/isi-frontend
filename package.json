@@ -16,7 +16,6 @@
     "core-js": "^3.47.0",
     "leaflet": "^1.9.4",
     "leaflet-groupedlayercontrol": "^0.6.1",
-    "leaflet-markercluster": "^0.2.2",
     "leaflet.markercluster": "^1.5.3",
     "leaflet.nontiledlayer": "^1.0.9",
     "lodash": "^4.18.1",
@@ -32,6 +31,7 @@
   "devDependencies": {
     "@mdi/font": "^7.4.47",
     "@types/leaflet": "^1.9.21",
+    "@types/leaflet.markercluster": "^1.5.6",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.4",
     "@types/uuid": "^11.0.0",

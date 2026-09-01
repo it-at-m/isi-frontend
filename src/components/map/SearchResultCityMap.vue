@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   type AbfrageSearchResultDto,
   type BauvorhabenSearchResultDto,
@@ -48,7 +48,8 @@ const router = useRouter();
 const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
-const umgriffeLayerGroup = new L.LayerGroup();
+
+let umgriffeLayerGroup: L.LayerGroup<any> = ref<L.LayerGroup | null>(null);
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -181,6 +182,10 @@ const geoJson = computed(() => {
 
 const searchResults = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? searchStore.searchResults.searchResults : [];
+});
+
+onMounted(() => {
+  umgriffeLayerGroup = new L.LayerGroup();
 });
 
 watch(searchResults, () => {
