@@ -49,7 +49,7 @@ const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
-let umgriffeLayerGroup: L.LayerGroup<any> = ref<L.LayerGroup | null>(null);
+let umgriffeLayerGroup: L.LayerGroup | null = null;
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {

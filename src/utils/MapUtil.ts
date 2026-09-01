@@ -239,6 +239,7 @@ function convertLayerStructure2Record(): void {
 }
 
 function buildLayerStructure(): void {
+  LAYER_STRUCTURE.forEach((gruppe) => (gruppe.layerDetails = []));
   for (const overlay of OVERLAYS_ARCGIS) {
     const url = !overlay.migrated
       ? (import.meta.env.VITE_ARCGIS_URL as string)
