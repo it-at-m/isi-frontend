@@ -64,11 +64,7 @@ class LayerDetail {
   }
 }
 
-export const LAYER_STRUCTURE: LayerGruppe[] = [
-  new LayerGruppe(GRUPPE.VERWALTUNG, "Verwaltung"),
-  new LayerGruppe(GRUPPE.PLANUNG_UND_BAUEN, "Planung und Bauen"),
-  new LayerGruppe(GRUPPE.SCHUL_UND_KITAPLANUNG, "Schul- und Kitaplanung"),
-];
+export const LAYER_STRUCTURE: LayerGruppe[] = [];
 
 export interface OverlayUrlMapping {
   displayName: string;
@@ -222,6 +218,7 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
 export function assembleBaseLayersForLayerControl(): Record<string, Record<string, TileLayer.WMS>> {
   Object.keys(LAYER_GROUPS).forEach((key) => delete LAYER_GROUPS[key]);
   convertLayerStructure2Record();
+
   return LAYER_GROUPS;
 }
 
@@ -239,7 +236,12 @@ function convertLayerStructure2Record(): void {
 }
 
 function buildLayerStructure(): void {
-  LAYER_STRUCTURE.forEach((gruppe) => (gruppe.layerDetails = []));
+  LAYER_STRUCTURE.length = 0;
+  LAYER_STRUCTURE.push(
+    new LayerGruppe(GRUPPE.VERWALTUNG, "Verwaltung", []),
+    new LayerGruppe(GRUPPE.PLANUNG_UND_BAUEN, "Planung und Bauen", []),
+    new LayerGruppe(GRUPPE.SCHUL_UND_KITAPLANUNG, "Schul- und Kitaplanung", []),
+  );
   for (const overlay of OVERLAYS_ARCGIS) {
     const url = !overlay.migrated
       ? (import.meta.env.VITE_ARCGIS_URL as string)
