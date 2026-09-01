@@ -33,8 +33,6 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 
 export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
-export const LAYER_GROUPS: Record<string, Record<string, TileLayer.WMS>> = {};
-
 enum GRUPPE {
   UNDEFINED,
   VERWALTUNG,
@@ -63,8 +61,6 @@ class LayerDetail {
     this.layer = layer;
   }
 }
-
-export const LAYER_STRUCTURE: LayerGruppe[] = [];
 
 export interface OverlayUrlMapping {
   displayName: string;
@@ -207,37 +203,41 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
 ];
 
 /**
- * Die Methode erstellt die Standardlayer welche als Overlay über eine Karte gelegt werden können.
+ * Die Funktion erstellt die Standardlayer, die als Overlay über eine Karte gelegt werden können.
  *
  * Damit ein Overlay-Layer nicht die darunterliegenden Layer verdeckt, ist es wichtig,
  * `transparent: true` zu setzen sowie ein Bildformat anzufordern welches Transparenz unterstützt.
  *
- * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segment zu vermeiden.
+ * Overlay-Layer werden als NonTiledLayer hinzugefügt, um "abgeschnittene" Segmente zu vermeiden.
  * @see https://github.com/ptv-logistics/Leaflet.NonTiledLayer
  */
 export function assembleBaseLayersForLayerControl(): Record<string, Record<string, TileLayer.WMS>> {
-  Object.keys(LAYER_GROUPS).forEach((key) => delete LAYER_GROUPS[key]);
-  convertLayerStructure2Record();
+  const layerStructure: LayerGruppe[] = [];
+  const layerGroups: Record<string, Record<string, TileLayer.WMS>> = {};
+  buildLayerStructure(layerStructure);
+  convertLayerStructure2Record(layerStructure, layerGroups);
 
-  return LAYER_GROUPS;
+  return layerGroups;
 }
 
-function convertLayerStructure2Record(): void {
-  buildLayerStructure();
-  for (const layerGruppe of LAYER_STRUCTURE) {
+function convertLayerStructure2Record(
+  layerStructure: LayerGruppe[],
+  target: Record<string, Record<string, TileLayer.WMS>>,
+): void {
+  for (const layerGruppe of layerStructure) {
     const groupKey = layerGruppe.displayName;
-    if (!LAYER_GROUPS[groupKey]) {
-      LAYER_GROUPS[groupKey] = {};
+    if (!target[groupKey]) {
+      target[groupKey] = {};
     }
     for (const layerDetail of layerGruppe.layerDetails) {
-      LAYER_GROUPS[groupKey][layerDetail.displayName] = layerDetail.layer;
+      target[groupKey][layerDetail.displayName] = layerDetail.layer;
     }
   }
 }
 
-function buildLayerStructure(): void {
-  LAYER_STRUCTURE.length = 0;
-  LAYER_STRUCTURE.push(
+function buildLayerStructure(layerStructure: LayerGruppe[]): void {
+  // Build into the provided array (local or module-level)
+  layerStructure.push(
     new LayerGruppe(GRUPPE.VERWALTUNG, "Verwaltung", []),
     new LayerGruppe(GRUPPE.PLANUNG_UND_BAUEN, "Planung und Bauen", []),
     new LayerGruppe(GRUPPE.SCHUL_UND_KITAPLANUNG, "Schul- und Kitaplanung", []),
@@ -251,12 +251,12 @@ function buildLayerStructure(): void {
       transparent: overlay.transparent,
       ...LAYER_OPTIONS,
     });
-    addLayer(overlay.gruppe, new LayerDetail(overlay.displayName, layer));
+    addLayer(overlay.gruppe, new LayerDetail(overlay.displayName, layer), layerStructure);
   }
 }
 
-function addLayer(gruppe: GRUPPE, layerDetails: LayerDetail) {
-  const currentGruppe = LAYER_STRUCTURE.find((g) => g.gruppe === gruppe);
+function addLayer(gruppe: GRUPPE, layerDetails: LayerDetail, layerStructure: LayerGruppe[]) {
+  const currentGruppe = layerStructure.find((g) => g.gruppe === gruppe);
 
   if (currentGruppe) {
     currentGruppe.layerDetails.push(layerDetails);
