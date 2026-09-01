@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^5.2.9",
+    "@types/leaflet-groupedlayercontrol": "^0.6.5",
     "async-mutex": "^0.5.0",
     "core-js": "^3.47.0",
     "leaflet": "^1.9.4",

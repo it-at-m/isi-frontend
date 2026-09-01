@@ -49,7 +49,7 @@ const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 
-let umgriffeLayerGroup: L.LayerGroup | null = null;
+const umgriffeLayerGroup = new L.LayerGroup();
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -184,32 +184,32 @@ const searchResults = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? searchStore.searchResults.searchResults : [];
 });
 
-onMounted(() => {
-  umgriffeLayerGroup = new L.LayerGroup();
-});
-
-watch(searchResults, () => {
-  umgriffeLayerGroup.clearLayers();
-  const featureUmgriffe: EntityFeature[] = [];
-  const results: SearchResultDto[] = searchResults.value;
-  _.toArray(results)
-    .filter((result) => result.type === SearchResultDtoTypeEnum.Bauvorhaben)
-    .forEach((result) => {
-      const type = result.type;
-      const id = (result as BauvorhabenSearchResultDto).id;
-      const name = (result as BauvorhabenSearchResultDto).nameVorhaben;
-      const umgriff = (result as BauvorhabenSearchResultDto).umgriff;
-      if (umgriff) {
-        const feature = {
-          type: "Feature",
-          geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
-          properties: { type, id, name },
-        } as EntityFeature;
-        featureUmgriffe.push(feature);
-      }
-    });
-  L.geoJSON(featureUmgriffe, geoJsonOptions).addTo(umgriffeLayerGroup);
-});
+watch(
+  searchResults,
+  () => {
+    umgriffeLayerGroup.clearLayers();
+    const featureUmgriffe: EntityFeature[] = [];
+    const results: SearchResultDto[] = searchResults.value;
+    _.toArray(results)
+      .filter((result) => result.type === SearchResultDtoTypeEnum.Bauvorhaben)
+      .forEach((result) => {
+        const type = result.type;
+        const id = (result as BauvorhabenSearchResultDto).id;
+        const name = (result as BauvorhabenSearchResultDto).nameVorhaben;
+        const umgriff = (result as BauvorhabenSearchResultDto).umgriff;
+        if (umgriff) {
+          const feature = {
+            type: "Feature",
+            geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
+            properties: { type, id, name },
+          } as EntityFeature;
+          featureUmgriffe.push(feature);
+        }
+      });
+    L.geoJSON(featureUmgriffe, geoJsonOptions).addTo(umgriffeLayerGroup);
+  },
+  { immediate: true },
+);
 
 const layersForLayerControl = computed(() => {
   const layers = new Map<string, Layer>();
