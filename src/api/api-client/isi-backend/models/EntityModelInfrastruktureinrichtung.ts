@@ -158,6 +158,12 @@ export interface EntityModelInfrastruktureinrichtung {
     verortungPointJson?: VerortungPoint;
     /**
      * 
+     * @type {VerortungPoint}
+     * @memberof EntityModelInfrastruktureinrichtung
+     */
+    verortungPointJson?: VerortungPoint;
+    /**
+     * 
      * @type {{ [key: string]: Link; }}
      * @memberof EntityModelInfrastruktureinrichtung
      */

@@ -115,6 +115,12 @@ export interface EntityModelAbfrage {
     bauvorhabenUuid?: string;
     /**
      * 
+     * @type {string}
+     * @memberof EntityModelAbfrage
+     */
+    bauvorhabenUuid?: string;
+    /**
+     * 
      * @type {{ [key: string]: Link; }}
      * @memberof EntityModelAbfrage
      */

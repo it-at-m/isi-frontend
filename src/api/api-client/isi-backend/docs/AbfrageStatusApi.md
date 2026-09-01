@@ -75,7 +75,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -146,7 +146,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -217,7 +217,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -288,7 +288,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -359,7 +359,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -430,7 +430,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -501,7 +501,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -569,7 +569,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -639,7 +639,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -710,7 +710,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -781,7 +781,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
