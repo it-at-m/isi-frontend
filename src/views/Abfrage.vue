@@ -333,6 +333,7 @@ import {
   BaugenehmigungsverfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenEinplanungBedarfeDto,
   WeiteresVerfahrenAngelegtDto,
+  BauleitplanverfahrenDto,
 } from "@/api/api-client/isi-backend";
 import AbfrageNavigationTree from "@/components/abfragen/AbfrageNavigationTree.vue";
 import BauleitplanverfahrenComponent from "@/components/abfragen/bauleitplanverfahren/BauleitplanverfahrenComponent.vue";
@@ -359,6 +360,7 @@ import BauabschnittModel from "@/types/model/bauabschnitte/BauabschnittModel";
 import BaugebietModel from "@/types/model/baugebiete/BaugebietModel";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
+import { isAllowedArtAbfrage } from "@/utils/AbfrageUtil";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import {
   createAbfragevarianteBauleitplanverfahrenDto,
@@ -444,6 +446,9 @@ const {
   patchEinplanungBedarfe,
   getById,
   deleteById,
+  wvInBlvUebernehmenById,
+  wvInBgvUebernehmenById,
+  blvInBgvUebernehmenById,
 } = useAbfragenApi();
 const { getBauvorhabenById, changeRelevanteAbfragevariante } = useBauvorhabenApi();
 const { determineBauraten } = useBauratenApi();
@@ -1629,9 +1634,19 @@ function clearTechnicalEntities(abfragevariante: AnyAbfragevarianteModel): void 
   }
 }
 
-function abfrageUebernehmen(value: AbfrageDto): void {
-  if (value.artAbfrage === abfrage.value.artAbfrage) {
-    const copiedAbfrage = copyAbfrageOrAbfragevariante(value, {
+async function abfrageUebernehmen(value: AbfrageDto): void {
+  let dto: AnyAbfrageDto = undefined;
+
+  if (isAllowedArtAbfrage(abfrage.value.artAbfrage, value.artAbfrage)) {
+    if (value.artAbfrage != abfrage.value.artAbfrage) {
+      try {
+        dto = await convertAbfrage(value);
+      } catch (error) {
+        toast.error("Die Abfrage konnte nicht übernommen werden.");
+        return;
+      }
+    }
+    const copiedAbfrage = copyAbfrageOrAbfragevariante(_.isNil(dto) ? value : dto, {
       includeSachbearbeitungVarianten: true,
     }) as AnyAbfrageModel;
 
@@ -1649,6 +1664,26 @@ function abfrageUebernehmen(value: AbfrageDto): void {
         { timeout: false },
       );
     }
+  }
+  async function convertAbfrage(source: AnyAbfrageDto): AnyAbfrageDto | undefined {
+    let target: AnyAbfrageDto = undefined;
+    if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren
+    ) {
+      target = await wvInBlvUebernehmenById(value.id);
+    } else if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.WeiteresVerfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+    ) {
+      target = await wvInBgvUebernehmenById(value.id);
+    } else if (
+      source.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren &&
+      abfrage.value.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren
+    ) {
+      target = await blvInBgvUebernehmenById(value.id);
+    }
+    return target;
   }
 }
 </script>
