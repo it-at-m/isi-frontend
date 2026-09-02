@@ -6,7 +6,7 @@
 
     <groupId>de.muenchen.isi.frontend</groupId>
     <artifactId>isi-frontend</artifactId>
-    <version>1.6.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
     <name>isi_frontend</name>
     <description>UI of ISI Frontend</description>
@@ -18,7 +18,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <exec.maven.plugin>3.6.3</exec.maven.plugin>
         <maven.clean.plugin>3.5.0</maven.clean.plugin>
-        <openapi-generator-version>7.24.0</openapi-generator-version>
+        <openapi-generator-version>7.25.0</openapi-generator-version>
         <sonar.sources>src</sonar.sources>
         <sonar.coverage.exclusions>src</sonar.coverage.exclusions>
     </properties>

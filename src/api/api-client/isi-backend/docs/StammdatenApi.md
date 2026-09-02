@@ -63,7 +63,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: `multipart/form-data`
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details
@@ -130,7 +130,7 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: `multipart/form-data`
-- **Accept**: `application/hal+json`
+- **Accept**: `*/*`
 
 
 ### HTTP response details

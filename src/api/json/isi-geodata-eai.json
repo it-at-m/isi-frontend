@@ -4,7 +4,7 @@
     "title": "ISI GEODATA EAI",
     "description": "ISI GEODATA EAI - Service zum Abfragen von Geoinformationen",
     "contact": { "name": "ISI Management", "email": "unbekannt@muenchen.de" },
-    "version": "1.6.0"
+    "version": "2.1.0"
   },
   "servers": [{ "url": "http://localhost:8085", "description": "Generated server url" }],
   "tags": [
@@ -35,16 +35,12 @@
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -62,16 +58,12 @@
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -89,16 +81,12 @@
           "200": {
             "description": "Schulstandorte erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoSchulstandortDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -116,16 +104,14 @@
           "200": {
             "description": "Mittelschulsprengel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -143,16 +129,14 @@
           "200": {
             "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -170,16 +154,14 @@
           "200": {
             "description": "Grundschulsprengel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -197,16 +179,12 @@
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -224,16 +202,12 @@
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -251,16 +225,12 @@
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -278,16 +248,12 @@
           "200": {
             "description": "Bezirksteile erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -305,16 +271,12 @@
           "200": {
             "description": "Viertel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoViertelDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -332,16 +294,12 @@
           "200": {
             "description": "Stadtbezirke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoStadtbezirkDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -359,16 +317,14 @@
           "200": {
             "description": "Mittelschulsprengel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoMittelschulsprengelDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -386,16 +342,14 @@
           "200": {
             "description": "Kitaplanungsbereiche erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -413,16 +367,14 @@
           "200": {
             "description": "Grundschulsprengel erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGrundschulsprengelDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -440,16 +392,12 @@
           "200": {
             "description": "Gemarkungen erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoGemarkungDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -467,16 +415,12 @@
           "200": {
             "description": "Flurstücke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoFlurstueckDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -494,16 +438,12 @@
           "200": {
             "description": "Bezirksteile erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBezirksteilDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -521,16 +461,14 @@
           "200": {
             "description": "Bebauungsplan-Umgriffe erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
+              "*/*": {
                 "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBebauungsplanUmgriffDto" }
               }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -548,16 +486,12 @@
           "200": {
             "description": "Baublöcke erfolgreich abgefragt.",
             "content": {
-              "application/hal+json": {
-                "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBaublockDto" }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/FeatureCollectionDtoFeatureDtoBaublockDto" } }
             }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung des Requests ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -574,15 +508,11 @@
         "responses": {
           "200": {
             "description": "Multipolygon erfolgreich vereinigt.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" } } }
           },
           "500": {
             "description": "Bei der Erstellung oder Durchführung der Logik ist ein Fehler aufgetreten.",
-            "content": {
-              "application/hal+json": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
