@@ -633,8 +633,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "viertelNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoStadtbezirkDto": {
@@ -664,8 +664,8 @@
           "stadtbezirkNummer": { "type": "string" },
           "name": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoSchulstandortDto": {
@@ -741,8 +741,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoKitaplanungsbereichDto": {
@@ -803,8 +803,8 @@
           "verbundnummer": { "type": "string" },
           "verbundname": { "type": "string" },
           "ebeneBedeutung": { "type": "string" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoGemarkungDto": {
@@ -884,8 +884,8 @@
           "objectId": { "type": "integer", "format": "int64" },
           "bezirksteilNummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
-          "xcoordinate": { "type": "number" },
-          "ycoordinate": { "type": "number" }
+          "ycoordinate": { "type": "number" },
+          "xcoordinate": { "type": "number" }
         }
       },
       "FeatureCollectionDtoFeatureDtoBezirksteilDto": {

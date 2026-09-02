@@ -34,11 +34,11 @@ export interface BezirksteilDto {
     /**
      * 
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
     /**
      * 
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
 }
 
 /**
@@ -61,8 +61,8 @@ export function BezirksteilDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'objectId': json['objectId'] == null ? undefined : json['objectId'],
         'bezirksteilNummer': json['bezirksteilNummer'] == null ? undefined : json['bezirksteilNummer'],
         'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
         'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
+        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
     };
 }
 
@@ -80,8 +80,8 @@ export function BezirksteilDtoToJSONTyped(value?: BezirksteilDto | null, ignoreD
         'objectId': value['objectId'],
         'bezirksteilNummer': value['bezirksteilNummer'],
         'flaecheQm': value['flaecheQm'],
-        'xcoordinate': value['xcoordinate'],
         'ycoordinate': value['ycoordinate'],
+        'xcoordinate': value['xcoordinate'],
     };
 }
 

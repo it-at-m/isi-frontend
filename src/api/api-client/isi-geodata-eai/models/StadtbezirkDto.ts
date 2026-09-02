@@ -38,11 +38,11 @@ export interface StadtbezirkDto {
     /**
      * 
      */
-    xcoordinate?: number;
+    ycoordinate?: number;
     /**
      * 
      */
-    ycoordinate?: number;
+    xcoordinate?: number;
 }
 
 /**
@@ -66,8 +66,8 @@ export function StadtbezirkDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'stadtbezirkNummer': json['stadtbezirkNummer'] == null ? undefined : json['stadtbezirkNummer'],
         'name': json['name'] == null ? undefined : json['name'],
         'flaecheQm': json['flaecheQm'] == null ? undefined : json['flaecheQm'],
-        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
         'ycoordinate': json['ycoordinate'] == null ? undefined : json['ycoordinate'],
+        'xcoordinate': json['xcoordinate'] == null ? undefined : json['xcoordinate'],
     };
 }
 
@@ -86,8 +86,8 @@ export function StadtbezirkDtoToJSONTyped(value?: StadtbezirkDto | null, ignoreD
         'stadtbezirkNummer': value['stadtbezirkNummer'],
         'name': value['name'],
         'flaecheQm': value['flaecheQm'],
-        'xcoordinate': value['xcoordinate'],
         'ycoordinate': value['ycoordinate'],
+        'xcoordinate': value['xcoordinate'],
     };
 }
 
