@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "ISI Backend API",
     "description": "ISI Backend - Service für das Informationssystem für soziale Infrastrukturplanung",
@@ -735,9 +735,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": ["file"],
                 "type": "object",
-                "properties": { "file": { "type": "string", "format": "binary" } }
+                "properties": { "file": { "type": "string", "format": "binary" } },
+                "required": ["file"]
               }
             }
           },
@@ -765,9 +765,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": ["file"],
                 "type": "object",
-                "properties": { "file": { "type": "string", "format": "binary" } }
+                "properties": { "file": { "type": "string", "format": "binary" } },
+                "required": ["file"]
               }
             }
           },
@@ -841,9 +841,9 @@
             "description": "Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string",
-              "description": "Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf"
+              "description": "Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf",
+              "minLength": 1
             }
           }
         ],
@@ -1522,19 +1522,19 @@
             "name": "realisierungsbeginn",
             "in": "query",
             "required": true,
-            "schema": { "minimum": 0, "type": "integer", "format": "int32" }
+            "schema": { "type": "integer", "format": "int32", "minimum": 0 }
           },
           {
             "name": "wohneinheiten",
             "in": "query",
             "required": false,
-            "schema": { "minimum": 0, "type": "integer", "format": "int64" }
+            "schema": { "type": "integer", "format": "int64", "minimum": 0 }
           },
           {
             "name": "geschossflaecheWohnen",
             "in": "query",
             "required": false,
-            "schema": { "minimum": 0, "type": "number" }
+            "schema": { "type": "number", "minimum": 0 }
           }
         ],
         "responses": {
@@ -1768,13 +1768,12 @@
       "FoerdermixDto": {
         "type": "object",
         "properties": {
-          "bezeichnungJahr": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "bezeichnung": { "maxLength": 80, "minLength": 0, "type": "string" },
+          "bezeichnungJahr": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "bezeichnung": { "type": "string", "maxLength": 80, "minLength": 0 },
           "foerderarten": { "type": "array", "items": { "$ref": "#/components/schemas/FoerderartDto" } }
         }
       },
       "FoerdermixStammDto": {
-        "required": ["foerdermix"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -1782,7 +1781,8 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
-        }
+        },
+        "required": ["foerdermix"]
       },
       "InformationResponseDto": {
         "type": "object",
@@ -1805,7 +1805,6 @@
         }
       },
       "DokumentDto": {
-        "required": ["artDokument", "filePath"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -1833,18 +1832,19 @@
               "SONSTIGES"
             ]
           }
-        }
+        },
+        "required": ["artDokument", "filePath"]
       },
       "FilepathDto": {
-        "required": ["pathToFile"],
         "type": "object",
         "properties": {
           "pathToFile": {
-            "minLength": 1,
             "type": "string",
-            "description": "Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf"
+            "description": "Der Dateipfad muss absolut, ohne Angabe des Buckets und ohne führenden Pfadtrenner angegeben werden. Beispiel: outerFolder/innerFolder/thefile.pdf",
+            "minLength": 1
           }
-        }
+        },
+        "required": ["pathToFile"]
       },
       "KommentarInfrastruktureinrichtungDto": {
         "type": "object",
@@ -1877,25 +1877,24 @@
       "AdresseDto": {
         "type": "object",
         "properties": {
-          "plz": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "ort": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "strasse": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "hausnummer": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "plz": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "ort": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "strasse": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "hausnummer": { "type": "string", "maxLength": 255, "minLength": 0 },
           "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" },
           "coordinateUtm": { "$ref": "#/components/schemas/UtmDto" },
-          "angabeLageErgaenzendeAdressinformation": { "maxLength": 255, "minLength": 0, "type": "string" }
+          "angabeLageErgaenzendeAdressinformation": { "type": "string", "maxLength": 255, "minLength": 0 }
         }
       },
       "BezirksteilDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "string" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "FlurstueckDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "string" },
@@ -1906,41 +1905,39 @@
           "eigentumsartBedeutung": { "type": "string" },
           "gemarkungNummer": { "type": "number" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "GemarkungDto": {
-        "required": ["flurstuecke", "multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "number" },
           "name": { "type": "string" },
           "flurstuecke": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/FlurstueckDto" }
+            "items": { "$ref": "#/components/schemas/FlurstueckDto" },
+            "uniqueItems": true
           },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["flurstuecke", "multiPolygon"]
       },
       "GrundschuleDto": {
-        "required": ["nameEinrichtung", "schule", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
-        ]
+        ],
+        "required": ["nameEinrichtung", "schule", "status"]
       },
       "GrundschulsprengelDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "integer", "format": "int64" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "GsNachmittagBetreuungDto": {
-        "required": ["anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           {
@@ -1956,9 +1953,9 @@
                   "MITTAGSBETREUUNG"
                 ]
               },
-              "anzahlHortPlaetze": { "minimum": 0, "type": "integer", "format": "int32" },
-              "anzahlHortGruppen": { "minimum": 0, "type": "integer", "format": "int32" },
-              "wohnungsnaheHortPlaetze": { "minimum": 0, "type": "integer", "format": "int32" },
+              "anzahlHortPlaetze": { "type": "integer", "format": "int32", "minimum": 0 },
+              "anzahlHortGruppen": { "type": "integer", "format": "int32", "minimum": 0 },
+              "wohnungsnaheHortPlaetze": { "type": "integer", "format": "int32", "minimum": 0 },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -1975,11 +1972,10 @@
               }
             }
           }
-        ]
+        ],
+        "required": ["anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"]
       },
       "HausFuerKinderDto": {
-        "required": ["nameEinrichtung", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           {
@@ -2010,11 +2006,23 @@
               }
             }
           }
-        ]
+        ],
+        "required": ["nameEinrichtung", "status"]
       },
       "InfrastruktureinrichtungDto": {
-        "required": ["nameEinrichtung", "status"],
         "type": "object",
+        "description": "InfrastruktureinrichtungDto",
+        "discriminator": {
+          "propertyName": "infrastruktureinrichtungTyp",
+          "mapping": {
+            "GRUNDSCHULE": "#/components/schemas/GrundschuleDto",
+            "GS_NACHMITTAG_BETREUUNG": "#/components/schemas/GsNachmittagBetreuungDto",
+            "HAUS_FUER_KINDER": "#/components/schemas/HausFuerKinderDto",
+            "KINDERGARTEN": "#/components/schemas/KindergartenDto",
+            "KINDERKRIPPE": "#/components/schemas/KinderkrippeDto",
+            "MITTELSCHULE": "#/components/schemas/MittelschuleDto"
+          }
+        },
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
@@ -2037,8 +2045,8 @@
           "bauvorhaben": { "type": "string", "format": "uuid" },
           "adresse": { "$ref": "#/components/schemas/AdresseDto" },
           "verortung": { "$ref": "#/components/schemas/VerortungPointDto" },
-          "nameEinrichtung": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "fertigstellungsjahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "nameEinrichtung": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "fertigstellungsjahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "status": {
             "type": "string",
             "enum": [
@@ -2057,22 +2065,9 @@
           "flaecheTeilgrundstueck": { "type": "number" },
           "idKibigWeb": { "type": "string" }
         },
-        "description": "InfrastruktureinrichtungDto",
-        "discriminator": {
-          "propertyName": "infrastruktureinrichtungTyp",
-          "mapping": {
-            "GRUNDSCHULE": "#/components/schemas/GrundschuleDto",
-            "GS_NACHMITTAG_BETREUUNG": "#/components/schemas/GsNachmittagBetreuungDto",
-            "HAUS_FUER_KINDER": "#/components/schemas/HausFuerKinderDto",
-            "KINDERGARTEN": "#/components/schemas/KindergartenDto",
-            "KINDERKRIPPE": "#/components/schemas/KinderkrippeDto",
-            "MITTELSCHULE": "#/components/schemas/MittelschuleDto"
-          }
-        }
+        "required": ["nameEinrichtung", "status"]
       },
       "KindergartenDto": {
-        "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           {
@@ -2097,11 +2092,10 @@
               }
             }
           }
-        ]
+        ],
+        "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"]
       },
       "KinderkrippeDto": {
-        "required": ["anzahlKinderkrippeGruppen", "anzahlKinderkrippePlaetze", "nameEinrichtung", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           {
@@ -2126,67 +2120,63 @@
               }
             }
           }
-        ]
+        ],
+        "required": ["anzahlKinderkrippeGruppen", "anzahlKinderkrippePlaetze", "nameEinrichtung", "status"]
       },
       "KitaplanungsbereichDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "kitaPlb": { "type": "integer", "format": "int64" },
           "kitaPlbT": { "type": "string" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "MittelschuleDto": {
-        "required": ["nameEinrichtung", "schule", "status"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
-        ]
+        ],
+        "required": ["nameEinrichtung", "schule", "status"]
       },
       "MittelschulsprengelDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "integer", "format": "int64" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "MultiPolygonGeometryDto": {
-        "required": ["coordinates", "type"],
         "type": "object",
         "properties": {
-          "type": { "minLength": 1, "type": "string" },
+          "type": { "type": "string", "minLength": 1 },
           "coordinates": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "array",
               "items": { "type": "array", "items": { "type": "array", "items": { "type": "number" } } }
-            }
+            },
+            "minItems": 1
           }
-        }
+        },
+        "required": ["coordinates", "type"]
       },
       "PointGeometryDto": {
-        "required": ["coordinates", "type"],
         "type": "object",
         "properties": {
-          "type": { "minLength": 1, "type": "string" },
+          "type": { "type": "string", "minLength": 1 },
           "coordinates": {
-            "maxItems": 2,
-            "minItems": 2,
             "type": "array",
             "description": "Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84).",
-            "items": {
-              "type": "number",
-              "description": "Die Punktkoordinate ([x,y] bzw. [longitude, latitude]) im Standard EPSG:4326 (WGS84)."
-            }
+            "items": { "type": "number" },
+            "maxItems": 2,
+            "minItems": 2
           }
-        }
+        },
+        "required": ["coordinates", "type"]
       },
       "SchuleDto": {
-        "required": ["anzahlKlassen", "anzahlPlaetze"],
         "type": "object",
         "properties": {
           "anzahlKlassen": { "type": "integer", "format": "int32" },
@@ -2205,16 +2195,17 @@
               "KIRCHLICHE_TRAEGERSCHAFT"
             ]
           }
-        }
+        },
+        "required": ["anzahlKlassen", "anzahlPlaetze"]
       },
       "StadtbezirkDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "string" },
           "name": { "type": "string" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "UtmDto": {
         "type": "object",
@@ -2225,63 +2216,62 @@
         }
       },
       "VerortungPointDto": {
-        "required": ["point"],
         "type": "object",
         "properties": {
           "stadtbezirke": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/StadtbezirkDto" }
+            "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+            "uniqueItems": true
           },
           "bezirksteile": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BezirksteilDto" }
+            "items": { "$ref": "#/components/schemas/BezirksteilDto" },
+            "uniqueItems": true
           },
-          "viertel": { "uniqueItems": true, "type": "array", "items": { "$ref": "#/components/schemas/ViertelDto" } },
+          "viertel": { "type": "array", "items": { "$ref": "#/components/schemas/ViertelDto" }, "uniqueItems": true },
           "gemarkungen": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/GemarkungDto" }
+            "items": { "$ref": "#/components/schemas/GemarkungDto" },
+            "uniqueItems": true
           },
           "kitaplanungsbereiche": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/KitaplanungsbereichDto" }
+            "items": { "$ref": "#/components/schemas/KitaplanungsbereichDto" },
+            "uniqueItems": true
           },
           "grundschulsprengel": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/GrundschulsprengelDto" }
+            "items": { "$ref": "#/components/schemas/GrundschulsprengelDto" },
+            "uniqueItems": true
           },
           "mittelschulsprengel": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" }
+            "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" },
+            "uniqueItems": true
           },
           "point": { "$ref": "#/components/schemas/PointGeometryDto" },
           "pointUtm": { "$ref": "#/components/schemas/UtmDto" }
-        }
+        },
+        "required": ["point"]
       },
       "ViertelDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "nummer": { "type": "string" },
           "flaecheQm": { "type": "number" },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "Wgs84Dto": {
-        "required": ["latitude", "longitude"],
         "type": "object",
         "properties": {
           "latitude": { "type": "number", "format": "double" },
           "longitude": { "type": "number", "format": "double" }
-        }
+        },
+        "required": ["latitude", "longitude"]
       },
       "BauvorhabenDto": {
-        "required": ["artFnp", "nameVorhaben", "sobonRelevant", "verfahrensstand", "wesentlicheRechtsgrundlage"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -2289,7 +2279,7 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" },
-          "nameVorhaben": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "nameVorhaben": { "type": "string", "maxLength": 255, "minLength": 0 },
           "grundstuecksgroesse": { "type": "number" },
           "verfahrensstand": {
             "type": "string",
@@ -2314,13 +2304,13 @@
               "FREIE_EINGABE"
             ]
           },
-          "verfahrensstandFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "verfahrensstandFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
           "bauvorhabenNummer": { "type": "string" },
           "adresse": { "$ref": "#/components/schemas/AdresseDto" },
           "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
-          "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "fisNummer": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "anmerkung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "bebauungsplannummer": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "fisNummer": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "anmerkung": { "type": "string", "maxLength": 1000, "minLength": 0 },
           "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
           "sobonJahr": {
             "type": "string",
@@ -2336,7 +2326,6 @@
             ]
           },
           "wesentlicheRechtsgrundlage": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -2353,75 +2342,64 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "BEFREIUNG"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string", "maxLength": 1000, "minLength": 0 },
           "artFnp": {
-            "minItems": 1,
             "type": "array",
-            "items": { "type": "string", "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "FREIE_EINGABE"] }
+            "items": { "type": "string", "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "FREIE_EINGABE"] },
+            "minItems": 1
           },
-          "artFnpFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "artFnpFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
           "relevanteAbfragevariante": { "type": "string", "format": "uuid" }
-        }
+        },
+        "required": ["artFnp", "nameVorhaben", "sobonRelevant", "verfahrensstand", "wesentlicheRechtsgrundlage"]
       },
       "UncertainBoolean": { "type": "string", "enum": ["UNSPECIFIED", "TRUE", "FALSE"] },
       "VerortungMultiPolygonDto": {
-        "required": ["multiPolygon"],
         "type": "object",
         "properties": {
           "stadtbezirke": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/StadtbezirkDto" }
+            "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+            "uniqueItems": true
           },
           "bezirksteile": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BezirksteilDto" }
+            "items": { "$ref": "#/components/schemas/BezirksteilDto" },
+            "uniqueItems": true
           },
-          "viertel": { "uniqueItems": true, "type": "array", "items": { "$ref": "#/components/schemas/ViertelDto" } },
+          "viertel": { "type": "array", "items": { "$ref": "#/components/schemas/ViertelDto" }, "uniqueItems": true },
           "gemarkungen": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/GemarkungDto" }
+            "items": { "$ref": "#/components/schemas/GemarkungDto" },
+            "uniqueItems": true
           },
           "kitaplanungsbereiche": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/KitaplanungsbereichDto" }
+            "items": { "$ref": "#/components/schemas/KitaplanungsbereichDto" },
+            "uniqueItems": true
           },
           "grundschulsprengel": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/GrundschulsprengelDto" }
+            "items": { "$ref": "#/components/schemas/GrundschulsprengelDto" },
+            "uniqueItems": true
           },
           "mittelschulsprengel": {
-            "uniqueItems": true,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" }
+            "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" },
+            "uniqueItems": true
           },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },
           "centroid": { "$ref": "#/components/schemas/PointGeometryDto" },
           "centroidUtm": { "$ref": "#/components/schemas/UtmDto" }
-        }
+        },
+        "required": ["multiPolygon"]
       },
       "SearchQueryDto": {
-        "required": [
-          "searchQuery",
-          "selectBaugenehmigungsverfahren",
-          "selectBauleitplanverfahren",
-          "selectBauvorhaben",
-          "selectGrundschule",
-          "selectGsNachmittagBetreuung",
-          "selectHausFuerKinder",
-          "selectKindergarten",
-          "selectKinderkrippe",
-          "selectMittelschule",
-          "selectWeiteresVerfahren"
-        ],
         "type": "object",
         "properties": {
           "searchQuery": { "type": "string" },
@@ -2491,9 +2469,22 @@
               ]
             }
           },
-          "page": { "minimum": 0, "exclusiveMinimum": true, "type": "integer", "format": "int32" },
-          "pageSize": { "minimum": 0, "exclusiveMinimum": true, "type": "integer", "format": "int32" }
-        }
+          "page": { "type": "integer", "format": "int32", "minimum": 0 },
+          "pageSize": { "type": "integer", "format": "int32", "minimum": 0 }
+        },
+        "required": [
+          "searchQuery",
+          "selectBaugenehmigungsverfahren",
+          "selectBauleitplanverfahren",
+          "selectBauvorhaben",
+          "selectGrundschule",
+          "selectGsNachmittagBetreuung",
+          "selectHausFuerKinder",
+          "selectKindergarten",
+          "selectKinderkrippe",
+          "selectMittelschule",
+          "selectWeiteresVerfahren"
+        ]
       },
       "StatusAbfrage": {
         "type": "string",
@@ -2513,21 +2504,6 @@
         "properties": { "suchwortSuggestions": { "type": "array", "items": { "type": "string" } } }
       },
       "SearchQueryAndSortingDto": {
-        "required": [
-          "searchQuery",
-          "selectBaugenehmigungsverfahren",
-          "selectBauleitplanverfahren",
-          "selectBauvorhaben",
-          "selectGrundschule",
-          "selectGsNachmittagBetreuung",
-          "selectHausFuerKinder",
-          "selectKindergarten",
-          "selectKinderkrippe",
-          "selectMittelschule",
-          "selectWeiteresVerfahren",
-          "sortBy",
-          "sortOrder"
-        ],
         "type": "object",
         "properties": {
           "searchQuery": { "type": "string" },
@@ -2597,14 +2573,28 @@
               ]
             }
           },
-          "page": { "minimum": 0, "exclusiveMinimum": true, "type": "integer", "format": "int32" },
-          "pageSize": { "minimum": 0, "exclusiveMinimum": true, "type": "integer", "format": "int32" },
+          "page": { "type": "integer", "format": "int32", "minimum": 0 },
+          "pageSize": { "type": "integer", "format": "int32", "minimum": 0 },
           "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
           "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
-        }
+        },
+        "required": [
+          "searchQuery",
+          "selectBaugenehmigungsverfahren",
+          "selectBauleitplanverfahren",
+          "selectBauvorhaben",
+          "selectGrundschule",
+          "selectGsNachmittagBetreuung",
+          "selectHausFuerKinder",
+          "selectKindergarten",
+          "selectKinderkrippe",
+          "selectMittelschule",
+          "selectWeiteresVerfahren",
+          "sortBy",
+          "sortOrder"
+        ]
       },
       "AbfrageSearchResultDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/SearchResultDto" },
           {
@@ -2617,9 +2607,9 @@
               },
               "name": { "type": "string" },
               "stadtbezirke": {
-                "uniqueItems": true,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/StadtbezirkDto" }
+                "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+                "uniqueItems": true
               },
               "statusAbfrage": { "$ref": "#/components/schemas/StatusAbfrage" },
               "fristBearbeitung": { "type": "string", "format": "date" },
@@ -2653,7 +2643,6 @@
         ]
       },
       "BauvorhabenSearchResultDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/SearchResultDto" },
           {
@@ -2662,9 +2651,9 @@
               "id": { "type": "string", "format": "uuid" },
               "nameVorhaben": { "type": "string" },
               "stadtbezirke": {
-                "uniqueItems": true,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/StadtbezirkDto" }
+                "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+                "uniqueItems": true
               },
               "grundstuecksgroesse": { "type": "number" },
               "verfahrensstand": {
@@ -2696,7 +2685,6 @@
         ]
       },
       "InfrastruktureinrichtungSearchResultDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/SearchResultDto" },
           {
@@ -2723,10 +2711,6 @@
       },
       "SearchResultDto": {
         "type": "object",
-        "properties": {
-          "type": { "type": "string", "enum": ["ABFRAGE", "BAUVORHABEN", "INFRASTRUKTUREINRICHTUNG"] },
-          "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
-        },
         "description": "SearchResultDto",
         "discriminator": {
           "propertyName": "type",
@@ -2735,6 +2719,10 @@
             "BAUVORHABEN": "#/components/schemas/BauvorhabenSearchResultDto",
             "INFRASTRUKTUREINRICHTUNG": "#/components/schemas/InfrastruktureinrichtungSearchResultDto"
           }
+        },
+        "properties": {
+          "type": { "type": "string", "enum": ["ABFRAGE", "BAUVORHABEN", "INFRASTRUKTUREINRICHTUNG"] },
+          "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" }
         }
       },
       "SearchResultsDto": {
@@ -2770,19 +2758,7 @@
         }
       },
       "AbfrageAngelegtDto": {
-        "required": ["name"],
         "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "name": { "maxLength": 70, "minLength": 0, "type": "string" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
-          "bauvorhaben": { "type": "string", "format": "uuid" },
-          "linkEakte": { "maxLength": 8000, "minLength": 0, "type": "string" }
-        },
         "description": "AbfrageAngelegtDto",
         "discriminator": {
           "propertyName": "artAbfrage",
@@ -2791,18 +2767,21 @@
             "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenAngelegtDto",
             "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenAngelegtDto"
           }
-        }
+        },
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "name": { "type": "string", "maxLength": 70, "minLength": 0 },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
+          "bauvorhaben": { "type": "string", "format": "uuid" },
+          "linkEakte": { "type": "string", "maxLength": 8000, "minLength": 0 }
+        },
+        "required": ["name"]
       },
       "AbfragevarianteBaugenehmigungsverfahrenAngelegtDto": {
-        "required": [
-          "abfragevariantenNr",
-          "bauabschnitte",
-          "gfWohnenSonderwohnformen",
-          "name",
-          "realisierungVon",
-          "weSonderwohnformen",
-          "wesentlicheRechtsgrundlage"
-        ],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -2812,9 +2791,8 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "wesentlicheRechtsgrundlage": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -2831,11 +2809,12 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "BEFREIUNG"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
           "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
@@ -2844,7 +2823,7 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
           "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
@@ -2852,24 +2831,24 @@
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": {
-            "minItems": 1,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BauabschnittDto" }
+            "items": { "$ref": "#/components/schemas/BauabschnittDto" },
+            "minItems": 1
           }
-        }
-      },
-      "AbfragevarianteBauleitplanverfahrenAngelegtDto": {
+        },
         "required": [
           "abfragevariantenNr",
           "bauabschnitte",
           "gfWohnenSonderwohnformen",
           "name",
-          "planart",
           "realisierungVon",
-          "weSonderwohnformen"
-        ],
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ]
+      },
+      "AbfragevarianteBauleitplanverfahrenAngelegtDto": {
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -2879,10 +2858,9 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "satzungsbeschluss": { "type": "string", "format": "date" },
           "planart": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -2893,10 +2871,11 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "FREIE_EINGABE"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "planartFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "planartFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenSobonUrsaechlich": { "type": "number" },
           "gfWohnenBestandswohnbaurecht": { "type": "number" },
@@ -2904,29 +2883,30 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weSonderwohnformen": { "type": "boolean" },
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": {
-            "minItems": 1,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BauabschnittDto" }
+            "items": { "$ref": "#/components/schemas/BauabschnittDto" },
+            "minItems": 1
           }
-        }
-      },
-      "AbfragevarianteWeiteresVerfahrenAngelegtDto": {
+        },
         "required": [
           "abfragevariantenNr",
+          "bauabschnitte",
           "gfWohnenSonderwohnformen",
           "name",
+          "planart",
           "realisierungVon",
-          "weSonderwohnformen",
-          "wesentlicheRechtsgrundlage"
-        ],
+          "weSonderwohnformen"
+        ]
+      },
+      "AbfragevarianteWeiteresVerfahrenAngelegtDto": {
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -2936,10 +2916,9 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "satzungsbeschluss": { "type": "string", "format": "date" },
           "wesentlicheRechtsgrundlage": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -2956,11 +2935,12 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "BEFREIUNG"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
           "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
@@ -2970,7 +2950,7 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
           "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
@@ -2978,58 +2958,64 @@
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } }
-        }
+        },
+        "required": [
+          "abfragevariantenNr",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "realisierungVon",
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ]
       },
       "BauabschnittDto": {
-        "required": ["baugebiete", "bezeichnung", "technical"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bezeichnung": { "maxLength": 255, "minLength": 0, "type": "string" },
-          "baugebiete": { "minItems": 1, "type": "array", "items": { "$ref": "#/components/schemas/BaugebietDto" } },
+          "bezeichnung": { "type": "string", "maxLength": 255, "minLength": 0 },
+          "baugebiete": { "type": "array", "items": { "$ref": "#/components/schemas/BaugebietDto" }, "minItems": 1 },
           "technical": { "type": "boolean" }
-        }
+        },
+        "required": ["baugebiete", "bezeichnung", "technical"]
       },
       "BaugebietDto": {
-        "required": ["artBaulicheNutzung", "bauraten", "bezeichnung", "realisierungVon", "technical"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "bezeichnung": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "bezeichnung": { "type": "string", "maxLength": 255, "minLength": 0 },
           "artBaulicheNutzung": {
             "type": "string",
             "enum": ["UNSPECIFIED", "WR", "WA", "MU", "MK", "MI", "GE", "FREIE_EINGABE"]
           },
-          "artBaulicheNutzungFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "artBaulicheNutzungFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGeplant": { "type": "number" },
           "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
           "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
           "weGeplant": { "type": "integer", "format": "int32" },
           "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
           "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
-          "bauraten": { "minItems": 1, "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" } },
+          "bauraten": { "type": "array", "items": { "$ref": "#/components/schemas/BaurateDto" }, "minItems": 1 },
           "technical": { "type": "boolean" }
-        }
+        },
+        "required": ["artBaulicheNutzung", "bauraten", "bezeichnung", "realisierungVon", "technical"]
       },
       "BaugenehmigungsverfahrenAngelegtDto": {
-        "required": ["abfragevariantenBaugenehmigungsverfahren", "fristBearbeitung", "name", "verfahrensstand"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
           {
             "type": "object",
             "properties": {
-              "aktenzeichenProLbk": { "maxLength": 255, "minLength": 0, "type": "string" },
-              "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "aktenzeichenProLbk": { "type": "string", "maxLength": 255, "minLength": 0 },
+              "bebauungsplannummer": { "type": "string", "maxLength": 255, "minLength": 0 },
               "verfahrensstand": {
                 "type": "string",
                 "enum": [
@@ -3053,38 +3039,29 @@
                   "FREIE_EINGABE"
                 ]
               },
-              "verfahrensstandFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
+              "verfahrensstandFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
               "adresse": { "$ref": "#/components/schemas/AdresseDto" },
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
               "fristBearbeitung": { "type": "string", "format": "date" },
               "abfragevariantenBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenAngelegtDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenAngelegtDto" },
+                "maxItems": 5,
+                "minItems": 1
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenBaugenehmigungsverfahren", "fristBearbeitung", "name", "verfahrensstand"]
       },
       "BauleitplanverfahrenAngelegtDto": {
-        "required": [
-          "abfragevariantenBauleitplanverfahren",
-          "fristBearbeitung",
-          "mitzeichnungBeschlussentwurf",
-          "name",
-          "sobonRelevant",
-          "start42VerfahrenDatumUnbekannt",
-          "verfahrensstand"
-        ],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
           {
             "type": "object",
             "properties": {
-              "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "bebauungsplannummer": { "type": "string", "maxLength": 255, "minLength": 0 },
               "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
               "sobonJahr": {
                 "type": "string",
@@ -3122,7 +3099,7 @@
                   "FREIE_EINGABE"
                 ]
               },
-              "verfahrensstandFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
+              "verfahrensstandFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
               "adresse": { "$ref": "#/components/schemas/AdresseDto" },
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
@@ -3131,46 +3108,46 @@
               "start42Verfahren": { "type": "string", "format": "date" },
               "start42VerfahrenDatumUnbekannt": { "type": "boolean" },
               "abfragevariantenBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenAngelegtDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenAngelegtDto" },
+                "maxItems": 5,
+                "minItems": 1
               }
             }
           }
+        ],
+        "required": [
+          "abfragevariantenBauleitplanverfahren",
+          "fristBearbeitung",
+          "mitzeichnungBeschlussentwurf",
+          "name",
+          "sobonRelevant",
+          "start42VerfahrenDatumUnbekannt",
+          "verfahrensstand"
         ]
       },
       "BaurateDto": {
-        "required": ["foerdermix", "jahr"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
-          "jahr": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "jahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "weGeplant": { "type": "integer", "format": "int32" },
           "gfWohnenGeplant": { "type": "number" },
           "foerdermix": { "$ref": "#/components/schemas/FoerdermixDto" }
-        }
+        },
+        "required": ["foerdermix", "jahr"]
       },
       "WeiteresVerfahrenAngelegtDto": {
-        "required": [
-          "abfragevariantenWeiteresVerfahren",
-          "fristBearbeitung",
-          "mitzeichnungBeschlussentwurf",
-          "name",
-          "sobonRelevant",
-          "verfahrensstand"
-        ],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageAngelegtDto" },
           {
             "type": "object",
             "properties": {
-              "aktenzeichenProLbk": { "maxLength": 255, "minLength": 0, "type": "string" },
-              "bebauungsplannummer": { "maxLength": 255, "minLength": 0, "type": "string" },
+              "aktenzeichenProLbk": { "type": "string", "maxLength": 255, "minLength": 0 },
+              "bebauungsplannummer": { "type": "string", "maxLength": 255, "minLength": 0 },
               "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
               "sobonJahr": {
                 "type": "string",
@@ -3208,24 +3185,41 @@
                   "FREIE_EINGABE"
                 ]
               },
-              "verfahrensstandFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
+              "verfahrensstandFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
               "adresse": { "$ref": "#/components/schemas/AdresseDto" },
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } },
               "fristBearbeitung": { "type": "string", "format": "date" },
               "mitzeichnungBeschlussentwurf": { "$ref": "#/components/schemas/UncertainBoolean" },
               "abfragevariantenWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenAngelegtDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenAngelegtDto" },
+                "maxItems": 5,
+                "minItems": 1
               }
             }
           }
+        ],
+        "required": [
+          "abfragevariantenWeiteresVerfahren",
+          "fristBearbeitung",
+          "mitzeichnungBeschlussentwurf",
+          "name",
+          "sobonRelevant",
+          "verfahrensstand"
         ]
       },
       "AbfrageDto": {
         "type": "object",
+        "description": "AbfrageDto",
+        "discriminator": {
+          "propertyName": "artAbfrage",
+          "mapping": {
+            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenDto",
+            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenDto",
+            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenDto"
+          }
+        },
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "version": { "type": "integer", "format": "int64" },
@@ -3245,15 +3239,6 @@
           "bearbeitungshistorie": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/BearbeitungshistorieDto" }
-          }
-        },
-        "description": "AbfrageDto",
-        "discriminator": {
-          "propertyName": "artAbfrage",
-          "mapping": {
-            "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenDto",
-            "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenDto",
-            "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenDto"
           }
         }
       },
@@ -3553,7 +3538,6 @@
         }
       },
       "BaugenehmigungsverfahrenDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageDto" },
           {
@@ -3602,7 +3586,6 @@
         ]
       },
       "BauleitplanverfahrenDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageDto" },
           {
@@ -3742,7 +3725,6 @@
         }
       },
       "WeiteresVerfahrenDto": {
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageDto" },
           {
@@ -3808,22 +3790,13 @@
       "WohneinheitenProFoerderartProJahrDto": {
         "type": "object",
         "properties": {
-          "foerderart": { "type": "string", "nullable": true },
-          "jahr": { "type": "string", "nullable": true },
-          "wohneinheiten": { "type": "number", "nullable": true }
+          "foerderart": { "type": ["string", "null"] },
+          "jahr": { "type": ["string", "null"] },
+          "wohneinheiten": { "type": ["number", "null"] }
         }
       },
       "AbfrageStartBearbeitungDto": {
         "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          },
-          "bauvorhaben": { "type": "string", "format": "uuid" },
-          "linkEakte": { "maxLength": 8000, "minLength": 0, "type": "string" }
-        },
         "description": "AbfrageStartBearbeitungDto",
         "discriminator": {
           "propertyName": "artAbfrage",
@@ -3832,10 +3805,18 @@
             "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenStartBearbeitungDto",
             "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenStartBearbeitungDto"
           }
+        },
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
+          },
+          "bauvorhaben": { "type": "string", "format": "uuid" },
+          "linkEakte": { "type": "string", "maxLength": 8000, "minLength": 0 }
         }
       },
       "AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto": {
-        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -3857,26 +3838,16 @@
             ]
           },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"]
       },
       "AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto": {
-        "required": [
-          "abfragevariantenNr",
-          "bauabschnitte",
-          "gfWohnenSonderwohnformen",
-          "name",
-          "realisierungVon",
-          "sobonOrientierungswertJahrPlanungsursaechlich",
-          "stammdatenGueltigAb",
-          "weSonderwohnformen",
-          "wesentlicheRechtsgrundlage"
-        ],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -3886,9 +3857,8 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "wesentlicheRechtsgrundlage": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -3905,11 +3875,12 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "BEFREIUNG"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
           "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
@@ -3918,7 +3889,7 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
           "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
@@ -3926,11 +3897,11 @@
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": {
-            "minItems": 1,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BauabschnittDto" }
+            "items": { "$ref": "#/components/schemas/BauabschnittDto" },
+            "minItems": 1
           },
           "sobonOrientierungswertJahrPlanungsursaechlich": {
             "type": "string",
@@ -3945,16 +3916,26 @@
             ]
           },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": [
+          "abfragevariantenNr",
+          "bauabschnitte",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "realisierungVon",
+          "sobonOrientierungswertJahrPlanungsursaechlich",
+          "stammdatenGueltigAb",
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ]
       },
       "AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto": {
-        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -3977,26 +3958,16 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"]
       },
       "AbfragevarianteBauleitplanverfahrenStartBearbeitungDto": {
-        "required": [
-          "abfragevariantenNr",
-          "bauabschnitte",
-          "gfWohnenSonderwohnformen",
-          "name",
-          "planart",
-          "realisierungVon",
-          "sobonOrientierungswertJahrPlanungsursaechlich",
-          "stammdatenGueltigAb",
-          "weSonderwohnformen"
-        ],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -4006,10 +3977,9 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "satzungsbeschluss": { "type": "string", "format": "date" },
           "planart": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -4020,10 +3990,11 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "FREIE_EINGABE"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "planartFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "planartFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenSobonUrsaechlich": { "type": "number" },
           "gfWohnenBestandswohnbaurecht": { "type": "number" },
@@ -4031,17 +4002,17 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weSonderwohnformen": { "type": "boolean" },
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": {
-            "minItems": 1,
             "type": "array",
-            "items": { "$ref": "#/components/schemas/BauabschnittDto" }
+            "items": { "$ref": "#/components/schemas/BauabschnittDto" },
+            "minItems": 1
           },
           "sobonOrientierungswertJahrPlanungsursaechlich": {
             "type": "string",
@@ -4057,16 +4028,26 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": [
+          "abfragevariantenNr",
+          "bauabschnitte",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "planart",
+          "realisierungVon",
+          "sobonOrientierungswertJahrPlanungsursaechlich",
+          "stammdatenGueltigAb",
+          "weSonderwohnformen"
+        ]
       },
       "AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto": {
-        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -4089,25 +4070,16 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": ["sobonOrientierungswertJahrPlanungsursaechlich", "stammdatenGueltigAb"]
       },
       "AbfragevarianteWeiteresVerfahrenStartBearbeitungDto": {
-        "required": [
-          "abfragevariantenNr",
-          "gfWohnenSonderwohnformen",
-          "name",
-          "realisierungVon",
-          "sobonOrientierungswertJahrPlanungsursaechlich",
-          "stammdatenGueltigAb",
-          "weSonderwohnformen",
-          "wesentlicheRechtsgrundlage"
-        ],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -4117,10 +4089,9 @@
             "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           },
           "abfragevariantenNr": { "type": "integer", "format": "int32" },
-          "name": { "maxLength": 30, "minLength": 0, "type": "string" },
+          "name": { "type": "string", "maxLength": 30, "minLength": 0 },
           "satzungsbeschluss": { "type": "string", "format": "date" },
           "wesentlicheRechtsgrundlage": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",
@@ -4137,11 +4108,12 @@
                 "BEBAUUNGSPLAN_ZUR_WOHNRAUMVERSORGUNG",
                 "BEFREIUNG"
               ]
-            }
+            },
+            "minItems": 1
           },
-          "wesentlicheRechtsgrundlageFreieEingabe": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "maxLength": 1000, "minLength": 0, "type": "string" },
-          "realisierungVon": { "maximum": 2100, "minimum": 1900, "type": "integer", "format": "int32" },
+          "wesentlicheRechtsgrundlageFreieEingabe": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "wesentlicheRechtsgrundlageAngabenZurBefreiung": { "type": "string", "maxLength": 1000, "minLength": 0 },
+          "realisierungVon": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "gfWohnenGesamt": { "type": "number" },
           "gfWohnenBaurechtlichGenehmigt": { "type": "number" },
           "gfWohnenBaurechtlichFestgesetzt": { "type": "number" },
@@ -4151,7 +4123,7 @@
           "gfWohnenStudentischesWohnen": { "type": "number" },
           "gfWohnenSeniorinnenWohnen": { "type": "number" },
           "gfWohnenWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "number" },
-          "gfAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "gfAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "weGesamt": { "type": "integer", "format": "int32" },
           "weBaurechtlichGenehmigt": { "type": "integer", "format": "int32" },
           "weBaurechtlichFestgesetzt": { "type": "integer", "format": "int32" },
@@ -4159,7 +4131,7 @@
           "weStudentischesWohnen": { "type": "integer", "format": "int32" },
           "weSeniorinnenWohnen": { "type": "integer", "format": "int32" },
           "weWeiteresNichtInfrastrukturrelevantesWohnen": { "type": "integer", "format": "int32" },
-          "weAnmerkung": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "weAnmerkung": { "type": "string", "maxLength": 200, "minLength": 0 },
           "bauabschnitte": { "type": "array", "items": { "$ref": "#/components/schemas/BauabschnittDto" } },
           "sobonOrientierungswertJahrPlanungsursaechlich": {
             "type": "string",
@@ -4175,20 +4147,25 @@
           },
           "sobonBerechnung": { "$ref": "#/components/schemas/SobonBerechnungDto" },
           "stammdatenGueltigAb": { "type": "string", "format": "date" },
-          "anmerkung": { "maxLength": 2000, "minLength": 0, "type": "string" },
+          "anmerkung": { "type": "string", "maxLength": 2000, "minLength": 0 },
           "hasBauratendateiInput": { "type": "boolean" },
           "anmerkungBauratendateiInput": { "type": "string" },
           "bauratendateiInputBasis": { "$ref": "#/components/schemas/BauratendateiInputDto" },
           "bauratendateiInput": { "type": "array", "items": { "$ref": "#/components/schemas/BauratendateiInputDto" } },
           "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
-        }
+        },
+        "required": [
+          "abfragevariantenNr",
+          "gfWohnenSonderwohnformen",
+          "name",
+          "realisierungVon",
+          "sobonOrientierungswertJahrPlanungsursaechlich",
+          "stammdatenGueltigAb",
+          "weSonderwohnformen",
+          "wesentlicheRechtsgrundlage"
+        ]
       },
       "BaugenehmigungsverfahrenStartBearbeitungDto": {
-        "required": [
-          "abfragevariantenBaugenehmigungsverfahren",
-          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
-        ],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageStartBearbeitungDto" },
           {
@@ -4196,26 +4173,28 @@
             "properties": {
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "abfragevariantenBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenSachbearbeitungStartBearbeitungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenStartBearbeitungDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
+        ],
+        "required": [
+          "abfragevariantenBaugenehmigungsverfahren",
+          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
         ]
       },
       "BauleitplanverfahrenStartBearbeitungDto": {
-        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageStartBearbeitungDto" },
           {
@@ -4223,26 +4202,25 @@
             "properties": {
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "abfragevariantenBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenSachbearbeitungStartBearbeitungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenStartBearbeitungDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenStartBearbeitungDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"]
       },
       "WeiteresVerfahrenStartBearbeitungDto": {
-        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageStartBearbeitungDto" },
           {
@@ -4250,32 +4228,26 @@
             "properties": {
               "verortung": { "$ref": "#/components/schemas/VerortungMultiPolygonDto" },
               "abfragevariantenWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenSachbearbeitungStartBearbeitungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenStartBearbeitungDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenStartBearbeitungDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"]
       },
       "AbfrageEinpflegenBedarfsmeldungDto": {
         "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          }
-        },
         "description": "AbfrageEinpflegenBedarfsmeldungDto",
         "discriminator": {
           "propertyName": "artAbfrage",
@@ -4283,6 +4255,13 @@
             "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenEinpflegenBedarfsmeldungDto",
             "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto",
             "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenEinpflegenBedarfsmeldungDto"
+          }
+        },
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -4371,97 +4350,87 @@
         }
       },
       "BaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto": {
-        "required": [
-          "abfragevariantenBaugenehmigungsverfahren",
-          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
-        ],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinpflegenBedarfsmeldungDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinpflegenBedarfsmeldungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
+        ],
+        "required": [
+          "abfragevariantenBaugenehmigungsverfahren",
+          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
         ]
       },
       "BauleitplanverfahrenEinpflegenBedarfsmeldungDto": {
-        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinpflegenBedarfsmeldungDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinpflegenBedarfsmeldungDto"
-                }
+                },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"]
       },
       "WeiteresVerfahrenEinpflegenBedarfsmeldungDto": {
-        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinpflegenBedarfsmeldungDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto" },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinpflegenBedarfsmeldungDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"]
       },
       "AbfrageEinplanungBedarfeDto": {
         "type": "object",
-        "properties": {
-          "version": { "type": "integer", "format": "int64" },
-          "artAbfrage": {
-            "type": "string",
-            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
-          }
-        },
         "description": "AbfrageEinplanungBedarfeDto",
         "discriminator": {
           "propertyName": "artAbfrage",
@@ -4469,6 +4438,13 @@
             "BAULEITPLANVERFAHREN": "#/components/schemas/BauleitplanverfahrenEinplanungBedarfeDto",
             "BAUGENEHMIGUNGSVERFAHREN": "#/components/schemas/BaugenehmigungsverfahrenEinplanungBedarfeDto",
             "WEITERES_VERFAHREN": "#/components/schemas/WeiteresVerfahrenEinplanungBedarfeDto"
+          }
+        },
+        "properties": {
+          "version": { "type": "integer", "format": "int64" },
+          "artAbfrage": {
+            "type": "string",
+            "enum": ["UNSPECIFIED", "BAULEITPLANVERFAHREN", "BAUGENEHMIGUNGSVERFAHREN", "WEITERES_VERFAHREN"]
           }
         }
       },
@@ -4533,79 +4509,76 @@
         }
       },
       "BaugenehmigungsverfahrenEinplanungBedarfeDto": {
-        "required": [
-          "abfragevariantenBaugenehmigungsverfahren",
-          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
-        ],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinplanungBedarfeDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBaugenehmigungsverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBaugenehmigungsverfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
+        ],
+        "required": [
+          "abfragevariantenBaugenehmigungsverfahren",
+          "abfragevariantenSachbearbeitungBaugenehmigungsverfahren"
         ]
       },
       "BauleitplanverfahrenEinplanungBedarfeDto": {
-        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinplanungBedarfeDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungBauleitplanverfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteBauleitplanverfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenBauleitplanverfahren", "abfragevariantenSachbearbeitungBauleitplanverfahren"]
       },
       "WeiteresVerfahrenEinplanungBedarfeDto": {
-        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"],
-        "type": "object",
         "allOf": [
           { "$ref": "#/components/schemas/AbfrageEinplanungBedarfeDto" },
           {
             "type": "object",
             "properties": {
               "abfragevariantenWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 1,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 1
               },
               "abfragevariantenSachbearbeitungWeiteresVerfahren": {
-                "maxItems": 5,
-                "minItems": 0,
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto" }
+                "items": { "$ref": "#/components/schemas/AbfragevarianteWeiteresVerfahrenEinplanungBedarfeDto" },
+                "maxItems": 5,
+                "minItems": 0
               }
             }
           }
-        ]
+        ],
+        "required": ["abfragevariantenSachbearbeitungWeiteresVerfahren", "abfragevariantenWeiteresVerfahren"]
       },
       "VersorgungsquoteSobonHortDto": {
         "type": "object",
