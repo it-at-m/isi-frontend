@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   type AbfrageSearchResultDto,
   type BauvorhabenSearchResultDto,
@@ -17,7 +17,6 @@ import {
   type SearchResultDto,
   type Wgs84Dto,
   SearchResultDtoTypeEnum,
-  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   AbfrageDtoArtAbfrageEnum,
   AbfrageSearchResultDtoVerfahrensstandEnum,
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
@@ -49,6 +48,8 @@ const router = useRouter();
 const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+
+const umgriffeLayerGroup = new L.LayerGroup();
 
 const geoJsonOptions: GeoJSONOptions = {
   pointToLayer: (feature: EntityFeature, latlng) => {
@@ -179,6 +180,44 @@ const geoJson = computed(() => {
   return features;
 });
 
+const searchResults = computed(() => {
+  return !_.isNil(searchStore.searchResults.searchResults) ? searchStore.searchResults.searchResults : [];
+});
+
+watch(
+  searchResults,
+  () => {
+    umgriffeLayerGroup.clearLayers();
+    const featureUmgriffe: EntityFeature[] = [];
+    const results: SearchResultDto[] = searchResults.value;
+    _.toArray(results)
+      .filter((result) => result.type === SearchResultDtoTypeEnum.Bauvorhaben)
+      .forEach((result) => {
+        const type = result.type;
+        const id = (result as BauvorhabenSearchResultDto).id;
+        const name = (result as BauvorhabenSearchResultDto).nameVorhaben;
+        const umgriff = (result as BauvorhabenSearchResultDto).umgriff;
+        if (umgriff) {
+          const feature = {
+            type: "Feature",
+            geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
+            properties: { type, id, name },
+          } as EntityFeature;
+          featureUmgriffe.push(feature);
+        }
+      });
+    L.geoJSON(featureUmgriffe, geoJsonOptions).addTo(umgriffeLayerGroup);
+  },
+  { immediate: true },
+);
+
+const layersForLayerControl = computed(() => {
+  const layers = new Map<string, Layer>();
+  layers.set("Umgriffe Vorhaben", umgriffeLayerGroup);
+  return layers;
+});
+
+/* old
 const layersForLayerControl = computed(() => {
   const featureUmgriffe: EntityFeature[] = [];
   const results: SearchResultDto[] = searchResults.value;
@@ -204,11 +243,7 @@ const layersForLayerControl = computed(() => {
   layers.set("Umgriffe Vorhaben", layerGroup);
   return layers;
 });
-
-const searchResults = computed(() => {
-  return !_.isNil(searchStore.searchResults.searchResults) ? searchStore.searchResults.searchResults : [];
-});
-
+*/
 function getArtAbfrageEnumFormattedString(artAbfrageEnum: AbfrageDtoArtAbfrageEnum): string {
   if (artAbfrageEnum == AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
     return "Baugenehmigungsverfahren";
