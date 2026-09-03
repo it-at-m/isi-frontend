@@ -762,10 +762,8 @@ async function saveAbfrage(): Promise<void> {
 
 async function handleSave(model: AnyAbfrageModel): Promise<void> {
   let abfrageAngelegtDto:
-    | BauleitplanverfahrenAngelegtDto
-    | BaugenehmigungsverfahrenAngelegtDto
-    | WeiteresVerfahrenAngelegtDto
-    | undefined = undefined;
+    BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto | undefined =
+    undefined;
   if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
   } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
@@ -779,10 +777,8 @@ async function handleSave(model: AnyAbfrageModel): Promise<void> {
 
 async function handlePatchAngelegt(model: AnyAbfrageModel): Promise<void> {
   let abfrageAngelegtDto:
-    | BauleitplanverfahrenAngelegtDto
-    | BaugenehmigungsverfahrenAngelegtDto
-    | WeiteresVerfahrenAngelegtDto
-    | undefined = undefined;
+    BauleitplanverfahrenAngelegtDto | BaugenehmigungsverfahrenAngelegtDto | WeiteresVerfahrenAngelegtDto | undefined =
+    undefined;
   if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren) {
     abfrageAngelegtDto = mapToBauleitplanverfahrenAngelegt(model);
   } else if (model.artAbfrage === AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {

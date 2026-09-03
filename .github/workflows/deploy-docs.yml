@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - dev
+      - ISI2-825-Release-Notes-v2.0.0-und-Migration-der-Dokumentation
     paths:
       - "docs/**"
       - ".github/workflows/deploy-docs.yml"
@@ -33,4 +34,4 @@ jobs:
       # Zu Testzwecken die Angabe mit dem aktuellen Branch überschreiben, z. B.
       #   deploy-branch: "<aktueller Branch"
         with:
-          deploy-branch: "dev"
+          deploy-branch: "ISI2-825-Release-Notes-v2.0.0-und-Migration-der-Dokumentation" # "dev"

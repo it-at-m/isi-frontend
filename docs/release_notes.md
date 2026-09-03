@@ -14,7 +14,7 @@ Alle Abfragearten haben ein neues Symbol erhalten, dieses wird in allen Formular
 
 ### Vorhaben (ehemals Bauvorhaben)
 
-Für ein gemeinsames Verständnis wurde der Begriff Bauvorhaben in Vorhaben verändert. Im Vorhaben erfolgte ein Abgleich der Begrifflichkeiten zu allen Abfragearten. Sobald ein neuer Kommentar im Vorhaben verfasst wird, wird eine E-Mail mit Informationen zu Name und Link des Vorhabens, alle verknüpften Abfragen sowie Text und Datum des Kommentars an eine Gruppen E-Mail für die Sachbearbeitung gesandt. Das Datumsfeld ist standardmäßig mit dem Erstellungsdatum versehen, kann jedoch weiterhin verändert werden
+Für ein gemeinsames Verständnis wurde der Begriff Bauvorhaben in Vorhaben verändert. Im Vorhaben erfolgte ein Abgleich der Begrifflichkeiten zu allen Abfragearten. Sobald ein neuer Kommentar im Vorhaben verfasst wird, wird eine E-Mail mit Informationen zu Name und Link des Vorhabens, alle verknüpften Abfragen sowie Text und Datum des Kommentars an eine Gruppen E-Mail für die Sachbearbeitung gesandt. Das Datumsfeld ist standardmäßig mit dem Erstellungsdatum versehen, kann jedoch weiterhin verändert werden.
 
 ### Verortung
 
