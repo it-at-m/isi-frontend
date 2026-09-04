@@ -217,33 +217,6 @@ const layersForLayerControl = computed(() => {
   return layers;
 });
 
-/* old
-const layersForLayerControl = computed(() => {
-  const featureUmgriffe: EntityFeature[] = [];
-  const results: SearchResultDto[] = searchResults.value;
-  _.toArray(results)
-    .filter((result) => result.type === SearchResultDtoTypeEnum.Bauvorhaben)
-    .forEach((result) => {
-      const type = result.type;
-      const id = (result as BauvorhabenSearchResultDto).id;
-      const name = (result as BauvorhabenSearchResultDto).nameVorhaben;
-      const umgriff = (result as BauvorhabenSearchResultDto).umgriff;
-      if (umgriff) {
-        const feature = {
-          type: "Feature",
-          geometry: { type: "MultiPolygon", coordinates: umgriff.coordinates } as MultiPolygon,
-          properties: { type, id, name },
-        } as EntityFeature;
-        featureUmgriffe.push(feature);
-      }
-    });
-  const layerGroup = new L.LayerGroup();
-  L.geoJSON(featureUmgriffe, geoJsonOptions).addTo(layerGroup);
-  const layers = new Map<string, Layer>();
-  layers.set("Umgriffe Vorhaben", layerGroup);
-  return layers;
-});
-*/
 function getArtAbfrageEnumFormattedString(artAbfrageEnum: AbfrageDtoArtAbfrageEnum): string {
   if (artAbfrageEnum == AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren) {
     return "Baugenehmigungsverfahren";
