@@ -1,0 +1,36 @@
+# Workflow to build docs and deploy docs folder to GitHub pages
+name: deploy-docs
+
+on:
+  # Runs on pushes to any branch when changes are made to docs or workflow
+  # Zu Testzwecken zusätzlich zum "- dev" Branch den aktuellen Branch mit angeben, damit der Workflow aufgerufen (getriggert) wird, z. B.
+  # -dev
+  # - <aktueller Branch>
+  # Trigger: Das Deployment findet nur statt, wenn man in den "dev"-Branch pushed wird
+  push:
+    branches:
+      - dev
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
+      # Only deploy documentation from the main branch to prevent unauthorized changes
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
+      # Default deploy-branch ist "main". Diesen mit "dev" überschreiben (with)
+      # Zu Testzwecken die Angabe mit dem aktuellen Branch überschreiben, z. B.
+      #   deploy-branch: "<aktueller Branch"
+        with:
+          deploy-branch: "dev"

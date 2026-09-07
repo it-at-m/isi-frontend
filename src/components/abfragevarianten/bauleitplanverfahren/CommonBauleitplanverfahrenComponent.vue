@@ -111,11 +111,12 @@
         <num-field
           id="abfragevariante_realisierungBis"
           v-model="calcRealisierungBis"
-          :disabled="true"
+          :readonly="true"
           label="Realisierung bis (JJJJ)"
           year
           maxlength="4"
           help="Nach Angabe bzw. Berechnung der Bauraten wird das Feld automatisch befüllt."
+          :class="'text-grey-lighten-1'"
         />
       </v-col>
     </v-row>
