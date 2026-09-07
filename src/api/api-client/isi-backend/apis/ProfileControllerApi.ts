@@ -194,7 +194,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/profile/sobonOrientierungswertSozialeInfrastrukturs`;
+        let urlPath = `/profile/personalFilters`;
 
         return {
             path: urlPath,
@@ -233,7 +233,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/profile/staedtebaulicheOrientierungswerts`;
+        let urlPath = `/profile/sobonOrientierungswertSozialeInfrastrukturs`;
 
         return {
             path: urlPath,
@@ -272,7 +272,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/profile/umlegungFoerderartens`;
+        let urlPath = `/profile/staedtebaulicheOrientierungswerts`;
 
         return {
             path: urlPath,
@@ -311,7 +311,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/profile/versorgungsquoteGruppenstaerkes`;
+        let urlPath = `/profile/umlegungFoerderartens`;
 
         return {
             path: urlPath,
@@ -350,7 +350,7 @@ export class ProfileControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/profile/versorgungsquoteSobonHorts`;
+        let urlPath = `/profile/versorgungsquoteGruppenstaerkes`;
 
         return {
             path: urlPath,
@@ -377,6 +377,45 @@ export class ProfileControllerApi extends runtime.BaseAPI {
      */
     async descriptor16(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
         const response = await this.descriptor16Raw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for descriptor17 without sending the request
+     */
+    async descriptor17RequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/profile/versorgungsquoteSobonHorts`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     */
+    async descriptor17Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const requestOptions = await this.descriptor17RequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async descriptor17(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.descriptor17Raw(initOverrides);
         return await response.value();
     }
 

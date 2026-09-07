@@ -8,11 +8,12 @@ All URIs are relative to *http://localhost:8089*
 | [**descriptor1**](ProfileControllerApi.md#descriptor1) | **GET** /profile/abfragevarianteBaugenehmigungsverfahrens |  |
 | [**descriptor10**](ProfileControllerApi.md#descriptor10) | **GET** /profile/infrastruktureinrichtungs |  |
 | [**descriptor11**](ProfileControllerApi.md#descriptor11) | **GET** /profile/kommentars |  |
-| [**descriptor12**](ProfileControllerApi.md#descriptor12) | **GET** /profile/sobonOrientierungswertSozialeInfrastrukturs |  |
-| [**descriptor13**](ProfileControllerApi.md#descriptor13) | **GET** /profile/staedtebaulicheOrientierungswerts |  |
-| [**descriptor14**](ProfileControllerApi.md#descriptor14) | **GET** /profile/umlegungFoerderartens |  |
-| [**descriptor15**](ProfileControllerApi.md#descriptor15) | **GET** /profile/versorgungsquoteGruppenstaerkes |  |
-| [**descriptor16**](ProfileControllerApi.md#descriptor16) | **GET** /profile/versorgungsquoteSobonHorts |  |
+| [**descriptor12**](ProfileControllerApi.md#descriptor12) | **GET** /profile/personalFilters |  |
+| [**descriptor13**](ProfileControllerApi.md#descriptor13) | **GET** /profile/sobonOrientierungswertSozialeInfrastrukturs |  |
+| [**descriptor14**](ProfileControllerApi.md#descriptor14) | **GET** /profile/staedtebaulicheOrientierungswerts |  |
+| [**descriptor15**](ProfileControllerApi.md#descriptor15) | **GET** /profile/umlegungFoerderartens |  |
+| [**descriptor16**](ProfileControllerApi.md#descriptor16) | **GET** /profile/versorgungsquoteGruppenstaerkes |  |
+| [**descriptor17**](ProfileControllerApi.md#descriptor17) | **GET** /profile/versorgungsquoteSobonHorts |  |
 | [**descriptor2**](ProfileControllerApi.md#descriptor2) | **GET** /profile/abfragevarianteBauleitplanverfahrens |  |
 | [**descriptor3**](ProfileControllerApi.md#descriptor3) | **GET** /profile/abfragevarianteWeiteresVerfahrens |  |
 | [**descriptor4**](ProfileControllerApi.md#descriptor4) | **GET** /profile/abfragevariantes |  |
@@ -502,6 +503,63 @@ async function example() {
 
   try {
     const data = await api.descriptor16();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+**string**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `*/*`, `application/alps+json`, `application/schema+json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## descriptor17
+
+> string descriptor17()
+
+
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ProfileControllerApi,
+} from '';
+import type { Descriptor17Request } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new ProfileControllerApi();
+
+  try {
+    const data = await api.descriptor17();
     console.log(data);
   } catch (error) {
     console.error(error);
