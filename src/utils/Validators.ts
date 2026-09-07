@@ -17,7 +17,7 @@ import {
   KommentarBauvorhabenDto,
   KommentarInfrastruktureinrichtungDto,
   MittelschuleDto,
-  SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum,
+  SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum,
 } from "@/api/api-client/isi-backend";
 import {
   AbfrageDtoArtAbfrageEnum,
@@ -302,7 +302,7 @@ export function findFaultInAbfragevarianteMarkedSobonBerechnung(
       if (
         _.isNil(abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich) ||
         abfragevarianteSobon.sobonBerechnung.sobonOrientierungswertJahrSobonUrsaechlich ==
-          SobonBerechnungSobonOrientierungswertJahrSobonUrsaechlichEnum.Unspecified
+          SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum.Unspecified
       ) {
         return "Bitte geben Sie ein Jahr für SoBoN-Orientierungswerte an für die SoBoN-Berechnung";
       }
