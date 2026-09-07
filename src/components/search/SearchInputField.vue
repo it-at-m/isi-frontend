@@ -40,7 +40,7 @@
       </v-tooltip>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
-        max-width="800px"
+        max-width="1100px"
       >
         <search-and-filter-options
           v-model="searchQueryAndSorting"

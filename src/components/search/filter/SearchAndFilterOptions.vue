@@ -1,8 +1,28 @@
 <template>
   <v-card flat>
-    <v-card-title>
-      <v-icon start>mdi-filter-outline</v-icon>
-      Such- und Filtereinstellungen
+    <v-card-title class="d-flex align-center justify-space-between">
+      <div class="d-flex align-center">
+        <v-icon
+          start
+          size="20"
+          >mdi-filter-outline</v-icon
+        >
+        <span class="text-subtitle-1">Such- und Filtereinstellungen</span>
+      </div>
+      <!-- Dropdown für gespeicherte Filter -->
+      <v-select
+        v-model="selectedFilter"
+        :items="savedFilters"
+        item-title="name"
+        item-value="id"
+        density="compact"
+        variant="solo"
+        hide-details
+        style="max-width: 300px"
+        placeholder="Gespeicherten Filter anwenden"
+        class="ml-2"
+        @focus="loadFilters"
+      />
     </v-card-title>
 
     <v-card-text>
@@ -33,6 +53,15 @@
       <v-spacer />
       <v-btn
         color="primary"
+        style="width: 300px"
+        variant="flat"
+        @click="resetSearchAndFilterOptions"
+      >
+        Speichern / Überschreiben
+      </v-btn>
+      <v-spacer />
+      <v-btn
+        color="primary"
         style="width: 200px"
         variant="flat"
         @click="resetSearchAndFilterOptions"
@@ -46,9 +75,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
+import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
 
 interface Emits {
@@ -57,20 +88,26 @@ interface Emits {
 }
 
 const { xl } = useDisplay();
-/**
- * Der default Panel welcher beim Öffnen der Such- und Filtereinstellungen aufgeklappt ist.
- */
 const panels = ref<Array<number>>([0]);
 const emit = defineEmits<Emits>();
+
+const filterApi = new PersonalFilterEntityControllerApi(RequestUtils.getBasicFetchConfigurationForBackend());
+
+const savedFilters = ref<Array<{ id: string; name: string }>>([]);
+const selectedFilter = ref<string | null>(null);
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
 const getContentSheetHeight = computed(() => {
   if (xl.value) {
-    return "650px";
+    return "690px";
   }
-  return "400px";
+  return "550px";
 });
+
+async function loadFilters() {
+  const result = await filterApi.getCollectionResourcePersonalfilterGet();
+}
 
 function adoptSearchAndFilterOptions(): void {
   emit("adopt-search-and-filter-options");
