@@ -89,6 +89,7 @@ import { useDisplay } from "vuetify";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import FilterSaveDialog from "@/components/search/filter/FilterSaveDialog.vue";
 import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
+import { useToast } from "vue-toastification";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
@@ -103,6 +104,7 @@ const showSaveDialog = ref(false);
 const { savedFilters, loadFilters, saveFilter, editExistingFilter, selectFilter } = useFilterPersistence();
 const selectedFilter = ref<string | null>(null);
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
+const toast = useToast();
 
 onMounted(() => {
   loadFilters();
@@ -116,7 +118,12 @@ const getContentSheetHeight = computed(() => {
 });
 
 function onSelectFilter(id: string) {
-  selectFilter(id, searchQueryAndSorting);
+  try {
+    selectFilter(id, searchQueryAndSorting);
+    toast.success("Gespeicherter Filter wurde angewendet.");
+  } catch (e: any) {
+    toast.error("Es ist ein Fehler beim Anwenden des Filters aufgetreten.");
+  }
 }
 
 function adoptSearchAndFilterOptions(): void {
@@ -128,10 +135,20 @@ function resetSearchAndFilterOptions(): void {
 }
 
 async function onSaveFilter(name: string) {
-  await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
+  try {
+    await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
+    toast.success("Neuer Filter wurde erfolgreich erstellt");
+  } catch (e: any) {
+    toast.error("Es ist ein Fehler beim Erstellen des Filters aufgetreten.");
+  }
 }
 
 async function onEditFilter(id: string) {
-  await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
+  try {
+    await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
+    toast.success("Deine Änderungen wurden erfolgreich gespeichert");
+  } catch (e: any) {
+    toast.error("Es ist ein Fehler beim Überschreiben des Filters aufgetreten.");
+  }
 }
 </script>
