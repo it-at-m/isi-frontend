@@ -4,7 +4,7 @@
     max-width="500"
   >
     <v-card>
-      <v-card-title>Filter speichern oder überschreiben</v-card-title>
+      <v-card-title>Filter Speichern oder Überschreiben</v-card-title>
       <v-card-text>
         <div class="d-flex align-center">
           <v-select
@@ -45,6 +45,7 @@
           >Abbrechen</v-btn
         >
         <v-btn
+          variant="elevated"
           color="primary"
           :disabled="!canSave"
           @click="onSubmit"
@@ -53,21 +54,34 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <yes-no-dialog
+      v-model="isYesNoDialogOpen"
+      icon="mdi-delete-forever"
+      dialogtitle="Hinweis"
+      :dialogtext="`Sind Sie sicher, dass Sie den Filter '${filterToOverwriteName}' überschreiben möchten?`"
+      no-text="Abbrechen"
+      yes-text="Überschreiben"
+      @no="editAbort"
+      @yes="editConfirm"
+    />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
 const props = defineProps<{
   show: boolean;
   savedFilters: Array<{ id: string; name: string }>;
+  modelValue: boolean;
 }>();
 
 const emits = defineEmits<{
   (e: "update:show", value: boolean): void;
   (e: "save", name: string): void;
   (e: "edit", id: string): void;
+  (e: "update:modelValue", value: boolean): void;
 }>();
 
 const internalShow = ref(props.show);
@@ -76,6 +90,12 @@ const modes = ["Speichern", "Überschreiben"];
 const mode = ref("Speichern");
 const filterName = ref("");
 const selectedFilterId = ref<string | null>(null);
+const isYesNoDialogOpen = ref(false);
+
+const filterToOverwriteName = computed(() => {
+  const filter = props.savedFilters.find((f) => f.id === selectedFilterId.value);
+  return filter ? filter.name : "- Filternamen nicht gefunden -";
+});
 
 function resetDialogState() {
   mode.value = "Speichern";
@@ -83,7 +103,6 @@ function resetDialogState() {
   selectedFilterId.value = null;
 }
 
-// Dialog öffnen: State zurücksetzen
 watch(
   () => props.show,
   (val) => {
@@ -92,8 +111,9 @@ watch(
   },
 );
 
-// Zwei-Wege-Bindung nach außen
-watch(internalShow, (val) => emits("update:show", val));
+watch(internalShow, (val) => {
+  emits("update:show", val);
+});
 
 const canSave = computed(() => {
   if (mode.value === "Speichern") {
@@ -110,9 +130,21 @@ function close() {
 function onSubmit() {
   if (mode.value === "Speichern") {
     emits("save", filterName.value.trim());
+    close();
   } else if (selectedFilterId.value) {
+    isYesNoDialogOpen.value = true;
+  }
+}
+
+function editConfirm() {
+  if (selectedFilterId.value) {
     emits("edit", selectedFilterId.value);
   }
+  isYesNoDialogOpen.value = false;
   close();
+}
+
+function editAbort() {
+  isYesNoDialogOpen.value = false;
 }
 </script>
