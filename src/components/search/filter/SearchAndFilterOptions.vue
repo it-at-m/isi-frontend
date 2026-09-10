@@ -9,7 +9,6 @@
         >
         <span class="text-subtitle-1">Such- und Filtereinstellungen</span>
       </div>
-      <!-- Dropdown für gespeicherte Filter -->
       <v-select
         v-model="selectedFilter"
         :items="savedFilters"
@@ -55,7 +54,7 @@
         color="primary"
         style="width: 300px"
         variant="flat"
-        @click="saveCurrentFilter"
+        @click="showSaveDialog = true"
       >
         Speichern / Überschreiben
       </v-btn>
@@ -71,6 +70,12 @@
       <v-spacer />
     </v-card-actions>
   </v-card>
+  <filter-save-dialog
+    v-model:show="showSaveDialog"
+    :saved-filters="savedFilters"
+    @save="onSaveFilter"
+    @edit="onEditFilter"
+  />
 </template>
 
 <script setup lang="ts">
@@ -82,7 +87,8 @@ import FilterPanel from "@/components/search/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
-import { mapBackendFilterToFrontend } from "@/composables/requests/filter/useFilterMapping";
+import FilterSaveDialog from "@/components/search/filter/FilterSaveDialog.vue";
+import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
@@ -92,10 +98,10 @@ interface Emits {
 const { xl } = useDisplay();
 const panels = ref<Array<number>>([0]);
 const emit = defineEmits<Emits>();
+const showSaveDialog = ref(false);
 
-const { savedFilters, loadFilters, saveFilter } = useFilterPersistence();
+const { savedFilters, loadFilters, saveFilter, editExistingFilter, selectFilter } = useFilterPersistence();
 const selectedFilter = ref<string | null>(null);
-
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
 onMounted(() => {
@@ -110,16 +116,7 @@ const getContentSheetHeight = computed(() => {
 });
 
 function onSelectFilter(id: string) {
-  const filter = savedFilters.value.find((f) => f.id === id);
-  if (filter) {
-    const mapped = mapBackendFilterToFrontend(filter.filterSettings, searchQueryAndSorting.value);
-    Object.assign(searchQueryAndSorting.value, mapped);
-  }
-}
-
-async function saveCurrentFilter() {
-  const defaultName = "Mein Filter " + (savedFilters.value.length + 1);
-  await saveFilter(defaultName, searchQueryAndSorting.value);
+  selectFilter(id, searchQueryAndSorting);
 }
 
 function adoptSearchAndFilterOptions(): void {
@@ -128,5 +125,13 @@ function adoptSearchAndFilterOptions(): void {
 
 function resetSearchAndFilterOptions(): void {
   emit("reset-search-and-filter-options");
+}
+
+async function onSaveFilter(name: string) {
+  await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
+}
+
+async function onEditFilter(id: string) {
+  await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
 }
 </script>
