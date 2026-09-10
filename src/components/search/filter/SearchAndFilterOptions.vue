@@ -21,7 +21,7 @@
         style="max-width: 300px"
         placeholder="Gespeicherten Filter anwenden"
         class="ml-2"
-        @focus="loadFilters"
+        @update:modelValue="onSelectFilter"
       />
     </v-card-title>
 
@@ -55,7 +55,7 @@
         color="primary"
         style="width: 300px"
         variant="flat"
-        @click="resetSearchAndFilterOptions"
+        @click="saveCurrentFilter"
       >
         Speichern / Überschreiben
       </v-btn>
@@ -74,13 +74,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { mapBackendFilterToFrontend } from "@/composables/requests/filter/useFilterMapping";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
@@ -91,12 +93,14 @@ const { xl } = useDisplay();
 const panels = ref<Array<number>>([0]);
 const emit = defineEmits<Emits>();
 
-const filterApi = new PersonalFilterEntityControllerApi(RequestUtils.getBasicFetchConfigurationForBackend());
-
-const savedFilters = ref<Array<{ id: string; name: string }>>([]);
+const { savedFilters, loadFilters, saveFilter } = useFilterPersistence();
 const selectedFilter = ref<string | null>(null);
 
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
+
+onMounted(() => {
+  loadFilters();
+});
 
 const getContentSheetHeight = computed(() => {
   if (xl.value) {
@@ -105,8 +109,17 @@ const getContentSheetHeight = computed(() => {
   return "550px";
 });
 
-async function loadFilters() {
-  const result = await filterApi.getCollectionResourcePersonalfilterGet();
+function onSelectFilter(id: string) {
+  const filter = savedFilters.value.find((f) => f.id === id);
+  if (filter) {
+    const mapped = mapBackendFilterToFrontend(filter.filterSettings, searchQueryAndSorting.value);
+    Object.assign(searchQueryAndSorting.value, mapped);
+  }
+}
+
+async function saveCurrentFilter() {
+  const defaultName = "Mein Filter " + (savedFilters.value.length + 1);
+  await saveFilter(defaultName, searchQueryAndSorting.value);
 }
 
 function adoptSearchAndFilterOptions(): void {
