@@ -9,21 +9,33 @@
         >
         <span class="text-subtitle-1">Such- und Filtereinstellungen</span>
       </div>
-      <v-select
-        v-model="selectedFilter"
-        :items="savedFilters"
-        item-title="name"
-        item-value="id"
-        density="compact"
-        variant="solo"
-        hide-details
-        style="max-width: 300px"
-        placeholder="Gespeicherten Filter anwenden"
-        class="ml-2"
-        @update:modelValue="onSelectFilter"
-      />
+      <div
+        class="d-flex align-center"
+        style="min-width: 0"
+      >
+        <v-btn
+          icon
+          variant="text"
+          class="ml-2"
+          @click="showManagementDialog = true"
+          :aria-label="'Filter verwalten'"
+        >
+          <v-icon>mdi-cog</v-icon>
+        </v-btn>
+        <v-select
+          v-model="selectedFilter"
+          :items="savedFilters"
+          item-title="name"
+          item-value="id"
+          density="compact"
+          variant="solo"
+          hide-details
+          style="width: 300px"
+          placeholder="Gespeicherten Filter anwenden"
+          @update:modelValue="onSelectFilter"
+        />
+      </div>
     </v-card-title>
-
     <v-card-text>
       <v-sheet
         width="100%"
@@ -76,6 +88,12 @@
     @save="onSaveFilter"
     @edit="onEditFilter"
   />
+  <filter-management-dialog
+    v-model="showManagementDialog"
+    :filters="savedFilters"
+    @rename="onRenameFilter"
+    @delete="onDeleteFilter"
+  />
 </template>
 
 <script setup lang="ts">
@@ -90,6 +108,7 @@ import { useFilterPersistence } from "@/composables/requests/filter/useFilterPer
 import FilterSaveDialog from "@/components/search/filter/FilterSaveDialog.vue";
 import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 import { useToast } from "vue-toastification";
+import FilterManagementDialog from "@/components/search/filter/FilterManagementDialog.vue";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
@@ -100,8 +119,10 @@ const { xl } = useDisplay();
 const panels = ref<Array<number>>([0]);
 const emit = defineEmits<Emits>();
 const showSaveDialog = ref(false);
+const showManagementDialog = ref(false);
 
-const { savedFilters, loadFilters, saveFilter, editExistingFilter, selectFilter } = useFilterPersistence();
+const { savedFilters, loadFilters, saveFilter, editExistingFilter, selectFilter, deleteExistingFilter } =
+  useFilterPersistence();
 const selectedFilter = ref<string | null>(null);
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 const toast = useToast();
@@ -137,7 +158,7 @@ function resetSearchAndFilterOptions(): void {
 async function onSaveFilter(name: string) {
   try {
     await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
-    toast.success("Neuer Filter wurde erfolgreich erstellt");
+    toast.success("Neuer Filter wurde erfolgreich erstellt.");
   } catch (e: any) {
     toast.error("Es ist ein Fehler beim Erstellen des Filters aufgetreten.");
   }
@@ -146,9 +167,29 @@ async function onSaveFilter(name: string) {
 async function onEditFilter(id: string) {
   try {
     await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
-    toast.success("Deine Änderungen wurden erfolgreich gespeichert");
+    toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
   } catch (e: any) {
     toast.error("Es ist ein Fehler beim Überschreiben des Filters aufgetreten.");
+  }
+}
+
+async function onRenameFilter(id: string, newName: string) {
+  try {
+    await editExistingFilter(id, { ...savedFilters.value.find((f) => f.id === id)?.filterSettings }, newName);
+    toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
+    await loadFilters();
+  } catch (e: any) {
+    toast.error("Es ist ein Fehler beim Umbenennen des Filters aufgetreten.");
+  }
+}
+
+async function onDeleteFilter(id: string) {
+  try {
+    await deleteExistingFilter(id);
+    toast.success("Der Filter wurde erfolgreich gelöscht.");
+    await loadFilters();
+  } catch (e: any) {
+    toast.error("Es ist ein Fehler beim Löschen des Filters aufgetreten.");
   }
 }
 </script>
