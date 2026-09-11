@@ -5,7 +5,7 @@ import type { FilterSettingsDto, PersonalFilterRequestDto } from "@/api/api-clie
 
 export function useFilterPersistence() {
   const savedFilters = ref<Array<{ id: string; name: string; filterSettings: FilterSettingsDto }>>([]);
-  const { getPersonalFilters, createFilter, editFilter } = usePersonalFilterApi();
+  const { getPersonalFilters, createFilter, editFilter, deleteFilter } = usePersonalFilterApi();
 
   async function loadFilters() {
     const filters = await getPersonalFilters();
@@ -22,13 +22,13 @@ export function useFilterPersistence() {
     await loadFilters();
   }
 
-  async function editExistingFilter(id: string, filterSettings: FilterSettingsDto) {
+  async function editExistingFilter(id: string, filterSettings: FilterSettingsDto, newName?: string) {
     const backendFilterSettings = mapFrontendFilterToBackend(filterSettings) as FilterSettingsDto;
     const filter = savedFilters.value.find((f) => f.id === id);
     if (filter) {
       const dto: PersonalFilterRequestDto = {
         id: filter.id,
-        filterName: filter.name,
+        filterName: newName ?? filter.name,
         filterSettings: backendFilterSettings,
       };
       await editFilter(dto);
@@ -44,11 +44,16 @@ export function useFilterPersistence() {
     }
   }
 
+  async function deleteExistingFilter(id: string) {
+    await deleteFilter(id);
+  }
+
   return {
     savedFilters,
     loadFilters,
     saveFilter,
     editExistingFilter,
     selectFilter,
+    deleteExistingFilter,
   };
 }
