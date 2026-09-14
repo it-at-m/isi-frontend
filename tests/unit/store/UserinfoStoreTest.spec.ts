@@ -82,19 +82,19 @@ describe("Userinfo Store", () => {
       expect(userinfoStore.hasRoleSachbearbeitung).toBe(false);
     });
 
-    test("hasRoleBedarfsmeldung returns true if the user has bedarfsmeldung role", () => {
+    test("hasRoleBedarfsmeldungKita returns true if the user has bedarfsmeldung-kita role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
-        roles: ["anwender", "bedarfsmeldung"],
+        roles: ["anwender", "bedarfsmeldung-kita"],
         surname: "Testing",
         department: "Coole Abteilung",
         email: "meister@meister.de",
       });
-      expect(userinfoStore.hasRoleBedarfsmeldung).toBe(true);
+      expect(userinfoStore.hasRoleBedarfsmeldungKita).toBe(true);
     });
 
-    test("hasRoleBedarfsmeldung returns false if the user has not bedarfsmeldung role", () => {
+    test("hasRoleBedarfsmeldungKita returns false if the user has not bedarfsmeldung-kita role", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
@@ -103,7 +103,79 @@ describe("Userinfo Store", () => {
         department: "Coole Abteilung",
         email: "meister@meister.de",
       });
-      expect(userinfoStore.hasRoleBedarfsmeldung).toBe(false);
+      expect(userinfoStore.hasRoleBedarfsmeldungKita).toBe(false);
+    });
+
+    test("hasRoleBedarfsmeldungSchule returns true if the user has bedarfsmeldung-schule role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "bedarfsmeldung-schule"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldungSchule).toBe(true);
+    });
+
+    test("hasRoleBedarfsmeldungSchule returns false if the user has not bedarfsmeldung-schule role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldungSchule).toBe(false);
+    });
+
+    test("hasRoleFlaechenbedarfsmeldung returns true if the user has flaechenbedarfsmeldung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "flaechenbedarfsmeldung"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleFlaechenbedarfsmeldung).toBe(true);
+    });
+
+    test("hasRoleFlaechenbedarfsmeldung returns false if the user has not flaechenbedarfsmeldung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleFlaechenbedarfsmeldung).toBe(false);
+    });
+
+    test("hasRoleBedarfsmeldungSozialplanung returns true if the user has bedarfsmeldung-sozialplanung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender", "bedarfsmeldung-sozialplanung"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldungSozialplanung).toBe(true);
+    });
+
+    test("hasRoleBedarfsmeldungSozialplanung returns false if the user has not bedarfsmeldung-sozialplanung role", () => {
+      const userinfoStore = useUserinfoStore();
+      userinfoStore.setUserinfo({
+        givenname: "Testing",
+        roles: ["anwender"],
+        surname: "Testing",
+        department: "Coole Abteilung",
+        email: "meister@meister.de",
+      });
+      expect(userinfoStore.hasRoleBedarfsmeldungSozialplanung).toBe(false);
     });
 
     test("hasOnlyRoleAnwender returns true if anwender is the only role of the user", () => {
