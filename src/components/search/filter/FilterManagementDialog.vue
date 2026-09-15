@@ -4,13 +4,15 @@
     max-width="600"
   >
     <v-card>
-      <v-card-title>
-        <v-icon
-          start
-          size="20"
-          >mdi-cog</v-icon
-        >
-        Filter verwalten
+      <v-card-title class="d-flex align-center justify-space-between pt-4">
+        <div class="d-flex align-center">
+          <v-icon
+            start
+            size="20"
+            >mdi-cog</v-icon
+          >
+          <span class="text-subtitle-1 ml-2">Filter löschen oder umbenennen</span>
+        </div>
       </v-card-title>
       <v-card-text>
         <div style="max-height: 350px; overflow-y: auto; padding-right: 12px">
@@ -41,20 +43,27 @@
                 />
                 <v-sheet
                   v-else
-                  class="flex-grow-1 mr-3"
+                  class="flex-grow-1 mr-3 d-flex align-center"
                   color="transparent"
                   style="
                     border: 1px solid #ccc;
                     border-radius: 4px;
                     min-height: 44px;
-                    display: flex;
-                    align-items: center;
                     padding-left: 16px;
                     font-size: 16px;
+                    width: 250px;
+                    overflow: hidden;
                   "
                 >
-                  {{ filter.name }}
+                  <span
+                    class="text-truncate"
+                    style="display: block; width: 100%"
+                    :title="filter.name"
+                  >
+                    {{ filter.name }}
+                  </span>
                 </v-sheet>
+
                 <v-btn
                   icon
                   size="small"
@@ -95,10 +104,13 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          text
+          color="primary"
+          style="width: 150px"
+          variant="flat"
           @click="close"
-          >Schließen</v-btn
         >
+          Schließen
+        </v-btn>
       </v-card-actions>
     </v-card>
     <yes-no-dialog

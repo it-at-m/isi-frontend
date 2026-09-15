@@ -40,9 +40,10 @@
       </v-tooltip>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
-        max-width="1100px"
+        max-width="1000px"
       >
         <search-and-filter-options
+          ref="filterDialogRef"
           v-model="searchQueryAndSorting"
           @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
           @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
@@ -53,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed, ref, nextTick } from "vue";
 import { SearchQueryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
@@ -63,6 +64,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
 
+const filterDialogRef = ref();
 const searchAndFilterDialogOpen = ref<boolean>(false);
 const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
 const searchQuery = ref<string>("");
@@ -93,6 +95,9 @@ const searchQueryAndSortingStore = computed({
 function openSearchAndFilterDialog(): void {
   searchQueryAndSorting.value = searchQueryAndSortingStore.value;
   searchAndFilterDialogOpen.value = true;
+  nextTick(() => {
+    filterDialogRef.value?.onFiltermaskOpen();
+  });
 }
 
 function handleAdoptSearchAndFilterOptions(): void {

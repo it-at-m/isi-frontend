@@ -13,18 +13,26 @@
         class="d-flex align-center"
         style="min-width: 0"
       >
-        <v-btn
-          icon
-          variant="text"
-          class="ml-2"
-          @click="showManagementDialog = true"
-          :aria-label="'Filter verwalten'"
+        <v-tooltip
+          text="Filter löschen oder umbenennen"
+          location="top"
         >
-          <v-icon>mdi-cog</v-icon>
-        </v-btn>
+          <template #activator="{ props }">
+            <v-btn
+              icon
+              variant="text"
+              class="ml-2"
+              @click="showManagementDialog = true"
+              v-bind="props"
+            >
+              <v-icon>mdi-cog</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+
         <v-select
           v-model="selectedFilter"
-          :items="savedFilters"
+          :items="filterDropdownItems"
           item-title="name"
           item-value="id"
           density="compact"
@@ -32,8 +40,15 @@
           hide-details
           style="width: 300px"
           placeholder="Gespeicherten Filter anwenden"
-          @update:modelValue="onSelectFilter"
-        />
+          :menu-props="{ maxWidth: '300px', minWidth: '300px' }"
+        >
+          <template #item="{ item, props }">
+            <v-list-item
+              v-bind="props"
+              @click="onSelectFilter(item.id)"
+            />
+          </template>
+        </v-select>
       </div>
     </v-card-title>
     <v-card-text>
@@ -64,11 +79,11 @@
       <v-spacer />
       <v-btn
         color="primary"
-        style="width: 300px"
+        style="width: 200px"
         variant="flat"
-        @click="showSaveDialog = true"
+        @click="onSaveOrUpdate"
       >
-        Speichern / Überschreiben
+        {{ saveOrUpdateButtonText }}
       </v-btn>
       <v-spacer />
       <v-btn
@@ -94,10 +109,19 @@
     @rename="onRenameFilter"
     @delete="onDeleteFilter"
   />
+  <yes-no-dialog
+    v-model="confirmCloseDialogOpen"
+    dialogtitle="Filtermaske verlassen?"
+    :dialogtext="getConfirmDialogText()"
+    yes-text="Weiter"
+    no-text="Zurück"
+    @yes="confirmCloseDialog(true)"
+    @no="confirmCloseDialog(false)"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
 import SelectionAndSortingPanel from "@/components/search/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
@@ -109,6 +133,8 @@ import FilterSaveDialog from "@/components/search/filter/FilterSaveDialog.vue";
 import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/search/filter/FilterManagementDialog.vue";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
@@ -126,10 +152,39 @@ const { savedFilters, loadFilters, saveFilter, editExistingFilter, selectFilter,
 const selectedFilter = ref<string | null>(null);
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 const toast = useToast();
+const confirmCloseDialogOpen = ref(false);
+const confirmAction = ref<"adopt" | "reset" | null>(null);
+
+const STANDARD_FILTER_ID = "__default__";
+const standardFilter = { id: STANDARD_FILTER_ID, name: "Standardeinstellung" };
+const filterDropdownItems = computed(() => [standardFilter, ...savedFilters.value]);
+const saveOrUpdateButtonText = computed(() => {
+  if (selectedFilter.value && selectedFilter.value !== STANDARD_FILTER_ID) {
+    return "Aktualisieren";
+  }
+  return "Speichern";
+});
+
+const isFilterModified = ref(false);
+let ignoreNextModelChange = false;
 
 onMounted(() => {
   loadFilters();
 });
+
+watch(
+  searchQueryAndSorting,
+  () => {
+    if (ignoreNextModelChange) {
+      ignoreNextModelChange = false;
+      return;
+    }
+    if (!isFilterModified.value) {
+      isFilterModified.value = true;
+    }
+  },
+  { deep: true },
+);
 
 const getContentSheetHeight = computed(() => {
   if (xl.value) {
@@ -138,21 +193,83 @@ const getContentSheetHeight = computed(() => {
   return "550px";
 });
 
+function onFiltermaskOpen() {
+  isFilterModified.value = false;
+  ignoreNextModelChange = false;
+}
+
 function onSelectFilter(id: string) {
+  if (id === STANDARD_FILTER_ID) {
+    searchQueryAndSorting.value = createSearchQueryAndSortingModel();
+    isFilterModified.value = false;
+    ignoreNextModelChange = true;
+    toast.success("Standardeinstellung wurde angewendet.");
+    return;
+  }
   try {
     selectFilter(id, searchQueryAndSorting);
     toast.success("Gespeicherter Filter wurde angewendet.");
+    isFilterModified.value = false;
+    ignoreNextModelChange = true;
   } catch (e: any) {
     toast.error("Es ist ein Fehler beim Anwenden des Filters aufgetreten.");
   }
 }
 
+function onSaveOrUpdate() {
+  if (selectedFilter.value && selectedFilter.value !== STANDARD_FILTER_ID) {
+    onEditFilter(selectedFilter.value);
+  } else {
+    showSaveDialog.value = true;
+  }
+}
+
 function adoptSearchAndFilterOptions(): void {
-  emit("adopt-search-and-filter-options");
+  if (selectedFilter.value && isFilterModified.value) {
+    confirmAction.value = "adopt";
+    confirmCloseDialogOpen.value = true;
+  } else {
+    emit("adopt-search-and-filter-options");
+  }
 }
 
 function resetSearchAndFilterOptions(): void {
-  emit("reset-search-and-filter-options");
+  if (selectedFilter.value && isFilterModified.value) {
+    confirmAction.value = "reset";
+    confirmCloseDialogOpen.value = true;
+  } else {
+    emit("reset-search-and-filter-options");
+  }
+}
+
+function confirmCloseDialog(yes: boolean) {
+  confirmCloseDialogOpen.value = false;
+  if (yes) {
+    if (confirmAction.value === "adopt") {
+      emit("adopt-search-and-filter-options");
+    } else if (confirmAction.value === "reset") {
+      emit("reset-search-and-filter-options");
+    }
+  }
+  confirmAction.value = null;
+}
+
+function getSelectedFilterName() {
+  if (selectedFilter.value === STANDARD_FILTER_ID) {
+    return standardFilter.name;
+  }
+  const filter = savedFilters.value.find((f) => f.id === selectedFilter.value);
+  return filter ? filter.name : "";
+}
+
+function getConfirmDialogText() {
+  const filterName = getSelectedFilterName();
+  if (confirmAction.value === "adopt") {
+    return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem übernehmen?`;
+  } else if (confirmAction.value === "reset") {
+    return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem zurücksetzen?`;
+  }
+  return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem verlassen?`;
 }
 
 async function onSaveFilter(name: string) {
@@ -168,6 +285,7 @@ async function onEditFilter(id: string) {
   try {
     await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
+    isFilterModified.value = false;
   } catch (e: any) {
     toast.error("Es ist ein Fehler beim Überschreiben des Filters aufgetreten.");
   }
@@ -192,4 +310,6 @@ async function onDeleteFilter(id: string) {
     toast.error("Es ist ein Fehler beim Löschen des Filters aufgetreten.");
   }
 }
+
+defineExpose({ onFiltermaskOpen });
 </script>
