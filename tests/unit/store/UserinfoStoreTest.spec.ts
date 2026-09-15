@@ -86,7 +86,7 @@ describe("Userinfo Store", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
-        roles: ["anwender", "bedarfsmeldung-kita"],
+        roles: ["anwender", "bedarfsmeldung_kita"],
         surname: "Testing",
         department: "Coole Abteilung",
         email: "meister@meister.de",
@@ -110,7 +110,7 @@ describe("Userinfo Store", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
-        roles: ["anwender", "bedarfsmeldung-schule"],
+        roles: ["anwender", "bedarfsmeldung_schule"],
         surname: "Testing",
         department: "Coole Abteilung",
         email: "meister@meister.de",
@@ -158,7 +158,7 @@ describe("Userinfo Store", () => {
       const userinfoStore = useUserinfoStore();
       userinfoStore.setUserinfo({
         givenname: "Testing",
-        roles: ["anwender", "bedarfsmeldung-sozialplanung"],
+        roles: ["anwender", "bedarfsmeldung_sozialplanung"],
         surname: "Testing",
         department: "Coole Abteilung",
         email: "meister@meister.de",

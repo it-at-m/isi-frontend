@@ -29,12 +29,12 @@ export const useUserinfoStore = defineStore("userinfo", {
     },
     hasRoleBedarfsmeldungKita: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
-        ? state.userinfo?.roles?.includes("bedarfsmeldung-kita")
+        ? state.userinfo?.roles?.includes("bedarfsmeldung_kita")
         : false;
     },
     hasRoleBedarfsmeldungSchule: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
-        ? state.userinfo?.roles?.includes("bedarfsmeldung-schule")
+        ? state.userinfo?.roles?.includes("bedarfsmeldung_schule")
         : false;
     },
     hasRoleFlaechenbedarfsmeldung: (state: State): boolean => {
@@ -44,7 +44,7 @@ export const useUserinfoStore = defineStore("userinfo", {
     },
     hasRoleBedarfsmeldungSozialplanung: (state: State): boolean => {
       return !_.isNil(state.userinfo) && !_.isNil(state.userinfo.roles)
-        ? state.userinfo?.roles?.includes("bedarfsmeldung-sozialplanung")
+        ? state.userinfo?.roles?.includes("bedarfsmeldung_sozialplanung")
         : false;
     },
     hasOnlyRoleAnwender: (state: State): boolean => {
