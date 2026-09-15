@@ -128,7 +128,7 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import FilterPanel from "@/components/search/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
-import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { useFilterPersistence, FilterNameError } from "@/composables/requests/filter/useFilterPersistence";
 import FilterSaveDialog from "@/components/search/filter/FilterSaveDialog.vue";
 import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 import { useToast } from "vue-toastification";
@@ -277,7 +277,11 @@ async function onSaveFilter(name: string) {
     await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
   } catch (e: any) {
-    toast.error("Es ist ein Fehler beim Erstellen des Filters aufgetreten.");
+    if (e?.name === "FilterNameError") {
+      toast.error(e.message);
+    } else {
+      toast.error("Es ist ein Fehler beim Erstellen des Filters aufgetreten.");
+    }
   }
 }
 
@@ -297,7 +301,11 @@ async function onRenameFilter(id: string, newName: string) {
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
     await loadFilters();
   } catch (e: any) {
-    toast.error("Es ist ein Fehler beim Umbenennen des Filters aufgetreten.");
+    if (e?.name === "FilterNameError") {
+      toast.error(e.message);
+    } else {
+      toast.error("Es ist ein Fehler beim Umbenennen des Filters aufgetreten.");
+    }
   }
 }
 
