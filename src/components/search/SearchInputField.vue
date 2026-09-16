@@ -29,15 +29,46 @@
       >
         <template #activator="{ props: activatorProps }">
           <v-icon
-            :color="checkCurrentFilter() ? '' : 'secondary'"
+            :color="lastFilterSource === 'dialog' ? 'secondary' : ''"
             @click="openSearchAndFilterDialog"
             v-bind="activatorProps"
           >
             {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
           </v-icon>
         </template>
-        <span> Such- und Filtereinstellungen </span>
+        <span>Such- und Filtereinstellungen</span>
       </v-tooltip>
+      <v-menu
+        v-model="quickFilterMenuOpen"
+        offset-y
+        min-width="220"
+        max-width="320"
+      >
+        <template #activator="{ props }">
+          <v-tooltip
+            location="bottom"
+            open-delay="500"
+          >
+            <template #activator="{ props: tooltipProps }">
+              <v-icon
+                size="20"
+                class="ml-2"
+                :color="lastFilterSource === 'quick' ? 'secondary' : ''"
+                v-bind="Object.assign({}, props, tooltipProps)"
+                @click.stop
+              >
+                mdi-bookmark-multiple-outline
+              </v-icon>
+            </template>
+            <span>Gespeicherte Filter</span>
+          </v-tooltip>
+        </template>
+        <quick-filter-list
+          :active-filter-id="activeQuickFilterId"
+          @apply-filter="onQuickFilterSelected"
+          @reset-filter="resetQuickFilter"
+        />
+      </v-menu>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
         max-width="1000px"
@@ -74,8 +105,14 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import QuickFilterList from "@/components/search/filter/QuickFilterList.vue";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const filterDialogRef = ref();
+const quickFilterMenuOpen = ref(false);
+const lastFilterSource = ref<"dialog" | "quick" | null>(null);
+const activeQuickFilterId = ref<string | null>(null);
 const confirmCloseDialogOpen = ref(false);
 const lastSelectedFilter = ref<string | null>(null);
 const searchAndFilterDialogOpen = ref<boolean>(false);
@@ -94,7 +131,29 @@ onMounted(() => {
   clearSearch();
 });
 
-// Filter Dialog
+// Schnellfilter
+function onQuickFilterSelected(filter: { id: string; name: string; filterSettings: any }) {
+  try {
+    searchQueryAndSorting.value = { ...filter.filterSettings };
+    searchQueryAndSortingStore.value = searchQueryAndSorting.value;
+    quickFilterMenuOpen.value = false;
+    searchEntitiesForSelectedSuggestion();
+    checkCurrentFilter();
+    lastFilterSource.value = "quick";
+    activeQuickFilterId.value = filter.id;
+    toast.success(`Filter übernommen.`);
+  } catch (e) {
+    toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
+  }
+}
+
+function resetQuickFilter() {
+  handleResetSearchAndFilterOptions();
+  quickFilterMenuOpen.value = false;
+  toast.success("Filter zurückgesetzt.");
+}
+
+// Großer Filter Dialog
 function onFilterDialogClickOutside() {
   const isModified = filterDialogRef.value?.isFilterModified;
   const selectedFilter = filterDialogRef.value?.selectedFilter;
@@ -146,12 +205,15 @@ function handleAdoptSearchAndFilterOptions(): void {
   searchAndFilterDialogOpen.value = false;
   searchEntitiesForSelectedSuggestion();
   checkCurrentFilter();
+  lastFilterSource.value = "dialog";
 }
 
 function handleResetSearchAndFilterOptions(): void {
   searchQueryAndSorting.value = createSearchQueryAndSortingModel();
   handleAdoptSearchAndFilterOptions();
   searchEntitiesForSelectedSuggestion();
+  lastFilterSource.value = null;
+  activeQuickFilterId.value = null;
 }
 
 function checkCurrentFilter(): boolean {
