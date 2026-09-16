@@ -51,8 +51,8 @@
           >
             <template #activator="{ props: tooltipProps }">
               <v-icon
-                size="20"
-                class="ml-2"
+                size="18"
+                class="ml-4"
                 :color="lastFilterSource === 'quick' ? 'secondary' : ''"
                 v-bind="Object.assign({}, props, tooltipProps)"
                 @click.stop
@@ -141,7 +141,7 @@ function onQuickFilterSelected(filter: { id: string; name: string; filterSetting
     checkCurrentFilter();
     lastFilterSource.value = "quick";
     activeQuickFilterId.value = filter.id;
-    toast.success(`Filter übernommen.`);
+    toast.success("Filter übernommen.", { position: "bottom-right" });
   } catch (e) {
     toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
   }
@@ -150,7 +150,7 @@ function onQuickFilterSelected(filter: { id: string; name: string; filterSetting
 function resetQuickFilter() {
   handleResetSearchAndFilterOptions();
   quickFilterMenuOpen.value = false;
-  toast.success("Filter zurückgesetzt.");
+  toast.success("Filter zurückgesetzt.", { position: "bottom-right" });
 }
 
 // Großer Filter Dialog

@@ -40,6 +40,7 @@
                   autofocus
                   class="flex-grow-1 mr-3"
                   style="min-height: 44px"
+                  :maxlength="50"
                 />
                 <v-sheet
                   v-else
@@ -92,13 +93,13 @@
               </div>
             </v-list-item>
           </v-list>
-          <v-alert
+          <v-list-item
             v-if="filters.length === 0"
-            type="info"
-            class="mt-4"
+            class="justify-center"
           >
-            Keine Filter vorhanden.
-          </v-alert>
+            <v-icon class="mr-2">mdi-information-outline</v-icon>
+            <span>Keine Filter gespeichert.</span>
+          </v-list-item>
         </div>
       </v-card-text>
       <v-card-actions>

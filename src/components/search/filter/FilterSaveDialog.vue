@@ -12,6 +12,7 @@
           density="comfortable"
           autofocus
           hide-details
+          :maxlength="50"
         />
       </v-card-text>
       <v-card-actions class="pt-0 pb-4">

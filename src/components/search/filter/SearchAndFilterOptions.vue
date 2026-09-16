@@ -39,7 +39,7 @@
           variant="solo"
           hide-details
           style="width: 300px"
-          placeholder="Gespeicherten Filter anwenden"
+          placeholder="Filtereinstellungen übernehmen"
           :menu-props="{ maxWidth: '300px', minWidth: '300px' }"
         >
           <template #item="{ item, props }">
@@ -269,11 +269,11 @@ function getSelectedFilterName() {
 function getConfirmDialogText() {
   const filterName = getSelectedFilterName();
   if (confirmAction.value === "adopt") {
-    return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem übernehmen?`;
+    return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem übernehmen?`;
   } else if (confirmAction.value === "reset") {
-    return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem zurücksetzen?`;
+    return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem zurücksetzen?`;
   }
-  return `Änderungen am Filter "${filterName}" werden nicht gespeichert. Trotzdem verlassen?`;
+  return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem verlassen?`;
 }
 
 async function onSaveFilter(name: string) {
