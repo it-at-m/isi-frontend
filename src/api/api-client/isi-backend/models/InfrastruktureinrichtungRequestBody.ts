@@ -139,16 +139,16 @@ export interface InfrastruktureinrichtungRequestBody {
     infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
     /**
      * 
-     * @type {string}
-     * @memberof InfrastruktureinrichtungRequestBody
-     */
-    bauvorhabenName?: string;
-    /**
-     * 
      * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
     resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    bauvorhabenName?: string;
     /**
      * 
      * @type {VerortungPoint}
@@ -238,8 +238,8 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
-        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
     };
@@ -272,8 +272,8 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
-        'bauvorhabenName': value['bauvorhabenName'],
         'resultType': value['resultType'],
+        'bauvorhabenName': value['bauvorhabenName'],
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
         'adresseJson': AdresseToJSON(value['adresseJson']),
     };

@@ -75,6 +75,7 @@ No authorization required
 | **201** | CREATED -&gt; Persönlicher Filter wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Persönlicher Filter konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
+| **409** | CONFLICT -&gt; Maximale Anzahl persönlicher Filter bereits vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -141,7 +142,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Persönlicher Filter mit dieser ID nicht vorhanden. |  -  |
-| **403** | CONFLICT -&gt; Keine Berechtigung zum Löschen dieses persönlichen Filters. |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung zum Löschen dieses persönlichen Filters. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

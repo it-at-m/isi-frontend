@@ -25,12 +25,16 @@ import {
 } from '../models/EntityModelPersonalFilter';
 
 export interface ExecuteSearchPersonalfilterGetRequest {
+    personalId?: string;
+}
+
+export interface ExecuteSearchPersonalfilterGet1Request {
     id?: string;
     personalid?: string;
 }
 
-export interface ExecuteSearchPersonalfilterGet1Request {
-    personalid?: string;
+export interface ExecuteSearchPersonalfilterGet2Request {
+    personalId?: string;
 }
 
 /**
@@ -42,6 +46,49 @@ export class PersonalFilterSearchControllerApi extends runtime.BaseAPI {
      * Creates request options for executeSearchPersonalfilterGet without sending the request
      */
     async executeSearchPersonalfilterGetRequestOpts(requestParameters: ExecuteSearchPersonalfilterGetRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['personalId'] != null) {
+            queryParameters['personalId'] = requestParameters['personalId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/personalFilters/search/countByPersonalID`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     */
+    async executeSearchPersonalfilterGetRaw(requestParameters: ExecuteSearchPersonalfilterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<number>> {
+        const requestOptions = await this.executeSearchPersonalfilterGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<number>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async executeSearchPersonalfilterGet(requestParameters: ExecuteSearchPersonalfilterGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<number> {
+        const response = await this.executeSearchPersonalfilterGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for executeSearchPersonalfilterGet1 without sending the request
+     */
+    async executeSearchPersonalfilterGet1RequestOpts(requestParameters: ExecuteSearchPersonalfilterGet1Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['id'] != null) {
@@ -67,8 +114,8 @@ export class PersonalFilterSearchControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async executeSearchPersonalfilterGetRaw(requestParameters: ExecuteSearchPersonalfilterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelPersonalFilter>> {
-        const requestOptions = await this.executeSearchPersonalfilterGetRequestOpts(requestParameters);
+    async executeSearchPersonalfilterGet1Raw(requestParameters: ExecuteSearchPersonalfilterGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EntityModelPersonalFilter>> {
+        const requestOptions = await this.executeSearchPersonalfilterGet1RequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntityModelPersonalFilterFromJSON(jsonValue));
@@ -76,25 +123,25 @@ export class PersonalFilterSearchControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async executeSearchPersonalfilterGet(requestParameters: ExecuteSearchPersonalfilterGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelPersonalFilter> {
-        const response = await this.executeSearchPersonalfilterGetRaw(requestParameters, initOverrides);
+    async executeSearchPersonalfilterGet1(requestParameters: ExecuteSearchPersonalfilterGet1Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EntityModelPersonalFilter> {
+        const response = await this.executeSearchPersonalfilterGet1Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Creates request options for executeSearchPersonalfilterGet1 without sending the request
+     * Creates request options for executeSearchPersonalfilterGet2 without sending the request
      */
-    async executeSearchPersonalfilterGet1RequestOpts(requestParameters: ExecuteSearchPersonalfilterGet1Request): Promise<runtime.RequestOpts> {
+    async executeSearchPersonalfilterGet2RequestOpts(requestParameters: ExecuteSearchPersonalfilterGet2Request): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters['personalid'] != null) {
-            queryParameters['personalid'] = requestParameters['personalid'];
+        if (requestParameters['personalId'] != null) {
+            queryParameters['personalId'] = requestParameters['personalId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/personalFilters/search/findByPersonalID`;
+        let urlPath = `/personalFilters/search/findByPersonalIDOrderByLastModifiedDateTimeDesc`;
 
         return {
             path: urlPath,
@@ -106,8 +153,8 @@ export class PersonalFilterSearchControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async executeSearchPersonalfilterGet1Raw(requestParameters: ExecuteSearchPersonalfilterGet1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelEntityModelPersonalFilter>> {
-        const requestOptions = await this.executeSearchPersonalfilterGet1RequestOpts(requestParameters);
+    async executeSearchPersonalfilterGet2Raw(requestParameters: ExecuteSearchPersonalfilterGet2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CollectionModelEntityModelPersonalFilter>> {
+        const requestOptions = await this.executeSearchPersonalfilterGet2RequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CollectionModelEntityModelPersonalFilterFromJSON(jsonValue));
@@ -115,8 +162,8 @@ export class PersonalFilterSearchControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async executeSearchPersonalfilterGet1(requestParameters: ExecuteSearchPersonalfilterGet1Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelEntityModelPersonalFilter> {
-        const response = await this.executeSearchPersonalfilterGet1Raw(requestParameters, initOverrides);
+    async executeSearchPersonalfilterGet2(requestParameters: ExecuteSearchPersonalfilterGet2Request = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CollectionModelEntityModelPersonalFilter> {
+        const response = await this.executeSearchPersonalfilterGet2Raw(requestParameters, initOverrides);
         return await response.value();
     }
 
