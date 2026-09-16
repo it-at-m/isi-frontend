@@ -100,12 +100,12 @@ import { SearchQueryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
-import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
+import SearchAndFilterOptions from "@/components/filter/SearchAndFilterOptions.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import QuickFilterList from "@/components/search/filter/QuickFilterList.vue";
+import QuickFilterList from "@/components/filter/QuickFilterList.vue";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
