@@ -193,9 +193,13 @@ const getContentSheetHeight = computed(() => {
   return "550px";
 });
 
-function onFiltermaskOpen() {
-  isFilterModified.value = false;
-  ignoreNextModelChange = false;
+function onFiltermaskOpen(selectedFilterId?: string) {
+  if (selectedFilterId == null) {
+    isFilterModified.value = false;
+    ignoreNextModelChange = false;
+  } else {
+    selectedFilter.value = selectedFilterId;
+  }
 }
 
 function onSelectFilter(id: string) {
@@ -319,5 +323,5 @@ async function onDeleteFilter(id: string) {
   }
 }
 
-defineExpose({ onFiltermaskOpen });
+defineExpose({ onFiltermaskOpen, isFilterModified, selectedFilter });
 </script>

@@ -41,6 +41,7 @@
       <v-dialog
         v-model="searchAndFilterDialogOpen"
         max-width="1000px"
+        @click:outside="onFilterDialogClickOutside"
       >
         <search-and-filter-options
           ref="filterDialogRef"
@@ -49,6 +50,15 @@
           @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
         />
       </v-dialog>
+      <yes-no-dialog
+        v-model="confirmCloseDialogOpen"
+        dialogtitle="Filtermaske verlassen?"
+        dialogtext="Änderungen am ausgewählten Filter werden nicht gespeichert. Trotzdem verlassen?"
+        yes-text="Weiter"
+        no-text="Zurück"
+        @yes="confirmCloseDialogYes()"
+        @no="confirmCloseDialogNo()"
+      />
     </template>
   </v-autocomplete>
 </template>
@@ -63,8 +73,11 @@ import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOp
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 
 const filterDialogRef = ref();
+const confirmCloseDialogOpen = ref(false);
+const lastSelectedFilter = ref<string | null>(null);
 const searchAndFilterDialogOpen = ref<boolean>(false);
 const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
 const searchQuery = ref<string>("");
@@ -82,6 +95,34 @@ onMounted(() => {
 });
 
 // Filter Dialog
+function onFilterDialogClickOutside() {
+  const isModified = filterDialogRef.value?.isFilterModified;
+  const selectedFilter = filterDialogRef.value?.selectedFilter;
+  if (isModified && selectedFilter) {
+    lastSelectedFilter.value = selectedFilter;
+    confirmCloseDialogOpen.value = true;
+  } else {
+    searchAndFilterDialogOpen.value = false;
+  }
+}
+
+function confirmCloseDialogYes(): void {
+  if (lastSelectedFilter) {
+    lastSelectedFilter.value = null;
+  }
+  searchAndFilterDialogOpen.value = false;
+  confirmCloseDialogOpen.value = false;
+}
+
+function confirmCloseDialogNo(): void {
+  confirmCloseDialogOpen.value = false;
+  nextTick(() => {
+    searchAndFilterDialogOpen.value = true;
+    nextTick(() => {
+      filterDialogRef.value?.onFiltermaskOpen(lastSelectedFilter.value);
+    });
+  });
+}
 
 const searchQueryAndSortingStore = computed({
   get() {
