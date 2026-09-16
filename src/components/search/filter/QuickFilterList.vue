@@ -59,8 +59,12 @@ const emit = defineEmits<{
   (e: "reset-filter"): void;
 }>();
 
-onMounted(() => {
-  loadFilters();
+onMounted(async () => {
+  try {
+    await loadFilters();
+  } catch {
+    // handleError already provides user feedback.
+  }
 });
 
 function onFilterClick(filter: any) {

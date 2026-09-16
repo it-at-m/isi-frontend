@@ -168,8 +168,12 @@ const saveOrUpdateButtonText = computed(() => {
 const isFilterModified = ref(false);
 let ignoreNextModelChange = false;
 
-onMounted(() => {
-  loadFilters();
+onMounted(async () => {
+  try {
+    await loadFilters();
+  } catch {
+    // handleError already provides user feedback.
+  }
 });
 
 watch(
@@ -197,6 +201,7 @@ function onFiltermaskOpen(selectedFilterId?: string) {
   if (selectedFilterId == null) {
     isFilterModified.value = false;
     ignoreNextModelChange = false;
+    selectedFilter.value = null;
   } else {
     selectedFilter.value = selectedFilterId;
   }
@@ -216,7 +221,9 @@ function onSelectFilter(id: string) {
     isFilterModified.value = false;
     ignoreNextModelChange = true;
   } catch (e: any) {
-    toast.error("Es ist ein Fehler beim Anwenden des Filters aufgetreten.");
+    if (e?.status === 0) {
+      toast.error("Es konnte keine Verbindung zum Server hergestellt werden.");
+    }
   }
 }
 
@@ -283,8 +290,8 @@ async function onSaveFilter(name: string) {
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
       toast.error(e.message);
-    } else {
-      toast.error("Es ist ein Fehler beim Erstellen des Filters aufgetreten.");
+    } else if (e?.status === 0) {
+      toast.error("Es konnte keine Verbindung zum Server hergestellt werden.");
     }
   }
 }
@@ -295,7 +302,9 @@ async function onEditFilter(id: string) {
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
     isFilterModified.value = false;
   } catch (e: any) {
-    toast.error("Es ist ein Fehler beim Überschreiben des Filters aufgetreten.");
+    if (e?.status === 0) {
+      toast.error("Es konnte keine Verbindung zum Server hergestellt werden.");
+    }
   }
 }
 
@@ -307,8 +316,8 @@ async function onRenameFilter(id: string, newName: string) {
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
       toast.error(e.message);
-    } else {
-      toast.error("Es ist ein Fehler beim Umbenennen des Filters aufgetreten.");
+    } else if (e?.status === 0) {
+      toast.error("Es konnte keine Verbindung zum Server hergestellt werden.");
     }
   }
 }
@@ -319,7 +328,9 @@ async function onDeleteFilter(id: string) {
     toast.success("Der Filter wurde erfolgreich gelöscht.");
     await loadFilters();
   } catch (e: any) {
-    toast.error("Es ist ein Fehler beim Löschen des Filters aufgetreten.");
+    if (e?.status === 0) {
+      toast.error("Es konnte keine Verbindung zum Server hergestellt werden.");
+    }
   }
 }
 
