@@ -1,3 +1,6 @@
+import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+
 export function mapBackendFilterToFrontend(
   backend: Record<string, any>,
   frontendTemplate: Record<string, any>,
@@ -25,4 +28,11 @@ export function mapFrontendFilterToBackend(frontend: Record<string, any>): Recor
     }
   });
   return backend;
+}
+
+export function mapModelToFilterSettingsDto(model: SearchQueryAndSortingModel): FilterSettingsDto {
+  return {
+    ...model,
+    sobonRelevant: model.filterSobonRelevant ?? "UNSPECIFIED",
+  };
 }

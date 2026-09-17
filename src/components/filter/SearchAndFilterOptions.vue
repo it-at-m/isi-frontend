@@ -128,7 +128,8 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import FilterPanel from "@/components/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
-import { useFilterPersistence, FilterNameError } from "@/composables/requests/filter/useFilterPersistence";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
 import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
 import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
