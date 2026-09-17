@@ -8,7 +8,11 @@ export class FilterNameError extends Error {
 import { ref } from "vue";
 import { usePersonalFilterApi } from "@/composables/requests/PersonalFilterApi";
 import { mapFrontendFilterToBackend, mapBackendFilterToFrontend } from "@/composables/requests/filter/useFilterMapping";
-import type { FilterSettingsDto, PersonalFilterRequestDto } from "@/api/api-client/isi-backend";
+import type {
+  FilterSettingsDto,
+  PersonalFilterRequestDto,
+  SearchQueryAndSortingDto,
+} from "@/api/api-client/isi-backend";
 
 export function useFilterPersistence() {
   const savedFilters = ref<Array<{ id: string; name: string; filterSettings: FilterSettingsDto }>>([]);
@@ -28,7 +32,7 @@ export function useFilterPersistence() {
     }));
   }
 
-  async function saveFilter(name: string, filterSettings: FilterSettingsDto) {
+  async function saveFilter(name: string, filterSettings: SearchQueryAndSortingDto | Record<string, any>) {
     if (isFilterNameTaken(name)) {
       throw new FilterNameError("Ein Filter mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.");
     }
@@ -37,7 +41,11 @@ export function useFilterPersistence() {
     await loadFilters();
   }
 
-  async function editExistingFilter(id: string, filterSettings: FilterSettingsDto, newName?: string) {
+  async function editExistingFilter(
+    id: string,
+    filterSettings: SearchQueryAndSortingDto | Record<string, any>,
+    newName?: string,
+  ) {
     const nameToCheck = newName ?? savedFilters.value.find((f) => f.id === id)?.name ?? "";
     if (isFilterNameTaken(nameToCheck, id)) {
       throw new FilterNameError("Ein Filter mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.");

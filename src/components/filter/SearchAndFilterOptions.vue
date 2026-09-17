@@ -130,7 +130,6 @@ import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
 import { useFilterPersistence, FilterNameError } from "@/composables/requests/filter/useFilterPersistence";
 import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
-import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -285,7 +284,7 @@ function getConfirmDialogText() {
 
 async function onSaveFilter(name: string) {
   try {
-    await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
+    await saveFilter(name, searchQueryAndSorting.value);
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
@@ -298,7 +297,7 @@ async function onSaveFilter(name: string) {
 
 async function onEditFilter(id: string) {
   try {
-    await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
+    await editExistingFilter(id, searchQueryAndSorting.value);
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
     isFilterModified.value = false;
   } catch (e: any) {
@@ -310,7 +309,7 @@ async function onEditFilter(id: string) {
 
 async function onRenameFilter(id: string, newName: string) {
   try {
-    await editExistingFilter(id, { ...savedFilters.value.find((f) => f.id === id)?.filterSettings }, newName);
+    await editExistingFilter(id, savedFilters.value.find((f) => f.id === id)?.filterSettings ?? {}, newName);
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
     await loadFilters();
   } catch (e: any) {
