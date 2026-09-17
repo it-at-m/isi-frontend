@@ -29,12 +29,7 @@ export function useSecurity() {
   );
   // Sichtbarkeit von Dokumenten/Kommentaren fuer irgendeine der vier Bedarfsmeldung-Rollen (lesend oder schreibend).
   const isRoleAdminOrBedarfsmeldungLesend = computed(
-    () =>
-      isRoleAdmin.value ||
-      isRoleAdminOrBedarfsmeldungKita.value ||
-      isRoleAdminOrBedarfsmeldungSchule.value ||
-      isRoleAdminOrFlaechenbedarfsmeldung.value ||
-      isRoleAdminOrBedarfsmeldungSozialplanung.value,
+    () => isRoleAdminOrBedarfsmeldungSchreibend.value || isRoleAdminOrFlaechenbedarfsmeldung.value,
   );
   // Schreibrecht auf Infrastruktureinrichtungen ("Einrichtungen des RBS"): Kita/Schule/Flaechenbedarfsmeldung.
   const isRoleAdminOrInfrastruktureinrichtungSchreibend = computed(
