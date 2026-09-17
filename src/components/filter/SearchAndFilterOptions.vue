@@ -128,7 +128,8 @@ import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSorti
 import FilterPanel from "@/components/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
-import { useFilterPersistence, FilterNameError } from "@/composables/requests/filter/useFilterPersistence";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
 import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
 import type { FilterSettingsDto } from "@/api/api-client/isi-backend";
 import { useToast } from "vue-toastification";
@@ -285,7 +286,7 @@ function getConfirmDialogText() {
 
 async function onSaveFilter(name: string) {
   try {
-    await saveFilter(name, searchQueryAndSorting.value as FilterSettingsDto);
+    await saveFilter(name, mapModelToFilterSettingsDto(searchQueryAndSorting.value));
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
@@ -298,7 +299,7 @@ async function onSaveFilter(name: string) {
 
 async function onEditFilter(id: string) {
   try {
-    await editExistingFilter(id, searchQueryAndSorting.value as FilterSettingsDto);
+    await editExistingFilter(id, mapModelToFilterSettingsDto(searchQueryAndSorting.value));
     toast.success("Deine Änderungen wurden erfolgreich gespeichert.");
     isFilterModified.value = false;
   } catch (e: any) {
