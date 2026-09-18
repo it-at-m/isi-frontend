@@ -183,10 +183,10 @@ export interface EntityModelBauvorhaben {
     artFnpFreieEingabe?: string;
     /**
      * 
-     * @type {Adresse}
+     * @type {EntityModelBauvorhabenResultTypeEnum}
      * @memberof EntityModelBauvorhaben
      */
-    adresseJson?: Adresse;
+    resultType?: EntityModelBauvorhabenResultTypeEnum;
     /**
      * 
      * @type {VerortungMultiPolygon}
@@ -195,10 +195,10 @@ export interface EntityModelBauvorhaben {
     verortungJson?: VerortungMultiPolygon;
     /**
      * 
-     * @type {EntityModelBauvorhabenResultTypeEnum}
+     * @type {Adresse}
      * @memberof EntityModelBauvorhaben
      */
-    resultType?: EntityModelBauvorhabenResultTypeEnum;
+    adresseJson?: Adresse;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -330,9 +330,9 @@ export function EntityModelBauvorhabenFromJSONTyped(json: any, ignoreDiscriminat
         'wesentlicheRechtsgrundlageAngabenZurBefreiung': json['wesentlicheRechtsgrundlageAngabenZurBefreiung'] == null ? undefined : json['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': json['artFnp'] == null ? undefined : json['artFnp'],
         'artFnpFreieEingabe': json['artFnpFreieEingabe'] == null ? undefined : json['artFnpFreieEingabe'],
-        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
-        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
         'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'verortungJson': json['verortungJson'] == null ? undefined : VerortungMultiPolygonFromJSON(json['verortungJson']),
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -369,9 +369,9 @@ export function EntityModelBauvorhabenToJSONTyped(value?: EntityModelBauvorhaben
         'wesentlicheRechtsgrundlageAngabenZurBefreiung': value['wesentlicheRechtsgrundlageAngabenZurBefreiung'],
         'artFnp': value['artFnp'],
         'artFnpFreieEingabe': value['artFnpFreieEingabe'],
-        'adresseJson': AdresseToJSON(value['adresseJson']),
-        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
         'resultType': value['resultType'],
+        'verortungJson': VerortungMultiPolygonToJSON(value['verortungJson']),
+        'adresseJson': AdresseToJSON(value['adresseJson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }
