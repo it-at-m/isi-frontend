@@ -233,7 +233,7 @@ const {
 const searchStore = useSearchStore();
 const commonStore = useCommonStore();
 const componentSecurity = useComponentSecurity();
-const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrInfrastruktureinrichtungSchreibend } = useSecurity();
 const {
   createInfrastruktureinrichtung,
   getInfrastruktureinrichtungById,
@@ -249,7 +249,9 @@ const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
 const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
 
-const isEditable = computed(() => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldung.value);
+const isEditable = computed(
+  () => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrInfrastruktureinrichtungSchreibend.value,
+);
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {

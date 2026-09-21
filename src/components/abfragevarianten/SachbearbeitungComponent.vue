@@ -160,7 +160,7 @@ interface Props {
   isEditable?: boolean;
 }
 
-const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldungLesend } = useSecurity();
 
 const abfragevarianteSachbearbeitung = defineModel<AbfragevarianteBauleitplanverfahrenModel>({ required: true });
 
@@ -260,6 +260,6 @@ function showSobonReport(): boolean {
 }
 
 function showPlanungsursaechlicheReports(): boolean {
-  return isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldung.value;
+  return isRoleAdminOrSachbearbeitung.value || isRoleAdminOrBedarfsmeldungLesend.value;
 }
 </script>
