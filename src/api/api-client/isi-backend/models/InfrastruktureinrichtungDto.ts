@@ -127,6 +127,12 @@ export interface InfrastruktureinrichtungDto {
     status: InfrastruktureinrichtungDtoStatusEnum;
     /**
      * 
+     * @type {InfrastruktureinrichtungDtoAnlassPlanungEnum}
+     * @memberof InfrastruktureinrichtungDto
+     */
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum;
+    /**
+     * 
      * @type {number}
      * @memberof InfrastruktureinrichtungDto
      */
@@ -172,9 +178,25 @@ export const InfrastruktureinrichtungDtoStatusEnum = {
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND'
 } as const;
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
+
+/**
+ * @export
+ */
+export const InfrastruktureinrichtungDtoAnlassPlanungEnum = {
+    Unspecified: 'UNSPECIFIED',
+    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
+    NeubauBauGb: 'NEUBAU_BAU_GB',
+    Bauprogramm: 'BAUPROGRAMM',
+    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
+    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
+    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
+    Schliessung: 'SCHLIESSUNG'
+} as const;
+export type InfrastruktureinrichtungDtoAnlassPlanungEnum = typeof InfrastruktureinrichtungDtoAnlassPlanungEnum[keyof typeof InfrastruktureinrichtungDtoAnlassPlanungEnum];
 
 
 /**
@@ -183,6 +205,7 @@ export type InfrastruktureinrichtungDtoStatusEnum = typeof Infrastruktureinricht
 export function instanceOfInfrastruktureinrichtungDto(value: object): value is InfrastruktureinrichtungDto {
     if (!('nameEinrichtung' in value) || value['nameEinrichtung'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('anlassPlanung' in value) || value['anlassPlanung'] === undefined) return false;
     return true;
 }
 
@@ -230,6 +253,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
+        'anlassPlanung': json['anlassPlanung'],
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
@@ -279,6 +303,7 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
         'nameEinrichtung': value['nameEinrichtung'],
         'fertigstellungsjahr': value['fertigstellungsjahr'],
         'status': value['status'],
+        'anlassPlanung': value['anlassPlanung'],
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],

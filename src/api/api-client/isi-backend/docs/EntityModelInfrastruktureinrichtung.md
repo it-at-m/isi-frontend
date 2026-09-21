@@ -16,14 +16,15 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
+`anlassPlanung` | string
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
-`adresseJson` | [Adresse](Adresse.md)
-`infrastruktureinrichtungTyp` | string
-`resultType` | string
-`bauvorhabenName` | string
 `verortungPointJson` | [VerortungPoint](VerortungPoint.md)
+`bauvorhabenName` | string
+`resultType` | string
+`infrastruktureinrichtungTyp` | string
+`adresseJson` | [Adresse](Adresse.md)
 `links` | [{ [key: string]: Link; }](Link.md)
 
 ## Example
@@ -43,14 +44,15 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
+  "anlassPlanung": null,
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
-  "adresseJson": null,
-  "infrastruktureinrichtungTyp": null,
-  "resultType": null,
-  "bauvorhabenName": null,
   "verortungPointJson": null,
+  "bauvorhabenName": null,
+  "resultType": null,
+  "infrastruktureinrichtungTyp": null,
+  "adresseJson": null,
   "links": null,
 } satisfies EntityModelInfrastruktureinrichtung
 
