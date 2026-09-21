@@ -21,6 +21,7 @@ interface State {
   artBaulicheNutzung: LookupEntryDto[];
   artBaulicheNutzungBauvorhaben: LookupEntryDto[];
   statusInfrastruktureinrichtung: LookupEntryDto[];
+  anlassPlanung: LookupEntryDto[];
   einrichtungstraeger: LookupEntryDto[];
   einrichtungstraegerSchulen: LookupEntryDto[];
   infrastruktureinrichtungTyp: LookupEntryDto[];
@@ -50,6 +51,7 @@ export const useLookupStore = defineStore("lookup", {
       artBaulicheNutzung: [],
       artBaulicheNutzungBauvorhaben: [],
       statusInfrastruktureinrichtung: [],
+      anlassPlanung: [],
       einrichtungstraeger: [],
       einrichtungstraegerSchulen: [],
       infrastruktureinrichtungTyp: [],
@@ -82,6 +84,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setArtBaulicheNutzung(lookupLists.artBaulicheNutzung);
         this.setArtBaulicheNutzungBauvorhaben(lookupLists.artBaulicheNutzungBauvorhaben);
         this.setStatusInfrastruktureinrichtung(lookupLists.statusInfrastruktureinrichtung);
+        this.setAnlassPlanung(lookupLists.anlassPlanung);
         this.setEinrichtungstraeger(lookupLists.einrichtungstraeger);
         this.setEinrichtungstraegerSchulen(lookupLists.einrichtungstraegerSchulen);
         this.setInfrastruktureinrichtungTyp(lookupLists.infrastruktureinrichtungTyp);
@@ -169,6 +172,9 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.statusInfrastruktureinrichtung = payload?.list)
         : (this.statusInfrastruktureinrichtung = []);
+    },
+    setAnlassPlanung(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list) ? (this.anlassPlanung = payload?.list) : (this.anlassPlanung = []);
     },
     setEinrichtungstraeger(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
