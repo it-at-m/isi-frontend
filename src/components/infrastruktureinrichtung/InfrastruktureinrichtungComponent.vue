@@ -54,6 +54,25 @@
           cols="12"
           md="6"
         >
+          <v-select
+            id="infrastruktureinrichtung_nutzungsart_dropdown"
+            v-model="infrastruktureinrichtung.anlassPlanung"
+            :items="anlassPlanungList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            :rules="[pflichtfeld]"
+            :disabled="!isEditable"
+            @update:model-value="formChanged"
+          >
+            <template #label>Nutzungsart der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
+          </v-select>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="6"
+        >
           <num-field
             id="infrastruktureinrichtung_fertigstellungsjahr"
             v-model="infrastruktureinrichtung.fertigstellungsjahr"
@@ -160,7 +179,7 @@ const emit = defineEmits(["update:modelValue"]);
 const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 const bauvorhaben = ref<BauvorhabenSearchResultDto[]>([]);
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
-
+const anlassPlanungList = computed(() => lookupStore.anlassPlanung);
 onMounted(() => fetchBauvorhaben());
 
 function isFertigstellungsjahrRequired(): boolean {
