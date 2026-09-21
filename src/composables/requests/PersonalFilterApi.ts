@@ -55,7 +55,7 @@ export function usePersonalFilterApi() {
       personalFilterRequestDto: toBackendJson(personalFilterRequestDto) as unknown as PersonalFilterRequestDto,
     };
     try {
-      const response = await personalFilterApi.editFilter(requestObject, RequestUtils.getPATCHConfig());
+      const response = await personalFilterApi.editFilter(requestObject, RequestUtils.getPUTConfig());
       resetFormDirty();
       return response;
     } catch (error) {
