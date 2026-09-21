@@ -6,7 +6,7 @@ All URIs are relative to *http://localhost:8089*
 |------------- | ------------- | -------------|
 | [**createFilter**](PersonalFilterApi.md#createfilter) | **POST** /personal-filter/create | Anlegen eines neuen persönlichen Filters |
 | [**deleteFilter**](PersonalFilterApi.md#deletefilter) | **DELETE** /personal-filter/delete/{filterId} | Löschen eines persönlichen Filters |
-| [**editFilter**](PersonalFilterApi.md#editfilter) | **PATCH** /personal-filter/edit | Aktualisierung eines persönlichen Filters. |
+| [**editFilter**](PersonalFilterApi.md#editfilter) | **PUT** /personal-filter/edit | Aktualisierung eines persönlichen Filters. |
 | [**getByFilterID**](PersonalFilterApi.md#getbyfilterid) | **GET** /personal-filter/{filterId} | Lesen eines persönlichen Filters. |
 | [**getPersonalFilters**](PersonalFilterApi.md#getpersonalfilters) | **GET** /personal-filter | Lesen aller persönlichen Filter. |
 
@@ -142,7 +142,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Persönlicher Filter mit dieser ID nicht vorhanden. |  -  |
-| **403** | FORBIDDEN -&gt; Keine Berechtigung zum Löschen dieses persönlichen Filters. |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung, um diesen persönlichen Filter zu löschen. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -209,7 +209,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Persönlicher Filter wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Persönlicher Filter konnte nicht aktualisiert werden, überprüfen sie die Eingabe. |  -  |
-| **403** | FORBIDDEN -&gt; Keine Berechtigung um diesen persönlicher Filter zu bearbeiten. |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung, um diesen persönlicher Filter zu bearbeiten. |  -  |
 | **404** | NOT FOUND -&gt; Persönlicher Filter mit dieser ID nicht vorhanden. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
@@ -277,7 +277,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **403** | FORBIDDEN -&gt; Keine Berechtigung um diesen persönlichen Filter anzusehen. |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung, um diesen persönlichen Filter anzusehen. |  -  |
 | **404** | NOT FOUND -&gt; Persönlicher Filter mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -336,7 +336,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **403** | FORBIDDEN -&gt; Keine Berechtigung um alle persönlichen Filter anzusehen. |  -  |
+| **403** | FORBIDDEN -&gt; Keine Berechtigung, um alle persönlichen Filter anzusehen. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

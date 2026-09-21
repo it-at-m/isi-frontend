@@ -163,7 +163,7 @@ export class PersonalFilterApi extends runtime.BaseAPI {
 
         return {
             path: urlPath,
-            method: 'PATCH',
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: PersonalFilterRequestDtoToJSON(requestParameters['personalFilterRequestDto']),
