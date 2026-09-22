@@ -55,7 +55,7 @@
           md="6"
         >
           <v-select
-            id="infrastruktureinrichtung_nutzungsart_dropdown"
+            id="anlass_planung_dropdown"
             v-model="infrastruktureinrichtung.anlassPlanung"
             :items="anlassPlanungList"
             variant="underlined"
@@ -65,7 +65,7 @@
             :disabled="!isEditable"
             @update:model-value="formChanged"
           >
-            <template #label>Nutzungsart der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
+            <template #label>Anlass der Planung <span class="text-secondary">*</span></template>
           </v-select>
         </v-col>
 
