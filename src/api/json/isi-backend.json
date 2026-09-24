@@ -25,6 +25,7 @@
     { "name": "AbfrageStatus", "description": "API to set the status for a Abfrage" },
     { "name": "Abfragen", "description": "API zum interagieren mit Abfragen" },
     { "name": "Kommentare", "description": "API um Kommentare zu verwalten" },
+    { "name": "PersonalFilter", "description": "API zur Interaktion mit persönlichen Filtern" },
     { "name": "Lookup", "description": "API zum Erhalt der LookupListen." },
     { "name": "FileInfoStamm", "description": "API zum Erhalten von dateibezogenen Stammdaten." },
     { "name": "MetabaseReportingInformation", "description": "API zum Erhalten von Metabase Reporting Informationen" }
@@ -83,6 +84,39 @@
           },
           "400": {
             "description": "BAD_REQUEST -> FoerdermixStamm konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
+    "/personal-filter/edit": {
+      "put": {
+        "tags": ["PersonalFilter"],
+        "summary": "Aktualisierung eines persönlichen Filters.",
+        "operationId": "editFilter",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PersonalFilterRequestDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK -> Persönlicher Filter wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PersonalFilterResponseDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Persönlicher Filter konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um diesen persönlicher Filter zu bearbeiten.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Persönlicher Filter mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
@@ -895,6 +929,35 @@
         }
       }
     },
+    "/personal-filter/create": {
+      "post": {
+        "tags": ["PersonalFilter"],
+        "summary": "Anlegen eines neuen persönlichen Filters",
+        "operationId": "createFilter",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PersonalFilterRequestDto" } } },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED -> Persönlicher Filter wurde erfolgreich erstellt.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PersonalFilterResponseDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Persönlicher Filter konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Maximale Anzahl persönlicher Filter bereits vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/mime-type": {
       "post": {
         "tags": ["MimeType"],
@@ -1284,6 +1347,51 @@
           "200": {
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FileInformationDto" } } }
+          }
+        }
+      }
+    },
+    "/personal-filter": {
+      "get": {
+        "tags": ["PersonalFilter"],
+        "summary": "Lesen aller persönlichen Filter.",
+        "operationId": "getPersonalFilters",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/PersonalFilterResponseDto" } }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um alle persönlichen Filter anzusehen.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
+    "/personal-filter/{filterId}": {
+      "get": {
+        "tags": ["PersonalFilter"],
+        "summary": "Lesen eines persönlichen Filters.",
+        "operationId": "getByFilterID",
+        "parameters": [
+          { "name": "filterId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PersonalFilterResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um diesen persönlichen Filter anzusehen.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Persönlicher Filter mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1736,6 +1844,27 @@
         }
       }
     },
+    "/personal-filter/delete/{filterId}": {
+      "delete": {
+        "tags": ["PersonalFilter"],
+        "summary": "Löschen eines persönlichen Filters",
+        "operationId": "deleteFilter",
+        "parameters": [
+          { "name": "filterId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "404": {
+            "description": "NOT FOUND -> Persönlicher Filter mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um diesen persönlichen Filter zu löschen.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/kommentar/infrastruktureinrichtung/{id}": {
       "delete": {
         "tags": ["Kommentare"],
@@ -1794,6 +1923,128 @@
           "httpStatus": { "type": "integer", "format": "int32" },
           "originalException": { "type": "string" },
           "messages": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "FilterSettingsDto": {
+        "type": "object",
+        "properties": {
+          "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
+          "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] },
+          "selectBauleitplanverfahren": { "type": "boolean" },
+          "selectBaugenehmigungsverfahren": { "type": "boolean" },
+          "selectWeiteresVerfahren": { "type": "boolean" },
+          "selectBauvorhaben": { "type": "boolean" },
+          "selectGrundschule": { "type": "boolean" },
+          "selectGsNachmittagBetreuung": { "type": "boolean" },
+          "selectHausFuerKinder": { "type": "boolean" },
+          "selectKindergarten": { "type": "boolean" },
+          "selectKinderkrippe": { "type": "boolean" },
+          "selectMittelschule": { "type": "boolean" },
+          "stadtbezirkNummer": { "type": "array", "items": { "type": "string" } },
+          "kitaplanungsbereichKitaPlbT": { "type": "array", "items": { "type": "string" } },
+          "grundschulsprengelNummer": { "type": "array", "items": { "type": "integer", "format": "int64" } },
+          "mittelschulsprengelNummer": { "type": "array", "items": { "type": "integer", "format": "int64" } },
+          "realisierungsbeginnVon": { "type": "integer", "format": "int32" },
+          "realisierungsbeginnBis": { "type": "integer", "format": "int32" },
+          "nurEigeneAbfragen": { "type": "boolean" },
+          "statusAbfrage": { "type": "array", "items": { "$ref": "#/components/schemas/StatusAbfrage" } },
+          "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+          "weGesamtVon": { "type": "integer", "format": "int32" },
+          "weGesamtBis": { "type": "integer", "format": "int32" },
+          "gfWohnenGeplantVon": { "type": "number" },
+          "gfWohnenGeplantBis": { "type": "number" },
+          "verfahrensstand": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNSPECIFIED",
+                "SIMULIERT_VORBEREITUNG_AUFSTELLUNGSBESCHLUSS",
+                "SIMULIERT_VORBEREITUNG_WETTBEWERBAUSLOBUNG",
+                "VORBEREITUNG_FRUEHZEITIGE_BETEILIGUNG",
+                "VORBEREITUNG_BILLIGUNGSBESCHLUSS_STAEDTEBAULICHER_VERTRAG",
+                "VORBEREITUNG_SATZUNGSBESCHLUSS",
+                "INKRAFTGETRETEN_VEROEFFENTLICHUNG_AMTSBLATT",
+                "INKRAFTGETRETEN_FOERDERMIXPLAN",
+                "VORBEREITUNG_BAUGENEHMIGUNG",
+                "VORBEREITUNG_VORBESCHEID",
+                "VORABFRAGE_OHNE_KONKRETEN_STAND",
+                "STRUKTURKONZEPT",
+                "RAHMENPLANUNG",
+                "POTENTIALUNTERSUCHUNG",
+                "STAEDTEBAULICHE_SANIERUNGSMASSNAHME",
+                "STAEDTEBAULICHE_ENTWICKLUNGSMASSNAHME",
+                "STANDORTABFRAGE",
+                "FREIE_EINGABE"
+              ]
+            }
+          },
+          "infrastruktureinrichtungStatus": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNSPECIFIED",
+                "UNGESICHERTE_PLANUNG",
+                "GESICHERTE_PLANUNG_NEUE_EINR",
+                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
+                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
+                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
+                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                "BESTAND"
+              ]
+            }
+          }
+        },
+        "required": [
+          "selectBaugenehmigungsverfahren",
+          "selectBauleitplanverfahren",
+          "selectBauvorhaben",
+          "selectGrundschule",
+          "selectGsNachmittagBetreuung",
+          "selectHausFuerKinder",
+          "selectKindergarten",
+          "selectKinderkrippe",
+          "selectMittelschule",
+          "selectWeiteresVerfahren",
+          "sobonRelevant",
+          "sortBy",
+          "sortOrder"
+        ]
+      },
+      "PersonalFilterRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "filterSettings": { "$ref": "#/components/schemas/FilterSettingsDto" },
+          "filterName": { "type": "string", "minLength": 1 }
+        },
+        "required": ["filterName", "filterSettings"]
+      },
+      "StatusAbfrage": {
+        "type": "string",
+        "enum": [
+          "ANGELEGT",
+          "UEBERMITTELT_ZUR_BEARBEITUNG",
+          "START_BEARBEITUNG",
+          "EINPFLEGEN_BEDARFSMELDUNG",
+          "EINPLANUNG_BEDARFE",
+          "ERLEDIGT_MIT_FACHREFERAT",
+          "ERLEDIGT_OHNE_FACHREFERAT",
+          "ABBRUCH"
+        ]
+      },
+      "UncertainBoolean": { "type": "string", "enum": ["UNSPECIFIED", "TRUE", "FALSE"] },
+      "PersonalFilterResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "version": { "type": "integer", "format": "int64" },
+          "createdDateTime": { "type": "string", "format": "date-time" },
+          "lastModifiedDateTime": { "type": "string", "format": "date-time" },
+          "filterSettings": { "$ref": "#/components/schemas/FilterSettingsDto" },
+          "filterName": { "type": "string" }
         }
       },
       "BearbeitendePersonDto": {
@@ -2358,7 +2609,6 @@
         },
         "required": ["artFnp", "nameVorhaben", "sobonRelevant", "verfahrensstand", "wesentlicheRechtsgrundlage"]
       },
-      "UncertainBoolean": { "type": "string", "enum": ["UNSPECIFIED", "TRUE", "FALSE"] },
       "VerortungMultiPolygonDto": {
         "type": "object",
         "properties": {
@@ -2484,19 +2734,6 @@
           "selectKinderkrippe",
           "selectMittelschule",
           "selectWeiteresVerfahren"
-        ]
-      },
-      "StatusAbfrage": {
-        "type": "string",
-        "enum": [
-          "ANGELEGT",
-          "UEBERMITTELT_ZUR_BEARBEITUNG",
-          "START_BEARBEITUNG",
-          "EINPFLEGEN_BEDARFSMELDUNG",
-          "EINPLANUNG_BEDARFE",
-          "ERLEDIGT_MIT_FACHREFERAT",
-          "ERLEDIGT_OHNE_FACHREFERAT",
-          "ABBRUCH"
         ]
       },
       "SuchwortSuggestionsDto": {
