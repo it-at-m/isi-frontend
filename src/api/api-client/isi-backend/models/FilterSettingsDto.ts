@@ -201,6 +201,7 @@ export const FilterSettingsDtoInfrastruktureinrichtungStatusEnum = {
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type FilterSettingsDtoInfrastruktureinrichtungStatusEnum = typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum[keyof typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum];

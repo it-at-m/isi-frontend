@@ -1992,6 +1992,7 @@
                 "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
                 "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
                 "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                "PLANUNG_ZURUECKGEZOGEN",
                 "BESTAND"
               ]
             }
@@ -2178,7 +2179,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "GrundschulsprengelDto": {
         "type": "object",
@@ -2224,7 +2225,7 @@
             }
           }
         ],
-        "required": ["anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"]
       },
       "HausFuerKinderDto": {
         "allOf": [
@@ -2258,7 +2259,7 @@
             }
           }
         ],
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "InfrastruktureinrichtungDto": {
         "type": "object",
@@ -2309,14 +2310,28 @@
               "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
               "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
               "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+              "PLANUNG_ZURUECKGEZOGEN",
               "BESTAND"
+            ]
+          },
+          "anlassPlanung": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "NEUBAU_BEBAUUNGSPLAN",
+              "NEUBAU_BAU_GB",
+              "BAUPROGRAMM",
+              "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+              "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+              "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+              "SCHLIESSUNG"
             ]
           },
           "flaecheGesamtgrundstueck": { "type": "number" },
           "flaecheTeilgrundstueck": { "type": "number" },
           "idKibigWeb": { "type": "string" }
         },
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "KindergartenDto": {
         "allOf": [
@@ -2344,7 +2359,13 @@
             }
           }
         ],
-        "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"]
+        "required": [
+          "anlassPlanung",
+          "anzahlKindergartenGruppen",
+          "anzahlKindergartenPlaetze",
+          "nameEinrichtung",
+          "status"
+        ]
       },
       "KinderkrippeDto": {
         "allOf": [
@@ -2372,7 +2393,13 @@
             }
           }
         ],
-        "required": ["anzahlKinderkrippeGruppen", "anzahlKinderkrippePlaetze", "nameEinrichtung", "status"]
+        "required": [
+          "anlassPlanung",
+          "anzahlKinderkrippeGruppen",
+          "anzahlKinderkrippePlaetze",
+          "nameEinrichtung",
+          "status"
+        ]
       },
       "KitaplanungsbereichDto": {
         "type": "object",
@@ -2388,7 +2415,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "MittelschulsprengelDto": {
         "type": "object",
@@ -2715,7 +2742,24 @@
                 "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
                 "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
                 "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                "PLANUNG_ZURUECKGEZOGEN",
                 "BESTAND"
+              ]
+            }
+          },
+          "filterAnlassPlanung": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNSPECIFIED",
+                "NEUBAU_BEBAUUNGSPLAN",
+                "NEUBAU_BAU_GB",
+                "BAUPROGRAMM",
+                "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                "SCHLIESSUNG"
               ]
             }
           },
@@ -2806,7 +2850,24 @@
                 "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
                 "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
                 "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                "PLANUNG_ZURUECKGEZOGEN",
                 "BESTAND"
+              ]
+            }
+          },
+          "filterAnlassPlanung": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNSPECIFIED",
+                "NEUBAU_BEBAUUNGSPLAN",
+                "NEUBAU_BAU_GB",
+                "BAUPROGRAMM",
+                "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                "SCHLIESSUNG"
               ]
             }
           },
@@ -4877,6 +4938,7 @@
           "artBaulicheNutzung": { "$ref": "#/components/schemas/LookupListDto" },
           "artBaulicheNutzungBauvorhaben": { "$ref": "#/components/schemas/LookupListDto" },
           "statusInfrastruktureinrichtung": { "$ref": "#/components/schemas/LookupListDto" },
+          "anlassPlanung": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraeger": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraegerSchulen": { "$ref": "#/components/schemas/LookupListDto" },
           "infrastruktureinrichtungTyp": { "$ref": "#/components/schemas/LookupListDto" },
