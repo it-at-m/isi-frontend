@@ -14,6 +14,7 @@ export * from './KoordinatenApi';
 export * from './LookupApi';
 export * from './MetabaseReportingInformationApi';
 export * from './MimeTypeApi';
+export * from './PersonalFilterApi';
 export * from './StammdatenApi';
 export * from './SucheApi';
 export * from './VersorgungsquoteApi';
