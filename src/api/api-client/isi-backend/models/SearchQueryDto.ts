@@ -141,6 +141,10 @@ export interface SearchQueryDto {
     /**
      * 
      */
+    filterAnlassPlanung?: Array<SearchQueryDtoFilterAnlassPlanungEnum>;
+    /**
+     * 
+     */
     page?: number;
     /**
      * 
@@ -186,6 +190,7 @@ export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
@@ -201,7 +206,7 @@ export const SearchQueryDtoFilterAnlassPlanungEnum = {
     NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
     ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
     ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG'
+    Schliessung: 'SCHLIESSUNG',
 } as const;
 export type SearchQueryDtoFilterAnlassPlanungEnum = typeof SearchQueryDtoFilterAnlassPlanungEnum[keyof typeof SearchQueryDtoFilterAnlassPlanungEnum];
 

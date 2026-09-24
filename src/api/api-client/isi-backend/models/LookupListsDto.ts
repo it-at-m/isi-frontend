@@ -101,8 +101,6 @@ export interface LookupListsDto {
     anlassPlanung?: LookupListDto;
     /**
      * 
-     * @type {LookupListDto}
-     * @memberof LookupListsDto
      */
     einrichtungstraeger?: LookupListDto;
     /**

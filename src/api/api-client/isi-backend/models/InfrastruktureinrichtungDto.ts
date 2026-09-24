@@ -102,6 +102,10 @@ export interface InfrastruktureinrichtungDto {
     /**
      * 
      */
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum;
+    /**
+     * 
+     */
     flaecheGesamtgrundstueck?: number;
     /**
      * 
@@ -140,6 +144,7 @@ export const InfrastruktureinrichtungDtoStatusEnum = {
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
@@ -155,7 +160,7 @@ export const InfrastruktureinrichtungDtoAnlassPlanungEnum = {
     NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
     ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
     ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG'
+    Schliessung: 'SCHLIESSUNG',
 } as const;
 export type InfrastruktureinrichtungDtoAnlassPlanungEnum = typeof InfrastruktureinrichtungDtoAnlassPlanungEnum[keyof typeof InfrastruktureinrichtungDtoAnlassPlanungEnum];
 
