@@ -22,6 +22,7 @@ import {
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
   LookupEntryDto,
   InfrastruktureinrichtungSearchResultDtoStatusEnum,
+  InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import type { Feature, MultiPolygon, Point } from "geojson";
 import L, { type GeoJSONOptions, Layer } from "leaflet";
@@ -40,6 +41,7 @@ type EntityFeature = Feature<
     name: string;
     infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
+    anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
     zugehoerigesBauvorhaben: string | undefined;
     artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
@@ -51,6 +53,7 @@ const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
 const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+const anlassPlanungInfrastruktureinrichtung = computed(() => lookupStore.anlassPlanung);
 
 const umgriffeLayerGroup = new L.LayerGroup();
 
@@ -103,6 +106,12 @@ const geoJsonOptions: GeoJSONOptions = {
         `Status: ${getLookupValue(feature.properties.statusInfrastruktureinrichtung, statusInfrastruktureinrichtungList.value)}`,
       );
 
+      if (!_.isNil(feature.properties.anlassPlanungInfrastruktureinrichtung)) {
+        tooltipLines.push(`Anlass der Planung: ${feature.properties.anlassPlanungInfrastruktureinrichtung}`);
+      } else {
+        tooltipLines.push("Anlass der Planung: nicht angegeben");
+      }
+
       contentTooltip = tooltipLines.join("<br>");
     }
     if (feature.geometry.type === "Point") {
@@ -147,6 +156,7 @@ const geoJson = computed(() => {
     let coordinate: Wgs84Dto | undefined;
     let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     let statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
+    let anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
     let zugehoerigesBauvorhaben: string | undefined;
     let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     let verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
@@ -167,6 +177,7 @@ const geoJson = computed(() => {
       coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
       infrastruktureinrichtungTyp = (result as InfrastruktureinrichtungSearchResultDto).infrastruktureinrichtungTyp;
       statusInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).status;
+      anlassPlanungInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).anlassPlanung;
       zugehoerigesBauvorhaben = (result as InfrastruktureinrichtungSearchResultDto).zugehoerigesBauvorhaben;
     }
 
@@ -180,6 +191,7 @@ const geoJson = computed(() => {
           name,
           infrastruktureinrichtungTyp,
           statusInfrastruktureinrichtung,
+          anlassPlanungInfrastruktureinrichtung,
           zugehoerigesBauvorhaben,
           artAbfrage,
           verfahrensstand,
