@@ -1983,18 +1983,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "PLANUNG_ZURUECKGEZOGEN",
-                "BESTAND"
-              ]
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
             }
           }
         },
@@ -2301,18 +2290,7 @@
           "fertigstellungsjahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "status": {
             "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "UNGESICHERTE_PLANUNG",
-              "GESICHERTE_PLANUNG_NEUE_EINR",
-              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "PLANUNG_ZURUECKGEZOGEN",
-              "BESTAND"
-            ]
+            "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
           },
           "anlassPlanung": {
             "type": "string",
@@ -2733,18 +2711,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "PLANUNG_ZURUECKGEZOGEN",
-                "BESTAND"
-              ]
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
             }
           },
           "filterAnlassPlanung": {
@@ -2841,18 +2808,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "PLANUNG_ZURUECKGEZOGEN",
-                "BESTAND"
-              ]
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
             }
           },
           "filterAnlassPlanung": {

@@ -1,3 +1,3 @@
 /* tslint:disable */
- 
-export * from "./MasterEaiApi";
+/* eslint-disable */
+export * from './MasterEaiApi';
