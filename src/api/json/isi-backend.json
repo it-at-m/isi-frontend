@@ -3002,6 +3002,34 @@
                   "MITTELSCHULE"
                 ]
               },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "UNGESICHERTE_PLANUNG",
+                  "GESICHERTE_PLANUNG_NEUE_EINR",
+                  "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
+                  "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                  "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
+                  "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
+                  "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
+                  "PLANUNG_ZURUECKGEZOGEN",
+                  "BESTAND"
+                ]
+              },
+              "anlassPlanung": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "NEUBAU_BEBAUUNGSPLAN",
+                  "NEUBAU_BAU_GB",
+                  "BAUPROGRAMM",
+                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                  "SCHLIESSUNG"
+                ]
+              },
               "zugehoerigesBauvorhaben": { "type": "string" }
             }
           }
