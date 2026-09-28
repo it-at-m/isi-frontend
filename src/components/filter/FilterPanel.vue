@@ -42,9 +42,8 @@
           md="12"
         >
           <v-radio-group
-            v-model="sobonRelevant"
+            v-model="searchQueryAndSorting.filterSobonRelevant"
             inline
-            @update:model-value="sobonRelevantChanged"
           >
             <template #label> SoBoN-relevanz</template>
             <v-tooltip
@@ -495,26 +494,9 @@ import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import NumField from "@/components/common/NumField.vue";
 import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
 
-onMounted(() => {
-  switch (searchQueryAndSorting.value.filterSobonRelevant) {
-    case UncertainBoolean.True:
-      sobonRelevant.value = UncertainBoolean.True;
-      break;
-    case UncertainBoolean.False:
-      sobonRelevant.value = UncertainBoolean.False;
-      break;
-    case UncertainBoolean.Unspecified:
-      sobonRelevant.value = UncertainBoolean.Unspecified;
-      break;
-    default:
-      sobonRelevant.value = UncertainBoolean.Unspecified;
-      break;
-  }
-});
-
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 
-const sobonRelevant = ref<string | undefined>(undefined);
+const filterSobonRelevant = ref<UncertainBoolean>(UncertainBoolean.Unspecified);
 
 const lookupStore = useLookupStore();
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
@@ -553,22 +535,5 @@ function alleFiltereinstellungenAufheben(): void {
   searchQueryAndSorting.value.filterGfWohnenGeplantBis = undefined;
   searchQueryAndSorting.value.filterVerfahrensstand = undefined;
   searchQueryAndSorting.value.filterInfrastruktureinrichtungStatus = undefined;
-  sobonRelevant.value = UncertainBoolean.Unspecified;
-}
-
-function sobonRelevantChanged(): void {
-  switch (sobonRelevant.value) {
-    case UncertainBoolean.True:
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.True;
-      break;
-    case UncertainBoolean.False:
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.False;
-      break;
-    case UncertainBoolean.Unspecified:
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
-      break;
-    default:
-      searchQueryAndSorting.value.filterSobonRelevant = UncertainBoolean.Unspecified;
-  }
 }
 </script>

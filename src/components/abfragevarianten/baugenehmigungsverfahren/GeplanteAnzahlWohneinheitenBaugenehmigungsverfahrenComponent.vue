@@ -53,22 +53,35 @@
         cols="12"
         md="4"
       >
-        <v-checkbox
-          id="we_sonderwohnformen_checkbox"
-          ref="weSonderwohnformenCheckbox"
-          v-model="abfragevariante.weSonderwohnformen"
-          :disabled="!isEditable"
-          class="mx-3"
-          label="Zusätzlich Sonderwohnformen"
-          color="primary"
-        />
+        <div class="d-flex align-center">
+          <v-checkbox
+            id="we_sonderwohnformen_checkbox"
+            ref="weSonderwohnformenCheckbox"
+            v-model="abfragevariante.weSonderwohnformen"
+            :disabled="!isEditable"
+            class="mx-3"
+            color="primary"
+            label="Zusätzlich Sonderwohnformen"
+            hide-details
+          />
+          <v-tooltip location="top">
+            <template #activator="{ props }">
+              <v-icon
+                v-bind="props"
+                :color="isEditable ? 'primary' : 'grey-lighten-1'"
+              >
+                mdi-help-circle-outline
+              </v-icon>
+            </template>
+            <div v-html="helpTextSonderwohnform"></div>
+          </v-tooltip>
+        </div>
       </v-col>
       <!-- Space für Platzhalter -->
       <v-col
         cols="12"
         md="8"
-      >
-      </v-col>
+      />
     </v-row>
     <v-expand-transition>
       <div>
@@ -159,6 +172,7 @@ import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import NumField from "@/components/common/NumField.vue";
 import AbfragevarianteBaugenehmigungsverfahrenModel from "@/types/model/abfragevariante/AbfragevarianteBaugenehmigungsverfahrenModel";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { helpTextSonderwohnform } from "@/utils/AbfragevarianteUtil";
 
 interface Props {
   isEditable?: boolean;

@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CollectionModelDokument,
-  CollectionModelObject,
-  EntityModelBauvorhaben,
-  EntityModelInfrastruktureinrichtung,
-} from '../models/index';
 import {
+    type CollectionModelDokument,
     CollectionModelDokumentFromJSON,
     CollectionModelDokumentToJSON,
+} from '../models/CollectionModelDokument';
+import {
+    type CollectionModelObject,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
+} from '../models/CollectionModelObject';
+import {
+    type EntityModelBauvorhaben,
     EntityModelBauvorhabenFromJSON,
     EntityModelBauvorhabenToJSON,
+} from '../models/EntityModelBauvorhaben';
+import {
+    type EntityModelInfrastruktureinrichtung,
     EntityModelInfrastruktureinrichtungFromJSON,
     EntityModelInfrastruktureinrichtungToJSON,
-} from '../models/index';
+} from '../models/EntityModelInfrastruktureinrichtung';
 
 export interface CreatePropertyReferenceKommentarPatchRequest {
     id: string;
@@ -146,7 +149,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -208,7 +211,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -270,7 +273,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -332,7 +335,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -396,7 +399,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -460,7 +463,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -522,8 +525,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -574,8 +577,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -626,8 +629,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -671,7 +674,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -715,7 +718,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -759,7 +762,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -803,7 +806,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -855,8 +858,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -901,7 +904,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -953,8 +956,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/dokumente/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -999,7 +1002,7 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -1051,8 +1054,8 @@ export class KommentarPropertyReferenceControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}/infrastruktureinrichtung/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,

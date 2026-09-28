@@ -10,9 +10,10 @@ Name | Type
 `version` | number
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
-`datum` | string
+`erstellungsdatum` | Date
 `text` | string
 `dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
+`bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
 `infrastruktureinrichtung` | string
 
 ## Example
@@ -26,9 +27,10 @@ const example = {
   "version": null,
   "createdDateTime": null,
   "lastModifiedDateTime": null,
-  "datum": null,
+  "erstellungsdatum": null,
   "text": null,
   "dokumente": null,
+  "bearbeitendePerson": null,
   "infrastruktureinrichtung": null,
 } satisfies KommentarInfrastruktureinrichtungDto
 

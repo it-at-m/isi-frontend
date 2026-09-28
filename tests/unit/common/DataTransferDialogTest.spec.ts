@@ -5,7 +5,14 @@ import DataTransferDialog from "@/components/common/DataTransferDialog.vue";
 import { AbfrageDtoArtAbfrageEnum, StatusAbfrage } from "@/api/api-client/isi-backend";
 import { useSearchStore } from "@/stores/SearchStore";
 import BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
-import { createBauleitplanverfahrenDto } from "@/utils/Factories";
+import {
+  createBaugenehmigungsverfahrenDto,
+  createBauleitplanverfahrenDto,
+  createWeiteresVerfahrenDto,
+} from "@/utils/Factories";
+import BaugenehmigungsverfahrenModel from "@/types/model/abfrage/BaugenehmigungsverfahrenModel";
+import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel";
+import { Context } from "@/utils/Context";
 
 const mockSearchForEntities = vi.fn();
 const mockGetById = vi.fn();
@@ -302,7 +309,46 @@ describe("DataTransferDialogTest.spec.ts", () => {
       expect(vm.searchResultFilter(result)).toBe(false);
     });
 
-    test("rejects entries whose artAbfrage differs from selectedAbfrage", () => {
+    test("Es darf bei BLV keine BGV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(false);
+    });
+
+    test("Es darf bei BLV ein BLV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(true);
+    });
+
+    test("Es darf bei BLV kein BGV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(false);
+    });
+
+    test("Es darf bei BLV ein WV übernommen werden", () => {
       const searchStore = useSearchStore();
       const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
       searchStore.setSelectedAbfrage(abfrageModel);
@@ -312,7 +358,85 @@ describe("DataTransferDialogTest.spec.ts", () => {
         artAbfrage: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren,
         statusAbfrage: StatusAbfrage.StartBearbeitung,
       };
+      expect(vm.searchResultFilter(result)).toBe(true);
+    });
+
+    test("Es darf bei BGV ein BLV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(true);
+    });
+
+    test("Es darf bei BGV ein BGV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(true);
+    });
+
+    test("Es darf bei BGV ein WV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(true);
+    });
+
+    test("Es darf bei WV kein BLV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new WeiteresVerfahrenModel(createWeiteresVerfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
       expect(vm.searchResultFilter(result)).toBe(false);
+    });
+
+    test("Es darf bei WV kein BGV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new WeiteresVerfahrenModel(createWeiteresVerfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(false);
+    });
+
+    test("Es darf bei WV ein WV übernommen werden", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new WeiteresVerfahrenModel(createWeiteresVerfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const result = {
+        artAbfrage: AbfrageDtoArtAbfrageEnum.WeiteresVerfahren,
+        statusAbfrage: StatusAbfrage.StartBearbeitung,
+      };
+      expect(vm.searchResultFilter(result)).toBe(true);
     });
   });
 
@@ -331,15 +455,6 @@ describe("DataTransferDialogTest.spec.ts", () => {
     test("returns generic title when selectedAbfrage is undefined", () => {
       const vm = wrapper.vm as any;
       expect(vm.dialogTitle).toBe("Datenübernahme aus Abfrage");
-    });
-
-    test("returns specific title for Bauleitplanverfahren", () => {
-      const searchStore = useSearchStore();
-      const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
-      searchStore.setSelectedAbfrage(abfrageModel);
-
-      const vm = wrapper.vm as any;
-      expect(vm.dialogTitle).toBe("Datenübernahme aus Bauleitplanverfahren");
     });
   });
 
@@ -555,17 +670,44 @@ describe("DataTransferDialogTest.spec.ts", () => {
       expect(vm.createQuery("test")).toBeNull();
     });
 
-    test("enables only Bauleitplanverfahren for Bauleitplanverfahren abfrage", () => {
+    test("enables BLV and WV for BLV abfrage", () => {
       const searchStore = useSearchStore();
       const abfrageModel = new BauleitplanverfahrenModel(createBauleitplanverfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+
+      const query = vm.createQuery("test");
+      expect(query).not.toBeNull();
+      expect(query.selectBauleitplanverfahren).toBe(true);
+      expect(query.selectBaugenehmigungsverfahren).toBe(false);
+      expect(query.selectWeiteresVerfahren).toBe(true);
+    });
+
+    test("enables BLV, BGV and WV for BGV abfrage", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new BaugenehmigungsverfahrenModel(createBaugenehmigungsverfahrenDto());
       searchStore.setSelectedAbfrage(abfrageModel);
 
       const vm = wrapper.vm as any;
       const query = vm.createQuery("test");
       expect(query).not.toBeNull();
       expect(query.selectBauleitplanverfahren).toBe(true);
+      expect(query.selectBaugenehmigungsverfahren).toBe(true);
+      expect(query.selectWeiteresVerfahren).toBe(true);
+    });
+
+    test("enables only WV for WV abfrage", () => {
+      const searchStore = useSearchStore();
+      const abfrageModel = new WeiteresVerfahrenModel(createWeiteresVerfahrenDto());
+      searchStore.setSelectedAbfrage(abfrageModel);
+
+      const vm = wrapper.vm as any;
+      const query = vm.createQuery("test");
+      expect(query).not.toBeNull();
+      expect(query.selectBauleitplanverfahren).toBe(false);
       expect(query.selectBaugenehmigungsverfahren).toBe(false);
-      expect(query.selectWeiteresVerfahren).toBe(false);
+      expect(query.selectWeiteresVerfahren).toBe(true);
     });
   });
 

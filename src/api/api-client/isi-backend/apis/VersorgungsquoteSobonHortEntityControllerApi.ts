@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelVersorgungsquoteSobonHort,
-  PagedModelEntityModelVersorgungsquoteSobonHort,
-  VersorgungsquoteSobonHortRequestBody,
-} from '../models/index';
 import {
+    type EntityModelVersorgungsquoteSobonHort,
     EntityModelVersorgungsquoteSobonHortFromJSON,
     EntityModelVersorgungsquoteSobonHortToJSON,
+} from '../models/EntityModelVersorgungsquoteSobonHort';
+import {
+    type PagedModelEntityModelVersorgungsquoteSobonHort,
     PagedModelEntityModelVersorgungsquoteSobonHortFromJSON,
     PagedModelEntityModelVersorgungsquoteSobonHortToJSON,
+} from '../models/PagedModelEntityModelVersorgungsquoteSobonHort';
+import {
+    type VersorgungsquoteSobonHortRequestBody,
     VersorgungsquoteSobonHortRequestBodyFromJSON,
     VersorgungsquoteSobonHortRequestBodyToJSON,
-} from '../models/index';
+} from '../models/VersorgungsquoteSobonHortRequestBody';
 
 export interface DeleteItemResourceVersorgungsquotesobonhortDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
 
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
 
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
 
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class VersorgungsquoteSobonHortEntityControllerApi extends runtime.BaseAP
 
 
         let urlPath = `/versorgungsquoteSobonHorts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

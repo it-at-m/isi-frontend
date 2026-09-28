@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AbfrageRequestBody,
-  EntityModelAbfrage,
-  PagedModelEntityModelAbfrage,
-} from '../models/index';
 import {
+    type AbfrageRequestBody,
     AbfrageRequestBodyFromJSON,
     AbfrageRequestBodyToJSON,
+} from '../models/AbfrageRequestBody';
+import {
+    type EntityModelAbfrage,
     EntityModelAbfrageFromJSON,
     EntityModelAbfrageToJSON,
+} from '../models/EntityModelAbfrage';
+import {
+    type PagedModelEntityModelAbfrage,
     PagedModelEntityModelAbfrageFromJSON,
     PagedModelEntityModelAbfrageToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelAbfrage';
 
 export interface DeleteItemResourceAbfrageDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class AbfrageEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfrages/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

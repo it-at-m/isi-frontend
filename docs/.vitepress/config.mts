@@ -17,7 +17,9 @@ export default defineConfig({
       { text: "Impressum", link: "/impressum" },
     ],
 
-    socialLinks: [{ icon: "github", link: "https://github.com/it-at-m/isi-frontend" }],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/it-at-m/isi-frontend" },
+    ],
 
     search: {
       provider: "local",

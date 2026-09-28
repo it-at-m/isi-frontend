@@ -7,17 +7,21 @@ export function useComponentSecurity() {
   function areDokumenteVisible(context: Context): boolean {
     switch (context) {
       case Context.ABFRAGE:
-        return security.isRoleAdminOrAbfrageerstellung.value || security.isRoleAdminOrSachbearbeitung.value;
+        return (
+          security.isRoleAdminOrAbfrageerstellung.value ||
+          security.isRoleAdminOrSachbearbeitung.value ||
+          security.isRoleAdminOrBedarfsmeldungLesend.value
+        );
       case Context.ABFRAGEVARIANTE_SACHBEARBEITUNG:
-        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldung.value;
+        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldungLesend.value;
       case Context.BAUVORHABEN:
         return (
           security.isRoleAdminOrAbfrageerstellung.value ||
           security.isRoleAdminOrSachbearbeitung.value ||
-          security.isRoleAdminOrBedarfsmeldung.value
+          security.isRoleAdminOrBedarfsmeldungLesend.value
         );
       case Context.INFRASTRUKTUREINRICHTUNG:
-        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldung.value;
+        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldungLesend.value;
       default:
         return false;
     }
@@ -28,7 +32,7 @@ export function useComponentSecurity() {
       case Context.BAUVORHABEN:
         return security.isRoleAdminOrSachbearbeitung.value;
       case Context.INFRASTRUKTUREINRICHTUNG:
-        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldung.value;
+        return security.isRoleAdminOrSachbearbeitung.value || security.isRoleAdminOrBedarfsmeldungLesend.value;
       default:
         return false;
     }

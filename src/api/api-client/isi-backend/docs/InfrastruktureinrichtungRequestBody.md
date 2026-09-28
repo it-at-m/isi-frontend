@@ -18,9 +18,14 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
+`anlassPlanung` | string
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
+`bauvorhabenName` | string
+`resultType` | string
+`infrastruktureinrichtungTyp` | string
+`adresseJson` | [Adresse](Adresse.md)
 `verortungPointJson` | [VerortungPoint](VerortungPoint.md)
 `bauvorhabenName` | string
 `resultType` | string
@@ -46,9 +51,14 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
+  "anlassPlanung": null,
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
+  "bauvorhabenName": null,
+  "resultType": null,
+  "infrastruktureinrichtungTyp": null,
+  "adresseJson": null,
   "verortungPointJson": null,
   "bauvorhabenName": null,
   "resultType": null,

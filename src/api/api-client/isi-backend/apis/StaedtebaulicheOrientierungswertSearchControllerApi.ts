@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelStaedtebaulicheOrientierungswert,
-} from '../models/index';
 import {
+    type EntityModelStaedtebaulicheOrientierungswert,
     EntityModelStaedtebaulicheOrientierungswertFromJSON,
     EntityModelStaedtebaulicheOrientierungswertToJSON,
-} from '../models/index';
+} from '../models/EntityModelStaedtebaulicheOrientierungswert';
 
 export interface ExecuteSearchStaedtebaulicheorientierungswertGetRequest {
     foerderartBezeichnung?: string;

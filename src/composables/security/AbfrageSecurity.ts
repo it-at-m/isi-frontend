@@ -54,7 +54,7 @@ export function useAbfrageSecurity() {
   const isEditableByBedarfsmeldung = computed(() => {
     if (!_.isNil(searchStore.selectedAbfrage)) {
       return (
-        security.isRoleAdminOrBedarfsmeldung.value &&
+        security.isRoleAdminOrBedarfsmeldungSchreibend.value &&
         searchStore.selectedAbfrage.statusAbfrage === StatusAbfrage.EinpflegenBedarfsmeldung
       );
     }

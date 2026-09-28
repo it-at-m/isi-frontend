@@ -29,40 +29,92 @@
       >
         <template #activator="{ props: activatorProps }">
           <v-icon
-            :color="checkCurrentFilter() ? '' : 'secondary'"
+            :color="lastFilterSource === 'dialog' ? 'secondary' : ''"
             @click="openSearchAndFilterDialog"
             v-bind="activatorProps"
           >
             {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
           </v-icon>
         </template>
-        <span> Such- und Filtereinstellungen </span>
+        <span>Such- und Filtereinstellungen</span>
       </v-tooltip>
+      <v-menu
+        v-model="quickFilterMenuOpen"
+        offset-y
+        min-width="220"
+        max-width="320"
+      >
+        <template #activator="{ props }">
+          <v-tooltip
+            location="bottom"
+            open-delay="500"
+          >
+            <template #activator="{ props: tooltipProps }">
+              <v-icon
+                size="18"
+                class="ml-4"
+                :color="lastFilterSource === 'quick' ? 'secondary' : ''"
+                v-bind="Object.assign({}, props, tooltipProps)"
+                @click.stop
+              >
+                mdi-bookmark-multiple-outline
+              </v-icon>
+            </template>
+            <span>Gespeicherte Filter</span>
+          </v-tooltip>
+        </template>
+        <quick-filter-list
+          :active-filter-id="activeQuickFilterId"
+          @apply-filter="onQuickFilterSelected"
+          @reset-filter="resetQuickFilter"
+        />
+      </v-menu>
       <v-dialog
         v-model="searchAndFilterDialogOpen"
-        max-width="800px"
+        max-width="1000px"
+        @click:outside="onFilterDialogClickOutside"
       >
         <search-and-filter-options
+          ref="filterDialogRef"
           v-model="searchQueryAndSorting"
           @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
           @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
         />
       </v-dialog>
+      <yes-no-dialog
+        v-model="confirmCloseDialogOpen"
+        dialogtitle="Filtermaske verlassen?"
+        dialogtext="Änderungen am ausgewählten Filter werden nicht gespeichert. Trotzdem verlassen?"
+        yes-text="Weiter"
+        no-text="Zurück"
+        @yes="confirmCloseDialogYes()"
+        @no="confirmCloseDialogNo()"
+      />
     </template>
   </v-autocomplete>
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed, ref, nextTick } from "vue";
 import { SearchQueryDto, UncertainBoolean } from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
-import SearchAndFilterOptions from "@/components/search/filter/SearchAndFilterOptions.vue";
+import SearchAndFilterOptions from "@/components/filter/SearchAndFilterOptions.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import QuickFilterList from "@/components/filter/QuickFilterList.vue";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
+const filterDialogRef = ref();
+const quickFilterMenuOpen = ref(false);
+const lastFilterSource = ref<"dialog" | "quick" | null>(null);
+const activeQuickFilterId = ref<string | null>(null);
+const confirmCloseDialogOpen = ref(false);
+const lastSelectedFilter = ref<string | null>(null);
 const searchAndFilterDialogOpen = ref<boolean>(false);
 const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryAndSortingModel());
 const searchQuery = ref<string>("");
@@ -79,7 +131,55 @@ onMounted(() => {
   clearSearch();
 });
 
-// Filter Dialog
+// Schnellfilter
+function onQuickFilterSelected(filter: { id: string; name: string; filterSettings: any }) {
+  try {
+    searchQueryAndSorting.value = { ...filter.filterSettings };
+    searchQueryAndSortingStore.value = searchQueryAndSorting.value;
+    quickFilterMenuOpen.value = false;
+    searchEntitiesForSelectedSuggestion();
+    checkCurrentFilter();
+    lastFilterSource.value = "quick";
+    activeQuickFilterId.value = filter.id;
+  } catch (e) {
+    toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
+  }
+}
+
+function resetQuickFilter() {
+  handleResetSearchAndFilterOptions();
+  quickFilterMenuOpen.value = false;
+}
+
+// Großer Filter Dialog
+function onFilterDialogClickOutside() {
+  const isModified = filterDialogRef.value?.isFilterModified;
+  const selectedFilter = filterDialogRef.value?.selectedFilter;
+  if (isModified && selectedFilter) {
+    lastSelectedFilter.value = selectedFilter;
+    confirmCloseDialogOpen.value = true;
+  } else {
+    searchAndFilterDialogOpen.value = false;
+  }
+}
+
+function confirmCloseDialogYes(): void {
+  if (lastSelectedFilter) {
+    lastSelectedFilter.value = null;
+  }
+  searchAndFilterDialogOpen.value = false;
+  confirmCloseDialogOpen.value = false;
+}
+
+function confirmCloseDialogNo(): void {
+  confirmCloseDialogOpen.value = false;
+  nextTick(() => {
+    searchAndFilterDialogOpen.value = true;
+    nextTick(() => {
+      filterDialogRef.value?.onFiltermaskOpen(lastSelectedFilter.value);
+    });
+  });
+}
 
 const searchQueryAndSortingStore = computed({
   get() {
@@ -93,6 +193,9 @@ const searchQueryAndSortingStore = computed({
 function openSearchAndFilterDialog(): void {
   searchQueryAndSorting.value = searchQueryAndSortingStore.value;
   searchAndFilterDialogOpen.value = true;
+  nextTick(() => {
+    filterDialogRef.value?.onFiltermaskOpen();
+  });
 }
 
 function handleAdoptSearchAndFilterOptions(): void {
@@ -100,12 +203,15 @@ function handleAdoptSearchAndFilterOptions(): void {
   searchAndFilterDialogOpen.value = false;
   searchEntitiesForSelectedSuggestion();
   checkCurrentFilter();
+  lastFilterSource.value = "dialog";
 }
 
 function handleResetSearchAndFilterOptions(): void {
   searchQueryAndSorting.value = createSearchQueryAndSortingModel();
   handleAdoptSearchAndFilterOptions();
   searchEntitiesForSelectedSuggestion();
+  lastFilterSource.value = null;
+  activeQuickFilterId.value = null;
 }
 
 function checkCurrentFilter(): boolean {

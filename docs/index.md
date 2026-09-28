@@ -3,6 +3,6 @@
 layout: home
 
 hero:
-    name: "ISI Dokumentation"
-    text: "Informationssystem für soziale Infrastrukturplanung"
+  name: "ISI Dokumentation"
+  text: "Informationssystem für soziale Infrastrukturplanung"
 ---

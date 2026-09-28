@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AbfragevarianteBaugenehmigungsverfahrenRequestBody,
-  EntityModelAbfragevarianteBaugenehmigungsverfahren,
-  PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren,
-} from '../models/index';
 import {
+    type AbfragevarianteBaugenehmigungsverfahrenRequestBody,
     AbfragevarianteBaugenehmigungsverfahrenRequestBodyFromJSON,
     AbfragevarianteBaugenehmigungsverfahrenRequestBodyToJSON,
+} from '../models/AbfragevarianteBaugenehmigungsverfahrenRequestBody';
+import {
+    type EntityModelAbfragevarianteBaugenehmigungsverfahren,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON,
     EntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON,
+} from '../models/EntityModelAbfragevarianteBaugenehmigungsverfahren';
+import {
+    type PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren,
     PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenFromJSON,
     PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahrenToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelAbfragevarianteBaugenehmigungsverfahren';
 
 export interface DeleteItemResourceAbfragevariantebaugenehmigungsverfahrenDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class AbfragevarianteBaugenehmigungsverfahrenEntityControllerApi extends 
 
 
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class AbfragevarianteBaugenehmigungsverfahrenEntityControllerApi extends 
 
 
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class AbfragevarianteBaugenehmigungsverfahrenEntityControllerApi extends 
 
 
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class AbfragevarianteBaugenehmigungsverfahrenEntityControllerApi extends 
 
 
         let urlPath = `/abfragevarianteBaugenehmigungsverfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AbfragevarianteWeiteresVerfahrenRequestBody,
-  EntityModelAbfragevarianteWeiteresVerfahren,
-  PagedModelEntityModelAbfragevarianteWeiteresVerfahren,
-} from '../models/index';
 import {
+    type AbfragevarianteWeiteresVerfahrenRequestBody,
     AbfragevarianteWeiteresVerfahrenRequestBodyFromJSON,
     AbfragevarianteWeiteresVerfahrenRequestBodyToJSON,
+} from '../models/AbfragevarianteWeiteresVerfahrenRequestBody';
+import {
+    type EntityModelAbfragevarianteWeiteresVerfahren,
     EntityModelAbfragevarianteWeiteresVerfahrenFromJSON,
     EntityModelAbfragevarianteWeiteresVerfahrenToJSON,
+} from '../models/EntityModelAbfragevarianteWeiteresVerfahren';
+import {
+    type PagedModelEntityModelAbfragevarianteWeiteresVerfahren,
     PagedModelEntityModelAbfragevarianteWeiteresVerfahrenFromJSON,
     PagedModelEntityModelAbfragevarianteWeiteresVerfahrenToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelAbfragevarianteWeiteresVerfahren';
 
 export interface DeleteItemResourceAbfragevarianteweiteresverfahrenDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class AbfragevarianteWeiteresVerfahrenEntityControllerApi extends runtime
 
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class AbfragevarianteWeiteresVerfahrenEntityControllerApi extends runtime
 
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class AbfragevarianteWeiteresVerfahrenEntityControllerApi extends runtime
 
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class AbfragevarianteWeiteresVerfahrenEntityControllerApi extends runtime
 
 
         let urlPath = `/abfragevarianteWeiteresVerfahrens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

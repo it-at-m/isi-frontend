@@ -87,12 +87,12 @@ export function LinkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Link
     return {
         
         'href': json['href'] == null ? undefined : json['href'],
-        'hreflang': json['hreflang'] == null ? undefined : json['hreflang'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'deprecation': json['deprecation'] == null ? undefined : json['deprecation'],
-        'profile': json['profile'] == null ? undefined : json['profile'],
-        'name': json['name'] == null ? undefined : json['name'],
+        'hreflang': json['hreflang'] === undefined ? undefined : json['hreflang'] === null ? null : json['hreflang'],
+        'title': json['title'] === undefined ? undefined : json['title'] === null ? null : json['title'],
+        'type': json['type'] === undefined ? undefined : json['type'] === null ? null : json['type'],
+        'deprecation': json['deprecation'] === undefined ? undefined : json['deprecation'] === null ? null : json['deprecation'],
+        'profile': json['profile'] === undefined ? undefined : json['profile'] === null ? null : json['profile'],
+        'name': json['name'] === undefined ? undefined : json['name'] === null ? null : json['name'],
         'templated': json['templated'] == null ? undefined : json['templated'],
     };
 }

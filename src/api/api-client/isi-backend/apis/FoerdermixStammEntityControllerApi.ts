@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelFoerdermixStamm,
-  FoerdermixStammRequestBody,
-  PagedModelEntityModelFoerdermixStamm,
-} from '../models/index';
 import {
+    type EntityModelFoerdermixStamm,
     EntityModelFoerdermixStammFromJSON,
     EntityModelFoerdermixStammToJSON,
+} from '../models/EntityModelFoerdermixStamm';
+import {
+    type FoerdermixStammRequestBody,
     FoerdermixStammRequestBodyFromJSON,
     FoerdermixStammRequestBodyToJSON,
+} from '../models/FoerdermixStammRequestBody';
+import {
+    type PagedModelEntityModelFoerdermixStamm,
     PagedModelEntityModelFoerdermixStammFromJSON,
     PagedModelEntityModelFoerdermixStammToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelFoerdermixStamm';
 
 export interface DeleteItemResourceFoerdermixstammDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/foerdermixStamms/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/foerdermixStamms/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/foerdermixStamms/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class FoerdermixStammEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/foerdermixStamms/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

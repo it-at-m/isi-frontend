@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelKommentar,
-  KommentarRequestBody,
-  PagedModelEntityModelKommentar,
-} from '../models/index';
 import {
+    type EntityModelKommentar,
     EntityModelKommentarFromJSON,
     EntityModelKommentarToJSON,
+} from '../models/EntityModelKommentar';
+import {
+    type KommentarRequestBody,
     KommentarRequestBodyFromJSON,
     KommentarRequestBodyToJSON,
+} from '../models/KommentarRequestBody';
+import {
+    type PagedModelEntityModelKommentar,
     PagedModelEntityModelKommentarFromJSON,
     PagedModelEntityModelKommentarToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelKommentar';
 
 export interface DeleteItemResourceKommentarDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class KommentarEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/kommentars/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

@@ -715,6 +715,7 @@ export function groupItemsToHeader(foerdermixStaemme: FoerdermixStammModel[], so
  * Außerdem wird an den Namen der Abfrage "- Kopie" oder "- Kopie <Nummer der Kopie>" angehängt.
  *
  * @param value Die zu kopierende Abfrage oder Abfragevariante.
+ * @param options
  * @returns Die bereinigte Kopie.
  */
 export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfragevarianteDto>(
@@ -729,6 +730,7 @@ export function copyAbfrageOrAbfragevariante<T extends AnyAbfrageDto | AnyAbfrag
   copy.name = (copy.name ?? "") + " - Kopie";
   return copy;
 }
+
 /*
  * Wenn die Sachbearbeitung eine Abfrage durch "Datenübernahme" kopiert, sollen nur die Abfragevarianten der Abfrageerstellung (Abfragevariante Nr. 1.x) übernommen werden,
  * nicht aber die der Sachbearbeitung (Abfragevariante Nr. 2.x)
@@ -771,6 +773,7 @@ const sanitizationMap = new Map<string, unknown>([
   ["statusAbfrage", StatusAbfrage.Angelegt],
   ["sub", undefined],
   ["bearbeitungshistorie", undefined],
+  ["fristBearbeitung", new Date(0)],
   // Abfragevariante
   ["sobonBerechnung", createSobonBerechnungBauleitplanverfahren()],
   ["stammdatenGueltigAb", new Date()],

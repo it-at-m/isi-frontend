@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { BearbeitendePerson } from './BearbeitendePerson';
+import {
+    BearbeitendePersonFromJSON,
+    BearbeitendePersonFromJSONTyped,
+    BearbeitendePersonToJSON,
+    BearbeitendePersonToJSONTyped,
+} from './BearbeitendePerson';
 import type { Link } from './Link';
 import {
     LinkFromJSON,
@@ -47,16 +54,22 @@ export interface EntityModelKommentar {
     lastModifiedDateTime?: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof EntityModelKommentar
      */
-    datum?: string;
+    erstellungsdatum?: Date;
     /**
      * 
      * @type {string}
      * @memberof EntityModelKommentar
      */
     text?: string;
+    /**
+     * 
+     * @type {BearbeitendePerson}
+     * @memberof EntityModelKommentar
+     */
+    bearbeitendePerson?: BearbeitendePerson;
     /**
      * 
      * @type {{ [key: string]: Link; }}
@@ -85,8 +98,9 @@ export function EntityModelKommentarFromJSONTyped(json: any, ignoreDiscriminator
         'version': json['version'] == null ? undefined : json['version'],
         'createdDateTime': json['createdDateTime'] == null ? undefined : (new Date(json['createdDateTime'])),
         'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (new Date(json['lastModifiedDateTime'])),
-        'datum': json['datum'] == null ? undefined : json['datum'],
+        'erstellungsdatum': json['erstellungsdatum'] == null ? undefined : (new Date(json['erstellungsdatum'])),
         'text': json['text'] == null ? undefined : json['text'],
+        'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonFromJSON(json['bearbeitendePerson']),
         'links': json['_links'] == null ? undefined : (mapValues(json['_links'], LinkFromJSON)),
     };
 }
@@ -105,8 +119,9 @@ export function EntityModelKommentarToJSONTyped(value?: EntityModelKommentar | n
         'version': value['version'],
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : value['createdDateTime'].toISOString(),
         'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : value['lastModifiedDateTime'].toISOString(),
-        'datum': value['datum'],
+        'erstellungsdatum': value['erstellungsdatum'] == null ? value['erstellungsdatum'] : value['erstellungsdatum'].toISOString().substring(0,10),
         'text': value['text'],
+        'bearbeitendePerson': BearbeitendePersonToJSON(value['bearbeitendePerson']),
         '_links': value['links'] == null ? undefined : (mapValues(value['links'], LinkToJSON)),
     };
 }

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AbfragevarianteRequestBody,
-  EntityModelAbfragevariante,
-  PagedModelEntityModelAbfragevariante,
-} from '../models/index';
 import {
+    type AbfragevarianteRequestBody,
     AbfragevarianteRequestBodyFromJSON,
     AbfragevarianteRequestBodyToJSON,
+} from '../models/AbfragevarianteRequestBody';
+import {
+    type EntityModelAbfragevariante,
     EntityModelAbfragevarianteFromJSON,
     EntityModelAbfragevarianteToJSON,
+} from '../models/EntityModelAbfragevariante';
+import {
+    type PagedModelEntityModelAbfragevariante,
     PagedModelEntityModelAbfragevarianteFromJSON,
     PagedModelEntityModelAbfragevarianteToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelAbfragevariante';
 
 export interface DeleteItemResourceAbfragevarianteDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class AbfragevarianteEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfragevariantes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class AbfragevarianteEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfragevariantes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class AbfragevarianteEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfragevariantes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class AbfragevarianteEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/abfragevariantes/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

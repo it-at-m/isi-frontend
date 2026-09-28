@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelUmlegungFoerderarten,
-  PagedModelEntityModelUmlegungFoerderarten,
-  UmlegungFoerderartenRequestBody,
-} from '../models/index';
 import {
+    type EntityModelUmlegungFoerderarten,
     EntityModelUmlegungFoerderartenFromJSON,
     EntityModelUmlegungFoerderartenToJSON,
+} from '../models/EntityModelUmlegungFoerderarten';
+import {
+    type PagedModelEntityModelUmlegungFoerderarten,
     PagedModelEntityModelUmlegungFoerderartenFromJSON,
     PagedModelEntityModelUmlegungFoerderartenToJSON,
+} from '../models/PagedModelEntityModelUmlegungFoerderarten';
+import {
+    type UmlegungFoerderartenRequestBody,
     UmlegungFoerderartenRequestBodyFromJSON,
     UmlegungFoerderartenRequestBodyToJSON,
-} from '../models/index';
+} from '../models/UmlegungFoerderartenRequestBody';
 
 export interface DeleteItemResourceUmlegungfoerderartenDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class UmlegungFoerderartenEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/umlegungFoerderartens/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

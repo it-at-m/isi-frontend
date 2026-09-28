@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelStaedtebaulicheOrientierungswert,
-  PagedModelEntityModelStaedtebaulicheOrientierungswert,
-  StaedtebaulicheOrientierungswertRequestBody,
-} from '../models/index';
 import {
+    type EntityModelStaedtebaulicheOrientierungswert,
     EntityModelStaedtebaulicheOrientierungswertFromJSON,
     EntityModelStaedtebaulicheOrientierungswertToJSON,
+} from '../models/EntityModelStaedtebaulicheOrientierungswert';
+import {
+    type PagedModelEntityModelStaedtebaulicheOrientierungswert,
     PagedModelEntityModelStaedtebaulicheOrientierungswertFromJSON,
     PagedModelEntityModelStaedtebaulicheOrientierungswertToJSON,
+} from '../models/PagedModelEntityModelStaedtebaulicheOrientierungswert';
+import {
+    type StaedtebaulicheOrientierungswertRequestBody,
     StaedtebaulicheOrientierungswertRequestBodyFromJSON,
     StaedtebaulicheOrientierungswertRequestBodyToJSON,
-} from '../models/index';
+} from '../models/StaedtebaulicheOrientierungswertRequestBody';
 
 export interface DeleteItemResourceStaedtebaulicheorientierungswertDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
 
         let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
 
         let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
 
         let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class StaedtebaulicheOrientierungswertEntityControllerApi extends runtime
 
 
         let urlPath = `/staedtebaulicheOrientierungswerts/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

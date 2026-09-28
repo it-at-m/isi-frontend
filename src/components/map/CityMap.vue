@@ -76,6 +76,8 @@ import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet/dist/leaflet.css";
+import "leaflet-groupedlayercontrol";
+import "leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css";
 import _ from "lodash";
 
 /**
@@ -161,8 +163,13 @@ function initMap(): void {
     .wms(getBackgroundMapUrl(), { layers: "gsm:g_stadtkarte_gesamt", ...LAYER_OPTIONS })
     .addTo(map);
 
-  // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von Overlay-Layern aktivieren lässt.
-  layerControl = L.control.layers({ ["Hintergrund"]: wmsTileLayer }, assembleBaseLayersForLayerControl()).addTo(map);
+  // Fügt ein Steuerungselement hinzu, mit welchem sich der Base-Layer und eine beliebige Anzahl von gruppierten Overlay-Layern aktivieren lässt.
+  layerControl = L.control
+    .groupedLayers({ ["Hintergrund"]: wmsTileLayer }, assembleBaseLayersForLayerControl(), {
+      collapsed: true,
+      groupCheckboxes: false,
+    })
+    .addTo(map);
 
   updateLayerControlWithCustomLayers();
 

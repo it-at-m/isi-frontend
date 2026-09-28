@@ -66,7 +66,7 @@
                   </a>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung">
+              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldungLesend">
                 <v-list-item-title>
                   <a
                     target="_blank"
@@ -76,7 +76,7 @@
                   </a>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldung">
+              <v-list-item v-if="isRoleAdminOrSachbearbeitung || isRoleAdminOrBedarfsmeldungLesend">
                 <v-list-item-title>
                   <a
                     target="_blank"
@@ -203,7 +203,7 @@ const stammdatenStore = useStammdatenStore();
 const userInfoStore = useUserinfoStore();
 const { getUserinfo } = useUserInfoApi();
 const metabaseReportingStore = useMetabaseReportingStore();
-const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldung } = useSecurity();
+const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldungLesend } = useSecurity();
 const datenschutzhinweisUrl: string = import.meta.env.VITE_DATENSCHUTZHINWEIS_URL;
 const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 const showVersionInfo = ref(false);

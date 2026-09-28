@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CollectionModelObject,
-  EntityModelBauvorhaben,
-} from '../models/index';
 import {
+    type CollectionModelObject,
     CollectionModelObjectFromJSON,
     CollectionModelObjectToJSON,
+} from '../models/CollectionModelObject';
+import {
+    type EntityModelBauvorhaben,
     EntityModelBauvorhabenFromJSON,
     EntityModelBauvorhabenToJSON,
-} from '../models/index';
+} from '../models/EntityModelBauvorhaben';
 
 export interface CreatePropertyReferenceInfrastruktureinrichtungPatchRequest {
     id: string;
@@ -84,7 +83,7 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -146,7 +145,7 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -208,8 +207,8 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,
@@ -253,7 +252,7 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -297,7 +296,7 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -349,8 +348,8 @@ export class InfrastruktureinrichtungPropertyReferenceControllerApi extends runt
 
 
         let urlPath = `/infrastruktureinrichtungs/{id}/bauvorhaben/{propertyId}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"propertyId"}}`, encodeURIComponent(String(requestParameters['propertyId'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{propertyId}', encodeURIComponent(String(requestParameters['propertyId'])));
 
         return {
             path: urlPath,

@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelGlobalCounter,
-  GlobalCounterRequestBody,
-  PagedModelEntityModelGlobalCounter,
-} from '../models/index';
 import {
+    type EntityModelGlobalCounter,
     EntityModelGlobalCounterFromJSON,
     EntityModelGlobalCounterToJSON,
+} from '../models/EntityModelGlobalCounter';
+import {
+    type GlobalCounterRequestBody,
     GlobalCounterRequestBodyFromJSON,
     GlobalCounterRequestBodyToJSON,
+} from '../models/GlobalCounterRequestBody';
+import {
+    type PagedModelEntityModelGlobalCounter,
     PagedModelEntityModelGlobalCounterFromJSON,
     PagedModelEntityModelGlobalCounterToJSON,
-} from '../models/index';
+} from '../models/PagedModelEntityModelGlobalCounter';
 
 export interface DeleteItemResourceGlobalcounterDeleteRequest {
     id: string;
@@ -78,7 +79,7 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/globalCounters/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -171,7 +172,7 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/globalCounters/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -225,7 +226,7 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/globalCounters/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -334,7 +335,7 @@ export class GlobalCounterEntityControllerApi extends runtime.BaseAPI {
 
 
         let urlPath = `/globalCounters/{id}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,

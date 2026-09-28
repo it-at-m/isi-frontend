@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelAbfragevarianteWeiteresVerfahren,
-} from '../models/index';
 import {
+    type EntityModelAbfragevarianteWeiteresVerfahren,
     EntityModelAbfragevarianteWeiteresVerfahrenFromJSON,
     EntityModelAbfragevarianteWeiteresVerfahrenToJSON,
-} from '../models/index';
+} from '../models/EntityModelAbfragevarianteWeiteresVerfahren';
 
 export interface ExecuteSearchAbfragevarianteweiteresverfahrenGetRequest {
     id?: string;

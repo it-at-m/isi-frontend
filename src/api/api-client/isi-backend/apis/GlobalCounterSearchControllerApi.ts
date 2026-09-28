@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelGlobalCounter,
-} from '../models/index';
 import {
+    type EntityModelGlobalCounter,
     EntityModelGlobalCounterFromJSON,
     EntityModelGlobalCounterToJSON,
-} from '../models/index';
+} from '../models/EntityModelGlobalCounter';
 
 export interface ExecuteSearchGlobalcounterGetRequest {
     counterType?: ExecuteSearchGlobalcounterGetCounterTypeEnum;

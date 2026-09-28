@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  EntityModelAbfrage,
-} from '../models/index';
 import {
+    type EntityModelAbfrage,
     EntityModelAbfrageFromJSON,
     EntityModelAbfrageToJSON,
-} from '../models/index';
+} from '../models/EntityModelAbfrage';
 
 export interface ExecuteSearchAbfrageGetRequest {
     id?: string;
