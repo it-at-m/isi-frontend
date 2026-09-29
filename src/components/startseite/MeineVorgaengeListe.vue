@@ -101,6 +101,19 @@
           </v-card-text>
         </v-card>
       </v-hover>
+      <div
+        v-if="hasWeitereSeiten"
+        class="d-flex justify-center my-2"
+      >
+        <v-btn
+          id="meine_vorgaenge_mehr_laden"
+          variant="text"
+          size="small"
+          @click="loadAndAppendNextPage"
+        >
+          Mehr laden
+        </v-btn>
+      </div>
     </v-list>
     <v-container
       v-else
@@ -156,6 +169,17 @@ const vorgaenge = ref<Array<AbfrageSearchResultDto>>([]);
 const page = ref(1);
 const numberOfPages = ref(0);
 
+/**
+ * Kennung der aktuellen Filter-/Sortiergeneration.
+ *
+ * Jeder Neuaufbau der Liste erhöht den Zähler. Antworten älterer Generationen werden verworfen,
+ * damit ein langsamer Request einer vorherigen Filtereinstellung die Liste nicht überschreibt
+ * oder fremde Ergebnisse anhängt.
+ */
+const generation = ref(0);
+
+const hasWeitereSeiten = computed(() => page.value < numberOfPages.value);
+
 const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
@@ -201,9 +225,15 @@ function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
 
 /**
  * Lädt die erste Seite der eigenen Vorgänge und ersetzt die bisherige Liste.
+ *
+ * Trifft währenddessen eine neuere Filter- oder Sortierauswahl ein, wird das Ergebnis verworfen.
  */
 async function loadVorgaenge(): Promise<void> {
+  const aktuelleGeneration = ++generation.value;
   const searchResults = await searchForEntities(createSearchQuery(1));
+  if (aktuelleGeneration !== generation.value) {
+    return;
+  }
   page.value = 1;
   numberOfPages.value = searchResults.numberOfPages ?? 0;
   vorgaenge.value = _.toArray(searchResults.searchResults) as Array<AbfrageSearchResultDto>;
@@ -213,11 +243,13 @@ async function loadVorgaenge(): Promise<void> {
  * Lädt die nächste Seite und hängt sie an die bestehende Liste an.
  *
  * Der Mutex verhindert eine Race-Condition bei mehreren schnell aufeinanderfolgenden Seitenaufrufen.
+ * Ergebnisse einer überholten Filter- oder Sortiergeneration werden nicht angehängt.
  */
 function loadAndAppendNextPage(): void {
   tryAcquire(pageRequestMutex)
     .acquire()
     .then(() => {
+      const aktuelleGeneration = generation.value;
       const nextPage = page.value + 1;
       if (nextPage > numberOfPages.value) {
         pageRequestMutex.release();
@@ -225,12 +257,18 @@ function loadAndAppendNextPage(): void {
       }
       searchForEntities(createSearchQuery(nextPage))
         .then((searchResults) => {
+          if (aktuelleGeneration !== generation.value) {
+            return;
+          }
           page.value = nextPage;
           numberOfPages.value = searchResults.numberOfPages ?? 0;
           vorgaenge.value = _.concat(
             vorgaenge.value,
             _.toArray(searchResults.searchResults) as Array<AbfrageSearchResultDto>,
           );
+        })
+        .catch(() => {
+          // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
         })
         .finally(() => pageRequestMutex.release());
     })
@@ -272,7 +310,8 @@ function datumFormatted(datum: Date | undefined): string {
 }
 
 watch([schnellfilter, sortierung], () => {
-  loadVorgaenge();
+  // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
+  loadVorgaenge().catch(() => undefined);
 });
 
 onMounted(async () => {
@@ -283,8 +322,17 @@ onMounted(async () => {
   } catch {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }
-  await loadVorgaenge();
+  // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
+  await loadVorgaenge().catch(() => undefined);
 });
 
-defineExpose({ schnellfilter, sortierung, vorgaenge, createSearchQuery, loadVorgaenge, loadAndAppendNextPage });
+defineExpose({
+  schnellfilter,
+  sortierung,
+  vorgaenge,
+  hasWeitereSeiten,
+  createSearchQuery,
+  loadVorgaenge,
+  loadAndAppendNextPage,
+});
 </script>

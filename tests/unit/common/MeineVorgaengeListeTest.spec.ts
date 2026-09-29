@@ -154,6 +154,117 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
     });
   });
 
+  describe("Veraltete Antworten", () => {
+    test("verwirft die Antwort einer überholten Filtergeneration", async () => {
+      const vm = wrapper.vm as any;
+      let langsamAufloesen: (wert: unknown) => void = () => undefined;
+      mockSearchForEntities.mockImplementationOnce(() => new Promise((resolve) => (langsamAufloesen = resolve)));
+      const langsamerLauf = vm.loadVorgaenge();
+
+      mockSearchForEntities.mockResolvedValue({
+        searchResults: [{ id: "neu", name: "Neue Auswahl" }],
+        numberOfPages: 1,
+        page: 1,
+      });
+      await vm.loadVorgaenge();
+
+      langsamAufloesen({ searchResults: [{ id: "alt", name: "Alte Auswahl" }], numberOfPages: 9, page: 1 });
+      await langsamerLauf;
+
+      expect(vm.vorgaenge).toHaveLength(1);
+      expect(vm.vorgaenge[0].id).toBe("neu");
+      expect(vm.numberOfPages).not.toBe(9);
+    });
+
+    test("hängt keine Folgeseite einer überholten Generation an", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({
+        searchResults: [{ id: "seite-1" }],
+        numberOfPages: 2,
+        page: 1,
+      });
+      await vm.loadVorgaenge();
+
+      let langsamAufloesen: (wert: unknown) => void = () => undefined;
+      mockSearchForEntities.mockImplementationOnce(() => new Promise((resolve) => (langsamAufloesen = resolve)));
+      vm.loadAndAppendNextPage();
+      // Der Mutex wird asynchron erworben; erst danach greift der noch offene Request.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      mockSearchForEntities.mockResolvedValue({
+        searchResults: [{ id: "neu" }],
+        numberOfPages: 1,
+        page: 1,
+      });
+      await vm.loadVorgaenge();
+
+      langsamAufloesen({ searchResults: [{ id: "seite-2-veraltet" }], numberOfPages: 2, page: 2 });
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(vm.vorgaenge.map((v: any) => v.id)).toEqual(["neu"]);
+    });
+  });
+
+  describe("Fehlerbehandlung", () => {
+    test("lässt einen fehlgeschlagenen Folgeseiten-Request nicht unbehandelt", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "a" }], numberOfPages: 2, page: 1 });
+      await vm.loadVorgaenge();
+
+      mockSearchForEntities.mockRejectedValueOnce(new Error("Netzwerkfehler"));
+      expect(() => vm.loadAndAppendNextPage()).not.toThrow();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(vm.vorgaenge.map((v: any) => v.id)).toEqual(["a"]);
+    });
+
+    test("gibt den Mutex nach einem Fehler wieder frei", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "a" }], numberOfPages: 2, page: 1 });
+      await vm.loadVorgaenge();
+
+      mockSearchForEntities.mockRejectedValueOnce(new Error("Netzwerkfehler"));
+      vm.loadAndAppendNextPage();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "b" }], numberOfPages: 2, page: 2 });
+      vm.loadAndAppendNextPage();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(vm.vorgaenge.map((v: any) => v.id)).toEqual(["a", "b"]);
+    });
+  });
+
+  describe("Weitere Seiten", () => {
+    test("bietet 'Mehr laden' an, solange weitere Seiten existieren", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "a" }], numberOfPages: 3, page: 1 });
+      await vm.loadVorgaenge();
+      await wrapper.vm.$nextTick();
+      expect(vm.hasWeitereSeiten).toBe(true);
+    });
+
+    test("blendet 'Mehr laden' auf der letzten Seite aus", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "a" }], numberOfPages: 1, page: 1 });
+      await vm.loadVorgaenge();
+      await wrapper.vm.$nextTick();
+      expect(vm.hasWeitereSeiten).toBe(false);
+    });
+
+    test("fordert keine Seite jenseits von numberOfPages an", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "a" }], numberOfPages: 1, page: 1 });
+      await vm.loadVorgaenge();
+
+      mockSearchForEntities.mockClear();
+      vm.loadAndAppendNextPage();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(mockSearchForEntities).not.toHaveBeenCalled();
+    });
+  });
+
   describe("Voreinstellungen aus dem Profil", () => {
     test("werden beim Mounten übernommen", async () => {
       mockGetStartseitenEinstellung.mockResolvedValue({
