@@ -141,6 +141,7 @@ function onQuickFilterSelected(filter: { id: string; name: string; filterSetting
     searchEntitiesForSelectedSuggestion();
     checkCurrentFilter();
     lastFilterSource.value = "quick";
+    searchStore.setFilterActive(true);
     activeQuickFilterId.value = filter.id;
   } catch (e) {
     toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
@@ -203,8 +204,9 @@ function handleAdoptSearchAndFilterOptions(): void {
   searchQueryAndSortingStore.value = searchQueryAndSorting.value;
   closeSearchAndFilterDialog();
   searchEntitiesForSelectedSuggestion();
-  checkCurrentFilter();
-  lastFilterSource.value = "dialog";
+  const isStandardFilter = checkCurrentFilter();
+  searchStore.setFilterActive(!isStandardFilter);
+  lastFilterSource.value = isStandardFilter ? null : "dialog";
 }
 
 function handleResetSearchAndFilterOptions(): void {
@@ -212,6 +214,7 @@ function handleResetSearchAndFilterOptions(): void {
   handleAdoptSearchAndFilterOptions();
   searchEntitiesForSelectedSuggestion();
   lastFilterSource.value = null;
+  searchStore.setFilterActive(false);
   activeQuickFilterId.value = null;
 }
 

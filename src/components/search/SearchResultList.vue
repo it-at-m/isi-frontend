@@ -6,6 +6,16 @@
     :height="viewportHeight"
     class="pa-0 ma-0 overflow-y-auto"
   >
+    <v-alert
+      v-if="isFilterActive"
+      type="info"
+      density="compact"
+      class="mb-2"
+      icon="mdi-filter-outline"
+    >
+      Es sind Filter aktiv.
+    </v-alert>
+
     <!-- eslint-disable vue/no-unused-vars -->
     <v-hover
       v-for="(item, index) in searchResultsAsArray"
@@ -168,6 +178,7 @@ const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
+const isFilterActive = computed(() => searchStore.isFilterActive);
 
 const searchResultsAsArray = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? _.cloneDeep(searchStore.searchResults.searchResults) : [];
