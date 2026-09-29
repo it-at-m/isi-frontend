@@ -79,6 +79,7 @@
           v-model="searchQueryAndSorting"
           @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
           @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+          @close-search-and-filter-options="closeSearchAndFilterDialog"
         />
       </v-dialog>
       <yes-no-dialog
@@ -159,7 +160,7 @@ function onFilterDialogClickOutside() {
     lastSelectedFilter.value = selectedFilter;
     confirmCloseDialogOpen.value = true;
   } else {
-    searchAndFilterDialogOpen.value = false;
+    closeSearchAndFilterDialog();
   }
 }
 
@@ -167,7 +168,7 @@ function confirmCloseDialogYes(): void {
   if (lastSelectedFilter) {
     lastSelectedFilter.value = null;
   }
-  searchAndFilterDialogOpen.value = false;
+  closeSearchAndFilterDialog();
   confirmCloseDialogOpen.value = false;
 }
 
@@ -200,7 +201,7 @@ function openSearchAndFilterDialog(): void {
 
 function handleAdoptSearchAndFilterOptions(): void {
   searchQueryAndSortingStore.value = searchQueryAndSorting.value;
-  searchAndFilterDialogOpen.value = false;
+  closeSearchAndFilterDialog();
   searchEntitiesForSelectedSuggestion();
   checkCurrentFilter();
   lastFilterSource.value = "dialog";
@@ -212,6 +213,10 @@ function handleResetSearchAndFilterOptions(): void {
   searchEntitiesForSelectedSuggestion();
   lastFilterSource.value = null;
   activeQuickFilterId.value = null;
+}
+
+function closeSearchAndFilterDialog(): void {
+  searchAndFilterDialogOpen.value = false;
 }
 
 function checkCurrentFilter(): boolean {
