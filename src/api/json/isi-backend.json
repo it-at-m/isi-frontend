@@ -4,7 +4,7 @@
     "title": "ISI Backend API",
     "description": "ISI Backend - Service für das Informationssystem für soziale Infrastrukturplanung",
     "contact": { "name": "ISI Management", "email": "noreply@mail.de" },
-    "version": "1.6.0"
+    "version": "2.1.0"
   },
   "servers": [{ "url": "http://localhost:8089", "description": "Generated server url" }],
   "tags": [
