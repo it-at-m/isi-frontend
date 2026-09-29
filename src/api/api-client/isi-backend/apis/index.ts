@@ -16,5 +16,6 @@ export * from './MetabaseReportingInformationApi';
 export * from './MimeTypeApi';
 export * from './PersonalFilterApi';
 export * from './StammdatenApi';
+export * from './StartseitenEinstellungApi';
 export * from './SucheApi';
 export * from './VersorgungsquoteApi';
