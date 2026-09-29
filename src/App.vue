@@ -119,8 +119,14 @@
             </template>
             <v-list class="text-center">
               <v-list-item @click="showVersionInfo = true">
-                <v-list-item-title>Versionsinformationen</v-list-item-title>
+                <template #default>
+                  <div class="d-flex align-center w-100">
+                    <v-list-item-title>Versionsinformationen</v-list-item-title>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </div>
+                </template>
               </v-list-item>
+
               <v-list-item>
                 <v-list-item-title>
                   <a
