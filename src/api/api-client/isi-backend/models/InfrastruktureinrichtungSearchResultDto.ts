@@ -81,12 +81,7 @@ export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEn
 export const InfrastruktureinrichtungSearchResultDtoStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
     PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
