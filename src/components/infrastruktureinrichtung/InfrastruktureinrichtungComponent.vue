@@ -61,11 +61,10 @@
             variant="underlined"
             item-value="key"
             item-title="value"
-            :rules="[pflichtfeld]"
             :disabled="!isEditable"
             @update:model-value="formChanged"
           >
-            <template #label>Anlass der Planung <span class="text-secondary">*</span></template>
+            <template #label>Anlass der Planung <span class="text-secondary"></span></template>
           </v-select>
         </v-col>
 
