@@ -76,6 +76,7 @@
               size="20"
               v-bind="props"
               @click="onCloseFiltermask"
+              aria-label="Filtermaske schließen"
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -171,6 +172,7 @@ import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
   (event: "reset-search-and-filter-options", value: void): void;
+  (event: "close-search-and-filter-options", value: void): void;
 }
 
 const { xl } = useDisplay();
@@ -379,5 +381,5 @@ async function onDeleteFilter(id: string) {
   }
 }
 
-defineExpose({ onFiltermaskOpen, isFilterModified, selectedFilter });
+defineExpose({ onFiltermaskOpen, isFilterModified, selectedFilter, STANDARD_FILTER_ID });
 </script>

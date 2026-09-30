@@ -193,7 +193,7 @@ const searchQueryAndSortingStore = computed({
 });
 
 function openSearchAndFilterDialog(): void {
-  searchQueryAndSorting.value = searchQueryAndSortingStore.value;
+  searchQueryAndSorting.value = _.cloneDeep(searchQueryAndSortingStore.value);
   searchAndFilterDialogOpen.value = true;
   nextTick(() => {
     filterDialogRef.value?.onFiltermaskOpen();
@@ -201,10 +201,10 @@ function openSearchAndFilterDialog(): void {
 }
 
 function handleAdoptSearchAndFilterOptions(): void {
-  searchQueryAndSortingStore.value = searchQueryAndSorting.value;
+  searchQueryAndSortingStore.value = _.cloneDeep(searchQueryAndSorting.value);
   closeSearchAndFilterDialog();
   searchEntitiesForSelectedSuggestion();
-  const isStandardFilter = checkCurrentFilter();
+  const isStandardFilter = filterDialogRef.value?.selectedFilter === filterDialogRef.value?.STANDARD_FILTER_ID;
   searchStore.setFilterActive(!isStandardFilter);
   lastFilterSource.value = isStandardFilter ? null : "dialog";
 }
