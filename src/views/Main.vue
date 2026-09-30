@@ -5,8 +5,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import StartseiteAbfrageerstellung from "@/views/StartseiteAbfrageerstellung.vue";
-import StartseiteStandard from "@/views/StartseiteStandard.vue";
+import StartseiteAbfrageerstellung from "@/views/startseite/StartseiteAbfrageerstellung.vue";
+import StartseiteStandard from "@/views/startseite/StartseiteStandard.vue";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 
 const userinfoStore = useUserinfoStore();
