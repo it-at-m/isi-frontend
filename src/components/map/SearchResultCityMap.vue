@@ -42,7 +42,6 @@ type EntityFeature = Feature<
     infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
     anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
-    zugehoerigesBauvorhaben: string | undefined;
     artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
   }
@@ -94,12 +93,6 @@ const geoJsonOptions: GeoJSONOptions = {
       const typ = getLookupValue(feature.properties.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList.value);
       tooltipLines.push(`Typ: ${typ}`);
 
-      if (!_.isNil(feature.properties.zugehoerigesBauvorhaben)) {
-        tooltipLines.push(`Vorhaben: ${feature.properties.zugehoerigesBauvorhaben}`);
-      } else {
-        tooltipLines.push("Vorhaben: Kein zugehöriges Vorhaben");
-      }
-
       console.log(`Feature: ${feature.properties.statusInfrastruktureinrichtung}`);
       console.log(`List: ${statusInfrastruktureinrichtungList.value}`);
       tooltipLines.push(
@@ -107,7 +100,14 @@ const geoJsonOptions: GeoJSONOptions = {
       );
 
       if (!_.isNil(feature.properties.anlassPlanungInfrastruktureinrichtung)) {
-        tooltipLines.push(`Anlass der Planung: ${feature.properties.anlassPlanungInfrastruktureinrichtung}`);
+        let anlassText = getLookupValue(
+          feature.properties.anlassPlanungInfrastruktureinrichtung,
+          anlassPlanungInfrastruktureinrichtung.value,
+        );
+        if (anlassText === "- - - Keine Angabe - - -") {
+          anlassText = "nicht angegeben";
+        }
+        tooltipLines.push(`Anlass der Planung: ${anlassText}`);
       } else {
         tooltipLines.push("Anlass der Planung: nicht angegeben");
       }
@@ -157,7 +157,6 @@ const geoJson = computed(() => {
     let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
     let statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
     let anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
-    let zugehoerigesBauvorhaben: string | undefined;
     let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     let verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
 
@@ -178,7 +177,6 @@ const geoJson = computed(() => {
       infrastruktureinrichtungTyp = (result as InfrastruktureinrichtungSearchResultDto).infrastruktureinrichtungTyp;
       statusInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).status;
       anlassPlanungInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).anlassPlanung;
-      zugehoerigesBauvorhaben = (result as InfrastruktureinrichtungSearchResultDto).zugehoerigesBauvorhaben;
     }
 
     if (type && id && name && coordinate) {
@@ -192,7 +190,6 @@ const geoJson = computed(() => {
           infrastruktureinrichtungTyp,
           statusInfrastruktureinrichtung,
           anlassPlanungInfrastruktureinrichtung,
-          zugehoerigesBauvorhaben,
           artAbfrage,
           verfahrensstand,
         },
