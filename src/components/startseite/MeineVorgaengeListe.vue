@@ -2,7 +2,7 @@
   <div class="d-flex flex-column fill-height">
     <h2 class="text-h5 text-primary font-weight-bold mb-3">Meine Vorgänge</h2>
 
-    <div class="d-flex align-center flex-wrap ga-2 mb-3">
+    <div class="d-flex align-center flex-nowrap ga-2 mb-3">
       <v-select
         id="meine_vorgaenge_schnellfilter"
         v-model="schnellfilter"
@@ -12,7 +12,7 @@
         density="compact"
         hide-details
         append-inner-icon="mdi-filter"
-        style="max-width: 220px"
+        style="max-width: 220px; min-width: 0"
       />
       <v-select
         id="meine_vorgaenge_sortierung"
@@ -23,7 +23,7 @@
         density="compact"
         hide-details
         append-inner-icon="mdi-unfold-more-horizontal"
-        style="max-width: 220px"
+        style="max-width: 220px; min-width: 0"
       />
       <v-spacer />
       <v-menu
