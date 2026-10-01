@@ -98,6 +98,10 @@ export interface LookupListsDto {
     /**
      * 
      */
+    anlassPlanung?: LookupListDto;
+    /**
+     * 
+     */
     einrichtungstraeger?: LookupListDto;
     /**
      * 
@@ -159,6 +163,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'artBaulicheNutzung': json['artBaulicheNutzung'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': json['artBaulicheNutzungBauvorhaben'] == null ? undefined : LookupListDtoFromJSON(json['artBaulicheNutzungBauvorhaben']),
         'statusInfrastruktureinrichtung': json['statusInfrastruktureinrichtung'] == null ? undefined : LookupListDtoFromJSON(json['statusInfrastruktureinrichtung']),
+        'anlassPlanung': json['anlassPlanung'] == null ? undefined : LookupListDtoFromJSON(json['anlassPlanung']),
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : LookupListDtoFromJSON(json['einrichtungstraeger']),
         'einrichtungstraegerSchulen': json['einrichtungstraegerSchulen'] == null ? undefined : LookupListDtoFromJSON(json['einrichtungstraegerSchulen']),
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : LookupListDtoFromJSON(json['infrastruktureinrichtungTyp']),
@@ -197,6 +202,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'artBaulicheNutzung': LookupListDtoToJSON(value['artBaulicheNutzung']),
         'artBaulicheNutzungBauvorhaben': LookupListDtoToJSON(value['artBaulicheNutzungBauvorhaben']),
         'statusInfrastruktureinrichtung': LookupListDtoToJSON(value['statusInfrastruktureinrichtung']),
+        'anlassPlanung': LookupListDtoToJSON(value['anlassPlanung']),
         'einrichtungstraeger': LookupListDtoToJSON(value['einrichtungstraeger']),
         'einrichtungstraegerSchulen': LookupListDtoToJSON(value['einrichtungstraegerSchulen']),
         'infrastruktureinrichtungTyp': LookupListDtoToJSON(value['infrastruktureinrichtungTyp']),

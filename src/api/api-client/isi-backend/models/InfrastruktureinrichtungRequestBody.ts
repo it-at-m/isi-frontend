@@ -115,6 +115,12 @@ export interface InfrastruktureinrichtungRequestBody {
     status?: InfrastruktureinrichtungRequestBodyStatusEnum;
     /**
      * 
+     * @type {InfrastruktureinrichtungRequestBodyAnlassPlanungEnum}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    anlassPlanung?: InfrastruktureinrichtungRequestBodyAnlassPlanungEnum;
+    /**
+     * 
      * @type {number}
      * @memberof InfrastruktureinrichtungRequestBody
      */
@@ -157,10 +163,22 @@ export interface InfrastruktureinrichtungRequestBody {
     adresseJson?: Adresse;
     /**
      * 
-     * @type {VerortungPoint}
+     * @type {InfrastruktureinrichtungRequestBodyResultTypeEnum}
      * @memberof InfrastruktureinrichtungRequestBody
      */
-    verortungPointJson?: VerortungPoint;
+    resultType?: InfrastruktureinrichtungRequestBodyResultTypeEnum;
+    /**
+     * 
+     * @type {InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    infrastruktureinrichtungTyp?: InfrastruktureinrichtungRequestBodyInfrastruktureinrichtungTypEnum;
+    /**
+     * 
+     * @type {Adresse}
+     * @memberof InfrastruktureinrichtungRequestBody
+     */
+    adresseJson?: Adresse;
 }
 
 
@@ -176,6 +194,7 @@ export const InfrastruktureinrichtungRequestBodyStatusEnum = {
     GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
     GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
     UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND'
 } as const;
 export type InfrastruktureinrichtungRequestBodyStatusEnum = typeof InfrastruktureinrichtungRequestBodyStatusEnum[keyof typeof InfrastruktureinrichtungRequestBodyStatusEnum];
@@ -234,6 +253,7 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'nameEinrichtung': json['nameEinrichtung'] == null ? undefined : json['nameEinrichtung'],
         'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
         'status': json['status'] == null ? undefined : json['status'],
+        'anlassPlanung': json['anlassPlanung'] == null ? undefined : json['anlassPlanung'],
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
@@ -242,6 +262,10 @@ export function InfrastruktureinrichtungRequestBodyFromJSONTyped(json: any, igno
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
         'verortungPointJson': json['verortungPointJson'] == null ? undefined : VerortungPointFromJSON(json['verortungPointJson']),
+        'bauvorhabenName': json['bauvorhabenName'] == null ? undefined : json['bauvorhabenName'],
+        'resultType': json['resultType'] == null ? undefined : json['resultType'],
+        'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
+        'adresseJson': json['adresseJson'] == null ? undefined : AdresseFromJSON(json['adresseJson']),
     };
 }
 
@@ -268,6 +292,7 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'nameEinrichtung': value['nameEinrichtung'],
         'fertigstellungsjahr': value['fertigstellungsjahr'],
         'status': value['status'],
+        'anlassPlanung': value['anlassPlanung'],
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
@@ -276,6 +301,10 @@ export function InfrastruktureinrichtungRequestBodyToJSONTyped(value?: Infrastru
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'adresseJson': AdresseToJSON(value['adresseJson']),
         'verortungPointJson': VerortungPointToJSON(value['verortungPointJson']),
+        'bauvorhabenName': value['bauvorhabenName'],
+        'resultType': value['resultType'],
+        'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
+        'adresseJson': AdresseToJSON(value['adresseJson']),
     };
 }
 
