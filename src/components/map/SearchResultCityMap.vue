@@ -5,6 +5,9 @@
     :geo-json="geoJson"
     :geo-json-options="geoJsonOptions"
     :layers-for-layer-control="layersForLayerControl"
+    :height="height"
+    :width="width"
+    :expandable="expandable"
   />
 </template>
 
@@ -46,6 +49,22 @@ type EntityFeature = Feature<
     verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
   }
 >;
+
+interface Props {
+  height?: number | string;
+  width?: number | string;
+  /**
+   * Blendet in der Karte unten rechts den Button zum Vergrößern ein. Die Karteneinstellungen
+   * bleiben beim Vergrößern erhalten, da dieselbe Karteninstanz weiterverwendet wird.
+   */
+  expandable?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  height: "100%",
+  width: "100%",
+  expandable: false,
+});
 
 const router = useRouter();
 const lookupStore = useLookupStore();
