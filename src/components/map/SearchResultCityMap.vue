@@ -111,9 +111,6 @@ const geoJsonOptions: GeoJSONOptions = {
 
       const typ = getLookupValue(feature.properties.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList.value);
       tooltipLines.push(`Typ: ${typ}`);
-
-      console.log(`Feature: ${feature.properties.statusInfrastruktureinrichtung}`);
-      console.log(`List: ${statusInfrastruktureinrichtungList.value}`);
       tooltipLines.push(
         `Status: ${getLookupValue(feature.properties.statusInfrastruktureinrichtung, statusInfrastruktureinrichtungList.value)}`,
       );
