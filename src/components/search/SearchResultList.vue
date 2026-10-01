@@ -1,9 +1,9 @@
 <template>
   <v-list
     v-if="searchResultsAsArray.length > 0"
-    width="450px"
+    :width="width"
     v-scroll.self="onScroll"
-    :height="viewportHeight"
+    :height="heightOverride ?? viewportHeight"
     class="pa-0 ma-0 overflow-y-auto"
   >
     <!-- eslint-disable vue/no-unused-vars -->
@@ -119,8 +119,8 @@
   </v-list>
   <v-list
     v-else
-    width="450px"
-    :height="viewportHeight"
+    :width="width"
+    :height="heightOverride ?? viewportHeight"
     class="pa-0 ma-0"
   >
     <v-container
@@ -133,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, toRefs } from "vue";
 import {
   type AbfrageSearchResultDto,
   type BauvorhabenSearchResultDto,
@@ -156,6 +156,21 @@ import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+
+interface Props {
+  width?: number | string;
+  /**
+   * Überschreibt die aus der Fensterhöhe berechnete Höhe der Liste.
+   */
+  height?: number | string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  width: "450px",
+  height: undefined,
+});
+
+const { width, height: heightOverride } = toRefs(props);
 
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();

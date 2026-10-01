@@ -1,145 +1,21 @@
 <template>
-  <v-navigation-drawer
-    width="20vw"
-    permanent
-  >
-    <search-result-list />
-  </v-navigation-drawer>
-  <v-main
-    height="100%"
-    width="100%"
-  >
-    <search-result-city-map />
-    <v-speed-dial
-      v-model="speedDialOpen"
-      location="top"
-    >
-      <template #activator="{ props: activatorProps }">
-        <v-btn
-          id="speed_dial_create_button"
-          key="speed-dial-create-btn"
-          v-bind="activatorProps"
-          color="secondary"
-          :icon="speedDialOpen ? 'mdi-close' : 'mdi-plus'"
-          size="x-large"
-          elevation="8"
-          location="bottom end"
-          position="absolute"
-          class="mr-8 mb-8"
-          style="z-index: 400"
-          :data-x="activatorProps"
-        />
-      </template>
-      <v-tooltip location="left">
-        <template #activator="{ props }">
-          <v-btn
-            id="infrastruktureinrichtung_create_button"
-            key="infra-create-btn"
-            class="text-h6"
-            icon="mdi-home"
-            color="red-lighten-1"
-            size="large"
-            v-bind="props"
-            @click="createInfrastruktureinrichtung"
-          />
-        </template>
-        <span>Infrastruktureinrichtung erstellen</span>
-      </v-tooltip>
-      <v-tooltip location="left">
-        <template #activator="{ props }">
-          <v-btn
-            id="bauvorhaben_create_button"
-            key="bauvorhaben-create-btn"
-            class="text-h6"
-            icon="mdi-account-hard-hat"
-            color="indigo-lighten-1"
-            size="large"
-            v-bind="props"
-            @click="createBauvorhaben"
-          />
-        </template>
-        <span>Vorhaben erstellen</span>
-      </v-tooltip>
-      <v-tooltip location="left">
-        <template #activator="{ props }">
-          <v-btn
-            id="bauleitplanverfahren_create_button"
-            key="bauleitplan-create-btn"
-            class="text-h6"
-            :icon="iconBauleitplanverfahren"
-            color="green-lighten-1"
-            size="large"
-            v-bind="props"
-            @click="createBauleitplanverfahren"
-          />
-        </template>
-        <span>Bauleitplanverfahren erstellen</span>
-      </v-tooltip>
-      <v-tooltip location="left">
-        <template #activator="{ props }">
-          <v-btn
-            id="baugenehmigungsverfahren_create_button"
-            key="baugenehmigungsverfahren-create-btn"
-            class="text-h6"
-            :icon="iconBaugenehmigungsverfahren"
-            color="green-lighten-1"
-            size="large"
-            v-bind="props"
-            @click="createBaugenehmigungsverfahren"
-          />
-        </template>
-        <span>Baugenehmigungsverfahren erstellen</span>
-      </v-tooltip>
-      <v-tooltip location="left">
-        <template #activator="{ props }">
-          <v-btn
-            id="weiteres_verfahren_create_button"
-            key="weiteres-verfahren-create-btn"
-            class="text-h6"
-            :icon="iconWeiteresVerfahren"
-            color="green-lighten-1"
-            size="large"
-            v-bind="props"
-            @click="createWeiteresVerfahren"
-          />
-        </template>
-        <span>Weiteres Verfahren erstellen</span>
-      </v-tooltip>
-    </v-speed-dial>
-  </v-main>
+  <startseite-abfrageerstellung v-if="hasRoleAbfrageerstellung" />
+  <startseite-standard v-else />
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import SearchResultList from "@/components/search/SearchResultList.vue";
-import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
-import { AbfrageDtoArtAbfrageEnum } from "@/api/api-client/isi-backend";
-import { getAbfrageIcon } from "@/utils/AbfrageIconUtil";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import StartseiteAbfrageerstellung from "@/views/startseite/StartseiteAbfrageerstellung.vue";
+import StartseiteStandard from "@/views/startseite/StartseiteStandard.vue";
+import { useUserinfoStore } from "@/stores/Userinfostore";
 
-const router = useRouter();
-const speedDialOpen = ref(false);
-const iconBauleitplanverfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
-const iconBaugenehmigungsverfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
-const iconWeiteresVerfahren = getAbfrageIcon(AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
+const userinfoStore = useUserinfoStore();
 
-function createBauleitplanverfahren(): void {
-  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren);
-}
+/**
+ * Nutzer mit der Rolle "abfrageerstellung" erhalten die personalisierte Startseite.
+ * Für alle übrigen Rollen bleibt die bisherige Startseite unverändert.
+ */
+const hasRoleAbfrageerstellung = computed(() => userinfoStore.hasRoleAbfrageerstellung);
 
-function createBaugenehmigungsverfahren(): void {
-  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren);
-}
-
-function createWeiteresVerfahren(): void {
-  router.push("/abfrage?art=" + AbfrageDtoArtAbfrageEnum.WeiteresVerfahren);
-}
-
-function createBauvorhaben(): void {
-  router.push("/bauvorhaben");
-}
-
-function createInfrastruktureinrichtung(): void {
-  router.push("/infrastruktureinrichtung");
-}
+defineExpose({ hasRoleAbfrageerstellung });
 </script>
