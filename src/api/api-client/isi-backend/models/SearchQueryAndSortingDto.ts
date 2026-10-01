@@ -205,6 +205,7 @@ export const SearchQueryAndSortingDtoSortByEnum = {
     Name: 'NAME',
     CreatedDateTime: 'CREATED_DATE_TIME',
     LastModifiedDateTime: 'LAST_MODIFIED_DATE_TIME',
+    FristBearbeitung: 'FRIST_BEARBEITUNG',
 } as const;
 export type SearchQueryAndSortingDtoSortByEnum = typeof SearchQueryAndSortingDtoSortByEnum[keyof typeof SearchQueryAndSortingDtoSortByEnum];
 

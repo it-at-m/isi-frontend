@@ -27,10 +27,58 @@
     { "name": "Kommentare", "description": "API um Kommentare zu verwalten" },
     { "name": "PersonalFilter", "description": "API zur Interaktion mit persönlichen Filtern" },
     { "name": "Lookup", "description": "API zum Erhalt der LookupListen." },
+    {
+      "name": "StartseitenEinstellung",
+      "description": "API zur Interaktion mit den persönlichen Startseiteneinstellungen"
+    },
     { "name": "FileInfoStamm", "description": "API zum Erhalten von dateibezogenen Stammdaten." },
     { "name": "MetabaseReportingInformation", "description": "API zum Erhalten von Metabase Reporting Informationen" }
   ],
   "paths": {
+    "/startseiten-einstellung": {
+      "get": {
+        "tags": ["StartseitenEinstellung"],
+        "summary": "Lesen der persönlichen Startseiteneinstellungen. Sind keine gespeichert, werden die Standardeinstellungen zurückgegeben.",
+        "operationId": "getStartseitenEinstellung",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um die Startseiteneinstellungen anzusehen.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": ["StartseitenEinstellung"],
+        "summary": "Speichern der persönlichen Startseiteneinstellungen.",
+        "operationId": "saveStartseitenEinstellung",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK -> Einstellungen wurden erfolgreich gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Einstellungen konnten nicht gespeichert werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um die Startseiteneinstellungen zu speichern.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/stammdaten/foerdermix": {
       "get": {
         "tags": ["FoerdermixStamm"],
@@ -1890,6 +1938,34 @@
   },
   "components": {
     "schemas": {
+      "SchnellfilterVorgaenge": {
+        "type": "string",
+        "enum": ["ALLE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
+      },
+      "StartseitenEinstellungDto": {
+        "type": "object",
+        "properties": {
+          "schnellfilter": { "$ref": "#/components/schemas/SchnellfilterVorgaenge" },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
+          "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
+        },
+        "required": ["schnellfilter", "sortBy", "sortOrder"]
+      },
+      "InformationResponseDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "traceId": { "type": "string" },
+          "spanId": { "type": "string" },
+          "httpStatus": { "type": "integer", "format": "int32" },
+          "originalException": { "type": "string" },
+          "messages": { "type": "array", "items": { "type": "string" } }
+        }
+      },
       "FoerderartDto": {
         "type": "object",
         "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
@@ -1913,22 +1989,13 @@
         },
         "required": ["foerdermix"]
       },
-      "InformationResponseDto": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
-          "timestamp": { "type": "string", "format": "date-time" },
-          "traceId": { "type": "string" },
-          "spanId": { "type": "string" },
-          "httpStatus": { "type": "integer", "format": "int32" },
-          "originalException": { "type": "string" },
-          "messages": { "type": "array", "items": { "type": "string" } }
-        }
-      },
       "FilterSettingsDto": {
         "type": "object",
         "properties": {
-          "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
           "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] },
           "selectBauleitplanverfahren": { "type": "boolean" },
           "selectBaugenehmigungsverfahren": { "type": "boolean" },
@@ -2812,7 +2879,10 @@
           },
           "page": { "type": "integer", "format": "int32", "minimum": 0 },
           "pageSize": { "type": "integer", "format": "int32", "minimum": 0 },
-          "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
           "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
         },
         "required": [

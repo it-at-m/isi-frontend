@@ -152,6 +152,7 @@ export const FilterSettingsDtoSortByEnum = {
     Name: 'NAME',
     CreatedDateTime: 'CREATED_DATE_TIME',
     LastModifiedDateTime: 'LAST_MODIFIED_DATE_TIME',
+    FristBearbeitung: 'FRIST_BEARBEITUNG',
 } as const;
 export type FilterSettingsDtoSortByEnum = typeof FilterSettingsDtoSortByEnum[keyof typeof FilterSettingsDtoSortByEnum];
 
