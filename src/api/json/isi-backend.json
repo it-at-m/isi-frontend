@@ -3028,6 +3028,29 @@
                   "MITTELSCHULE"
                 ]
               },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "UNGESICHERTE_PLANUNG",
+                  "GESICHERTE_PLANUNG",
+                  "PLANUNG_ZURUECKGEZOGEN",
+                  "BESTAND"
+                ]
+              },
+              "anlassPlanung": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "NEUBAU_BEBAUUNGSPLAN",
+                  "NEUBAU_BAU_GB",
+                  "BAUPROGRAMM",
+                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                  "SCHLIESSUNG"
+                ]
+              },
               "zugehoerigesBauvorhaben": { "type": "string" }
             }
           }
