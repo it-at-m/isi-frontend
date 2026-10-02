@@ -11,11 +11,6 @@ vi.mock("vue-router", () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));
 
-vi.mock("vuetify", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("vuetify")>()),
-  useDisplay: () => ({ height: { value: 1000 } }),
-}));
-
 describe("SearchResultListPropsTest.spec.ts", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
@@ -26,10 +21,9 @@ describe("SearchResultListPropsTest.spec.ts", () => {
     expect(wrapper.props("width")).toBe("450px");
   });
 
-  test("berechnet ohne height-Prop die Höhe weiterhin aus der Fensterhöhe", () => {
+  test("füllt ohne height-Prop das umgebende Element vollständig aus", () => {
     const wrapper: VueWrapper = mount(SearchResultList, { shallow: true });
-    expect(wrapper.props("height")).toBeUndefined();
-    expect((wrapper.vm as any).viewportHeight).toMatch(/vh$/);
+    expect(wrapper.props("height")).toBe("100%");
   });
 
   test("übernimmt gesetzte Breiten- und Höhenangaben", () => {
