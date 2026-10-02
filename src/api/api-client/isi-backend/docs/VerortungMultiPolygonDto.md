@@ -13,6 +13,7 @@ Name | Type
 `kitaplanungsbereiche` | [Set&lt;KitaplanungsbereichDto&gt;](KitaplanungsbereichDto.md)
 `grundschulsprengel` | [Set&lt;GrundschulsprengelDto&gt;](GrundschulsprengelDto.md)
 `mittelschulsprengel` | [Set&lt;MittelschulsprengelDto&gt;](MittelschulsprengelDto.md)
+`schulstandorte` | [Set&lt;SchulstandortDto&gt;](SchulstandortDto.md)
 `multiPolygon` | [MultiPolygonGeometryDto](MultiPolygonGeometryDto.md)
 `centroid` | [PointGeometryDto](PointGeometryDto.md)
 `centroidUtm` | [UtmDto](UtmDto.md)
@@ -31,6 +32,7 @@ const example = {
   "kitaplanungsbereiche": null,
   "grundschulsprengel": null,
   "mittelschulsprengel": null,
+  "schulstandorte": null,
   "multiPolygon": null,
   "centroid": null,
   "centroidUtm": null,

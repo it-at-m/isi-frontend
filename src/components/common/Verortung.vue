@@ -122,7 +122,7 @@
             :closable="isEditable && grundschulsprengel.length > 1"
             @click:close.stop="removeChipGrundschulsprengel(grundschulsprengelItem.nummer)"
           >
-            {{ grundschulsprengelItem.nummer }}
+            {{ grundschulsprengelItem.nummer + `/` + getSchulnameOfSchulnummer(grundschulsprengelItem.nummer) }}
           </v-chip>
         </v-chip-group>
       </v-col>
@@ -214,10 +214,12 @@ import type {
   FeatureDtoGrundschulsprengelDto,
   FeatureDtoKitaplanungsbereichDto,
   FeatureDtoMittelschulsprengelDto,
+  FeatureDtoSchulstandortDto,
   FeatureDtoStadtbezirkDto,
   FeatureDtoViertelDto,
   MultiPolygonGeometryDto as MultiPolygonGeometryDtoGeoDataEai,
   PointGeometryDto,
+  SchulstandortDto,
 } from "@/api/api-client/isi-geodata-eai";
 import type {
   AdresseDto,
@@ -337,6 +339,12 @@ const coordinate = computed(() => {
 onMounted(() => onVerortungModelChanged());
 
 watch(verortungModel, () => onVerortungModelChanged());
+
+function getSchulnameOfSchulnummer(schulnummer?: number): string {
+  return !_.isNil(schulnummer) && !_.isNil(verortungModel.value?.schulstandorte)
+    ? Array.from(verortungModel.value.schulstandorte).find((s) => s.schulnummer === schulnummer)?.schulname || ""
+    : "";
+}
 
 function onVerortungModelChanged(): void {
   const gemarkungenFromVerortungModel = Array.from(verortungModel.value?.gemarkungen ?? []);
@@ -516,6 +524,7 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
     const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
     const promiseKitaplanungsbereiche = await geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon);
     const promiseGrundschulsprengel = await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon);
+    const promiseSchulstandorte = await geoApi.getSchulstandorteForMultipolygon(unifiedMultipolygon);
     const promiseMittelschulsprengel = await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon);
 
     // Stadtbezirke ermitteln
@@ -550,6 +559,10 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
     const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
       mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(promiseMittelschulsprengel);
 
+    // Schulstandorte ermitteln
+    const schulstandorteBackend: Array<SchulstandortDto> =
+      schulstandorteGeoDataEaiToMittelschulsprengelBackend(promiseSchulstandorte);
+
     // Erstellung des VerortungMultiPolygonDto
     return {
       gemarkungen: new Set<GemarkungDto>(gemarkungenBackend),
@@ -559,6 +572,7 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
       kitaplanungsbereiche: new Set<KitaplanungsbereichDto>(kitaplanungsbereicheBackend),
       grundschulsprengel: new Set<GrundschulsprengelDto>(grundschulsprengelBackend),
       mittelschulsprengel: new Set<MittelschulsprengelDto>(mittelschulsprengelBackend),
+      schulstandorte: new Set<SchulstandortDto>(schulstandorteBackend),
       multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
     } as VerortungMultiPolygonDto;
   } catch (error) {
@@ -663,6 +677,18 @@ function mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(
   return mittelschulsprengelGeoDataEai.map((mittelschulsprengel) => {
     return {
       nummer: mittelschulsprengel.properties?.schulnummer,
+      multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+    };
+  });
+}
+
+function schulstandorteGeoDataEaiToMittelschulsprengelBackend(
+  schulstandorteGeoDataEai: Array<FeatureDtoSchulstandortDto>,
+): Array<SchulstandortDto> {
+  return schulstandorteGeoDataEai.map((schulstandort) => {
+    return {
+      schulnummer: schulstandort.properties?.schulnummer,
+      schulname: schulstandort.properties?.schulname,
       multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
     };
   });

@@ -2449,6 +2449,15 @@
         },
         "required": ["anzahlKlassen", "anzahlPlaetze"]
       },
+      "SchulstandortDto": {
+        "type": "object",
+        "properties": {
+          "schulnummer": { "type": "integer", "format": "int64" },
+          "schulname": { "type": "string" },
+          "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" }
+        },
+        "required": ["multiPolygon"]
+      },
       "StadtbezirkDto": {
         "type": "object",
         "properties": {
@@ -2498,6 +2507,11 @@
           "mittelschulsprengel": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" },
+            "uniqueItems": true
+          },
+          "schulstandorte": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SchulstandortDto" },
             "uniqueItems": true
           },
           "point": { "$ref": "#/components/schemas/PointGeometryDto" },
@@ -2641,6 +2655,11 @@
           "mittelschulsprengel": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/MittelschulsprengelDto" },
+            "uniqueItems": true
+          },
+          "schulstandorte": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SchulstandortDto" },
             "uniqueItems": true
           },
           "multiPolygon": { "$ref": "#/components/schemas/MultiPolygonGeometryDto" },

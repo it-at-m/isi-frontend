@@ -85,6 +85,7 @@ export * from './PresignedUrlDto';
 export * from './Save201Response';
 export * from './SaveRequest';
 export * from './SchuleDto';
+export * from './SchulstandortDto';
 export * from './SearchQueryAndSortingDto';
 export * from './SearchQueryDto';
 export * from './SearchResultDto';

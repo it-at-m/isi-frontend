@@ -13,6 +13,7 @@ Name | Type
 `kitaplanungsbereiche` | [Set&lt;KitaplanungsbereichDto&gt;](KitaplanungsbereichDto.md)
 `grundschulsprengel` | [Set&lt;GrundschulsprengelDto&gt;](GrundschulsprengelDto.md)
 `mittelschulsprengel` | [Set&lt;MittelschulsprengelDto&gt;](MittelschulsprengelDto.md)
+`schulstandorte` | [Set&lt;SchulstandortDto&gt;](SchulstandortDto.md)
 `point` | [PointGeometryDto](PointGeometryDto.md)
 `pointUtm` | [UtmDto](UtmDto.md)
 
@@ -30,6 +31,7 @@ const example = {
   "kitaplanungsbereiche": null,
   "grundschulsprengel": null,
   "mittelschulsprengel": null,
+  "schulstandorte": null,
   "point": null,
   "pointUtm": null,
 } satisfies VerortungPointDto

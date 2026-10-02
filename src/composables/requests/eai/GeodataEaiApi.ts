@@ -30,6 +30,8 @@ import type {
   FeatureDtoViertelDto,
   GetViertel1Request,
   GetViertelRequest,
+  FeatureDtoSchulstandortDto,
+  GetSchulstandorteRequest,
 } from "@/api/api-client/isi-geodata-eai";
 import {
   ControllerZurExtraktionVonFeatureAufBasisVonPunktKoordinatenImStandardEPSG4326WGS84Api as PunktApi,
@@ -266,6 +268,18 @@ export function useGeodataEaiApi() {
     }
   }
 
+  async function getSchulstandorteForMultipolygon(
+    multiPolygon: MultiPolygonGeometryDto,
+  ): Promise<Array<FeatureDtoSchulstandortDto>> {
+    const request: GetSchulstandorteRequest = { multiPolygonGeometryDto: multiPolygon };
+    try {
+      const response = await polygonApi.getSchulstandorte(request, RequestUtils.getPOSTConfig());
+      return response.features ?? [];
+    } catch (error) {
+      throw handleErrorInternal(error);
+    }
+  }
+
   async function getUnionOfMultipolygon(multiPolygon: MultiPolygonGeometryDto): Promise<MultiPolygonGeometryDto> {
     const request: UnifyRequest = { multiPolygonGeometryDto: multiPolygon };
     try {
@@ -304,6 +318,7 @@ export function useGeodataEaiApi() {
     getKitaplanungsbereicheForMultipolygon,
     getGrundschulsprengelForMultipolygon,
     getMittelschulsprengelForMultipolygon,
+    getSchulstandorteForMultipolygon,
     getUnionOfMultipolygon,
   };
 }

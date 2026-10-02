@@ -76,6 +76,13 @@ import {
     StadtbezirkDtoToJSON,
     StadtbezirkDtoToJSONTyped,
 } from './StadtbezirkDto';
+import type { SchulstandortDto } from './SchulstandortDto';
+import {
+    SchulstandortDtoFromJSON,
+    SchulstandortDtoFromJSONTyped,
+    SchulstandortDtoToJSON,
+    SchulstandortDtoToJSONTyped,
+} from './SchulstandortDto';
 
 /**
  * 
@@ -114,6 +121,10 @@ export interface VerortungPointDto {
     /**
      * 
      */
+    schulstandorte?: Set<SchulstandortDto>;
+    /**
+     * 
+     */
     point: PointGeometryDto;
     /**
      * 
@@ -146,6 +157,7 @@ export function VerortungPointDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'kitaplanungsbereiche': json['kitaplanungsbereiche'] == null ? undefined : (new Set((json['kitaplanungsbereiche'] as Array<any>).map(KitaplanungsbereichDtoFromJSON))),
         'grundschulsprengel': json['grundschulsprengel'] == null ? undefined : (new Set((json['grundschulsprengel'] as Array<any>).map(GrundschulsprengelDtoFromJSON))),
         'mittelschulsprengel': json['mittelschulsprengel'] == null ? undefined : (new Set((json['mittelschulsprengel'] as Array<any>).map(MittelschulsprengelDtoFromJSON))),
+        'schulstandorte': json['schulstandorte'] == null ? undefined : (new Set((json['schulstandorte'] as Array<any>).map(SchulstandortDtoFromJSON))),
         'point': PointGeometryDtoFromJSON(json['point']),
         'pointUtm': json['pointUtm'] == null ? undefined : UtmDtoFromJSON(json['pointUtm']),
     };
@@ -169,6 +181,7 @@ export function VerortungPointDtoToJSONTyped(value?: VerortungPointDto | null, i
         'kitaplanungsbereiche': value['kitaplanungsbereiche'] == null ? undefined : (Array.from(value['kitaplanungsbereiche'] as Set<any>).map(KitaplanungsbereichDtoToJSON)),
         'grundschulsprengel': value['grundschulsprengel'] == null ? undefined : (Array.from(value['grundschulsprengel'] as Set<any>).map(GrundschulsprengelDtoToJSON)),
         'mittelschulsprengel': value['mittelschulsprengel'] == null ? undefined : (Array.from(value['mittelschulsprengel'] as Set<any>).map(MittelschulsprengelDtoToJSON)),
+        'schulstandorte': value['schulstandorte'] == null ? undefined : (Array.from(value['schulstandorte'] as Set<any>).map(SchulstandortDtoToJSON)),
         'point': PointGeometryDtoToJSON(value['point']),
         'pointUtm': UtmDtoToJSON(value['pointUtm']),
     };
