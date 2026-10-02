@@ -3,7 +3,7 @@
     v-if="searchResultsAsArray.length > 0"
     :width="width"
     v-scroll.self="onScroll"
-    :height="heightOverride ?? viewportHeight"
+    :height="height"
     class="pa-0 ma-0 overflow-y-auto"
   >
     <v-alert
@@ -145,7 +145,7 @@
   <v-list
     v-else
     :width="width"
-    :height="heightOverride ?? viewportHeight"
+    :height="height"
     class="pa-0 ma-0"
   >
     <v-container
@@ -180,22 +180,22 @@ import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
-import { useDisplay } from "vuetify";
 
 interface Props {
   width?: number | string;
   /**
-   * Überschreibt die aus der Fensterhöhe berechnete Höhe der Liste.
+   * Höhe der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus,
+   * sodass die Darstellung unabhängig von der Bildschirmgröße identisch ist.
    */
   height?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   width: "450px",
-  height: undefined,
+  height: "100%",
 });
 
-const { width, height: heightOverride } = toRefs(props);
+const { width, height } = toRefs(props);
 
 const KEINE_ANGABE_LOOKUP_VALUE = "- - - Keine Angabe - - -";
 const NICHT_ANGEGEBEN = "nicht angegeben";
@@ -222,13 +222,6 @@ const searchResultsAsArray = computed(() => {
 const numberOfPossiblePages = computed(() => {
   const numberOfPossiblePages = searchResults.value.numberOfPages;
   return _.isNil(numberOfPossiblePages) ? 0 : numberOfPossiblePages;
-});
-
-const { height } = useDisplay();
-
-const viewportHeight = computed(() => {
-  const heightOfWindow = height.value;
-  return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
 });
 
 /**
