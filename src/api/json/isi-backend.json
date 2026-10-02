@@ -27,10 +27,58 @@
     { "name": "Kommentare", "description": "API um Kommentare zu verwalten" },
     { "name": "PersonalFilter", "description": "API zur Interaktion mit persönlichen Filtern" },
     { "name": "Lookup", "description": "API zum Erhalt der LookupListen." },
+    {
+      "name": "StartseitenEinstellung",
+      "description": "API zur Interaktion mit den persönlichen Startseiteneinstellungen"
+    },
     { "name": "FileInfoStamm", "description": "API zum Erhalten von dateibezogenen Stammdaten." },
     { "name": "MetabaseReportingInformation", "description": "API zum Erhalten von Metabase Reporting Informationen" }
   ],
   "paths": {
+    "/startseiten-einstellung": {
+      "get": {
+        "tags": ["StartseitenEinstellung"],
+        "summary": "Lesen der persönlichen Startseiteneinstellungen. Sind keine gespeichert, werden die Standardeinstellungen zurückgegeben.",
+        "operationId": "getStartseitenEinstellung",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um die Startseiteneinstellungen anzusehen.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": ["StartseitenEinstellung"],
+        "summary": "Speichern der persönlichen Startseiteneinstellungen.",
+        "operationId": "saveStartseitenEinstellung",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK -> Einstellungen wurden erfolgreich gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/StartseitenEinstellungDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Einstellungen konnten nicht gespeichert werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN -> Keine Berechtigung, um die Startseiteneinstellungen zu speichern.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/stammdaten/foerdermix": {
       "get": {
         "tags": ["FoerdermixStamm"],
@@ -1890,6 +1938,34 @@
   },
   "components": {
     "schemas": {
+      "SchnellfilterVorgaenge": {
+        "type": "string",
+        "enum": ["ALLE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
+      },
+      "StartseitenEinstellungDto": {
+        "type": "object",
+        "properties": {
+          "schnellfilter": { "$ref": "#/components/schemas/SchnellfilterVorgaenge" },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
+          "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
+        },
+        "required": ["schnellfilter", "sortBy", "sortOrder"]
+      },
+      "InformationResponseDto": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "traceId": { "type": "string" },
+          "spanId": { "type": "string" },
+          "httpStatus": { "type": "integer", "format": "int32" },
+          "originalException": { "type": "string" },
+          "messages": { "type": "array", "items": { "type": "string" } }
+        }
+      },
       "FoerderartDto": {
         "type": "object",
         "properties": { "bezeichnung": { "type": "string" }, "anteilProzent": { "type": "number" } }
@@ -1913,22 +1989,13 @@
         },
         "required": ["foerdermix"]
       },
-      "InformationResponseDto": {
-        "type": "object",
-        "properties": {
-          "type": { "type": "string", "enum": ["ERROR", "WARNING", "INFORMATION_SUCCESS", "INFORMATION_NEUTRAL"] },
-          "timestamp": { "type": "string", "format": "date-time" },
-          "traceId": { "type": "string" },
-          "spanId": { "type": "string" },
-          "httpStatus": { "type": "integer", "format": "int32" },
-          "originalException": { "type": "string" },
-          "messages": { "type": "array", "items": { "type": "string" } }
-        }
-      },
       "FilterSettingsDto": {
         "type": "object",
         "properties": {
-          "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
           "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] },
           "selectBauleitplanverfahren": { "type": "boolean" },
           "selectBaugenehmigungsverfahren": { "type": "boolean" },
@@ -1983,17 +2050,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "BESTAND"
-              ]
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
             }
           }
         },
@@ -2178,7 +2235,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "GrundschulsprengelDto": {
         "type": "object",
@@ -2224,7 +2281,7 @@
             }
           }
         ],
-        "required": ["anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "anzahlHortGruppen", "anzahlHortPlaetze", "nameEinrichtung", "status"]
       },
       "HausFuerKinderDto": {
         "allOf": [
@@ -2258,7 +2315,7 @@
             }
           }
         ],
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "InfrastruktureinrichtungDto": {
         "type": "object",
@@ -2300,23 +2357,26 @@
           "fertigstellungsjahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "status": {
             "type": "string",
+            "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+          },
+          "anlassPlanung": {
+            "type": "string",
             "enum": [
               "UNSPECIFIED",
-              "UNGESICHERTE_PLANUNG",
-              "GESICHERTE_PLANUNG_NEUE_EINR",
-              "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-              "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-              "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-              "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-              "BESTAND"
+              "NEUBAU_BEBAUUNGSPLAN",
+              "NEUBAU_BAU_GB",
+              "BAUPROGRAMM",
+              "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+              "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+              "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+              "SCHLIESSUNG"
             ]
           },
           "flaecheGesamtgrundstueck": { "type": "number" },
           "flaecheTeilgrundstueck": { "type": "number" },
           "idKibigWeb": { "type": "string" }
         },
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "KindergartenDto": {
         "allOf": [
@@ -2344,7 +2404,13 @@
             }
           }
         ],
-        "required": ["anzahlKindergartenGruppen", "anzahlKindergartenPlaetze", "nameEinrichtung", "status"]
+        "required": [
+          "anlassPlanung",
+          "anzahlKindergartenGruppen",
+          "anzahlKindergartenPlaetze",
+          "nameEinrichtung",
+          "status"
+        ]
       },
       "KinderkrippeDto": {
         "allOf": [
@@ -2372,7 +2438,13 @@
             }
           }
         ],
-        "required": ["anzahlKinderkrippeGruppen", "anzahlKinderkrippePlaetze", "nameEinrichtung", "status"]
+        "required": [
+          "anlassPlanung",
+          "anzahlKinderkrippeGruppen",
+          "anzahlKinderkrippePlaetze",
+          "nameEinrichtung",
+          "status"
+        ]
       },
       "KitaplanungsbereichDto": {
         "type": "object",
@@ -2388,7 +2460,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "MittelschulsprengelDto": {
         "type": "object",
@@ -2725,16 +2797,22 @@
             "type": "array",
             "items": {
               "type": "string",
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+            }
+          },
+          "filterAnlassPlanung": {
+            "type": "array",
+            "items": {
+              "type": "string",
               "enum": [
                 "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "BESTAND"
+                "NEUBAU_BEBAUUNGSPLAN",
+                "NEUBAU_BAU_GB",
+                "BAUPROGRAMM",
+                "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                "SCHLIESSUNG"
               ]
             }
           },
@@ -2816,22 +2894,31 @@
             "type": "array",
             "items": {
               "type": "string",
+              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+            }
+          },
+          "filterAnlassPlanung": {
+            "type": "array",
+            "items": {
+              "type": "string",
               "enum": [
                 "UNSPECIFIED",
-                "UNGESICHERTE_PLANUNG",
-                "GESICHERTE_PLANUNG_NEUE_EINR",
-                "GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR",
-                "GESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE",
-                "GESICHERTE_PLANUNG_INTERIMSSTANDORT",
-                "UNGESICHERTE_PLANUNG_TF_KITA_STANDORT",
-                "BESTAND"
+                "NEUBAU_BEBAUUNGSPLAN",
+                "NEUBAU_BAU_GB",
+                "BAUPROGRAMM",
+                "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                "SCHLIESSUNG"
               ]
             }
           },
           "page": { "type": "integer", "format": "int32", "minimum": 0 },
           "pageSize": { "type": "integer", "format": "int32", "minimum": 0 },
-          "sortBy": { "type": "string", "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME"] },
+          "sortBy": {
+            "type": "string",
+            "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
+          },
           "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
         },
         "required": [
@@ -2958,6 +3045,29 @@
                   "HAUS_FUER_KINDER",
                   "GRUNDSCHULE",
                   "MITTELSCHULE"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "UNGESICHERTE_PLANUNG",
+                  "GESICHERTE_PLANUNG",
+                  "PLANUNG_ZURUECKGEZOGEN",
+                  "BESTAND"
+                ]
+              },
+              "anlassPlanung": {
+                "type": "string",
+                "enum": [
+                  "UNSPECIFIED",
+                  "NEUBAU_BEBAUUNGSPLAN",
+                  "NEUBAU_BAU_GB",
+                  "BAUPROGRAMM",
+                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+                  "SCHLIESSUNG"
                 ]
               },
               "zugehoerigesBauvorhaben": { "type": "string" }
@@ -4896,6 +5006,7 @@
           "artBaulicheNutzung": { "$ref": "#/components/schemas/LookupListDto" },
           "artBaulicheNutzungBauvorhaben": { "$ref": "#/components/schemas/LookupListDto" },
           "statusInfrastruktureinrichtung": { "$ref": "#/components/schemas/LookupListDto" },
+          "anlassPlanung": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraeger": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraegerSchulen": { "$ref": "#/components/schemas/LookupListDto" },
           "infrastruktureinrichtungTyp": { "$ref": "#/components/schemas/LookupListDto" },

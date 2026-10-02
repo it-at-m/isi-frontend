@@ -1,9 +1,9 @@
 <template>
   <v-list
     v-if="searchResultsAsArray.length > 0"
-    width="450px"
+    :width="width"
     v-scroll.self="onScroll"
-    :height="viewportHeight"
+    :height="heightOverride ?? viewportHeight"
     class="pa-0 ma-0 overflow-y-auto"
   >
     <!-- eslint-disable vue/no-unused-vars -->
@@ -113,14 +113,29 @@
               )
             }}
           </span>
+          <v-spacer />
+          <span>
+            Status:
+            {{
+              getLookupValueInfrastruktureinrichtung(
+                castToInfrastruktureinrichtungSearchResultDto(item).status,
+                statusInfrastruktureinrichtungList,
+              )
+            }}
+          </span>
+          <v-spacer />
+          <span>
+            Anlass der Planung:
+            {{ getAnlassPlanung(castToInfrastruktureinrichtungSearchResultDto(item).anlassPlanung) }}
+          </span>
         </v-card-text>
       </v-card>
     </v-hover>
   </v-list>
   <v-list
     v-else
-    width="450px"
-    :height="viewportHeight"
+    :width="width"
+    :height="heightOverride ?? viewportHeight"
     class="pa-0 ma-0"
   >
     <v-container
@@ -133,7 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, toRefs } from "vue";
 import {
   type AbfrageSearchResultDto,
   type BauvorhabenSearchResultDto,
@@ -157,6 +172,24 @@ import _ from "lodash";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
+interface Props {
+  width?: number | string;
+  /**
+   * Überschreibt die aus der Fensterhöhe berechnete Höhe der Liste.
+   */
+  height?: number | string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  width: "450px",
+  height: undefined,
+});
+
+const { width, height: heightOverride } = toRefs(props);
+
+const KEINE_ANGABE_LOOKUP_VALUE = "- - - Keine Angabe - - -";
+const NICHT_ANGEGEBEN = "nicht angegeben";
+
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
 const searchStore = useSearchStore();
@@ -164,6 +197,8 @@ const router = useRouter();
 const { searchForEntities } = useSearchApi();
 const { hasOnlyRoleAnwender } = useSecurity();
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+const anlassPlanungList = computed(() => lookupStore.anlassPlanung);
 const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
@@ -326,5 +361,17 @@ function getLookupValueInfrastruktureinrichtung(
   list: Array<LookupEntryDto>,
 ): string | undefined {
   return !_.isUndefined(list) ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value : "";
+}
+
+/**
+ * Der Anlass der Planung ist optional. Analog zum Tooltip auf der Karte wird ein fehlender Anlass
+ * bzw. der Lookup-Eintrag für "Keine Angabe" als "nicht angegeben" dargestellt.
+ */
+function getAnlassPlanung(anlassPlanung: string | undefined): string {
+  if (_.isNil(anlassPlanung)) {
+    return NICHT_ANGEGEBEN;
+  }
+  const anlassText = getLookupValueInfrastruktureinrichtung(anlassPlanung, anlassPlanungList.value);
+  return _.isNil(anlassText) || anlassText === KEINE_ANGABE_LOOKUP_VALUE ? NICHT_ANGEGEBEN : anlassText;
 }
 </script>

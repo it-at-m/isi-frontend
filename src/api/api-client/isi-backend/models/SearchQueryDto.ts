@@ -141,6 +141,10 @@ export interface SearchQueryDto {
     /**
      * 
      */
+    filterAnlassPlanung?: Array<SearchQueryDtoFilterAnlassPlanungEnum>;
+    /**
+     * 
+     */
     page?: number;
     /**
      * 
@@ -180,15 +184,26 @@ export type SearchQueryDtoFilterVerfahrensstandEnum = typeof SearchQueryDtoFilte
 export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryDtoFilterAnlassPlanungEnum = {
+    Unspecified: 'UNSPECIFIED',
+    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
+    NeubauBauGb: 'NEUBAU_BAU_GB',
+    Bauprogramm: 'BAUPROGRAMM',
+    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
+    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
+    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
+    Schliessung: 'SCHLIESSUNG',
+} as const;
+export type SearchQueryDtoFilterAnlassPlanungEnum = typeof SearchQueryDtoFilterAnlassPlanungEnum[keyof typeof SearchQueryDtoFilterAnlassPlanungEnum];
 
 
 /**
@@ -245,6 +260,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterGfWohnenGeplantBis': json['filterGfWohnenGeplantBis'] == null ? undefined : json['filterGfWohnenGeplantBis'],
         'filterVerfahrensstand': json['filterVerfahrensstand'] == null ? undefined : json['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': json['filterInfrastruktureinrichtungStatus'] == null ? undefined : json['filterInfrastruktureinrichtungStatus'],
+        'filterAnlassPlanung': json['filterAnlassPlanung'] == null ? undefined : json['filterAnlassPlanung'],
         'page': json['page'] == null ? undefined : json['page'],
         'pageSize': json['pageSize'] == null ? undefined : json['pageSize'],
     };
@@ -287,6 +303,7 @@ export function SearchQueryDtoToJSONTyped(value?: SearchQueryDto | null, ignoreD
         'filterGfWohnenGeplantBis': value['filterGfWohnenGeplantBis'],
         'filterVerfahrensstand': value['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': value['filterInfrastruktureinrichtungStatus'],
+        'filterAnlassPlanung': value['filterAnlassPlanung'],
         'page': value['page'],
         'pageSize': value['pageSize'],
     };

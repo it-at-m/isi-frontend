@@ -152,6 +152,7 @@ export const FilterSettingsDtoSortByEnum = {
     Name: 'NAME',
     CreatedDateTime: 'CREATED_DATE_TIME',
     LastModifiedDateTime: 'LAST_MODIFIED_DATE_TIME',
+    FristBearbeitung: 'FRIST_BEARBEITUNG',
 } as const;
 export type FilterSettingsDtoSortByEnum = typeof FilterSettingsDtoSortByEnum[keyof typeof FilterSettingsDtoSortByEnum];
 
@@ -195,12 +196,8 @@ export type FilterSettingsDtoVerfahrensstandEnum = typeof FilterSettingsDtoVerfa
 export const FilterSettingsDtoInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type FilterSettingsDtoInfrastruktureinrichtungStatusEnum = typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum[keyof typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum];
