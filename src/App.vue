@@ -8,7 +8,7 @@
     >
       <v-row align="center">
         <v-col
-          cols="3"
+          :cols="showGlobaleSuche ? 3 : 9"
           class="d-flex align-center justify-start"
         >
           <router-link to="/">
@@ -25,8 +25,16 @@
           >
             <v-toolbar-title class="text-h4 text-white font-weight-bold">ISI</v-toolbar-title>
           </router-link>
+          <span
+            v-if="showBegruessung"
+            id="app_begruessung"
+            class="text-h6 text-white ml-4 text-truncate"
+          >
+            Hallo {{ userinfo.givenname }}!
+          </span>
         </v-col>
         <v-col
+          v-if="showGlobaleSuche"
           cols="6"
           class="d-flex align-center justify-center"
         >
@@ -179,6 +187,7 @@
               >
                 <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
               </span>
+              <startseiten-einstellungen v-if="hasRoleAbfrageerstellung" />
             </v-card>
           </v-menu>
         </v-col>
@@ -197,6 +206,7 @@ import VersionInfo from "@/components/common/VersionInfo.vue";
 import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
 import SearchInputField from "@/components/search/SearchInputField.vue";
+import StartseitenEinstellungen from "@/components/startseite/StartseitenEinstellungen.vue";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { useUserinfoStore } from "@/stores/Userinfostore";
@@ -241,6 +251,17 @@ const urlAndereReports = computed(() => {
 
 // Schreibt alle Nutzerollen in einen String für die Darstellung
 const userRoles = computed(() => _.join(userinfo.value.roles, ", "));
+
+const hasRoleAbfrageerstellung = computed(() => userInfoStore.hasRoleAbfrageerstellung);
+
+// Abfrageersteller werden in der Titelleiste persönlich begrüßt.
+const showBegruessung = computed(() => hasRoleAbfrageerstellung.value && !_.isEmpty(userinfo.value.givenname));
+
+/**
+ * Für Abfrageersteller entfällt die Suchleiste in der Titelleiste, da der Startseitenbereich
+ * "Übersicht" eine eigene Suchleiste besitzt. Alle übrigen Rollen behalten die globale Suche.
+ */
+const showGlobaleSuche = computed(() => !hasRoleAbfrageerstellung.value);
 
 const userinfo = computed({
   get() {
