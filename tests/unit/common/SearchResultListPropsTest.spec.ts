@@ -16,22 +16,18 @@ describe("SearchResultListPropsTest.spec.ts", () => {
     setActivePinia(createPinia());
   });
 
-  test("behält ohne Props die bisherige Breite von 450px bei", () => {
+  test("füllt ohne Props das umgebende Element in beiden Richtungen vollständig aus", () => {
     const wrapper: VueWrapper = mount(SearchResultList, { shallow: true });
-    expect(wrapper.props("width")).toBe("450px");
-  });
-
-  test("füllt ohne height-Prop das umgebende Element vollständig aus", () => {
-    const wrapper: VueWrapper = mount(SearchResultList, { shallow: true });
+    expect(wrapper.props("width")).toBe("100%");
     expect(wrapper.props("height")).toBe("100%");
   });
 
   test("übernimmt gesetzte Breiten- und Höhenangaben", () => {
     const wrapper: VueWrapper = mount(SearchResultList, {
       shallow: true,
-      props: { width: "100%", height: "100%" },
+      props: { width: "450px", height: "600px" },
     });
-    expect(wrapper.props("width")).toBe("100%");
-    expect(wrapper.props("height")).toBe("100%");
+    expect(wrapper.props("width")).toBe("450px");
+    expect(wrapper.props("height")).toBe("600px");
   });
 });

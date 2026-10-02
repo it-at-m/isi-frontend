@@ -182,16 +182,23 @@ import _ from "lodash";
 import { useRouter } from "vue-router";
 
 interface Props {
+  /**
+   * Breite der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus.
+   */
   width?: number | string;
   /**
-   * Höhe der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus,
-   * sodass die Darstellung unabhängig von der Bildschirmgröße identisch ist.
+   * Höhe der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus.
    */
   height?: number | string;
 }
 
+/**
+ * Die Liste füllt ihr umgebendes Element in beiden Richtungen vollständig aus, damit die
+ * Darstellung unabhängig von der Bildschirmgröße identisch ist. Eine feste Größe würde je
+ * nach Breite des Drawers entweder einen Rand frei lassen oder rechts abgeschnitten werden.
+ */
 const props = withDefaults(defineProps<Props>(), {
-  width: "450px",
+  width: "100%",
   height: "100%",
 });
 
