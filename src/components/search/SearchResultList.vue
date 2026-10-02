@@ -3,9 +3,19 @@
     v-if="searchResultsAsArray.length > 0"
     :width="width"
     v-scroll.self="onScroll"
-    :height="heightOverride ?? viewportHeight"
+    :height="height"
     class="pa-0 ma-0 overflow-y-auto"
   >
+    <v-alert
+      v-if="isFilterActive"
+      type="info"
+      density="compact"
+      class="mb-2"
+      icon="mdi-filter-outline"
+    >
+      Es sind Filter aktiv.
+    </v-alert>
+
     <!-- eslint-disable vue/no-unused-vars -->
     <v-hover
       v-for="(item, index) in searchResultsAsArray"
@@ -135,7 +145,7 @@
   <v-list
     v-else
     :width="width"
-    :height="heightOverride ?? viewportHeight"
+    :height="height"
     class="pa-0 ma-0"
   >
     <v-container
@@ -170,22 +180,29 @@ import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
-import { useDisplay } from "vuetify";
 
 interface Props {
+  /**
+   * Breite der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus.
+   */
   width?: number | string;
   /**
-   * Überschreibt die aus der Fensterhöhe berechnete Höhe der Liste.
+   * Höhe der Liste. Standardmäßig füllt die Liste ihr umgebendes Element vollständig aus.
    */
   height?: number | string;
 }
 
+/**
+ * Die Liste füllt ihr umgebendes Element in beiden Richtungen vollständig aus, damit die
+ * Darstellung unabhängig von der Bildschirmgröße identisch ist. Eine feste Größe würde je
+ * nach Breite des Drawers entweder einen Rand frei lassen oder rechts abgeschnitten werden.
+ */
 const props = withDefaults(defineProps<Props>(), {
-  width: "450px",
-  height: undefined,
+  width: "100%",
+  height: "100%",
 });
 
-const { width, height: heightOverride } = toRefs(props);
+const { width, height } = toRefs(props);
 
 const KEINE_ANGABE_LOOKUP_VALUE = "- - - Keine Angabe - - -";
 const NICHT_ANGEGEBEN = "nicht angegeben";
@@ -203,6 +220,7 @@ const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
+const isFilterActive = computed(() => searchStore.isFilterActive);
 
 const searchResultsAsArray = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? _.cloneDeep(searchStore.searchResults.searchResults) : [];
@@ -211,13 +229,6 @@ const searchResultsAsArray = computed(() => {
 const numberOfPossiblePages = computed(() => {
   const numberOfPossiblePages = searchResults.value.numberOfPages;
   return _.isNil(numberOfPossiblePages) ? 0 : numberOfPossiblePages;
-});
-
-const { height } = useDisplay();
-
-const viewportHeight = computed(() => {
-  const heightOfWindow = height.value;
-  return (heightOfWindow - 50) / (heightOfWindow / 100) + "vh";
 });
 
 /**
