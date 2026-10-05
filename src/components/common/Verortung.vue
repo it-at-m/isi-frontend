@@ -510,6 +510,22 @@ function createMultiPolygonGeometryFromSelectedFlurstuecke(): MultiPolygonGeomet
   return multipolygon;
 }
 
+function createMultiPolygonGeometryFromGrundschulsprengel(
+  grundschulsprengel: Array<GrundschulsprengelDto>,
+): MultiPolygonGeometryDtoGeoDataEai {
+  const multipolygon: MultiPolygonGeometryDtoGeoDataEai = {
+    type: "MultiPolygon",
+    coordinates: [],
+  };
+  grundschulsprengel.value.forEach((grundschulsprengel: GrundschulsprengelDto) => {
+    const grundschulsprengelMultiPolygon = grundschulsprengel.multiPolygon as MultiPolygonGeometryDtoBackend;
+    grundschulsprengelMultiPolygon?.coordinates?.forEach((polygon) => {
+      multipolygon.coordinates?.push(polygon);
+    });
+  });
+  return multipolygon;
+}
+
 /**
  * Erstellt das VerortungMultiPolygonDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
  * Tritt ein fehler bei der Erstellung des VerortungMultiPolygonDtos auf, so wird undefined zurückgegeben.
@@ -524,7 +540,6 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
     const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
     const promiseKitaplanungsbereiche = await geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon);
     const promiseGrundschulsprengel = await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon);
-    const promiseSchulstandorte = await geoApi.getSchulstandorteForMultipolygon(unifiedMultipolygon);
     const promiseMittelschulsprengel = await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon);
 
     // Stadtbezirke ermitteln
@@ -560,6 +575,9 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
       mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(promiseMittelschulsprengel);
 
     // Schulstandorte ermitteln
+    const promiseSchulstandorte = await geoApi.getSchulstandorteForMultipolygon(
+      createMultiPolygonGeometryFromGrundschulsprengel(grundschulsprengelBackend),
+    );
     const schulstandorteBackend: Array<SchulstandortDto> =
       schulstandorteGeoDataEaiToMittelschulsprengelBackend(promiseSchulstandorte);
 
@@ -689,7 +707,7 @@ function schulstandorteGeoDataEaiToMittelschulsprengelBackend(
     return {
       schulnummer: schulstandort.properties?.schulnummer,
       schulname: schulstandort.properties?.schulname,
-      multiPolygon: JSON.parse(JSON.stringify(mittelschulsprengel.geometry)) as MultiPolygonGeometryDtoBackend,
+      multiPolygon: JSON.parse(JSON.stringify(schulstandort.geometry)) as MultiPolygonGeometryDtoBackend,
     };
   });
 }
