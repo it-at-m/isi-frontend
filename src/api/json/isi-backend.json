@@ -1992,6 +1992,7 @@
       "FilterSettingsDto": {
         "type": "object",
         "properties": {
+          "schnellfilter": { "$ref": "#/components/schemas/SchnellfilterVorgaenge" },
           "sortBy": {
             "type": "string",
             "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
