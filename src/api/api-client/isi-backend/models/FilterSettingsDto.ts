@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SchnellfilterVorgaenge } from './SchnellfilterVorgaenge';
+import {
+    SchnellfilterVorgaengeFromJSON,
+    SchnellfilterVorgaengeFromJSONTyped,
+    SchnellfilterVorgaengeToJSON,
+    SchnellfilterVorgaengeToJSONTyped,
+} from './SchnellfilterVorgaenge';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
@@ -34,6 +41,10 @@ import {
  * @interface FilterSettingsDto
  */
 export interface FilterSettingsDto {
+    /**
+     * 
+     */
+    schnellfilter?: SchnellfilterVorgaenge;
     /**
      * 
      */
@@ -196,12 +207,8 @@ export type FilterSettingsDtoVerfahrensstandEnum = typeof FilterSettingsDtoVerfa
 export const FilterSettingsDtoInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type FilterSettingsDtoInfrastruktureinrichtungStatusEnum = typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum[keyof typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum];
@@ -237,6 +244,7 @@ export function FilterSettingsDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
+        'schnellfilter': json['schnellfilter'] == null ? undefined : SchnellfilterVorgaengeFromJSON(json['schnellfilter']),
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
         'selectBauleitplanverfahren': json['selectBauleitplanverfahren'],
@@ -278,6 +286,7 @@ export function FilterSettingsDtoToJSONTyped(value?: FilterSettingsDto | null, i
 
     return {
         
+        'schnellfilter': SchnellfilterVorgaengeToJSON(value['schnellfilter']),
         'sortBy': value['sortBy'],
         'sortOrder': value['sortOrder'],
         'selectBauleitplanverfahren': value['selectBauleitplanverfahren'],

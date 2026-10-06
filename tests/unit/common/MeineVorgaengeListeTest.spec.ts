@@ -69,10 +69,16 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const vm = wrapper.vm as any;
       vm.schnellfilter = "ZUR_BEARBEITUNG";
       await wrapper.vm.$nextTick();
-      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([
-        StatusAbfrage.EinplanungBedarfe,
-        StatusAbfrage.Angelegt,
-      ]);
+      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([StatusAbfrage.EinplanungBedarfe]);
+    });
+
+    test("beschränkt 'Entwürfe' auf die eigenen Abfragen im Status ANGELEGT", async () => {
+      const vm = wrapper.vm as any;
+      vm.schnellfilter = "ENTWUERFE";
+      await wrapper.vm.$nextTick();
+      const query = vm.createSearchQuery(1);
+      expect(query.filterStatusAbfrage).toEqual([StatusAbfrage.Angelegt]);
+      expect(query.filterNurEigeneAbfragen).toBe(true);
     });
 
     test("sortiert die Bearbeitungsfrist aufsteigend, die übrigen Kriterien absteigend", async () => {
