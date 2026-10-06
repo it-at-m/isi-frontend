@@ -145,6 +145,7 @@ let layerControl: L.Control.Layers;
 let alreadyAddedLayersForLayerControl: Map<string, Layer> | undefined;
 let firstGeoJsonFeatureAdded = false;
 let mapMarkerClusterGroup = L.markerClusterGroup();
+let mapResizeObserver: ResizeObserver | undefined;
 
 onMounted(() => {
   initMap();
@@ -155,8 +156,11 @@ function initMap(): void {
     emit("click-in-map", event.latlng),
   );
 
-  // Workaround für dynamische Größe des Karten-Containers auf der Hauptseite
-  setTimeout(() => map.invalidateSize(), 500);
+  /* Die Größe des Karten-Containers ergibt sich erst aus dem umgebenden Layout und kann sich danach
+     weiter ändern, etwa wenn Inhalte nachgeladen werden oder sich das Fenster ändert. Leaflet merkt
+     das nicht von selbst und würde sonst dauerhaft mit einer veralteten Größe rechnen. */
+  mapResizeObserver = new ResizeObserver(() => map.invalidateSize());
+  mapResizeObserver.observe(mapRef.value as HTMLElement);
 
   // Der Base-Layer der Karte.
   const wmsTileLayer = L.tileLayer
@@ -184,6 +188,7 @@ function initMap(): void {
 }
 
 onBeforeUnmount(() => {
+  mapResizeObserver?.disconnect();
   map.remove();
 });
 
