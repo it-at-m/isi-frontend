@@ -1,5 +1,5 @@
 <template>
-  <v-main class="startseite-abfrageerstellung">
+  <v-main>
     <v-container
       fluid
       class="pa-6 d-flex flex-column startseite-abfrageerstellung__container"
@@ -36,29 +36,32 @@ import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
 
 <style scoped>
 /*
- * Ab dem Breakpoint "md" stehen Vorgangsliste und Übersicht nebeneinander. Dort wird die Seite
- * an die Höhe des Viewports gebunden, damit die Karte unabhängig von der Anzahl der Einträge
- * in der linken Liste immer gleich groß bleibt. Die Liste scrollt stattdessen in sich.
+ * Ab dem Breakpoint "md" stehen Vorgangsliste und Übersicht nebeneinander. Dort bekommt der
+ * Container eine feste, vom Viewport abgeleitete Höhe, damit die Karte unabhängig von der Anzahl
+ * der Einträge in der linken Liste immer gleich groß bleibt. Die Liste scrollt stattdessen in sich.
  *
- * Die Höhe von 100vh berücksichtigt die App-Bar, da das v-main deren Höhe als padding-top
- * erhält und Vuetify global mit box-sizing: border-box rechnet.
+ * Die Höhe wird bewusst an genau einer Stelle definit gesetzt statt über eine Kette von
+ * Prozentwerten: --v-layout-top/-bottom setzt Vuetify als Inline-Custom-Property auf dem v-main
+ * (App-Bar- bzw. Footer-Höhe) und vererbt sie hierher, das Padding des Containers steckt dank
+ * box-sizing: border-box bereits in dieser Höhe.
  */
 @media (min-width: 960px) {
-  .startseite-abfrageerstellung {
-    height: 100vh;
-  }
-
   .startseite-abfrageerstellung__container {
-    height: 100%;
+    height: calc(100dvh - var(--v-layout-top, 0px) - var(--v-layout-bottom, 0px));
   }
 
   /*
-   * min-height: 0 hebt das implizite min-height: auto von Flex-Items auf. Ohne das dehnen
-   * scrollbare Kinder ihren Container auf die eigene Inhaltshöhe statt zu scrollen.
+   * min-height: 0 hebt das implizite min-height: auto von Flex-Items auf, overflow: hidden stellt
+   * sicher, dass ein Kind die Spalte nicht doch aufziehen kann. Ohne beides dehnen scrollbare
+   * Kinder ihren Container auf die eigene Inhaltshöhe, statt zu scrollen.
    */
   .startseite-abfrageerstellung__row,
   .startseite-abfrageerstellung__col {
     min-height: 0;
+  }
+
+  .startseite-abfrageerstellung__col {
+    overflow: hidden;
   }
 }
 
