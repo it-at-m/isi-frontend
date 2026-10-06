@@ -24,6 +24,8 @@ import {
   AbfrageSearchResultDtoVerfahrensstandEnum,
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
   LookupEntryDto,
+  InfrastruktureinrichtungSearchResultDtoStatusEnum,
+  InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import type { Feature, MultiPolygon, Point } from "geojson";
 import L, { type GeoJSONOptions, Layer } from "leaflet";
@@ -41,7 +43,8 @@ type EntityFeature = Feature<
     id: string;
     name: string;
     infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
-    zugehoerigesBauvorhaben: string | undefined;
+    statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
+    anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
     artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
   }
@@ -67,6 +70,8 @@ const router = useRouter();
 const lookupStore = useLookupStore();
 const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+const anlassPlanungInfrastruktureinrichtung = computed(() => lookupStore.anlassPlanung);
 
 const umgriffeLayerGroup = new L.LayerGroup();
 
@@ -101,21 +106,29 @@ const geoJsonOptions: GeoJSONOptions = {
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Bauvorhaben) {
       contentTooltip = `<b>${feature.properties.name}</b>`;
     } else if (feature.properties.type === SearchResultDtoTypeEnum.Infrastruktureinrichtung) {
-      if (!_.isNil(feature.properties.zugehoerigesBauvorhaben)) {
-        contentTooltip = `<b>${feature.properties.name}</b><br>
-                   Typ: ${getLookupValue(
-                     feature.properties.infrastruktureinrichtungTyp,
-                     infrastruktureinrichtungTypList.value,
-                   )}<br>
-                   Vorhaben: ${feature.properties.zugehoerigesBauvorhaben}`;
+      let tooltipLines = [];
+      tooltipLines.push(`<b>${feature.properties.name}</b>`);
+
+      const typ = getLookupValue(feature.properties.infrastruktureinrichtungTyp, infrastruktureinrichtungTypList.value);
+      tooltipLines.push(`Typ: ${typ}`);
+      tooltipLines.push(
+        `Status: ${getLookupValue(feature.properties.statusInfrastruktureinrichtung, statusInfrastruktureinrichtungList.value)}`,
+      );
+
+      if (!_.isNil(feature.properties.anlassPlanungInfrastruktureinrichtung)) {
+        let anlassText = getLookupValue(
+          feature.properties.anlassPlanungInfrastruktureinrichtung,
+          anlassPlanungInfrastruktureinrichtung.value,
+        );
+        if (anlassText === "- - - Keine Angabe - - -") {
+          anlassText = "nicht angegeben";
+        }
+        tooltipLines.push(`Anlass der Planung: ${anlassText}`);
       } else {
-        contentTooltip = `<b>${feature.properties.name}</b><br>
-                   Typ: ${getLookupValue(
-                     feature.properties.infrastruktureinrichtungTyp,
-                     infrastruktureinrichtungTypList.value,
-                   )}<br>
-                   Vorhaben: Kein zugehöriges Vorhaben`;
+        tooltipLines.push("Anlass der Planung: nicht angegeben");
       }
+
+      contentTooltip = tooltipLines.join("<br>");
     }
     if (feature.geometry.type === "Point") {
       layer.bindTooltip(contentTooltip);
@@ -158,7 +171,8 @@ const geoJson = computed(() => {
     let name: string | undefined;
     let coordinate: Wgs84Dto | undefined;
     let infrastruktureinrichtungTyp: InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum | undefined;
-    let zugehoerigesBauvorhaben: string | undefined;
+    let statusInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoStatusEnum | undefined;
+    let anlassPlanungInfrastruktureinrichtung: InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum | undefined;
     let artAbfrage: AbfrageDtoArtAbfrageEnum | undefined;
     let verfahrensstand: AbfrageSearchResultDtoVerfahrensstandEnum | undefined;
 
@@ -177,7 +191,8 @@ const geoJson = computed(() => {
       name = (result as InfrastruktureinrichtungSearchResultDto).nameEinrichtung;
       coordinate = (result as InfrastruktureinrichtungSearchResultDto).coordinate;
       infrastruktureinrichtungTyp = (result as InfrastruktureinrichtungSearchResultDto).infrastruktureinrichtungTyp;
-      zugehoerigesBauvorhaben = (result as InfrastruktureinrichtungSearchResultDto).zugehoerigesBauvorhaben;
+      statusInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).status;
+      anlassPlanungInfrastruktureinrichtung = (result as InfrastruktureinrichtungSearchResultDto).anlassPlanung;
     }
 
     if (type && id && name && coordinate) {
@@ -189,7 +204,8 @@ const geoJson = computed(() => {
           id,
           name,
           infrastruktureinrichtungTyp,
-          zugehoerigesBauvorhaben,
+          statusInfrastruktureinrichtung,
+          anlassPlanungInfrastruktureinrichtung,
           artAbfrage,
           verfahrensstand,
         },
