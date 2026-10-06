@@ -60,6 +60,7 @@
       id="meine_vorgaenge_liste"
       v-scroll.self="onScroll"
       class="pa-0 ma-0 flex-grow-1 overflow-y-auto"
+      style="min-height: 0"
     >
       <v-hover
         v-for="(vorgang, index) in vorgaenge"
