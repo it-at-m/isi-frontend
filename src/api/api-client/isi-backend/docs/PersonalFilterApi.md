@@ -143,6 +143,7 @@ No authorization required
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Persönlicher Filter mit dieser ID nicht vorhanden. |  -  |
 | **403** | FORBIDDEN -&gt; Keine Berechtigung, um diesen persönlichen Filter zu löschen. |  -  |
+| **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

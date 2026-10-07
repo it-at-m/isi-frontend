@@ -6,7 +6,6 @@
 
 Name | Type
 ------------ | -------------
-`schnellfilter` | [SchnellfilterVorgaenge](SchnellfilterVorgaenge.md)
 `sortBy` | string
 `sortOrder` | string
 `selectBauleitplanverfahren` | boolean
@@ -42,7 +41,6 @@ import type { FilterSettingsDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "schnellfilter": null,
   "sortBy": null,
   "sortOrder": null,
   "selectBauleitplanverfahren": null,

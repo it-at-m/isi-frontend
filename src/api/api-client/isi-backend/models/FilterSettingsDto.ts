@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { SchnellfilterVorgaenge } from './SchnellfilterVorgaenge';
-import {
-    SchnellfilterVorgaengeFromJSON,
-    SchnellfilterVorgaengeFromJSONTyped,
-    SchnellfilterVorgaengeToJSON,
-    SchnellfilterVorgaengeToJSONTyped,
-} from './SchnellfilterVorgaenge';
 import type { StatusAbfrage } from './StatusAbfrage';
 import {
     StatusAbfrageFromJSON,
@@ -41,10 +34,6 @@ import {
  * @interface FilterSettingsDto
  */
 export interface FilterSettingsDto {
-    /**
-     * 
-     */
-    schnellfilter?: SchnellfilterVorgaenge;
     /**
      * 
      */
@@ -244,7 +233,6 @@ export function FilterSettingsDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'schnellfilter': json['schnellfilter'] == null ? undefined : SchnellfilterVorgaengeFromJSON(json['schnellfilter']),
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
         'selectBauleitplanverfahren': json['selectBauleitplanverfahren'],
@@ -286,7 +274,6 @@ export function FilterSettingsDtoToJSONTyped(value?: FilterSettingsDto | null, i
 
     return {
         
-        'schnellfilter': SchnellfilterVorgaengeToJSON(value['schnellfilter']),
         'sortBy': value['sortBy'],
         'sortOrder': value['sortOrder'],
         'selectBauleitplanverfahren': value['selectBauleitplanverfahren'],

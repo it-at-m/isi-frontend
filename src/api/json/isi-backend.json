@@ -1909,6 +1909,10 @@
           "403": {
             "description": "FORBIDDEN -> Keine Berechtigung, um diesen persönlichen Filter zu löschen.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           }
         }
       }
@@ -1940,7 +1944,7 @@
     "schemas": {
       "SchnellfilterVorgaenge": {
         "type": "string",
-        "enum": ["ALLE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
+        "enum": ["ALLE", "ENTWUERFE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
       },
       "StartseitenEinstellungDto": {
         "type": "object",
@@ -1992,7 +1996,6 @@
       "FilterSettingsDto": {
         "type": "object",
         "properties": {
-          "schnellfilter": { "$ref": "#/components/schemas/SchnellfilterVorgaenge" },
           "sortBy": {
             "type": "string",
             "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
