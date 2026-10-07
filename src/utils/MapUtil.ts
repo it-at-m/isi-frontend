@@ -75,9 +75,9 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
   {
     displayName: "Flurstücke",
     // Der WMS-Layername "2" entspricht dem Layer VAGRUND.FLURSTUECKE_DFK.
-    internalName: "2",
+    internalName: "Flurstücke,Flst.Nr.",
     transparent: true,
-    urlPart: "VAGRUND",
+    urlPart: "Stadtgrundkarte",
     migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
