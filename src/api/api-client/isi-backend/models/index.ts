@@ -75,6 +75,7 @@ export * from './MimeTypeInformationDto';
 export * from './MittelschuleDto';
 export * from './MittelschulsprengelDto';
 export * from './MultiPolygonGeometryDto';
+export * from './NachbarschaftstreffDto';
 export * from './PatchEinpflegenBedarfsmeldungRequest';
 export * from './PatchEinplanungBedarfeRequest';
 export * from './PatchStartBearbeitungRequest';

@@ -72,6 +72,7 @@ export const InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypE
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE',
+    Nachbarschaftstreff: 'NACHBARSCHAFTSTREFF',
 } as const;
 export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum];
 

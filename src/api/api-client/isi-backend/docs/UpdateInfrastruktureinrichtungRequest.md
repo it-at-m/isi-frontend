@@ -35,6 +35,10 @@ Name | Type
 `anzahlKindergartenGruppen` | number
 `wohnungsnaheKinderkrippePlaetze` | number
 `wohnungsnaheKindergartenPlaetze` | number
+`kooperation` | string
+`kooperationFreieEingabe` | string
+`sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
+`dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 
 ## Example
 
@@ -72,6 +76,10 @@ const example = {
   "anzahlKindergartenGruppen": null,
   "wohnungsnaheKinderkrippePlaetze": null,
   "wohnungsnaheKindergartenPlaetze": null,
+  "kooperation": null,
+  "kooperationFreieEingabe": null,
+  "sobonRelevant": null,
+  "dokumente": null,
 } satisfies UpdateInfrastruktureinrichtungRequest
 
 console.log(example)

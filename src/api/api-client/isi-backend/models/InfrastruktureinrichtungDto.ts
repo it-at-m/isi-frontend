@@ -41,6 +41,7 @@ import { type HausFuerKinderDto, HausFuerKinderDtoFromJSONTyped, HausFuerKinderD
 import { type KindergartenDto, KindergartenDtoFromJSONTyped, KindergartenDtoToJSON, KindergartenDtoToJSONTyped } from './KindergartenDto';
 import { type KinderkrippeDto, KinderkrippeDtoFromJSONTyped, KinderkrippeDtoToJSON, KinderkrippeDtoToJSONTyped } from './KinderkrippeDto';
 import { type MittelschuleDto, MittelschuleDtoFromJSONTyped, MittelschuleDtoToJSON, MittelschuleDtoToJSONTyped } from './MittelschuleDto';
+import { type NachbarschaftstreffDto, NachbarschaftstreffDtoFromJSONTyped, NachbarschaftstreffDtoToJSON, NachbarschaftstreffDtoToJSONTyped } from './NachbarschaftstreffDto';
 /**
  * InfrastruktureinrichtungDto
  * @export
@@ -129,6 +130,7 @@ export const InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = {
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE',
+    Nachbarschaftstreff: 'NACHBARSCHAFTSTREFF',
 } as const;
 export type InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum];
 
@@ -197,6 +199,9 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         if (json['infrastruktureinrichtungTyp'] === 'MITTELSCHULE') {
             return MittelschuleDtoFromJSONTyped(json, ignoreDiscriminator);
         }
+        if (json['infrastruktureinrichtungTyp'] === 'NACHBARSCHAFTSTREFF') {
+            return NachbarschaftstreffDtoFromJSONTyped(json, ignoreDiscriminator);
+        }
 
     }
     return {
@@ -244,6 +249,8 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
                 return KinderkrippeDtoToJSONTyped(value as KinderkrippeDto, ignoreDiscriminator);
             case 'MITTELSCHULE':
                 return MittelschuleDtoToJSONTyped(value as MittelschuleDto, ignoreDiscriminator);
+            case 'NACHBARSCHAFTSTREFF':
+                return NachbarschaftstreffDtoToJSONTyped(value as NachbarschaftstreffDto, ignoreDiscriminator);
             default:
                 return value;
         }

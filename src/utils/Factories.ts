@@ -32,6 +32,7 @@ import type {
   SchuleDto,
   GrundschuleDto,
   MittelschuleDto,
+  NachbarschaftstreffDto,
   // Dokumente
   DokumentDto,
   FilepathDto,
@@ -81,6 +82,7 @@ import {
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoEinrichtungstraegerEnum,
   GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
+  NachbarschaftstreffDtoKooperationEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
   // Suche
@@ -104,6 +106,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     selectKindergarten: true,
     selectKinderkrippe: true,
     selectMittelschule: true,
+    selectNachbarschaftstreff: true,
     filterStadtbezirkNummer: undefined,
     filterKitaplanungsbereichKitaPlbT: undefined,
     filterGrundschulsprengelNummer: undefined,
@@ -817,6 +820,29 @@ export function createMittelschuleDto(): MittelschuleDto {
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
     schule: createSchuleDto(),
+  };
+}
+
+/**
+ * NachbarschaftstreffDto
+ */
+export function createNachbarschaftstreffDto(): NachbarschaftstreffDto {
+  return {
+    id: "",
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bearbeitendePerson: undefined,
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
+    lfdNr: undefined,
+    bauvorhaben: undefined,
+    adresse: createAdresseDto(),
+    verortung: undefined,
+    nameEinrichtung: "",
+    fertigstellungsjahr: Number.NaN,
+    status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
+    kooperation: NachbarschaftstreffDtoKooperationEnum.Unspecified,
+    kooperationFreieEingabe: "",
+    sobonRelevant: UncertainBoolean.Unspecified,
   };
 }
 

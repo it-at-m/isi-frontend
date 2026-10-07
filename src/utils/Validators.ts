@@ -17,6 +17,7 @@ import {
   KommentarBauvorhabenDto,
   KommentarInfrastruktureinrichtungDto,
   MittelschuleDto,
+  NachbarschaftstreffDto,
   SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum,
 } from "@/api/api-client/isi-backend";
 import {
@@ -536,6 +537,17 @@ export function findFaultInGrundschuleForSave(grundschule: GrundschuleDto): stri
 
 export function findFaultInMittelschuleForSave(mittelschule: MittelschuleDto): string | null {
   return findFaultInInfrastruktureinrichtung(mittelschule);
+}
+
+export function findFaultInNachbarschaftstreffForSave(nachbarschaftstreff: NachbarschaftstreffDto): string | null {
+  let validationMessage: string | null;
+  validationMessage = findFaultInInfrastruktureinrichtung(nachbarschaftstreff);
+  if (_.isNil(validationMessage)) {
+    if (nachbarschaftstreff.sobonRelevant === UncertainBoolean.Unspecified) {
+      validationMessage = "Bitte angeben ob die Abfrage SoBoN-relevant ist";
+    }
+  }
+  return validationMessage;
 }
 
 export function findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {

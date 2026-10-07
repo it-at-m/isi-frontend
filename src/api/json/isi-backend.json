@@ -297,7 +297,8 @@
                   { "$ref": "#/components/schemas/HausFuerKinderDto" },
                   { "$ref": "#/components/schemas/KindergartenDto" },
                   { "$ref": "#/components/schemas/KinderkrippeDto" },
-                  { "$ref": "#/components/schemas/MittelschuleDto" }
+                  { "$ref": "#/components/schemas/MittelschuleDto" },
+                  { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
                 ]
               }
             }
@@ -316,7 +317,8 @@
                     { "$ref": "#/components/schemas/HausFuerKinderDto" },
                     { "$ref": "#/components/schemas/KindergartenDto" },
                     { "$ref": "#/components/schemas/KinderkrippeDto" },
-                    { "$ref": "#/components/schemas/MittelschuleDto" }
+                    { "$ref": "#/components/schemas/MittelschuleDto" },
+                    { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
                   ]
                 }
               }
@@ -350,7 +352,8 @@
                   { "$ref": "#/components/schemas/HausFuerKinderDto" },
                   { "$ref": "#/components/schemas/KindergartenDto" },
                   { "$ref": "#/components/schemas/KinderkrippeDto" },
-                  { "$ref": "#/components/schemas/MittelschuleDto" }
+                  { "$ref": "#/components/schemas/MittelschuleDto" },
+                  { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
                 ]
               }
             }
@@ -369,7 +372,8 @@
                     { "$ref": "#/components/schemas/HausFuerKinderDto" },
                     { "$ref": "#/components/schemas/KindergartenDto" },
                     { "$ref": "#/components/schemas/KinderkrippeDto" },
-                    { "$ref": "#/components/schemas/MittelschuleDto" }
+                    { "$ref": "#/components/schemas/MittelschuleDto" },
+                    { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
                   ]
                 }
               }
@@ -1525,7 +1529,8 @@
                     { "$ref": "#/components/schemas/HausFuerKinderDto" },
                     { "$ref": "#/components/schemas/KindergartenDto" },
                     { "$ref": "#/components/schemas/KinderkrippeDto" },
-                    { "$ref": "#/components/schemas/MittelschuleDto" }
+                    { "$ref": "#/components/schemas/MittelschuleDto" },
+                    { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
                   ]
                 }
               }
@@ -2328,7 +2333,8 @@
             "HAUS_FUER_KINDER": "#/components/schemas/HausFuerKinderDto",
             "KINDERGARTEN": "#/components/schemas/KindergartenDto",
             "KINDERKRIPPE": "#/components/schemas/KinderkrippeDto",
-            "MITTELSCHULE": "#/components/schemas/MittelschuleDto"
+            "MITTELSCHULE": "#/components/schemas/MittelschuleDto",
+            "NACHBARSCHAFTSTREFF": "#/components/schemas/NachbarschaftstreffDto"
           }
         },
         "properties": {
@@ -2346,7 +2352,8 @@
               "GS_NACHMITTAG_BETREUUNG",
               "HAUS_FUER_KINDER",
               "GRUNDSCHULE",
-              "MITTELSCHULE"
+              "MITTELSCHULE",
+              "NACHBARSCHAFTSTREFF"
             ]
           },
           "lfdNr": { "type": "integer", "format": "int64" },
@@ -2484,6 +2491,21 @@
           }
         },
         "required": ["coordinates", "type"]
+      },
+      "NachbarschaftstreffDto": {
+        "allOf": [
+          { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
+          {
+            "type": "object",
+            "properties": {
+              "kooperation": { "type": "string", "enum": ["UNSPECIFIED", "SOZ", "GSR", "KULT", "SONSTIGES"] },
+              "kooperationFreieEingabe": { "type": "string" },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "dokumente": { "type": "array", "items": { "$ref": "#/components/schemas/DokumentDto" } }
+            }
+          }
+        ],
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "PointGeometryDto": {
         "type": "object",
@@ -3025,7 +3047,8 @@
                   "GS_NACHMITTAG_BETREUUNG",
                   "HAUS_FUER_KINDER",
                   "GRUNDSCHULE",
-                  "MITTELSCHULE"
+                  "MITTELSCHULE",
+                  "NACHBARSCHAFTSTREFF"
                 ]
               },
               "status": {
@@ -4041,7 +4064,8 @@
               "GS_NACHMITTAG_BETREUUNG",
               "HAUS_FUER_KINDER",
               "GRUNDSCHULE",
-              "MITTELSCHULE"
+              "MITTELSCHULE",
+              "NACHBARSCHAFTSTREFF"
             ]
           },
           "anzahlKinderkrippengruppen": { "type": "integer", "format": "int32" },
@@ -4994,7 +5018,8 @@
           "artGsNachmittagBetreuung": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonOrientierungswertJahr": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonOrientierungswertJahrWithoutStandortabfrage": { "$ref": "#/components/schemas/LookupListDto" },
-          "bauratenmethodik": { "$ref": "#/components/schemas/LookupListDto" }
+          "bauratenmethodik": { "$ref": "#/components/schemas/LookupListDto" },
+          "kooperation": { "$ref": "#/components/schemas/LookupListDto" }
         }
       },
       "DokumenteDto": {
