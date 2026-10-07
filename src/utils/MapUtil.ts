@@ -117,8 +117,8 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     displayName: "Flächennutzungsplan",
     internalName: "Flächennutzungsplan",
     transparent: false,
-    urlPart: "basis",
-    migrated: false,
+    urlPart: "Flächennutzungsplan",
+    migrated: true,
     gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
