@@ -25,6 +25,7 @@ interface State {
   defaultSearchQueryAndSortingFilter: SearchQueryAndSortingModel;
   selectedBauvorhaben: BauvorhabenModel | undefined;
   selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto | undefined;
+  isFilterActive: boolean;
 }
 
 export const useSearchStore = defineStore("search", {
@@ -36,6 +37,7 @@ export const useSearchStore = defineStore("search", {
       defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
       selectedBauvorhaben: undefined,
       selectedInfrastruktureinrichtung: undefined,
+      isFilterActive: false,
     }) as State,
   getters: {},
   actions: {
@@ -67,6 +69,9 @@ export const useSearchStore = defineStore("search", {
     },
     setSelectedInfrastruktureinrichtung(payload: InfrastruktureinrichtungDto | undefined): void {
       this.selectedInfrastruktureinrichtung = payload;
+    },
+    setFilterActive(active: boolean): void {
+      this.isFilterActive = active;
     },
   },
 });

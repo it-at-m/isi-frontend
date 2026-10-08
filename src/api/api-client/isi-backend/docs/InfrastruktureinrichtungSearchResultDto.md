@@ -9,6 +9,8 @@ Name | Type
 `id` | string
 `nameEinrichtung` | string
 `infrastruktureinrichtungTyp` | string
+`status` | string
+`anlassPlanung` | string
 `zugehoerigesBauvorhaben` | string
 
 ## Example
@@ -21,6 +23,8 @@ const example = {
   "id": null,
   "nameEinrichtung": null,
   "infrastruktureinrichtungTyp": null,
+  "status": null,
+  "anlassPlanung": null,
   "zugehoerigesBauvorhaben": null,
 } satisfies InfrastruktureinrichtungSearchResultDto
 

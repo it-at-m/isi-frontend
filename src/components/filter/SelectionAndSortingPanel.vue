@@ -8,28 +8,55 @@
         class="align-start justify-center"
         dense
       >
+        <v-col cols="12">
+          <div class="d-flex mb-2">
+            <v-tooltip
+              location="top"
+              offset="20"
+              open-delay="500"
+            >
+              <template #activator="{ props: activatorProps }">
+                <v-chip
+                  class="ma-2"
+                  :prepend-icon="iconForAllObjectTypesSelected"
+                  filter
+                  @click="selectAll"
+                  v-bind="activatorProps"
+                >
+                  Alle auswählen
+                </v-chip>
+              </template>
+              <span> Es werden alle Objekttypen ausgewählt. </span>
+            </v-tooltip>
+            <v-tooltip
+              location="top"
+              offset="20"
+              open-delay="500"
+            >
+              <template #activator="{ props: activatorProps }">
+                <v-chip
+                  class="ma-2"
+                  :prepend-icon="iconForAllObjectTypesDeselected"
+                  filter
+                  @click="deselectAll"
+                  v-bind="activatorProps"
+                >
+                  Alle abwählen
+                </v-chip>
+              </template>
+              <span> Es werden alle Objekttypen abgewählt. </span>
+            </v-tooltip>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row
+        class="align-start justify-center"
+        dense
+      >
         <v-col
           cols="12"
           md="6"
         >
-          <v-tooltip
-            location="top"
-            offset="20"
-            open-delay="500"
-          >
-            <template #activator="{ props: activatorProps }">
-              <v-chip
-                class="ma-2"
-                :prepend-icon="iconForAllObjectTypesSelected"
-                filter
-                @click="selectAll"
-                v-bind="activatorProps"
-              >
-                Alle auswählen
-              </v-chip>
-            </template>
-            <span> Es werden all Objekttypen ausgewählt. </span>
-          </v-tooltip>
           <v-tooltip
             location="top"
             offset="20"
@@ -103,24 +130,6 @@
           cols="12"
           md="6"
         >
-          <v-tooltip
-            location="top"
-            offset="20"
-            open-delay="500"
-          >
-            <template #activator="{ props: activatorProps }">
-              <v-chip
-                class="ma-2"
-                :prepend-icon="iconForAllObjectTypesDeselected"
-                filter
-                @click="deselectAll"
-                v-bind="activatorProps"
-              >
-                Alle abwählen
-              </v-chip>
-            </template>
-            <span> Es werden all Objekttypen abgewählt. </span>
-          </v-tooltip>
           <v-tooltip
             location="top"
             offset="20"

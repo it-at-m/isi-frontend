@@ -79,6 +79,7 @@
           v-model="searchQueryAndSorting"
           @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
           @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+          @close-search-and-filter-options="closeSearchAndFilterDialog"
         />
       </v-dialog>
       <yes-no-dialog
@@ -140,6 +141,7 @@ function onQuickFilterSelected(filter: { id: string; name: string; filterSetting
     searchEntitiesForSelectedSuggestion();
     checkCurrentFilter();
     lastFilterSource.value = "quick";
+    searchStore.setFilterActive(true);
     activeQuickFilterId.value = filter.id;
   } catch (e) {
     toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
@@ -159,7 +161,7 @@ function onFilterDialogClickOutside() {
     lastSelectedFilter.value = selectedFilter;
     confirmCloseDialogOpen.value = true;
   } else {
-    searchAndFilterDialogOpen.value = false;
+    closeSearchAndFilterDialog();
   }
 }
 
@@ -167,7 +169,7 @@ function confirmCloseDialogYes(): void {
   if (lastSelectedFilter) {
     lastSelectedFilter.value = null;
   }
-  searchAndFilterDialogOpen.value = false;
+  closeSearchAndFilterDialog();
   confirmCloseDialogOpen.value = false;
 }
 
@@ -191,7 +193,7 @@ const searchQueryAndSortingStore = computed({
 });
 
 function openSearchAndFilterDialog(): void {
-  searchQueryAndSorting.value = searchQueryAndSortingStore.value;
+  searchQueryAndSorting.value = _.cloneDeep(searchQueryAndSortingStore.value);
   searchAndFilterDialogOpen.value = true;
   nextTick(() => {
     filterDialogRef.value?.onFiltermaskOpen();
@@ -199,11 +201,12 @@ function openSearchAndFilterDialog(): void {
 }
 
 function handleAdoptSearchAndFilterOptions(): void {
-  searchQueryAndSortingStore.value = searchQueryAndSorting.value;
-  searchAndFilterDialogOpen.value = false;
+  searchQueryAndSortingStore.value = _.cloneDeep(searchQueryAndSorting.value);
+  closeSearchAndFilterDialog();
   searchEntitiesForSelectedSuggestion();
-  checkCurrentFilter();
-  lastFilterSource.value = "dialog";
+  const isStandardFilter = filterDialogRef.value?.selectedFilter === filterDialogRef.value?.STANDARD_FILTER_ID;
+  searchStore.setFilterActive(!isStandardFilter);
+  lastFilterSource.value = isStandardFilter ? null : "dialog";
 }
 
 function handleResetSearchAndFilterOptions(): void {
@@ -211,7 +214,12 @@ function handleResetSearchAndFilterOptions(): void {
   handleAdoptSearchAndFilterOptions();
   searchEntitiesForSelectedSuggestion();
   lastFilterSource.value = null;
+  searchStore.setFilterActive(false);
   activeQuickFilterId.value = null;
+}
+
+function closeSearchAndFilterDialog(): void {
+  searchAndFilterDialogOpen.value = false;
 }
 
 function checkCurrentFilter(): boolean {
