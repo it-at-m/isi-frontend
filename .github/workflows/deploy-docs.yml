@@ -26,9 +26,9 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@54b32c7d11363cad45838c9a3d8a8560b93f0e8c # v1.5.4
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@e967c9de8fb0197faf7a294d153efa76de5cec27 # v1.6.0
       # Only deploy documentation from the main branch to prevent unauthorized changes
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@54b32c7d11363cad45838c9a3d8a8560b93f0e8c # v1.5.4
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@e967c9de8fb0197faf7a294d153efa76de5cec27 # v1.6.0
       # Default deploy-branch ist "main". Diesen mit "dev" überschreiben (with)
       # Zu Testzwecken die Angabe mit dem aktuellen Branch überschreiben, z. B.
       #   deploy-branch: "<aktueller Branch"
