@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { mount, type VueWrapper } from "@vue/test-utils";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue";
+import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 
 const mockSearchForEntities = vi.fn();
 const mockGetStartseitenEinstellung = vi.fn();
@@ -273,17 +274,29 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
 
   describe("Voreinstellungen aus dem Profil", () => {
     test("werden beim Mounten übernommen", async () => {
+      // Frischer Store, da die Einstellungen nur einmal je Session geladen werden.
+      setActivePinia(createPinia());
       mockGetStartseitenEinstellung.mockResolvedValue({
         schnellfilter: "ZUR_KENNTNIS",
         sortBy: "FRIST_BEARBEITUNG",
         sortOrder: "ASC",
       });
       const eigenerWrapper = mountComponent();
-      await eigenerWrapper.vm.$nextTick();
-      await eigenerWrapper.vm.$nextTick();
+      await flushPromises();
       const vm = eigenerWrapper.vm as any;
       expect(vm.schnellfilter).toBe("ZUR_KENNTNIS");
       expect(vm.sortierung).toBe("FRIST_BEARBEITUNG");
+    });
+
+    test("werden nach dem Speichern im Profil sofort übernommen", async () => {
+      const vm = wrapper.vm as any;
+      expect(vm.schnellfilter).toBe("ALLE");
+
+      useStartseitenEinstellungStore().setEinstellung("ABGESCHLOSSEN", "LAST_MODIFIED_DATE_TIME");
+      await flushPromises();
+
+      expect(vm.schnellfilter).toBe("ABGESCHLOSSEN");
+      expect(vm.sortierung).toBe("LAST_MODIFIED_DATE_TIME");
     });
 
     test("fallen bei einem Fehler auf die Standardwerte zurück", () => {
