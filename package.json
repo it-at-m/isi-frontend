@@ -46,7 +46,7 @@
     "jsdom": "^30.0.0",
     "lint-staged": "^17.0.0",
     "prettier": "3.9",
-    "prettier-plugin-java": "2.10",
+    "prettier-plugin-java": "2.11",
     "typescript": "^7.0.0",
     "vite": "^8.1.5",
     "vite-plugin-vuetify": "^2.1.2",
