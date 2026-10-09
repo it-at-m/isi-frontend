@@ -5,7 +5,7 @@ import { StatusAbfrage } from "@/api/api-client/isi-backend";
  *
  * Die Werte entsprechen dem Backend-Enum `SchnellfilterVorgaenge`.
  */
-export type SchnellfilterVorgaenge = "ALLE" | "ZUR_BEARBEITUNG" | "ZUR_KENNTNIS" | "ABGESCHLOSSEN";
+export type SchnellfilterVorgaenge = "ALLE" | "ENTWUERFE" | "ZUR_BEARBEITUNG" | "ZUR_KENNTNIS" | "ABGESCHLOSSEN";
 
 /**
  * Die Sortierkriterien des Startseitenbereichs "Meine Vorgänge".
@@ -25,6 +25,7 @@ export interface AuswahlOption<T> {
 
 export const SCHNELLFILTER_OPTIONEN: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
   { title: "Alle Vorgänge", value: "ALLE" },
+  { title: "Entwürfe", value: "ENTWUERFE" },
   { title: "Zur Bearbeitung", value: "ZUR_BEARBEITUNG" },
   { title: "Zur Kenntnis", value: "ZUR_KENNTNIS" },
   { title: "Abgeschlossene Vorgänge", value: "ABGESCHLOSSEN" },
@@ -38,6 +39,10 @@ export const SORTIERUNG_OPTIONEN: Array<AuswahlOption<SortierungVorgaenge>> = [
 
 /**
  * Bildet einen Schnellfilter auf die dazugehörigen Abfragestatus ab.
+ * <p>
+ * Der Schnellfilter "Entwürfe" enthält ausschließlich die noch nicht übermittelten Abfragen im Status
+ * `ANGELEGT`. Die Einschränkung auf die selbst angelegten Abfragen erfolgt beim Aufruf der Suche über
+ * `filterNurEigeneAbfragen`, welches im Bereich "Meine Vorgänge" immer gesetzt ist.
  *
  * @param schnellfilter der ausgewählte Schnellfilter.
  * @returns die zu filternden Status oder `undefined`, falls nicht nach Status gefiltert werden soll.
@@ -46,8 +51,10 @@ export function getStatusAbfrageForSchnellfilter(
   schnellfilter: SchnellfilterVorgaenge | undefined,
 ): Array<StatusAbfrage> | undefined {
   switch (schnellfilter) {
+    case "ENTWUERFE":
+      return [StatusAbfrage.Angelegt];
     case "ZUR_BEARBEITUNG":
-      return [StatusAbfrage.EinplanungBedarfe, StatusAbfrage.Angelegt];
+      return [StatusAbfrage.EinplanungBedarfe];
     case "ZUR_KENNTNIS":
       return [
         StatusAbfrage.UebermitteltZurBearbeitung,

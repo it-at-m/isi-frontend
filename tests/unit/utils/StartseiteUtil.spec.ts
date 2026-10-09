@@ -16,11 +16,12 @@ describe("StartseiteUtil.spec.ts", () => {
       expect(getStatusAbfrageForSchnellfilter("ALLE")).toBeUndefined();
     });
 
-    test("liefert für 'Zur Bearbeitung' die bearbeitbaren Status", () => {
-      expect(getStatusAbfrageForSchnellfilter("ZUR_BEARBEITUNG")).toEqual([
-        StatusAbfrage.EinplanungBedarfe,
-        StatusAbfrage.Angelegt,
-      ]);
+    test("liefert für 'Entwürfe' ausschließlich den Status ANGELEGT", () => {
+      expect(getStatusAbfrageForSchnellfilter("ENTWUERFE")).toEqual([StatusAbfrage.Angelegt]);
+    });
+
+    test("liefert für 'Zur Bearbeitung' die bearbeitbaren Status ohne ANGELEGT", () => {
+      expect(getStatusAbfrageForSchnellfilter("ZUR_BEARBEITUNG")).toEqual([StatusAbfrage.EinplanungBedarfe]);
     });
 
     test("liefert für 'Zur Kenntnis' die laufenden Status", () => {
@@ -48,6 +49,13 @@ describe("StartseiteUtil.spec.ts", () => {
         (option) => getStatusAbfrageForSchnellfilter(option.value) ?? [],
       );
       expect(alleGefiltertenStatus).not.toContain(StatusAbfrage.Abbruch);
+    });
+
+    test("liefert den Status ANGELEGT ausschließlich für 'Entwürfe'", () => {
+      const optionenMitAngelegt = SCHNELLFILTER_OPTIONEN.filter((option) =>
+        (getStatusAbfrageForSchnellfilter(option.value) ?? []).includes(StatusAbfrage.Angelegt),
+      ).map((option) => option.value);
+      expect(optionenMitAngelegt).toEqual(["ENTWUERFE"]);
     });
   });
 
