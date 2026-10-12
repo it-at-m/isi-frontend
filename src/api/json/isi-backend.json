@@ -2870,8 +2870,8 @@
               ]
             }
           },
-          "page": { "type": "integer", "format": "int32", "minimum": 0 },
-          "pageSize": { "type": "integer", "format": "int32", "minimum": 0 }
+          "page": { "type": "integer", "format": "int32", "exclusiveMinimum": 0 },
+          "pageSize": { "type": "integer", "format": "int32", "exclusiveMinimum": 0 }
         },
         "required": [
           "searchQuery",
@@ -2967,8 +2967,8 @@
               ]
             }
           },
-          "page": { "type": "integer", "format": "int32", "minimum": 0 },
-          "pageSize": { "type": "integer", "format": "int32", "minimum": 0 },
+          "page": { "type": "integer", "format": "int32", "exclusiveMinimum": 0 },
+          "pageSize": { "type": "integer", "format": "int32", "exclusiveMinimum": 0 },
           "sortBy": {
             "type": "string",
             "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
