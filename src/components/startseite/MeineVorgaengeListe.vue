@@ -213,6 +213,7 @@ function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
+    selectNachbarschaftstreff: false,
     filterNurEigeneAbfragen: true,
     filterStatusAbfrage: getStatusAbfrageForSchnellfilter(schnellfilter.value),
     page: requestedPage,

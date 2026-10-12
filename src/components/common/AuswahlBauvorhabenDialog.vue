@@ -170,6 +170,7 @@ function createQuery(searchText: string): SearchQueryDto {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
+    selectNachbarschaftstreff: false,
     page: undefined,
     pageSize: undefined,
   } as SearchQueryDto;

@@ -56,6 +56,7 @@ async function fetchBauvorhaben(): Promise<void> {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
+    selectNachbarschaftstreff: false,
     page: undefined,
     pageSize: undefined,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,

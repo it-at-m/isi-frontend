@@ -2012,6 +2012,7 @@
           "selectKindergarten": { "type": "boolean" },
           "selectKinderkrippe": { "type": "boolean" },
           "selectMittelschule": { "type": "boolean" },
+          "selectNachbarschaftstreff": { "type": "boolean" },
           "stadtbezirkNummer": { "type": "array", "items": { "type": "string" } },
           "kitaplanungsbereichKitaPlbT": { "type": "array", "items": { "type": "string" } },
           "grundschulsprengelNummer": { "type": "array", "items": { "type": "integer", "format": "int64" } },
@@ -2069,6 +2070,7 @@
           "selectKindergarten",
           "selectKinderkrippe",
           "selectMittelschule",
+          "selectNachbarschaftstreff",
           "selectWeiteresVerfahren",
           "sobonRelevant",
           "sortBy",
@@ -2808,6 +2810,7 @@
           "selectKindergarten": { "type": "boolean" },
           "selectKinderkrippe": { "type": "boolean" },
           "selectMittelschule": { "type": "boolean" },
+          "selectNachbarschaftstreff": { "type": "boolean" },
           "filterStadtbezirkNummer": { "type": "array", "items": { "type": "string" } },
           "filterKitaplanungsbereichKitaPlbT": { "type": "array", "items": { "type": "string" } },
           "filterGrundschulsprengelNummer": { "type": "array", "items": { "type": "integer", "format": "int64" } },
@@ -2884,6 +2887,7 @@
           "selectKindergarten",
           "selectKinderkrippe",
           "selectMittelschule",
+          "selectNachbarschaftstreff",
           "selectWeiteresVerfahren"
         ]
       },
@@ -2905,6 +2909,7 @@
           "selectKindergarten": { "type": "boolean" },
           "selectKinderkrippe": { "type": "boolean" },
           "selectMittelschule": { "type": "boolean" },
+          "selectNachbarschaftstreff": { "type": "boolean" },
           "filterStadtbezirkNummer": { "type": "array", "items": { "type": "string" } },
           "filterKitaplanungsbereichKitaPlbT": { "type": "array", "items": { "type": "string" } },
           "filterGrundschulsprengelNummer": { "type": "array", "items": { "type": "integer", "format": "int64" } },
@@ -2986,6 +2991,7 @@
           "selectKindergarten",
           "selectKinderkrippe",
           "selectMittelschule",
+          "selectNachbarschaftstreff",
           "selectWeiteresVerfahren",
           "sortBy",
           "sortOrder"

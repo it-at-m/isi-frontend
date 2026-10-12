@@ -81,6 +81,10 @@ export interface SearchQueryDto {
     /**
      * 
      */
+    selectNachbarschaftstreff: boolean;
+    /**
+     * 
+     */
     filterStadtbezirkNummer?: Array<string>;
     /**
      * 
@@ -221,6 +225,7 @@ export function instanceOfSearchQueryDto(value: object): value is SearchQueryDto
     if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
     if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
     if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('selectNachbarschaftstreff' in value) || value['selectNachbarschaftstreff'] === undefined) return false;
     return true;
 }
 
@@ -245,6 +250,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'selectNachbarschaftstreff': json['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': json['filterStadtbezirkNummer'] == null ? undefined : json['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': json['filterKitaplanungsbereichKitaPlbT'] == null ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': json['filterGrundschulsprengelNummer'] == null ? undefined : json['filterGrundschulsprengelNummer'],
@@ -288,6 +294,7 @@ export function SearchQueryDtoToJSONTyped(value?: SearchQueryDto | null, ignoreD
         'selectKindergarten': value['selectKindergarten'],
         'selectKinderkrippe': value['selectKinderkrippe'],
         'selectMittelschule': value['selectMittelschule'],
+        'selectNachbarschaftstreff': value['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': value['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': value['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': value['filterGrundschulsprengelNummer'],

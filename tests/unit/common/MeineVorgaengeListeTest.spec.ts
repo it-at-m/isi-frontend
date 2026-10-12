@@ -58,6 +58,7 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(query.selectKindergarten).toBe(false);
       expect(query.selectKinderkrippe).toBe(false);
       expect(query.selectMittelschule).toBe(false);
+      expect(query.selectNachbarschaftstreff).toBe(false);
     });
 
     test("setzt für 'Alle Vorgänge' keinen Statusfilter", () => {
