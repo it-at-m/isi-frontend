@@ -1,6 +1,11 @@
 import { describe, expect, beforeEach, test } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { useSearchStore } from "@/stores/SearchStore";
+import {
+  HINWEIS_KEINE_ENTITAET_MARKIERT,
+  HINWEIS_KEINE_SUCHTREFFER,
+  HINWEIS_SUCHE_STARTEN,
+  useSearchStore,
+} from "@/stores/SearchStore";
 import { SearchResultDtoTypeEnum, type SearchResultsDto } from "@/api/api-client/isi-backend";
 import {
   createBauleitplanverfahrenDto,
@@ -65,5 +70,59 @@ describe("Search Store", () => {
     const newInfra = createInfrastruktureinrichtungDto();
     searchStore.setSelectedInfrastruktureinrichtung(newInfra);
     expect(searchStore.selectedInfrastruktureinrichtung).toEqual(newInfra);
+  });
+
+  test("setActiveFilterId setzt und entfernt den aktiven persönlichen Filter", () => {
+    const searchStore = useSearchStore();
+    expect(searchStore.activeFilterId).toBeNull();
+    searchStore.setActiveFilterId("filter-1");
+    expect(searchStore.activeFilterId).toBe("filter-1");
+    searchStore.setActiveFilterId(null);
+    expect(searchStore.activeFilterId).toBeNull();
+  });
+
+  describe("suchhinweis", () => {
+    function createModelOhneEntitaet() {
+      const model = createSearchQueryAndSortingModel();
+      model.selectBauleitplanverfahren = false;
+      model.selectBaugenehmigungsverfahren = false;
+      model.selectWeiteresVerfahren = false;
+      model.selectBauvorhaben = false;
+      model.selectGrundschule = false;
+      model.selectGsNachmittagBetreuung = false;
+      model.selectHausFuerKinder = false;
+      model.selectKindergarten = false;
+      model.selectKinderkrippe = false;
+      model.selectMittelschule = false;
+      return model;
+    }
+
+    test("fordert vor der ersten Suche zum Starten der Suche auf", () => {
+      const searchStore = useSearchStore();
+      expect(searchStore.suchhinweis).toBe(HINWEIS_SUCHE_STARTEN);
+    });
+
+    test("weist auf fehlende Suchtreffer hin", () => {
+      const searchStore = useSearchStore();
+      searchStore.setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
+      expect(searchStore.suchhinweis).toBe(HINWEIS_KEINE_SUCHTREFFER);
+    });
+
+    test("weist auf eine fehlende Objekttyp-Auswahl hin", () => {
+      const searchStore = useSearchStore();
+      searchStore.setRequestSearchQueryAndSorting(createModelOhneEntitaet());
+      searchStore.setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
+      expect(searchStore.suchhinweis).toBe(HINWEIS_KEINE_ENTITAET_MARKIERT);
+    });
+
+    test("entfällt, sobald Suchtreffer vorhanden sind", () => {
+      const searchStore = useSearchStore();
+      searchStore.setSearchResults({
+        searchResults: [{ id: "1", type: SearchResultDtoTypeEnum.Abfrage }],
+        page: 1,
+        numberOfPages: 1,
+      } as SearchResultsDto);
+      expect(searchStore.suchhinweis).toBeUndefined();
+    });
   });
 });

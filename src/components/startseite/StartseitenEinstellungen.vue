@@ -3,28 +3,43 @@
     <v-divider class="my-2" />
     <span class="userinfo-subtitles">
       <v-icon>mdi-home-outline</v-icon>
-      Startseite "Meine Vorgänge"
+      Startseite
     </span>
     <v-select
-      id="startseiten_einstellungen_schnellfilter"
-      v-model="schnellfilter"
-      :items="schnellfilterOptionen"
-      label="Standard-Schnellfilter"
+      id="startseiten_einstellungen_standard_filter"
+      v-model="standardFilterId"
+      :items="standardFilterOptionen"
+      item-title="name"
+      item-value="id"
+      label="Standard-Filter der Übersicht"
       variant="outlined"
       density="compact"
       hide-details
       class="mt-2"
+      @update:menu="onStandardFilterMenu"
     />
-    <v-select
-      id="startseiten_einstellungen_sortierung"
-      v-model="sortierung"
-      :items="sortierungOptionen"
-      label="Standard-Sortierung"
-      variant="outlined"
-      density="compact"
-      hide-details
-      class="mt-2"
-    />
+    <template v-if="showMeineVorgaenge">
+      <v-select
+        id="startseiten_einstellungen_schnellfilter"
+        v-model="schnellfilter"
+        :items="schnellfilterOptionen"
+        label="Standard-Schnellfilter"
+        variant="outlined"
+        density="compact"
+        hide-details
+        class="mt-2"
+      />
+      <v-select
+        id="startseiten_einstellungen_sortierung"
+        v-model="sortierung"
+        :items="sortierungOptionen"
+        label="Standard-Sortierung"
+        variant="outlined"
+        density="compact"
+        hide-details
+        class="mt-2"
+      />
+    </template>
     <v-btn
       id="startseiten_einstellungen_speichern"
       color="primary"
@@ -40,9 +55,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { StartseitenEinstellungDto } from "@/api/api-client/isi-backend";
 import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import {
   DEFAULT_SCHNELLFILTER,
   DEFAULT_SORTIERUNG,
@@ -53,20 +69,35 @@ import {
   type SortierungVorgaenge,
 } from "@/utils/StartseiteUtil";
 import { useToast } from "vue-toastification";
-import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 
-const emit = defineEmits<{ (e: "gespeichert"): void }>();
+interface Props {
+  /**
+   * Die Einstellungen für den Startseitenbereich "Meine Vorgänge" sind nur für Abfrageersteller relevant.
+   */
+  showMeineVorgaenge?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  showMeineVorgaenge: false,
+});
 
 const toast = useToast();
-const { saveStartseitenEinstellung } = useStartseitenEinstellungApi();
-const startseitenEinstellungStore = useStartseitenEinstellungStore();
+const { getStartseitenEinstellung, saveStartseitenEinstellung } = useStartseitenEinstellungApi();
+const { savedFilters, loadFilters } = useFilterPersistence();
 
 const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
 
 const schnellfilter = ref<SchnellfilterVorgaenge>(DEFAULT_SCHNELLFILTER);
 const sortierung = ref<SortierungVorgaenge>(DEFAULT_SORTIERUNG);
+const standardFilterId = ref<string | null>(null);
 const saving = ref(false);
+
+// Ohne gewählten Standard-Filter gilt beim Laden der Anwendung die Standardeinstellung des Filtermenüs.
+const standardFilterOptionen = computed(() => [
+  { id: null, name: "Standardeinstellung" },
+  ...savedFilters.value.map((filter) => ({ id: filter.id, name: filter.name })),
+]);
 
 async function speichern(): Promise<void> {
   saving.value = true;
@@ -76,22 +107,43 @@ async function speichern(): Promise<void> {
       schnellfilter: schnellfilter.value,
       sortBy: sortierung.value,
       sortOrder: getSortOrderForSortierung(sortierung.value),
+      standardFilterId: standardFilterId.value ?? undefined,
     } as unknown as StartseitenEinstellungDto);
-    // Erst nach erfolgreichem Speichern übernehmen, damit die Vorgangsliste keine verworfene
-    // Einstellung anzeigt.
-    startseitenEinstellungStore.setEinstellung(schnellfilter.value, sortierung.value);
     toast.success("Die Startseiteneinstellungen wurden gespeichert.");
-    emit("gespeichert");
   } finally {
     saving.value = false;
   }
 }
 
+async function ladePersoenlicheFilter(): Promise<void> {
+  try {
+    await loadFilters();
+  } catch {
+    // handleError already provides user feedback.
+  }
+}
+
+/**
+ * Persönliche Filter können jederzeit über das Filtermenü angelegt werden. Damit diese zur Auswahl stehen,
+ * werden sie beim Öffnen der Auswahl neu geladen.
+ */
+function onStandardFilterMenu(geoeffnet: boolean): void {
+  if (geoeffnet) {
+    ladePersoenlicheFilter();
+  }
+}
+
 onMounted(async () => {
-  await startseitenEinstellungStore.initialize();
-  schnellfilter.value = startseitenEinstellungStore.schnellfilter;
-  sortierung.value = startseitenEinstellungStore.sortierung;
+  ladePersoenlicheFilter();
+  try {
+    const einstellung = await getStartseitenEinstellung();
+    schnellfilter.value = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
+    sortierung.value = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
+    standardFilterId.value = einstellung.standardFilterId ?? null;
+  } catch {
+    // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
+  }
 });
 
-defineExpose({ schnellfilter, sortierung, speichern });
+defineExpose({ schnellfilter, sortierung, standardFilterId, standardFilterOptionen, speichern });
 </script>

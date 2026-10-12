@@ -26,6 +26,18 @@
       </v-tabs>
     </div>
 
+    <!-- Die Liste zeigt den Hinweis selbst an. Auf der Karte wäre er ohne diese Zeile nicht sichtbar. -->
+    <v-alert
+      v-if="ansicht === 'KARTE' && suchhinweis"
+      id="uebersicht_suchhinweis"
+      type="info"
+      variant="tonal"
+      density="compact"
+      class="mb-3"
+    >
+      {{ suchhinweis }}
+    </v-alert>
+
     <div
       class="flex-grow-1"
       style="min-height: 0"
@@ -48,14 +60,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import SearchInputField from "@/components/search/SearchInputField.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
+import { useSearchStore } from "@/stores/SearchStore";
 
 type Ansicht = "KARTE" | "LISTE";
 
+const searchStore = useSearchStore();
 const ansicht = ref<Ansicht>("KARTE");
+const suchhinweis = computed(() => searchStore.suchhinweis);
 
-defineExpose({ ansicht });
+defineExpose({ ansicht, suchhinweis });
 </script>

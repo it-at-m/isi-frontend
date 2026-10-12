@@ -6,13 +6,15 @@
     :items="suggestions"
     density="compact"
     clearable
-    flat
     hide-details
     label="Suche"
     no-filter
     prepend-inner-icon="mdi-magnify"
     return-object
-    variant="solo"
+    variant="outlined"
+    base-color="primary"
+    bg-color="white"
+    color="primary"
     @keyup.enter="searchEntitiesForSelectedSuggestion"
     @update:search="suggest"
     @click:clear="clearSearch"
@@ -102,7 +104,7 @@ import _ from "lodash";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchAndFilterOptions from "@/components/filter/SearchAndFilterOptions.vue";
-import { useSearchStore } from "@/stores/SearchStore";
+import { HINWEIS_KEINE_ENTITAET_MARKIERT, useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useRoute, useRouter } from "vue-router";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
@@ -110,10 +112,12 @@ import QuickFilterList from "@/components/filter/QuickFilterList.vue";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
+const searchStore = useSearchStore();
 const filterDialogRef = ref();
 const quickFilterMenuOpen = ref(false);
-const lastFilterSource = ref<"dialog" | "quick" | null>(null);
-const activeQuickFilterId = ref<string | null>(null);
+// Ein beim Laden der Anwendung aus den Profileinstellungen übernommener Filter gilt als Schnellfilter.
+const lastFilterSource = ref<"dialog" | "quick" | null>(searchStore.activeFilterId ? "quick" : null);
+const activeQuickFilterId = computed(() => searchStore.activeFilterId);
 const confirmCloseDialogOpen = ref(false);
 const lastSelectedFilter = ref<string | null>(null);
 const searchAndFilterDialogOpen = ref<boolean>(false);
@@ -125,10 +129,8 @@ const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
 const route = useRoute();
 const router = useRouter();
 
-const searchStore = useSearchStore();
-
+// Beim Laden wird bewusst keine Suche ausgelöst. Diese erfolgt erst per Enter oder über "Übernehmen".
 onMounted(() => {
-  searchEntitiesForSelectedSuggestion();
   clearSearch();
 });
 
@@ -142,7 +144,7 @@ function onQuickFilterSelected(filter: { id: string; name: string; filterSetting
     checkCurrentFilter();
     lastFilterSource.value = "quick";
     searchStore.setFilterActive(true);
-    activeQuickFilterId.value = filter.id;
+    searchStore.setActiveFilterId(filter.id);
   } catch (e) {
     toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
   }
@@ -215,7 +217,7 @@ function handleResetSearchAndFilterOptions(): void {
   searchEntitiesForSelectedSuggestion();
   lastFilterSource.value = null;
   searchStore.setFilterActive(false);
-  activeQuickFilterId.value = null;
+  searchStore.setActiveFilterId(null);
 }
 
 function closeSearchAndFilterDialog(): void {
@@ -268,8 +270,9 @@ const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestS
 function suggest(query: string): void {
   const splittedSearchwords = _.split(query, " ");
   const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
-  if (!_.isEmpty(queryForSearchwordSuggestion)) {
-    const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+  const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+  // Ohne markierte Entität lehnt das Backend die Anfrage ab, weshalb keine Vorschläge ermittelt werden.
+  if (!_.isEmpty(queryForSearchwordSuggestion) && !isKeineEntitaetMarkiert(searchQueryForEntitiesDto)) {
     const searchQueryDto = {
       searchQuery: queryForSearchwordSuggestion,
       selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
@@ -307,9 +310,19 @@ function searchEntitiesForSelectedSuggestion(): void {
   suggestions.value = [searchQueryForEntitiesDto.searchQuery];
   selectedSuggestion.value = searchQueryForEntitiesDto.searchQuery;
   searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
+  if (isKeineEntitaetMarkiert(searchQueryForEntitiesDto)) {
+    // Ohne markierte Entität werden keine Objekte angezeigt und der Nutzer erhält eine Handlungsanweisung.
+    searchStore.setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
+    toast.warning(HINWEIS_KEINE_ENTITAET_MARKIERT);
+    return;
+  }
   searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
     searchStore.setSearchResults(_.cloneDeep(searchResults));
   });
+}
+
+function isKeineEntitaetMarkiert(searchQueryAndSorting: SearchQueryAndSortingModel): boolean {
+  return new SearchQueryAndSortingModel(searchQueryAndSorting).allObjectTypesDeselected();
 }
 
 function clearSearch(): void {
