@@ -19,7 +19,6 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
-`anlassPlanung` | string
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
@@ -29,6 +28,7 @@ Name | Type
 `anzahlHortGruppen` | number
 `wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
+`anlassPlanung` | string
 `anzahlKinderkrippePlaetze` | number
 `anzahlKindergartenPlaetze` | number
 `anzahlKinderkrippeGruppen` | number
@@ -38,7 +38,6 @@ Name | Type
 `kooperation` | string
 `kooperationFreieEingabe` | string
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
-`dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 
 ## Example
 
@@ -60,7 +59,6 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
-  "anlassPlanung": null,
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
@@ -70,6 +68,7 @@ const example = {
   "anzahlHortGruppen": null,
   "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
+  "anlassPlanung": null,
   "anzahlKinderkrippePlaetze": null,
   "anzahlKindergartenPlaetze": null,
   "anzahlKinderkrippeGruppen": null,
@@ -79,7 +78,6 @@ const example = {
   "kooperation": null,
   "kooperationFreieEingabe": null,
   "sobonRelevant": null,
-  "dokumente": null,
 } satisfies UpdateInfrastruktureinrichtungRequest
 
 console.log(example)

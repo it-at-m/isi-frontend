@@ -9,7 +9,6 @@ Name | Type
 `kooperation` | string
 `kooperationFreieEingabe` | string
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
-`dokumente` | [Array&lt;DokumentDto&gt;](DokumentDto.md)
 
 ## Example
 
@@ -21,7 +20,6 @@ const example = {
   "kooperation": null,
   "kooperationFreieEingabe": null,
   "sobonRelevant": null,
-  "dokumente": null,
 } satisfies NachbarschaftstreffDto
 
 console.log(example)

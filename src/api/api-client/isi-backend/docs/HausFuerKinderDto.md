@@ -16,6 +16,7 @@ Name | Type
 `wohnungsnaheKindergartenPlaetze` | number
 `wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
+`anlassPlanung` | string
 
 ## Example
 
@@ -34,6 +35,7 @@ const example = {
   "wohnungsnaheKindergartenPlaetze": null,
   "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
+  "anlassPlanung": null,
 } satisfies HausFuerKinderDto
 
 console.log(example)

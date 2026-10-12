@@ -41,13 +41,6 @@ import {
     BearbeitendePersonDtoToJSON,
     BearbeitendePersonDtoToJSONTyped,
 } from './BearbeitendePersonDto';
-import type { DokumentDto } from './DokumentDto';
-import {
-    DokumentDtoFromJSON,
-    DokumentDtoFromJSONTyped,
-    DokumentDtoToJSON,
-    DokumentDtoToJSONTyped,
-} from './DokumentDto';
 import type { AdresseDto } from './AdresseDto';
 import {
     AdresseDtoFromJSON,
@@ -74,10 +67,6 @@ export interface NachbarschaftstreffDto extends InfrastruktureinrichtungDto {
      * 
      */
     sobonRelevant?: UncertainBoolean;
-    /**
-     * 
-     */
-    dokumente?: Array<DokumentDto>;
 }
 
 
@@ -120,7 +109,6 @@ export function NachbarschaftstreffDtoFromJSONTyped(json: any, ignoreDiscriminat
         'kooperation': json['kooperation'] == null ? undefined : json['kooperation'],
         'kooperationFreieEingabe': json['kooperationFreieEingabe'] == null ? undefined : json['kooperationFreieEingabe'],
         'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
-        'dokumente': json['dokumente'] == null ? undefined : ((json['dokumente'] as Array<any>).map(DokumentDtoFromJSON)),
     };
 }
 
@@ -145,7 +133,6 @@ export function NachbarschaftstreffDtoToJSONTyped(value?: NachbarschaftstreffDto
         'kooperation': value['kooperation'],
         'kooperationFreieEingabe': value['kooperationFreieEingabe'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
-        'dokumente': value['dokumente'] == null ? undefined : ((value['dokumente'] as Array<any>).map(DokumentDtoToJSON)),
     };
 }
 

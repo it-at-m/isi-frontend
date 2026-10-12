@@ -1,4 +1,4 @@
-import type {
+import {
   // Adresse
   AdresseDto,
   // AbfrageDto's
@@ -43,6 +43,7 @@ import type {
   // Suche
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
+  InfrastruktureinrichtungDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import {
   // dreiwertiges Boolean
@@ -79,9 +80,14 @@ import {
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SchuleDtoEinrichtungstraegerEnum,
+  SchuleDtoAnlassPlanungEnum,
+  KinderkrippeDtoAnlassPlanungEnum,
   KindergartenDtoEinrichtungstraegerEnum,
+  KindergartenDtoAnlassPlanungEnum,
   HausFuerKinderDtoEinrichtungstraegerEnum,
+  HausFuerKinderDtoAnlassPlanungEnum,
   GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
+  GsNachmittagBetreuungDtoAnlassPlanungEnum,
   NachbarschaftstreffDtoKooperationEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
@@ -664,6 +670,7 @@ export function createSchuleDto(): SchuleDto {
     anzahlKlassen: Number.NaN,
     anzahlPlaetze: Number.NaN,
     einrichtungstraeger: SchuleDtoEinrichtungstraegerEnum.Unspecified,
+    anlassPlanung: SchuleDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -690,6 +697,7 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
+    anlassPlanung: KinderkrippeDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -716,6 +724,7 @@ export function createKindergartenDto(): KindergartenDto {
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
+    anlassPlanung: KindergartenDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -748,6 +757,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
     wohnungsnaheHortPlaetze: undefined,
+    anlassPlanung: HausFuerKinderDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -774,6 +784,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
+    anlassPlanung: GsNachmittagBetreuungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 

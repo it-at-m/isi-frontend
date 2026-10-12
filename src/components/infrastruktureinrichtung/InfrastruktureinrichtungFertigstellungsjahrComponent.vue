@@ -1,25 +1,24 @@
 <template>
-  <v-select
-    id="infrastruktureinrichtung_status_dropdown"
-    v-model="infrastruktureinrichtung.status"
-    :items="statusInfrastruktureinrichtungList"
-    variant="underlined"
-    item-value="key"
-    item-title="value"
-    :rules="[pflichtfeld, notUnspecified]"
-    :disabled="!isEditable"
-    @update:model-value="formChanged"
-  >
-    <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
-  </v-select>
+  <num-field
+    id="infrastruktureinrichtung_fertigstellungsjahr"
+    v-model="infrastruktureinrichtung.fertigstellungsjahr"
+    label="Fertigstellungsjahr (JJJJ)"
+    class="mx-3"
+    year
+    :required="isFertigstellungsjahrRequired()"
+    maxlength="4"
+    :readonly="!isEditable"
+    :class="isEditable ? '' : 'text-grey-lighten-1'"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
-import { useSaveLeave } from "@/composables/SaveLeave";
-import { useLookupStore } from "@/stores/LookupStore";
+import NumField from "@/components/common/NumField.vue";
+import {
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungDtoStatusEnum,
+} from "@/api/api-client/isi-backend";
 
 interface Props {
   isEditable?: boolean;
@@ -27,8 +26,13 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-const { formChanged } = useSaveLeave();
-const lookupStore = useLookupStore();
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
-const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+
+function isFertigstellungsjahrRequired(): boolean {
+  return (
+    infrastruktureinrichtung.value.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand &&
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+  );
+}
 </script>

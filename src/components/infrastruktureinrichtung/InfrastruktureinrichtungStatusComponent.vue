@@ -1,30 +1,25 @@
 <template>
-  <field-group-card>
-    <v-row justify="center">
-      <v-col cols="12">
-        <v-text-field
-          id="infrastruktureinrichtung_nameEinrichtung"
-          v-model="infrastruktureinrichtung.nameEinrichtung"
-          :rules="[pflichtfeld]"
-          variant="underlined"
-          maxlength="255"
-          validate-on="blur"
-          :readonly="!isEditable"
-          @update:model-value="formChanged"
-          :class="isEditable ? '' : 'text-grey-lighten-1'"
-        >
-          <template #label> Name der Einrichtung <span class="text-secondary">*</span> </template>
-        </v-text-field>
-      </v-col>
-    </v-row>
-  </field-group-card>
+  <v-select
+    id="infrastruktureinrichtung_status_dropdown"
+    v-model="infrastruktureinrichtung.status"
+    :items="statusInfrastruktureinrichtungList"
+    variant="underlined"
+    item-value="key"
+    item-title="value"
+    :rules="[pflichtfeld, notUnspecified]"
+    :disabled="!isEditable"
+    @update:model-value="formChanged"
+  >
+    <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
+  </v-select>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { pflichtfeld } from "@/utils/FieldValidationRules";
+import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { useLookupStore } from "@/stores/LookupStore";
 
 interface Props {
   isEditable?: boolean;
@@ -33,5 +28,7 @@ interface Props {
 withDefaults(defineProps<Props>(), { isEditable: false });
 
 const { formChanged } = useSaveLeave();
+const lookupStore = useLookupStore();
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
+const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 </script>

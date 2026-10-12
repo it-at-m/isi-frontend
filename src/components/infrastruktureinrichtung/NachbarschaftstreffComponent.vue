@@ -1,83 +1,93 @@
 <template>
-  <div>
-    <infrastruktureinrichtung-name-component
-      id="infrastruktureinrichtung_name_component"
+  <infrastruktureinrichtung-name-component
+    id="infrastruktureinrichtung_name_component"
+    v-model="nachbarschaftstreff"
+    :is-editable="isEditable"
+  />
+  <adresse-component
+    id="infrastruktureinrichtung_adresse_component"
+    v-model="nachbarschaftstreff.adresse"
+    :is-editable="isEditable"
+  />
+  <infrastruktureinrichtung-verortung
+    v-model="nachbarschaftstreff.verortung"
+    :adresse="nachbarschaftstreff.adresse"
+    :is-editable="isEditable"
+    @form-changed="formChanged"
+  />
+  <field-group-card>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <infrastruktureinrichtung-status-component
+          id="infrastruktureinrichtung_status_component"
+          v-model="nachbarschaftstreff"
+          :is-editable="isEditable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <infrastruktureinrichtung-fertigstellungsjahr-component
+          id="infrastruktureinrichtung_fertigstellungsjahr_component"
+          v-model="nachbarschaftstreff"
+          :is-editable="isEditable"
+        />
+      </v-col>
+    </v-row>
+    <infrastruktureinrichtung-kooperation-component
+      id="infrastruktureinrichtung_kooperation_component"
       v-model="nachbarschaftstreff"
       :is-editable="isEditable"
     />
-    <field-group-card>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <tri-switch
+          id="sobon_relevant_triswitch"
+          ref="sobonRelevantTriswitch"
+          v-model="nachbarschaftstreff.sobonRelevant"
+          :disabled="!isEditable"
+          off-text="Nein"
+          on-text="Ja"
+          :rules="[notUnspecified]"
         >
-          <v-select
-            id="infrastruktureinrichtung_kooperation_dropdown"
-            v-model="nachbarschaftstreff.kooperation"
-            :items="kooperationList"
-            variant="underlined"
-            item-value="key"
-            item-title="value"
-            :disabled="!isEditable"
-            @update:model-value="formChanged"
-          >
-            <template #label>Kooperation mit <span class="text-secondary">*</span></template>
-          </v-select>
-          <v-col
-            cols="12"
-            md="4"
-          >
-            <v-slide-y-reverse-transition>
-              <v-text-field
-                v-if="kooperationFreieEingabeVisible"
-                id="kooperation_freie_eingabe_field"
-                ref="kooperationFreieEingabeField"
-                v-model="nachbarschaftstreff.kooperationFreieEingabe"
-                variant="underlined"
-                :readonly="!isEditable"
-                label="Freie Eingabe für Kooperation mit"
-                maxlength="1000"
-                @update:model-value="formChanged"
-                :class="isEditable ? '' : 'text-grey-lighten-1'"
-              />
-            </v-slide-y-reverse-transition>
-          </v-col>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
-          <tri-switch
-            id="sobon_relevant_triswitch"
-            ref="sobonRelevantTriswitch"
-            v-model="nachbarschaftstreff.sobonRelevant"
-            :disabled="!isEditable"
-            off-text="Nein"
-            on-text="Ja"
-            :rules="[notUnspecified]"
-          >
-            <template #label> SoBoN-relevant <span class="text-secondary">*</span></template>
-          </tri-switch>
-        </v-col>
-      </v-row>
-    </field-group-card>
-  </div>
+          <template #label> SoBoN-relevant <span class="text-secondary">*</span></template>
+        </tri-switch>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <infrastruktureinrichtung-vorhaben-component
+          id="infrastruktureinrichtung_bauvorhaben_component"
+          v-model="nachbarschaftstreff"
+          :is-editable="isEditable"
+        />
+      </v-col>
+    </v-row>
+  </field-group-card>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { watch } from "vue";
 import InfrastruktureinrichtungNameComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungNameComponent.vue";
+import AdresseComponent from "@/components/common/AdresseComponent.vue";
+import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
+import InfrastruktureinrichtungStatusComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungStatusComponent.vue";
+import InfrastruktureinrichtungFertigstellungsjahrComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungFertigstellungsjahrComponent.vue";
+import InfrastruktureinrichtungKooperationComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKooperationComponent.vue";
+import InfrastruktureinrichtungVorhabenComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungVorhabenComponent.vue";
 import NachbarschaftstreffModel from "@/types/model/infrastruktureinrichtung/NachbarschaftstreffModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
-import { useLookupStore } from "@/stores/LookupStore";
-import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
+import { notUnspecified } from "@/utils/FieldValidationRules";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { NachbarschaftstreffDtoKooperationEnum } from "@/api/api-client/isi-backend";
-import _ from "lodash";
-import AdresseComponent from "@/components/common/AdresseComponent.vue";
 
 interface Props {
   isEditable: boolean;
@@ -85,22 +95,15 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-const lookupStore = useLookupStore();
 const { formChanged } = useSaveLeave();
 const nachbarschaftstreff = defineModel<NachbarschaftstreffModel>({ required: true });
-const kooperationList = computed(() => lookupStore.kooperation);
-const kooperationFreieEingabeVisible = ref<boolean | null>();
+const emit = defineEmits(["update:modelValue"]);
 
-watch(() => nachbarschaftstreff.value.kooperation, kooperationChanged, { immediate: true });
-
-function kooperationChanged(): void {
-  if (!_.isNil(nachbarschaftstreff.value.kooperation)) {
-    if (nachbarschaftstreff.value.kooperation === NachbarschaftstreffDtoKooperationEnum.Sonstiges) {
-      kooperationFreieEingabeVisible.value = true;
-    } else {
-      nachbarschaftstreff.value.kooperationFreieEingabe = undefined;
-      kooperationFreieEingabeVisible.value = false;
-    }
-  }
-}
+watch(
+  () => nachbarschaftstreff.value.verortung,
+  () => {
+    emit("update:modelValue", nachbarschaftstreff.value);
+  },
+  { immediate: true, deep: true },
+);
 </script>

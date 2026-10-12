@@ -12,6 +12,7 @@ import {
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   KindergartenDto,
   KinderkrippeDto,
   KommentarBauvorhabenDto,
@@ -693,7 +694,9 @@ function findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: Infrastru
   }
   if (
     _.isNil(infrastruktureinrichtung.fertigstellungsjahr) &&
-    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand
+    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand &&
+    infrastruktureinrichtung.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
   ) {
     return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
   }

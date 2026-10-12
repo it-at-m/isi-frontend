@@ -1,25 +1,43 @@
 <template>
-  <v-select
-    id="infrastruktureinrichtung_status_dropdown"
-    v-model="infrastruktureinrichtung.status"
-    :items="statusInfrastruktureinrichtungList"
-    variant="underlined"
-    item-value="key"
-    item-title="value"
-    :rules="[pflichtfeld, notUnspecified]"
-    :disabled="!isEditable"
-    @update:model-value="formChanged"
-  >
-    <template #label>Status der Infrastruktureinrichtung <span class="text-secondary">*</span></template>
-  </v-select>
+  <field-group-card :card-title="flaechenAngabenCardTitle">
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <num-field
+          id="infrastruktureinrichtung_flaecheGesamtgrundstueck"
+          v-model="infrastruktureinrichtung.flaecheGesamtgrundstueck"
+          class="mx-3"
+          label="Fläche Gesamtgrundstück"
+          :suffix="SQUARE_METER"
+          :readonly="!isEditable"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <num-field
+          id="infrastruktureinrichtung_flaecheTeilgrundstueck"
+          v-model="infrastruktureinrichtung.flaecheTeilgrundstueck"
+          class="mx-3"
+          label="Fläche Teilgrundstück"
+          :suffix="SQUARE_METER"
+          :readonly="!isEditable"
+          :class="isEditable ? '' : 'text-grey-lighten-1'"
+        />
+      </v-col>
+    </v-row>
+  </field-group-card>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
-import { useSaveLeave } from "@/composables/SaveLeave";
-import { useLookupStore } from "@/stores/LookupStore";
+import { SQUARE_METER } from "@/utils/FieldPrefixesSuffixes";
+import NumField from "@/components/common/NumField.vue";
+import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 
 interface Props {
   isEditable?: boolean;
@@ -27,8 +45,6 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
-const { formChanged } = useSaveLeave();
-const lookupStore = useLookupStore();
+const flaechenAngabenCardTitle = "Flächenangaben zur Einrichtung";
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
-const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
 </script>
