@@ -654,7 +654,6 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
-    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
