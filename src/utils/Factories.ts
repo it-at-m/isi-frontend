@@ -43,7 +43,6 @@ import {
   // Suche
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
-  InfrastruktureinrichtungDtoAnlassPlanungEnum,
   InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import {
