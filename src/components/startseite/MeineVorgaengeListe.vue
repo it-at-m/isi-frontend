@@ -60,6 +60,7 @@
       id="meine_vorgaenge_liste"
       v-scroll.self="onScroll"
       class="pa-0 ma-0 flex-grow-1 overflow-y-auto"
+      style="min-height: 0"
     >
       <v-hover
         v-for="(vorgang, index) in vorgaenge"
@@ -136,8 +137,8 @@ import {
   AbfrageDtoArtAbfrageEnum,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
-import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
 import { useLookupStore } from "@/stores/LookupStore";
+import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import {
@@ -158,8 +159,8 @@ const PAGE_SIZE = 20;
 
 const router = useRouter();
 const lookupStore = useLookupStore();
+const startseitenEinstellungStore = useStartseitenEinstellungStore();
 const { searchForEntities } = useSearchApi();
-const { getStartseitenEinstellung } = useStartseitenEinstellungApi();
 
 const pageRequestMutex = new Mutex();
 
@@ -314,14 +315,23 @@ watch([schnellfilter, sortierung], () => {
   loadVorgaenge().catch(() => undefined);
 });
 
+/**
+ * Übernimmt in den Profileinstellungen gespeicherte Änderungen sofort in die Liste.
+ *
+ * Der nachgelagerte Watcher auf schnellfilter/sortierung lädt die Vorgänge daraufhin neu.
+ */
+watch(
+  () => [startseitenEinstellungStore.schnellfilter, startseitenEinstellungStore.sortierung],
+  ([neuerSchnellfilter, neueSortierung]) => {
+    schnellfilter.value = neuerSchnellfilter as SchnellfilterVorgaenge;
+    sortierung.value = neueSortierung as SortierungVorgaenge;
+  },
+);
+
 onMounted(async () => {
-  try {
-    const einstellung = await getStartseitenEinstellung();
-    schnellfilter.value = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
-    sortierung.value = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
-  } catch {
-    // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
-  }
+  await startseitenEinstellungStore.initialize();
+  schnellfilter.value = startseitenEinstellungStore.schnellfilter;
+  sortierung.value = startseitenEinstellungStore.sortierung;
   // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
   await loadVorgaenge().catch(() => undefined);
 });

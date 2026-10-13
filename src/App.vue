@@ -187,7 +187,10 @@
               >
                 <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
               </span>
-              <startseiten-einstellungen v-if="hasRoleAbfrageerstellung" />
+              <startseiten-einstellungen
+                v-if="hasRoleAbfrageerstellung"
+                @gespeichert="menu = false"
+              />
             </v-card>
           </v-menu>
         </v-col>
