@@ -64,10 +64,6 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
      * 
      */
     einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;
-    /**
-     * 
-     */
-    anlassPlanung: KinderkrippeDtoAnlassPlanungEnum;
 }
 
 
@@ -87,21 +83,6 @@ export const KinderkrippeDtoEinrichtungstraegerEnum = {
 } as const;
 export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinrichtungstraegerEnum[keyof typeof KinderkrippeDtoEinrichtungstraegerEnum];
 
-/**
- * @export
- */
-export const KinderkrippeDtoAnlassPlanungEnum = {
-    Unspecified: 'UNSPECIFIED',
-    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
-    NeubauBauGb: 'NEUBAU_BAU_GB',
-    Bauprogramm: 'BAUPROGRAMM',
-    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
-    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
-    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG',
-} as const;
-export type KinderkrippeDtoAnlassPlanungEnum = typeof KinderkrippeDtoAnlassPlanungEnum[keyof typeof KinderkrippeDtoAnlassPlanungEnum];
-
 
 /**
  * Check if a given object implements the KinderkrippeDto interface.
@@ -109,7 +90,6 @@ export type KinderkrippeDtoAnlassPlanungEnum = typeof KinderkrippeDtoAnlassPlanu
 export function instanceOfKinderkrippeDto(value: object): value is KinderkrippeDto {
     if (!('anzahlKinderkrippePlaetze' in value) || value['anzahlKinderkrippePlaetze'] === undefined) return false;
     if (!('anzahlKinderkrippeGruppen' in value) || value['anzahlKinderkrippeGruppen'] === undefined) return false;
-    if (!('anlassPlanung' in value) || value['anlassPlanung'] === undefined) return false;
     return true;
 }
 
@@ -133,7 +113,6 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
         'wohnungsnaheKinderkrippePlaetze': json['wohnungsnaheKinderkrippePlaetze'] == null ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
-        'anlassPlanung': json['anlassPlanung'],
     };
 }
 
@@ -159,7 +138,6 @@ export function KinderkrippeDtoToJSONTyped(value?: KinderkrippeDto | null, ignor
         'anzahlKinderkrippeGruppen': value['anzahlKinderkrippeGruppen'],
         'wohnungsnaheKinderkrippePlaetze': value['wohnungsnaheKinderkrippePlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
-        'anlassPlanung': value['anlassPlanung'],
     };
 }
 

@@ -22,13 +22,13 @@ Name | Type
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
+`anlassPlanung` | string
 `schule` | [SchuleDto](SchuleDto.md)
 `artGsNachmittagBetreuung` | string
 `anzahlHortPlaetze` | number
 `anzahlHortGruppen` | number
 `wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
-`anlassPlanung` | string
 `anzahlKinderkrippePlaetze` | number
 `anzahlKindergartenPlaetze` | number
 `anzahlKinderkrippeGruppen` | number
@@ -62,13 +62,13 @@ const example = {
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
+  "anlassPlanung": null,
   "schule": null,
   "artGsNachmittagBetreuung": null,
   "anzahlHortPlaetze": null,
   "anzahlHortGruppen": null,
   "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
-  "anlassPlanung": null,
   "anzahlKinderkrippePlaetze": null,
   "anzahlKindergartenPlaetze": null,
   "anzahlKinderkrippeGruppen": null,

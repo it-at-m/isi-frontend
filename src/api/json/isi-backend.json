@@ -2242,7 +2242,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "GrundschulsprengelDto": {
         "type": "object",
@@ -2284,19 +2284,6 @@
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
-              },
-              "anlassPlanung": {
-                "type": "string",
-                "enum": [
-                  "UNSPECIFIED",
-                  "NEUBAU_BEBAUUNGSPLAN",
-                  "NEUBAU_BAU_GB",
-                  "BAUPROGRAMM",
-                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
-                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
-                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
-                  "SCHLIESSUNG"
-                ]
               }
             }
           }
@@ -2330,19 +2317,6 @@
                   "STAATLICHE_EINRICHTUNG",
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
-                ]
-              },
-              "anlassPlanung": {
-                "type": "string",
-                "enum": [
-                  "UNSPECIFIED",
-                  "NEUBAU_BEBAUUNGSPLAN",
-                  "NEUBAU_BAU_GB",
-                  "BAUPROGRAMM",
-                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
-                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
-                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
-                  "SCHLIESSUNG"
                 ]
               }
             }
@@ -2396,9 +2370,22 @@
           },
           "flaecheGesamtgrundstueck": { "type": "number" },
           "flaecheTeilgrundstueck": { "type": "number" },
-          "idKibigWeb": { "type": "string" }
+          "idKibigWeb": { "type": "string" },
+          "anlassPlanung": {
+            "type": "string",
+            "enum": [
+              "UNSPECIFIED",
+              "NEUBAU_BEBAUUNGSPLAN",
+              "NEUBAU_BAU_GB",
+              "BAUPROGRAMM",
+              "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
+              "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
+              "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
+              "SCHLIESSUNG"
+            ]
+          }
         },
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "status"]
       },
       "KindergartenDto": {
         "allOf": [
@@ -2421,19 +2408,6 @@
                   "STAATLICHE_EINRICHTUNG",
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
-                ]
-              },
-              "anlassPlanung": {
-                "type": "string",
-                "enum": [
-                  "UNSPECIFIED",
-                  "NEUBAU_BEBAUUNGSPLAN",
-                  "NEUBAU_BAU_GB",
-                  "BAUPROGRAMM",
-                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
-                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
-                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
-                  "SCHLIESSUNG"
                 ]
               }
             }
@@ -2469,19 +2443,6 @@
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
-              },
-              "anlassPlanung": {
-                "type": "string",
-                "enum": [
-                  "UNSPECIFIED",
-                  "NEUBAU_BEBAUUNGSPLAN",
-                  "NEUBAU_BAU_GB",
-                  "BAUPROGRAMM",
-                  "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
-                  "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
-                  "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
-                  "SCHLIESSUNG"
-                ]
               }
             }
           }
@@ -2508,7 +2469,7 @@
           { "$ref": "#/components/schemas/InfrastruktureinrichtungDto" },
           { "type": "object", "properties": { "schule": { "$ref": "#/components/schemas/SchuleDto" } } }
         ],
-        "required": ["nameEinrichtung", "schule", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "schule", "status"]
       },
       "MittelschulsprengelDto": {
         "type": "object",
@@ -2545,7 +2506,7 @@
             }
           }
         ],
-        "required": ["nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "PointGeometryDto": {
         "type": "object",
@@ -2579,22 +2540,9 @@
               "PRIVATE_TRAEGERSCHAFT",
               "KIRCHLICHE_TRAEGERSCHAFT"
             ]
-          },
-          "anlassPlanung": {
-            "type": "string",
-            "enum": [
-              "UNSPECIFIED",
-              "NEUBAU_BEBAUUNGSPLAN",
-              "NEUBAU_BAU_GB",
-              "BAUPROGRAMM",
-              "NEUE_EINRICHTUNG_PRIVATER_TRAEGER",
-              "REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG",
-              "ERWEITERUNG_BESTEHENDER_EINRICHTUNG",
-              "SCHLIESSUNG"
-            ]
           }
         },
-        "required": ["anlassPlanung", "anzahlKlassen", "anzahlPlaetze"]
+        "required": ["anzahlKlassen", "anzahlPlaetze"]
       },
       "StadtbezirkDto": {
         "type": "object",

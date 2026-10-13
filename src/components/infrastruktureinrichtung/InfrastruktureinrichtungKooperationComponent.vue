@@ -43,6 +43,7 @@
 import { useLookupStore } from "@/stores/LookupStore";
 import { NachbarschaftstreffDtoKooperationEnum } from "@/api/api-client/isi-backend";
 import NachbarschaftstreffModel from "@/types/model/infrastruktureinrichtung/NachbarschaftstreffModel";
+import { useSaveLeave } from "@/composables/SaveLeave";
 import _ from "lodash";
 import { computed, ref, watch } from "vue";
 
@@ -52,6 +53,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
+const { formChanged } = useSaveLeave();
 const nachbarschaftstreff = defineModel<NachbarschaftstreffModel>({ required: true });
 const lookupStore = useLookupStore();
 const kooperationFreieEingabeVisible = ref<boolean | null>();

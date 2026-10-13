@@ -23,6 +23,7 @@ Name | Type
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
+`anlassPlanung` | string
 
 ## Example
 
@@ -47,6 +48,7 @@ const example = {
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
+  "anlassPlanung": null,
 } satisfies InfrastruktureinrichtungDto
 
 console.log(example)

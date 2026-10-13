@@ -31,10 +31,6 @@ export interface SchuleDto {
      * 
      */
     einrichtungstraeger?: SchuleDtoEinrichtungstraegerEnum;
-    /**
-     * 
-     */
-    anlassPlanung: SchuleDtoAnlassPlanungEnum;
 }
 
 
@@ -54,21 +50,6 @@ export const SchuleDtoEinrichtungstraegerEnum = {
 } as const;
 export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraegerEnum[keyof typeof SchuleDtoEinrichtungstraegerEnum];
 
-/**
- * @export
- */
-export const SchuleDtoAnlassPlanungEnum = {
-    Unspecified: 'UNSPECIFIED',
-    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
-    NeubauBauGb: 'NEUBAU_BAU_GB',
-    Bauprogramm: 'BAUPROGRAMM',
-    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
-    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
-    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG',
-} as const;
-export type SchuleDtoAnlassPlanungEnum = typeof SchuleDtoAnlassPlanungEnum[keyof typeof SchuleDtoAnlassPlanungEnum];
-
 
 /**
  * Check if a given object implements the SchuleDto interface.
@@ -76,7 +57,6 @@ export type SchuleDtoAnlassPlanungEnum = typeof SchuleDtoAnlassPlanungEnum[keyof
 export function instanceOfSchuleDto(value: object): value is SchuleDto {
     if (!('anzahlKlassen' in value) || value['anzahlKlassen'] === undefined) return false;
     if (!('anzahlPlaetze' in value) || value['anzahlPlaetze'] === undefined) return false;
-    if (!('anlassPlanung' in value) || value['anlassPlanung'] === undefined) return false;
     return true;
 }
 
@@ -93,7 +73,6 @@ export function SchuleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'anzahlKlassen': json['anzahlKlassen'],
         'anzahlPlaetze': json['anzahlPlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
-        'anlassPlanung': json['anlassPlanung'],
     };
 }
 
@@ -111,7 +90,6 @@ export function SchuleDtoToJSONTyped(value?: SchuleDto | null, ignoreDiscriminat
         'anzahlKlassen': value['anzahlKlassen'],
         'anzahlPlaetze': value['anzahlPlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
-        'anlassPlanung': value['anlassPlanung'],
     };
 }
 

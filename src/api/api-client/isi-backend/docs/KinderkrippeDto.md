@@ -10,7 +10,6 @@ Name | Type
 `anzahlKinderkrippeGruppen` | number
 `wohnungsnaheKinderkrippePlaetze` | number
 `einrichtungstraeger` | string
-`anlassPlanung` | string
 
 ## Example
 
@@ -23,7 +22,6 @@ const example = {
   "anzahlKinderkrippeGruppen": null,
   "wohnungsnaheKinderkrippePlaetze": null,
   "einrichtungstraeger": null,
-  "anlassPlanung": null,
 } satisfies KinderkrippeDto
 
 console.log(example)

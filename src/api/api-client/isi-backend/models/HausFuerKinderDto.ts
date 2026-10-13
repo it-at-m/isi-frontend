@@ -88,10 +88,6 @@ export interface HausFuerKinderDto extends InfrastruktureinrichtungDto {
      * 
      */
     einrichtungstraeger?: HausFuerKinderDtoEinrichtungstraegerEnum;
-    /**
-     * 
-     */
-    anlassPlanung: HausFuerKinderDtoAnlassPlanungEnum;
 }
 
 
@@ -111,27 +107,11 @@ export const HausFuerKinderDtoEinrichtungstraegerEnum = {
 } as const;
 export type HausFuerKinderDtoEinrichtungstraegerEnum = typeof HausFuerKinderDtoEinrichtungstraegerEnum[keyof typeof HausFuerKinderDtoEinrichtungstraegerEnum];
 
-/**
- * @export
- */
-export const HausFuerKinderDtoAnlassPlanungEnum = {
-    Unspecified: 'UNSPECIFIED',
-    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
-    NeubauBauGb: 'NEUBAU_BAU_GB',
-    Bauprogramm: 'BAUPROGRAMM',
-    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
-    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
-    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG',
-} as const;
-export type HausFuerKinderDtoAnlassPlanungEnum = typeof HausFuerKinderDtoAnlassPlanungEnum[keyof typeof HausFuerKinderDtoAnlassPlanungEnum];
-
 
 /**
  * Check if a given object implements the HausFuerKinderDto interface.
  */
 export function instanceOfHausFuerKinderDto(value: object): value is HausFuerKinderDto {
-    if (!('anlassPlanung' in value) || value['anlassPlanung'] === undefined) return false;
     return true;
 }
 
@@ -161,7 +141,6 @@ export function HausFuerKinderDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'wohnungsnaheKindergartenPlaetze': json['wohnungsnaheKindergartenPlaetze'] == null ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'wohnungsnaheHortPlaetze': json['wohnungsnaheHortPlaetze'] == null ? undefined : json['wohnungsnaheHortPlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
-        'anlassPlanung': json['anlassPlanung'],
     };
 }
 
@@ -193,7 +172,6 @@ export function HausFuerKinderDtoToJSONTyped(value?: HausFuerKinderDto | null, i
         'wohnungsnaheKindergartenPlaetze': value['wohnungsnaheKindergartenPlaetze'],
         'wohnungsnaheHortPlaetze': value['wohnungsnaheHortPlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
-        'anlassPlanung': value['anlassPlanung'],
     };
 }
 

@@ -64,10 +64,6 @@ export interface KindergartenDto extends InfrastruktureinrichtungDto {
      * 
      */
     einrichtungstraeger?: KindergartenDtoEinrichtungstraegerEnum;
-    /**
-     * 
-     */
-    anlassPlanung: KindergartenDtoAnlassPlanungEnum;
 }
 
 
@@ -87,21 +83,6 @@ export const KindergartenDtoEinrichtungstraegerEnum = {
 } as const;
 export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinrichtungstraegerEnum[keyof typeof KindergartenDtoEinrichtungstraegerEnum];
 
-/**
- * @export
- */
-export const KindergartenDtoAnlassPlanungEnum = {
-    Unspecified: 'UNSPECIFIED',
-    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
-    NeubauBauGb: 'NEUBAU_BAU_GB',
-    Bauprogramm: 'BAUPROGRAMM',
-    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
-    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
-    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
-    Schliessung: 'SCHLIESSUNG',
-} as const;
-export type KindergartenDtoAnlassPlanungEnum = typeof KindergartenDtoAnlassPlanungEnum[keyof typeof KindergartenDtoAnlassPlanungEnum];
-
 
 /**
  * Check if a given object implements the KindergartenDto interface.
@@ -109,7 +90,6 @@ export type KindergartenDtoAnlassPlanungEnum = typeof KindergartenDtoAnlassPlanu
 export function instanceOfKindergartenDto(value: object): value is KindergartenDto {
     if (!('anzahlKindergartenPlaetze' in value) || value['anzahlKindergartenPlaetze'] === undefined) return false;
     if (!('anzahlKindergartenGruppen' in value) || value['anzahlKindergartenGruppen'] === undefined) return false;
-    if (!('anlassPlanung' in value) || value['anlassPlanung'] === undefined) return false;
     return true;
 }
 
@@ -133,7 +113,6 @@ export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
         'wohnungsnaheKindergartenPlaetze': json['wohnungsnaheKindergartenPlaetze'] == null ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
-        'anlassPlanung': json['anlassPlanung'],
     };
 }
 
@@ -159,7 +138,6 @@ export function KindergartenDtoToJSONTyped(value?: KindergartenDto | null, ignor
         'anzahlKindergartenGruppen': value['anzahlKindergartenGruppen'],
         'wohnungsnaheKindergartenPlaetze': value['wohnungsnaheKindergartenPlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
-        'anlassPlanung': value['anlassPlanung'],
     };
 }
 

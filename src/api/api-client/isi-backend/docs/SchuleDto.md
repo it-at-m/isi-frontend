@@ -9,7 +9,6 @@ Name | Type
 `anzahlKlassen` | number
 `anzahlPlaetze` | number
 `einrichtungstraeger` | string
-`anlassPlanung` | string
 
 ## Example
 
@@ -21,7 +20,6 @@ const example = {
   "anzahlKlassen": null,
   "anzahlPlaetze": null,
   "einrichtungstraeger": null,
-  "anlassPlanung": null,
 } satisfies SchuleDto
 
 console.log(example)

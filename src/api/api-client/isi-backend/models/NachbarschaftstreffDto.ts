@@ -66,7 +66,7 @@ export interface NachbarschaftstreffDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    sobonRelevant?: UncertainBoolean;
+    sobonRelevant: UncertainBoolean;
 }
 
 
@@ -87,6 +87,7 @@ export type NachbarschaftstreffDtoKooperationEnum = typeof NachbarschaftstreffDt
  * Check if a given object implements the NachbarschaftstreffDto interface.
  */
 export function instanceOfNachbarschaftstreffDto(value: object): value is NachbarschaftstreffDto {
+    if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
 
@@ -108,7 +109,7 @@ export function NachbarschaftstreffDtoFromJSONTyped(json: any, ignoreDiscriminat
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
         'kooperation': json['kooperation'] == null ? undefined : json['kooperation'],
         'kooperationFreieEingabe': json['kooperationFreieEingabe'] == null ? undefined : json['kooperationFreieEingabe'],
-        'sobonRelevant': json['sobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['sobonRelevant']),
+        'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
     };
 }
 

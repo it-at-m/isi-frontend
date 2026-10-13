@@ -44,6 +44,7 @@ import {
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
   InfrastruktureinrichtungDtoAnlassPlanungEnum,
+  InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import {
   // dreiwertiges Boolean
@@ -80,14 +81,9 @@ import {
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   SchuleDtoEinrichtungstraegerEnum,
-  SchuleDtoAnlassPlanungEnum,
-  KinderkrippeDtoAnlassPlanungEnum,
   KindergartenDtoEinrichtungstraegerEnum,
-  KindergartenDtoAnlassPlanungEnum,
   HausFuerKinderDtoEinrichtungstraegerEnum,
-  HausFuerKinderDtoAnlassPlanungEnum,
   GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
-  GsNachmittagBetreuungDtoAnlassPlanungEnum,
   NachbarschaftstreffDtoKooperationEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
@@ -659,6 +655,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -670,7 +667,6 @@ export function createSchuleDto(): SchuleDto {
     anzahlKlassen: Number.NaN,
     anzahlPlaetze: Number.NaN,
     einrichtungstraeger: SchuleDtoEinrichtungstraegerEnum.Unspecified,
-    anlassPlanung: SchuleDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -697,7 +693,7 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
-    anlassPlanung: KinderkrippeDtoAnlassPlanungEnum.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -724,7 +720,7 @@ export function createKindergartenDto(): KindergartenDto {
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
-    anlassPlanung: KindergartenDtoAnlassPlanungEnum.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -757,7 +753,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
     wohnungsnaheHortPlaetze: undefined,
-    anlassPlanung: HausFuerKinderDtoAnlassPlanungEnum.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -784,7 +780,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
-    anlassPlanung: GsNachmittagBetreuungDtoAnlassPlanungEnum.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -807,6 +803,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
   };
 }
@@ -830,6 +827,7 @@ export function createMittelschuleDto(): MittelschuleDto {
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
   };
 }
@@ -854,6 +852,7 @@ export function createNachbarschaftstreffDto(): NachbarschaftstreffDto {
     kooperation: NachbarschaftstreffDtoKooperationEnum.Unspecified,
     kooperationFreieEingabe: "",
     sobonRelevant: UncertainBoolean.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 

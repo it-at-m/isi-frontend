@@ -11,7 +11,6 @@ Name | Type
 `anzahlHortGruppen` | number
 `wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
-`anlassPlanung` | string
 
 ## Example
 
@@ -25,7 +24,6 @@ const example = {
   "anzahlHortGruppen": null,
   "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
-  "anlassPlanung": null,
 } satisfies GsNachmittagBetreuungDto
 
 console.log(example)
