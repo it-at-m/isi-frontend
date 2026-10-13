@@ -1,4 +1,5 @@
 import {
+  type ApiResponse,
   type CreateInfrastruktureinrichtungRequest,
   type DeleteInfrastruktureinrichtungByIdRequest,
   type GetInfrastruktureinrichtungByIdRequest,
@@ -6,6 +7,7 @@ import {
   type UpdateInfrastruktureinrichtungOperationRequest,
   type UpdateInfrastruktureinrichtungRequest,
   InfrastruktureinrichtungApi,
+  InfrastruktureinrichtungDtoFromJSON,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
 import { useErrorHandler } from "./ErrorHandler";
@@ -20,16 +22,26 @@ export function useInfrastruktureinrichtungApi() {
   const { handleError } = useErrorHandler();
   const { resetFormDirty } = useSaveLeave();
 
-  async function getInfrastruktureinrichtungById(id: string): Promise<UpdateInfrastruktureinrichtungRequest> {
+  /**
+   * Der generierte oneOf-Mapper (UpdateInfrastruktureinrichtungRequestFromJSON) wählt den Typ anhand von
+   * Pflichtfeldern. Da HausFuerKinderDto keine Pflichtfelder besitzt, greift dieser für alle nachfolgenden Typen
+   * (z. B. Nachbarschaftstreff) und verwirft deren spezifische Attribute. Daher wird hier über den Discriminator
+   * "infrastruktureinrichtungTyp" gemappt.
+   */
+  async function mapResponse(response: ApiResponse<unknown>): Promise<InfrastruktureinrichtungDto> {
+    return InfrastruktureinrichtungDtoFromJSON(await response.raw.json());
+  }
+
+  async function getInfrastruktureinrichtungById(id: string): Promise<InfrastruktureinrichtungDto> {
     const requestObject: GetInfrastruktureinrichtungByIdRequest = {
       id: id,
     };
     try {
-      const response = await infrastruktureinrichtungApi.getInfrastruktureinrichtungById(
+      const response = await infrastruktureinrichtungApi.getInfrastruktureinrichtungByIdRaw(
         requestObject,
         RequestUtils.getGETConfig(),
       );
-      return response;
+      return await mapResponse(response);
     } catch (error) {
       throw handleError(error);
     }
@@ -42,12 +54,12 @@ export function useInfrastruktureinrichtungApi() {
       updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
     };
     try {
-      const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtung(
+      const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungRaw(
         requestObject,
         RequestUtils.getPOSTConfig(),
       );
       resetFormDirty();
-      return response as InfrastruktureinrichtungDto;
+      return await mapResponse(response);
     } catch (error) {
       throw handleError(error);
     }
@@ -60,12 +72,12 @@ export function useInfrastruktureinrichtungApi() {
       updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
     };
     try {
-      const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtung(
+      const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungRaw(
         requestObject,
         RequestUtils.getPUTConfig(),
       );
       resetFormDirty();
-      return response as InfrastruktureinrichtungDto;
+      return await mapResponse(response);
     } catch (error) {
       throw handleError(error);
     }
