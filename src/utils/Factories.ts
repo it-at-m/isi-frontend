@@ -43,7 +43,7 @@ import {
   // Suche
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
-  InfrastruktureinrichtungSearchResultDtoAnlassPlanungEnum,
+  InfrastruktureinrichtungDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import {
   // dreiwertiges Boolean
@@ -654,6 +654,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
