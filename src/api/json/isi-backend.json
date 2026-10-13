@@ -1954,7 +1954,8 @@
             "type": "string",
             "enum": ["NAME", "CREATED_DATE_TIME", "LAST_MODIFIED_DATE_TIME", "FRIST_BEARBEITUNG"]
           },
-          "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] }
+          "sortOrder": { "type": "string", "enum": ["ASC", "DESC"] },
+          "standardFilterId": { "type": "string", "format": "uuid" }
         },
         "required": ["schnellfilter", "sortBy", "sortOrder"]
       },

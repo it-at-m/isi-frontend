@@ -39,6 +39,10 @@ export interface StartseitenEinstellungDto {
      * 
      */
     sortOrder: StartseitenEinstellungDtoSortOrderEnum;
+    /**
+     * 
+     */
+    standardFilterId?: string;
 }
 
 
@@ -86,6 +90,7 @@ export function StartseitenEinstellungDtoFromJSONTyped(json: any, ignoreDiscrimi
         'schnellfilter': SchnellfilterVorgaengeFromJSON(json['schnellfilter']),
         'sortBy': json['sortBy'],
         'sortOrder': json['sortOrder'],
+        'standardFilterId': json['standardFilterId'] == null ? undefined : json['standardFilterId'],
     };
 }
 
@@ -103,6 +108,7 @@ export function StartseitenEinstellungDtoToJSONTyped(value?: StartseitenEinstell
         'schnellfilter': SchnellfilterVorgaengeToJSON(value['schnellfilter']),
         'sortBy': value['sortBy'],
         'sortOrder': value['sortOrder'],
+        'standardFilterId': value['standardFilterId'],
     };
 }
 
