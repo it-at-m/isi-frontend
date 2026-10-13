@@ -545,7 +545,7 @@ export function findFaultInNachbarschaftstreffForSave(nachbarschaftstreff: Nachb
   validationMessage = findFaultInInfrastruktureinrichtung(nachbarschaftstreff);
   if (_.isNil(validationMessage)) {
     if (nachbarschaftstreff.sobonRelevant === UncertainBoolean.Unspecified) {
-      validationMessage = "Bitte angeben ob die Abfrage SoBoN-relevant ist";
+      validationMessage = "Bitte angeben, ob die Einrichtung SoBoN-relevant ist";
     }
   }
   return validationMessage;
