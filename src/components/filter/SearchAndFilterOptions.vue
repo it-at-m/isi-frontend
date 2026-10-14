@@ -334,6 +334,12 @@ async function onSaveFilter(name: string) {
   try {
     await saveFilter(name, searchQueryAndSorting.value);
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
+    // Der neue Filter entspricht den aktuellen Einstellungen und gilt deshalb als ausgewählt und unverändert.
+    const neuerFilter = savedFilters.value.find((filter) => filter.name.trim() === name.trim());
+    if (neuerFilter) {
+      selectedFilter.value = neuerFilter.id;
+      isFilterModified.value = false;
+    }
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
       toast.error(e.message);

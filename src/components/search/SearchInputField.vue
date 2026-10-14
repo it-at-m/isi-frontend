@@ -238,8 +238,10 @@ function handleAdoptSearchAndFilterOptions(): void {
   if (selectedFilter === filterDialogRef.value?.STANDARD_FILTER_ID || isModified) {
     searchStore.setActiveFilterId(null);
   } else if (!_.isNil(selectedFilter)) {
-    // Ein unverändert übernommener persönlicher Filter wird in der Filterauswahl angezeigt.
+    // Ein unverändert übernommener persönlicher Filter wird in der Filterauswahl angezeigt. Er kann gerade erst
+    // im Filtermenü gespeichert worden sein, weshalb die Filter für die Anzeige seines Namens neu geladen werden.
     searchStore.setActiveFilterId(selectedFilter);
+    ladePersoenlicheFilter();
   }
   searchStore.setFilterActive(!checkCurrentFilter());
   searchEntitiesForSelectedSuggestion();
