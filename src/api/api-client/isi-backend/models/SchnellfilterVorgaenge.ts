@@ -19,6 +19,7 @@
  */
 export const SchnellfilterVorgaenge = {
     Alle: 'ALLE',
+    Entwuerfe: 'ENTWUERFE',
     ZurBearbeitung: 'ZUR_BEARBEITUNG',
     ZurKenntnis: 'ZUR_KENNTNIS',
     Abgeschlossen: 'ABGESCHLOSSEN',
