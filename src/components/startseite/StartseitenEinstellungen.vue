@@ -89,7 +89,7 @@ const toast = useToast();
 const { getStartseitenEinstellung, saveStartseitenEinstellung } = useStartseitenEinstellungApi();
 const { savedFilters, loadFilters } = useFilterPersistence();
 const { uebernehmeStandardFilter } = useStandardFilter();
-const { saveStartseitenEinstellung } = useStartseitenEinstellungApi();
+
 const startseitenEinstellungStore = useStartseitenEinstellungStore();
 
 const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
