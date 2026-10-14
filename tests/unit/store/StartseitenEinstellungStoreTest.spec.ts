@@ -36,14 +36,21 @@ describe("StartseitenEinstellungStoreTest.spec.ts", () => {
     expect(mockGetStartseitenEinstellung).toHaveBeenCalledTimes(1);
   });
 
-  test("behält bei einem Fehler die Standardwerte", async () => {
-    mockGetStartseitenEinstellung.mockRejectedValue(new Error("nicht erreichbar"));
+  test("behält bei einem Fehler die Standardwerte und versucht es später erneut", async () => {
+    mockGetStartseitenEinstellung.mockRejectedValueOnce(new Error("nicht erreichbar"));
     const store = useStartseitenEinstellungStore();
 
     await store.initialize();
 
     expect(store.schnellfilter).toBe(DEFAULT_SCHNELLFILTER);
     expect(store.sortierung).toBe(DEFAULT_SORTIERUNG);
+    expect(store.geladen).toBe(false);
+
+    mockGetStartseitenEinstellung.mockResolvedValueOnce({ schnellfilter: "ZUR_KENNTNIS", sortBy: "NAME" });
+    await store.initialize();
+
+    expect(mockGetStartseitenEinstellung).toHaveBeenCalledTimes(2);
+    expect(store.schnellfilter).toBe("ZUR_KENNTNIS");
     expect(store.geladen).toBe(true);
   });
 
