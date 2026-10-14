@@ -21,12 +21,19 @@
                 md="1"
                 class="d-flex justify-center"
               >
-                <v-btn
-                  :id="'dokument_listitem_download_' + index"
-                  variant="plain"
-                  icon="mdi-download"
-                  @click="downloadDokument(item)"
-                />
+                <v-tooltip location="bottom">
+                  <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
+                      <v-btn
+                        :id="'dokument_listitem_download_' + index"
+                        variant="plain"
+                        icon="mdi-download"
+                        @click="downloadDokument(item)"
+                      />
+                    </span>
+                  </template>
+                  <span>Dokument herunterladen</span>
+                </v-tooltip>
               </v-col>
               <v-col
                 cols="12"
@@ -66,13 +73,20 @@
                 md="1"
                 class="d-flex justify-center"
               >
-                <v-btn
-                  :id="'dokument_listitem_loeschen' + index"
-                  :disabled="!isDokumenteEditable"
-                  variant="plain"
-                  icon="mdi-delete"
-                  @click="deleteDokument(item)"
-                />
+                <v-tooltip location="bottom">
+                  <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
+                      <v-btn
+                        :id="'dokument_listitem_loeschen' + index"
+                        :disabled="!isDokumenteEditable"
+                        variant="plain"
+                        icon="mdi-delete"
+                        @click="deleteDokument(item)"
+                      />
+                    </span>
+                  </template>
+                  <span>Dokument löschen</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-card>

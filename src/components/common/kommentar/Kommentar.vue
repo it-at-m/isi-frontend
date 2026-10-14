@@ -34,28 +34,32 @@
           <v-spacer />
           <v-tooltip location="bottom">
             <template #activator="{ props: activatorProps }">
-              <v-btn
-                id="save_kommentar"
-                icon
-                :disabled="!isSaveable || !isEditable || !kommentar.isDirty"
-                v-bind="activatorProps"
-                @click="saveKommentar"
-              >
-                <v-icon :color="kommentar.isDirty ? 'secondary' : undefined">mdi-content-save</v-icon>
-              </v-btn>
+              <span v-bind="activatorProps">
+                <v-btn
+                  id="save_kommentar"
+                  color="secondary"
+                  elevation="1"
+                  variant="elevated"
+                  :disabled="!isSaveable || !isEditable || !kommentar.isDirty"
+                  @click="saveKommentar"
+                >
+                  Speichern
+                </v-btn>
+              </span>
             </template>
             <span>Kommentar speichern</span>
           </v-tooltip>
           <v-tooltip location="bottom">
             <template #activator="{ props: activatorProps }">
-              <v-btn
-                id="delete_kommentar"
-                variant="plain"
-                icon="mdi-delete"
-                :disabled="!isDeletable || !isEditable"
-                v-bind="activatorProps"
-                @click="deleteDialog = true"
-              />
+              <span v-bind="activatorProps">
+                <v-btn
+                  id="delete_kommentar"
+                  variant="plain"
+                  icon="mdi-delete"
+                  :disabled="!isDeletable || !isEditable"
+                  @click="deleteDialog = true"
+                />
+              </span>
             </template>
             <span>Kommentar löschen</span>
           </v-tooltip>
