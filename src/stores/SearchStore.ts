@@ -18,13 +18,6 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import _ from "lodash";
 
-export const HINWEIS_SUCHE_STARTEN =
-  "Geben Sie einen Suchbegriff ein und bestätigen Sie mit Enter oder legen Sie in den Such- und Filtereinstellungen Filter fest und klicken Sie auf „Übernehmen“.";
-export const HINWEIS_KEINE_ENTITAET_MARKIERT =
-  "Es wurde keine Entität für die Suche markiert. Bitte wählen Sie in den Such- und Filtereinstellungen mindestens einen Objekttyp aus und klicken Sie auf „Übernehmen“.";
-export const HINWEIS_KEINE_SUCHTREFFER =
-  "Es wurden keine Suchtreffer gefunden. Bitte passen Sie den Suchbegriff oder die Filter an.";
-
 interface State {
   searchResults: SearchResultsDto;
   requestSearchQueryAndSorting: SearchQueryAndSortingModel;
@@ -52,23 +45,7 @@ export const useSearchStore = defineStore("search", {
       isFilterActive: false,
       activeFilterId: null,
     }) as State,
-  getters: {
-    /**
-     * Gibt die Handlungsanweisung für die Übersicht zurück, solange keine Suchtreffer angezeigt werden.
-     * Vor der ersten Suche sind die Suchergebnisse nicht gesetzt, da beim Laden keine Suche ausgelöst wird.
-     */
-    suchhinweis(state): string | undefined {
-      if (_.isNil(state.searchResults.searchResults)) {
-        return HINWEIS_SUCHE_STARTEN;
-      }
-      if (!_.isEmpty(state.searchResults.searchResults)) {
-        return undefined;
-      }
-      return new SearchQueryAndSortingModel(state.requestSearchQueryAndSorting).allObjectTypesDeselected()
-        ? HINWEIS_KEINE_ENTITAET_MARKIERT
-        : HINWEIS_KEINE_SUCHTREFFER;
-    },
-  },
+  getters: {},
   actions: {
     setSearchResults(payload: SearchResultsDto): void {
       this.searchResults = payload;

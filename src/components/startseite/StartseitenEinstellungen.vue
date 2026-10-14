@@ -59,6 +59,7 @@ import { computed, onMounted, ref } from "vue";
 import type { StartseitenEinstellungDto } from "@/api/api-client/isi-backend";
 import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { useStandardFilter } from "@/composables/requests/filter/useStandardFilter";
 import {
   DEFAULT_SCHNELLFILTER,
   DEFAULT_SORTIERUNG,
@@ -84,6 +85,7 @@ withDefaults(defineProps<Props>(), {
 const toast = useToast();
 const { getStartseitenEinstellung, saveStartseitenEinstellung } = useStartseitenEinstellungApi();
 const { savedFilters, loadFilters } = useFilterPersistence();
+const { uebernehmeStandardFilter } = useStandardFilter();
 
 const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
@@ -91,6 +93,7 @@ const sortierungOptionen = SORTIERUNG_OPTIONEN;
 const schnellfilter = ref<SchnellfilterVorgaenge>(DEFAULT_SCHNELLFILTER);
 const sortierung = ref<SortierungVorgaenge>(DEFAULT_SORTIERUNG);
 const standardFilterId = ref<string | null>(null);
+const gespeicherteStandardFilterId = ref<string | null>(null);
 const saving = ref(false);
 
 // Ohne gewählten Standard-Filter gilt beim Laden der Anwendung die Standardeinstellung des Filtermenüs.
@@ -110,6 +113,11 @@ async function speichern(): Promise<void> {
       standardFilterId: standardFilterId.value ?? undefined,
     } as unknown as StartseitenEinstellungDto);
     toast.success("Die Startseiteneinstellungen wurden gespeichert.");
+    // Ein geänderter Standard-Filter wirkt sofort und nicht erst beim nächsten Laden der Anwendung.
+    if (standardFilterId.value !== gespeicherteStandardFilterId.value) {
+      gespeicherteStandardFilterId.value = standardFilterId.value;
+      await uebernehmeStandardFilter(standardFilterId.value);
+    }
   } finally {
     saving.value = false;
   }
@@ -140,6 +148,7 @@ onMounted(async () => {
     schnellfilter.value = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
     sortierung.value = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
     standardFilterId.value = einstellung.standardFilterId ?? null;
+    gespeicherteStandardFilterId.value = standardFilterId.value;
   } catch {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }

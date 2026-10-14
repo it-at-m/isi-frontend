@@ -1,45 +1,55 @@
 import _ from "lodash";
 import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
-import { mapBackendFilterToFrontend } from "@/composables/requests/filter/useFilterMapping";
-import { useSearchStore } from "@/stores/SearchStore";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import { createSearchQueryAndSortingModel } from "@/utils/Factories";
+import { useEntitySearch } from "@/composables/requests/search/useEntitySearch";
 
 /**
- * Übernimmt den in den Profileinstellungen gewählten Standard-Filter in die Such- und Filtereinstellungen.
+ * Übernimmt den in den Profileinstellungen gewählten Standard-Filter in die Übersicht.
  *
- * Es wird bewusst keine Suche ausgelöst. Diese startet der Nutzer per Enter in der Suchzeile
- * oder über "Übernehmen" im Filtermenü.
+ * Ist ein persönlicher Filter als Standard-Filter gewählt, wird mit diesem direkt gesucht. Bei der
+ * Standardeinstellung wird nicht gesucht, damit die Übersicht ohne Filterung leer bleibt.
  */
 export function useStandardFilter() {
-  const searchStore = useSearchStore();
   const { getStartseitenEinstellung } = useStartseitenEinstellungApi();
   const { savedFilters, loadFilters } = useFilterPersistence();
+  const { searchEntities, applyFilter } = useEntitySearch();
 
+  /**
+   * Übernimmt beim Laden der Anwendung den gespeicherten Standard-Filter.
+   */
   async function applyStandardFilter(): Promise<void> {
     try {
       const { standardFilterId } = await getStartseitenEinstellung();
-      if (_.isNil(standardFilterId)) {
-        return;
+      if (!_.isNil(standardFilterId)) {
+        await uebernehmeStandardFilter(standardFilterId);
       }
-      await loadFilters();
-      const standardFilter = savedFilters.value.find((filter) => filter.id === standardFilterId);
-      if (_.isNil(standardFilter)) {
-        return;
-      }
-      const vorlage = createSearchQueryAndSortingModel();
-      const filterEinstellungen = _.defaults(
-        mapBackendFilterToFrontend(standardFilter.filterSettings, vorlage),
-        vorlage,
-      );
-      searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(filterEinstellungen));
-      searchStore.setFilterActive(true);
-      searchStore.setActiveFilterId(standardFilter.id);
     } catch {
       // handleError informiert den Nutzer bereits. Ohne Standard-Filter gilt die Standardeinstellung.
     }
   }
 
-  return { applyStandardFilter };
+  /**
+   * Übernimmt den Standard-Filter mit der gegebenen ID und sucht mit ihm.
+   * Ohne ID wird ohne Suche die Standardeinstellung übernommen.
+   */
+  async function uebernehmeStandardFilter(standardFilterId: string | null): Promise<void> {
+    if (_.isNil(standardFilterId)) {
+      applyFilter(null);
+      return;
+    }
+    try {
+      await loadFilters();
+    } catch {
+      // handleError informiert den Nutzer bereits.
+      return;
+    }
+    const standardFilter = savedFilters.value.find((filter) => filter.id === standardFilterId);
+    if (_.isNil(standardFilter)) {
+      return;
+    }
+    applyFilter(standardFilter);
+    await searchEntities("");
+  }
+
+  return { applyStandardFilter, uebernehmeStandardFilter };
 }

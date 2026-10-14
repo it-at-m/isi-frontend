@@ -149,10 +149,10 @@
     class="pa-0 ma-0"
   >
     <v-container
-      class="pa-4 ma-0 w-100 d-flex justify-center align-center text-center"
+      class="pa-0 ma-0 w-100 d-flex justify-center align-center"
       style="height: 100%; min-height: 100px"
     >
-      <span id="search_result_list_suchhinweis">{{ suchhinweis }}</span>
+      <span>Keine Suchergebnisse vorhanden</span>
     </v-container>
   </v-list>
 </template>
@@ -221,7 +221,6 @@ const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
 const isFilterActive = computed(() => searchStore.isFilterActive);
-const suchhinweis = computed(() => searchStore.suchhinweis);
 
 const searchResultsAsArray = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? _.cloneDeep(searchStore.searchResults.searchResults) : [];

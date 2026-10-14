@@ -1,28 +1,34 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
-import { HINWEIS_KEINE_ENTITAET_MARKIERT, useSearchStore } from "@/stores/SearchStore";
+import { ref } from "vue";
+import { useSearchStore } from "@/stores/SearchStore";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchInputField from "@/components/search/SearchInputField.vue";
 
-const mockSearchForEntities = vi.fn();
+const mockSearchEntities = vi.fn();
+const mockApplyFilter = vi.fn();
 const mockSearchForSearchwordSuggestion = vi.fn();
-const mockToastWarning = vi.fn();
+const mockLoadFilters = vi.fn();
+const mockPush = vi.fn();
+const mockSavedFilters = ref([{ id: "filter-1", name: "Abfragen", filterSettings: {} }]);
+
+vi.mock("@/composables/requests/search/useEntitySearch", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/composables/requests/search/useEntitySearch")>()),
+  useEntitySearch: () => ({ searchEntities: mockSearchEntities, applyFilter: mockApplyFilter }),
+}));
 
 vi.mock("@/composables/requests/search/SearchApi", () => ({
-  useSearchApi: () => ({
-    searchForEntities: mockSearchForEntities,
-    searchForSearchwordSuggestion: mockSearchForSearchwordSuggestion,
-  }),
+  useSearchApi: () => ({ searchForSearchwordSuggestion: mockSearchForSearchwordSuggestion }),
+}));
+
+vi.mock("@/composables/requests/filter/useFilterPersistence", () => ({
+  useFilterPersistence: () => ({ savedFilters: mockSavedFilters, loadFilters: mockLoadFilters }),
 }));
 
 vi.mock("vue-router", () => ({
-  useRoute: () => ({ path: "/" }),
-  useRouter: () => ({ push: vi.fn() }),
-}));
-
-vi.mock("vue-toastification", () => ({
-  useToast: () => ({ warning: mockToastWarning, error: vi.fn(), success: vi.fn() }),
+  useRoute: () => ({ path: "/abfrage/1" }),
+  useRouter: () => ({ push: mockPush }),
 }));
 
 function setzeKeineEntitaetMarkiert(): void {
@@ -40,70 +46,141 @@ function setzeKeineEntitaetMarkiert(): void {
   useSearchStore().setRequestSearchQueryAndSorting(model);
 }
 
-describe("SearchInputFieldTest.spec.ts", () => {
-  let wrapper: VueWrapper;
+function mountComponent(): VueWrapper {
+  return mount(SearchInputField, { shallow: true });
+}
 
+describe("SearchInputFieldTest.spec.ts", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
-    mockSearchForEntities.mockReset();
+    mockSearchEntities.mockReset();
+    mockApplyFilter.mockReset();
     mockSearchForSearchwordSuggestion.mockReset();
-    mockToastWarning.mockReset();
-    mockSearchForEntities.mockResolvedValue({ searchResults: [], page: 1, numberOfPages: 0 });
+    mockLoadFilters.mockReset();
+    mockPush.mockReset();
+    mockLoadFilters.mockResolvedValue(undefined);
     mockSearchForSearchwordSuggestion.mockResolvedValue({ suchwortSuggestions: [] });
   });
 
-  test("löst beim Laden keine Suche aus", async () => {
-    wrapper = mount(SearchInputField, { shallow: true });
-    await flushPromises();
-    expect(mockSearchForEntities).not.toHaveBeenCalled();
-    expect(useSearchStore().searchResults.searchResults).toBeUndefined();
+  describe("Suche", () => {
+    test("löst beim Laden keine Suche aus", async () => {
+      mountComponent();
+      await flushPromises();
+      expect(mockSearchEntities).not.toHaveBeenCalled();
+    });
+
+    test("hat einen Rahmen um die Suchzeile", () => {
+      const wrapper = mountComponent();
+      expect(wrapper.findComponent({ name: "VAutocomplete" }).props("variant")).toBe("outlined");
+    });
+
+    test("sucht nach Bestätigung der Suchzeile und wechselt zur Startseite", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).searchQuery = "Schule";
+      (wrapper.vm as any).searchEntitiesForSelectedSuggestion();
+      expect(mockSearchEntities).toHaveBeenCalledWith("Schule");
+      expect(mockPush).toHaveBeenCalledWith("/");
+    });
+
+    test("ermittelt ohne markierte Entität keine Suchwortvorschläge", () => {
+      setzeKeineEntitaetMarkiert();
+      const wrapper = mountComponent();
+      (wrapper.vm as any).suggest("Sch");
+      expect(mockSearchForSearchwordSuggestion).not.toHaveBeenCalled();
+    });
+
+    test("ermittelt mit markierter Entität Suchwortvorschläge", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).suggest("Sch");
+      expect(mockSearchForSearchwordSuggestion).toHaveBeenCalledTimes(1);
+    });
   });
 
-  test("hat einen Rahmen um die Suchzeile", () => {
-    wrapper = mount(SearchInputField, { shallow: true });
-    expect(wrapper.findComponent({ name: "VAutocomplete" }).props("variant")).toBe("outlined");
+  describe("Filterauswahl", () => {
+    test("ersetzt das Bookmark-Symbol durch eine Auswahl im Stil von Meine Vorgänge", () => {
+      const wrapper = mountComponent();
+      const auswahl = wrapper.findComponent({ name: "VSelect" });
+      expect(auswahl.exists()).toBe(true);
+      expect(auswahl.props("label")).toBe("Filter");
+      expect(auswahl.props("variant")).toBe("outlined");
+      expect(wrapper.findComponent({ name: "QuickFilterList" }).exists()).toBe(false);
+    });
+
+    test("bietet die Standardeinstellung und die gespeicherten Filter an", async () => {
+      const wrapper = mountComponent();
+      await flushPromises();
+      expect(mockLoadFilters).toHaveBeenCalled();
+      expect((wrapper.vm as any).filterOptionen).toEqual([
+        { id: "__default__", name: "Standardeinstellung" },
+        { id: "filter-1", name: "Abfragen" },
+      ]);
+    });
+
+    test("lädt die gespeicherten Filter beim Öffnen der Auswahl neu", () => {
+      const wrapper = mountComponent();
+      mockLoadFilters.mockClear();
+      (wrapper.vm as any).onFilterMenu(true);
+      (wrapper.vm as any).onFilterMenu(false);
+      expect(mockLoadFilters).toHaveBeenCalledTimes(1);
+    });
+
+    test("zeigt ohne aktiven Filter die Standardeinstellung an", () => {
+      const wrapper = mountComponent();
+      expect((wrapper.vm as any).filterAuswahl).toBe("__default__");
+    });
+
+    test("zeigt den aktiven persönlichen Filter an", () => {
+      useSearchStore().setFilterActive(true);
+      useSearchStore().setActiveFilterId("filter-1");
+      const wrapper = mountComponent();
+      expect((wrapper.vm as any).filterAuswahl).toBe("filter-1");
+    });
+
+    test("zeigt bei individuell angepassten Filtern keine Auswahl an", () => {
+      useSearchStore().setFilterActive(true);
+      const wrapper = mountComponent();
+      expect((wrapper.vm as any).filterAuswahl).toBeNull();
+    });
+
+    test("übernimmt einen gespeicherten Filter und sucht", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).onFilterSelected("filter-1");
+      expect(mockApplyFilter).toHaveBeenCalledWith(mockSavedFilters.value[0]);
+      expect(mockSearchEntities).toHaveBeenCalledWith("");
+    });
+
+    test("übernimmt die Standardeinstellung und sucht", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).onFilterSelected("__default__");
+      expect(mockApplyFilter).toHaveBeenCalledWith(null);
+      expect(mockSearchEntities).toHaveBeenCalledTimes(1);
+    });
+
+    test("ignoriert einen nicht mehr vorhandenen Filter", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).onFilterSelected("geloescht");
+      expect(mockApplyFilter).not.toHaveBeenCalled();
+      expect(mockSearchEntities).not.toHaveBeenCalled();
+    });
   });
 
-  test("sucht nach Bestätigung der Suchzeile", async () => {
-    wrapper = mount(SearchInputField, { shallow: true });
-    (wrapper.vm as any).searchQuery = "Schule";
-    (wrapper.vm as any).searchEntitiesForSelectedSuggestion();
-    await flushPromises();
-    expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
-    expect(mockSearchForEntities.mock.calls[0][0].searchQuery).toBe("Schule");
-    expect(useSearchStore().searchResults.searchResults).toEqual([]);
-  });
+  describe("Filtersymbol", () => {
+    test("öffnet das Filtermenü", () => {
+      const wrapper = mountComponent();
+      (wrapper.vm as any).openSearchAndFilterDialog();
+      expect((wrapper.vm as any).searchAndFilterDialogOpen).toBe(true);
+    });
 
-  test("sucht ohne markierte Entität nicht im Backend und gibt eine Handlungsanweisung", async () => {
-    setzeKeineEntitaetMarkiert();
-    wrapper = mount(SearchInputField, { shallow: true });
-    (wrapper.vm as any).searchEntitiesForSelectedSuggestion();
-    await flushPromises();
-    expect(mockSearchForEntities).not.toHaveBeenCalled();
-    expect(mockToastWarning).toHaveBeenCalledWith(HINWEIS_KEINE_ENTITAET_MARKIERT);
-    expect(useSearchStore().searchResults.searchResults).toEqual([]);
-    expect(useSearchStore().suchhinweis).toBe(HINWEIS_KEINE_ENTITAET_MARKIERT);
-  });
+    test("ist bei aktivem Filter orange, z.B. nach dem Laden mit Standard-Filter", () => {
+      useSearchStore().setFilterActive(true);
+      useSearchStore().setActiveFilterId("filter-1");
+      const wrapper = mountComponent();
+      expect((wrapper.vm as any).isFilterActive).toBe(true);
+    });
 
-  test("ermittelt ohne markierte Entität keine Suchwortvorschläge", async () => {
-    setzeKeineEntitaetMarkiert();
-    wrapper = mount(SearchInputField, { shallow: true });
-    (wrapper.vm as any).suggest("Sch");
-    await flushPromises();
-    expect(mockSearchForSearchwordSuggestion).not.toHaveBeenCalled();
-  });
-
-  test("ermittelt mit markierter Entität Suchwortvorschläge", async () => {
-    wrapper = mount(SearchInputField, { shallow: true });
-    (wrapper.vm as any).suggest("Sch");
-    await flushPromises();
-    expect(mockSearchForSearchwordSuggestion).toHaveBeenCalledTimes(1);
-  });
-
-  test("zeigt einen beim Laden übernommenen Standard-Filter als aktiven Schnellfilter", () => {
-    useSearchStore().setActiveFilterId("filter-1");
-    wrapper = mount(SearchInputField, { shallow: true });
-    expect((wrapper.vm as any).activeQuickFilterId).toBe("filter-1");
-    expect((wrapper.vm as any).lastFilterSource).toBe("quick");
+    test("ist ohne aktiven Filter nicht hervorgehoben", () => {
+      const wrapper = mountComponent();
+      expect((wrapper.vm as any).isFilterActive).toBe(false);
+    });
   });
 });

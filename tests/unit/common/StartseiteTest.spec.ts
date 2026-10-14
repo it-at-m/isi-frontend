@@ -5,8 +5,6 @@ import { Userinfo } from "@/types/common/Userinfo";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import Main from "@/views/Main.vue";
 import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
-import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
-import { SearchResultDtoTypeEnum, type SearchResultsDto } from "@/api/api-client/isi-backend";
 
 vi.mock("vue-router", () => ({
   useRouter: () => ({ push: vi.fn() }),
@@ -76,28 +74,9 @@ describe("StartseiteTest.spec.ts", () => {
       expect(wrapper.findComponent({ name: "SearchInputField" }).exists()).toBe(true);
     });
 
-    test("leitet auf der Karte vor der ersten Suche zur Suche an", () => {
+    test("zeigt über der Karte keinen Hinweistext an", () => {
       const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
-      expect((wrapper.vm as any).suchhinweis).toBe(HINWEIS_SUCHE_STARTEN);
-      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(true);
-    });
-
-    test("blendet den Hinweis aus, sobald Suchtreffer vorhanden sind", async () => {
-      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
-      useSearchStore().setSearchResults({
-        searchResults: [{ id: "1", type: SearchResultDtoTypeEnum.Abfrage }],
-        page: 1,
-        numberOfPages: 1,
-      } as SearchResultsDto);
-      await wrapper.vm.$nextTick();
-      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(false);
-    });
-
-    test("zeigt den Hinweis in der Listenansicht nicht doppelt an", async () => {
-      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
-      (wrapper.vm as any).ansicht = "LISTE";
-      await wrapper.vm.$nextTick();
-      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(false);
+      expect(wrapper.findComponent({ name: "VAlert" }).exists()).toBe(false);
     });
   });
 });
