@@ -40,6 +40,10 @@ export const useStartseitenEinstellungStore = defineStore("startseitenEinstellun
       const { getStartseitenEinstellung } = useStartseitenEinstellungApi();
       try {
         const einstellung = await getStartseitenEinstellung();
+        // Wurden während des Requests Einstellungen gespeichert, sind diese aktueller als die Antwort.
+        if (this.geladen) {
+          return;
+        }
         this.schnellfilter = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
         this.sortierung = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
       } catch {
