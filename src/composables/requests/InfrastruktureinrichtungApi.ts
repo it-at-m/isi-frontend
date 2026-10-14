@@ -58,8 +58,9 @@ export function useInfrastruktureinrichtungApi() {
         requestObject,
         RequestUtils.getPOSTConfig(),
       );
+      const mapped = await mapResponse(response);
       resetFormDirty();
-      return await mapResponse(response);
+      return mapped;
     } catch (error) {
       throw handleError(error);
     }
@@ -76,8 +77,9 @@ export function useInfrastruktureinrichtungApi() {
         requestObject,
         RequestUtils.getPUTConfig(),
       );
+      const mapped = await mapResponse(response);
       resetFormDirty();
-      return await mapResponse(response);
+      return mapped;
     } catch (error) {
       throw handleError(error);
     }
