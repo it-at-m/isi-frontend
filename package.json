@@ -30,8 +30,8 @@
     "vuetify": "^4.0.0"
   },
   "devDependencies": {
-    "@muenchen/prettier-codeformat": "^1.0.2",
     "@mdi/font": "^7.4.47",
+    "@muenchen/prettier-codeformat": "^1.0.2",
     "@types/leaflet": "^1.9.21",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.4",
@@ -46,7 +46,6 @@
     "jsdom": "^30.0.0",
     "lint-staged": "^17.0.0",
     "prettier": "3.9",
-    "prettier-plugin-java": "2.10",
     "typescript": "^7.0.0",
     "vite": "^8.1.5",
     "vite-plugin-vuetify": "^2.1.2",

@@ -1,13 +1,4 @@
 {
   "printWidth": 120,
-  "singleAttributePerLine": true,
-  "plugins": ["prettier-plugin-java"],
-  "overrides": [
-    {
-      "files": "*.java",
-      "options": {
-        "tabWidth": 4
-      }
-    }
-  ]
+  "singleAttributePerLine": true
 }

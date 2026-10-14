@@ -70,6 +70,9 @@ import {
   type SortierungVorgaenge,
 } from "@/utils/StartseiteUtil";
 import { useToast } from "vue-toastification";
+import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
+
+const emit = defineEmits<{ (e: "gespeichert"): void }>();
 
 interface Props {
   /**
@@ -86,6 +89,8 @@ const toast = useToast();
 const { getStartseitenEinstellung, saveStartseitenEinstellung } = useStartseitenEinstellungApi();
 const { savedFilters, loadFilters } = useFilterPersistence();
 const { uebernehmeStandardFilter } = useStandardFilter();
+const { saveStartseitenEinstellung } = useStartseitenEinstellungApi();
+const startseitenEinstellungStore = useStartseitenEinstellungStore();
 
 const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
@@ -112,12 +117,16 @@ async function speichern(): Promise<void> {
       sortOrder: getSortOrderForSortierung(sortierung.value),
       standardFilterId: standardFilterId.value ?? undefined,
     } as unknown as StartseitenEinstellungDto);
+    // Erst nach erfolgreichem Speichern übernehmen, damit die Vorgangsliste keine verworfene
+    // Einstellung anzeigt.
+    startseitenEinstellungStore.setEinstellung(schnellfilter.value, sortierung.value);
     toast.success("Die Startseiteneinstellungen wurden gespeichert.");
     // Ein geänderter Standard-Filter wirkt sofort und nicht erst beim nächsten Laden der Anwendung.
     if (standardFilterId.value !== gespeicherteStandardFilterId.value) {
       gespeicherteStandardFilterId.value = standardFilterId.value;
       await uebernehmeStandardFilter(standardFilterId.value);
     }
+    emit("gespeichert");
   } finally {
     saving.value = false;
   }
@@ -145,13 +154,14 @@ onMounted(async () => {
   ladePersoenlicheFilter();
   try {
     const einstellung = await getStartseitenEinstellung();
-    schnellfilter.value = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
-    sortierung.value = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
     standardFilterId.value = einstellung.standardFilterId ?? null;
     gespeicherteStandardFilterId.value = standardFilterId.value;
   } catch {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }
+  await startseitenEinstellungStore.initialize();
+  schnellfilter.value = startseitenEinstellungStore.schnellfilter;
+  sortierung.value = startseitenEinstellungStore.sortierung;
 });
 
 defineExpose({ schnellfilter, sortierung, standardFilterId, standardFilterOptionen, speichern });
