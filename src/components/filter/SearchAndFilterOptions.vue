@@ -157,13 +157,8 @@
 import { computed, ref, onMounted, watch } from "vue";
 import { useDisplay } from "vuetify";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import FilterPanel from "@/components/filter/FilterPanel.vue";
-import RequestUtils from "@/utils/RequestUtils";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
-import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
 import { useToast } from "vue-toastification";
-import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
-import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
 interface Emits {
