@@ -11,6 +11,8 @@ interface State {
   schnellfilter: SchnellfilterVorgaenge;
   sortierung: SortierungVorgaenge;
   geladen: boolean;
+  // Generationszähler, um zu verhindern, dass veraltete Netzwerkantworten neuere lokale Änderungen überschreiben
+  requestGeneration: number;
 }
 
 /**
@@ -25,6 +27,7 @@ export const useStartseitenEinstellungStore = defineStore("startseitenEinstellun
       schnellfilter: DEFAULT_SCHNELLFILTER,
       sortierung: DEFAULT_SORTIERUNG,
       geladen: false,
+      requestGeneration: 0,
     }) as State,
   getters: {},
   actions: {
@@ -38,14 +41,20 @@ export const useStartseitenEinstellungStore = defineStore("startseitenEinstellun
         return;
       }
       const { getStartseitenEinstellung } = useStartseitenEinstellungApi();
+      const generation = this.requestGeneration;
       try {
         const einstellung = await getStartseitenEinstellung();
+        // Wenn sich die Generation während des Wartens erhöht hat, wurde eine neuere lokale Änderung angewendet;
+        // überschreibe in diesem Fall nicht die neueren Einstellungen mit der aktuellen, noch in-flight Response.
+        if (this.requestGeneration !== generation) {
+          return;
+        }
         this.schnellfilter = (einstellung.schnellfilter as unknown as SchnellfilterVorgaenge) ?? DEFAULT_SCHNELLFILTER;
         this.sortierung = (einstellung.sortBy as unknown as SortierungVorgaenge) ?? DEFAULT_SORTIERUNG;
-      } catch {
-        // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
-      } finally {
+        // Nur bei erfolgreichem Laden als geladen markieren, damit ein fehlgeschlagener Request später erneut versucht werden kann.
         this.geladen = true;
+      } catch {
+        // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen und die Initialisierung gilt nicht als abgeschlossen.
       }
     },
     /**
@@ -54,6 +63,8 @@ export const useStartseitenEinstellungStore = defineStore("startseitenEinstellun
     setEinstellung(schnellfilter: SchnellfilterVorgaenge, sortierung: SortierungVorgaenge): void {
       this.schnellfilter = schnellfilter;
       this.sortierung = sortierung;
+      // Generation erhöhen, um wartende initialize()-Requests zu invalidieren.
+      this.requestGeneration++;
       this.geladen = true;
     },
   },
