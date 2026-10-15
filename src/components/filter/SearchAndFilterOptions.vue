@@ -155,15 +155,11 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
-import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
-import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
-import { useDisplay } from "vuetify";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
-import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
 import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";

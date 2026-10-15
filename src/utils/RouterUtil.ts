@@ -1,4 +1,3 @@
-import { SearchQueryAndSortingDtoSortByEnum } from "@/api/api-client/isi-backend/models/SearchQueryAndSortingDto";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useSearchStore } from "@/stores/SearchStore";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
