@@ -155,6 +155,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
+import { useDisplay } from "vuetify";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import FilterPanel from "@/components/filter/FilterPanel.vue";
 import RequestUtils from "@/utils/RequestUtils";
