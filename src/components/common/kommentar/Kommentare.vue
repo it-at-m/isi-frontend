@@ -196,7 +196,14 @@ async function deleteKommentar(
     if (props.context === Context.BAUVORHABEN) {
       await kommentarApi.deleteKommentarForBauvorhaben(kommentar.id);
     } else {
-      await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+      if (
+        props.infrastruktureinrichtungTyp ===
+        InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+      ) {
+        await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar.id);
+      } else {
+        await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+      }
     }
     const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
     if (removeIndex > -1) {
