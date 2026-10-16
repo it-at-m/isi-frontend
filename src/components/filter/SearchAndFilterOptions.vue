@@ -156,6 +156,11 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
 import { useDisplay } from "vuetify";
+import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
+import FilterPanel from "@/components/filter/FilterPanel.vue";
+import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
+import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
+import YesNoDialog from "@/components/common/YesNoDialog.vue";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import { useToast } from "vue-toastification";
