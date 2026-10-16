@@ -57,13 +57,17 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted } from "vue";
-import type { LookupEntryDto } from "@/api/api-client/isi-backend";
+import {
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
+  type LookupEntryDto,
+} from "@/api/api-client/isi-backend";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import _ from "lodash";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";
+import { useSecurity } from "@/composables/security/Security";
 
 interface Props {
   lfdNr?: string;
@@ -77,7 +81,7 @@ const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
-const infrastruktureinrichtungList = computed(() => lookupStore.infrastruktureinrichtungTyp);
+const { isRoleAdminOrBedarfsmeldungSozialplanung } = useSecurity();
 
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
   return !_.isUndefined(list) && !_.isNil(key)
@@ -87,6 +91,21 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
 
 onUnmounted(() => {
   infrastruktureinrichtungTyp.value = "";
+});
+
+const infrastruktureinrichtungList = computed(() => {
+  return isRoleAdminOrBedarfsmeldungSozialplanung.value
+    ? lookupStore.infrastruktureinrichtungTyp.filter(
+        (infrastruktureinrichtungTyp) =>
+          infrastruktureinrichtungTyp.key ===
+            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff ||
+          infrastruktureinrichtungTyp.key === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
+      )
+    : lookupStore.infrastruktureinrichtungTyp.filter(
+        (infrastruktureinrichtungTyp) =>
+          infrastruktureinrichtungTyp.key !==
+          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
+      );
 });
 
 const infrastruktureinrichtungTypDisplay = computed(() => {

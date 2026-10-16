@@ -115,7 +115,12 @@ const geoJsonOptions: GeoJSONOptions = {
         `Status: ${getLookupValue(feature.properties.statusInfrastruktureinrichtung, statusInfrastruktureinrichtungList.value)}`,
       );
 
-      if (!_.isNil(feature.properties.anlassPlanungInfrastruktureinrichtung)) {
+      const isNachbarschaftstreff =
+        feature.properties.infrastruktureinrichtungTyp ===
+        InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff;
+      if (isNachbarschaftstreff) {
+        // kein Anlass der Planung
+      } else if (!_.isNil(feature.properties.anlassPlanungInfrastruktureinrichtung)) {
         let anlassText = getLookupValue(
           feature.properties.anlassPlanungInfrastruktureinrichtung,
           anlassPlanungInfrastruktureinrichtung.value,

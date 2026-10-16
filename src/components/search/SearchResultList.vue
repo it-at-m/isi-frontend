@@ -134,7 +134,12 @@
             }}
           </span>
           <v-spacer />
-          <span>
+          <span
+            v-if="
+              castToInfrastruktureinrichtungSearchResultDto(item).infrastruktureinrichtungTyp !==
+              InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+            "
+          >
             Anlass der Planung:
             {{ getAnlassPlanung(castToInfrastruktureinrichtungSearchResultDto(item).anlassPlanung) }}
           </span>
@@ -169,6 +174,7 @@ import {
   AbfrageSearchResultDtoArtAbfrageEnum,
   SearchResultDtoTypeEnum,
   StatusAbfrage,
+  InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useSecurity } from "@/composables/security/Security";

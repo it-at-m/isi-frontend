@@ -41,18 +41,24 @@ import { useSaveLeave } from "@/composables/SaveLeave";
 import { useRoute } from "vue-router";
 import { findFaultInKommentar } from "@/utils/Validators";
 import { useToast } from "vue-toastification";
+import { InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
 
 interface Props {
   context?: Context;
   isEditable?: boolean;
   bauvorhabenId?: string;
+  infrastruktureinrichtungTyp?: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum;
 }
 
 const { isCommentDirty, commentChanged, resetCommentDirty } = useSaveLeave();
 const kommentarApi = useKommentarApi();
 const toast = useToast();
 const routeId = useRoute().params.id as string;
-const props = withDefaults(defineProps<Props>(), { context: Context.UNDEFINED, isEditable: false });
+const props = withDefaults(defineProps<Props>(), {
+  context: Context.UNDEFINED,
+  isEditable: false,
+  infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
+});
 const kommentare = ref<KommentarBauvorhabenModel[] | KommentarInfrastruktureinrichtungModel[]>([]);
 const openPanel = ref<number | undefined>(0);
 const resolvedId = computed(() => props.bauvorhabenId || routeId);
@@ -131,9 +137,12 @@ async function saveKommentar(
       if (props.context === Context.BAUVORHABEN) {
         model = new KommentarBauvorhabenModel(await kommentarApi.createKommentarForBauvorhaben(kommentar));
       } else {
-        model = new KommentarInfrastruktureinrichtungModel(
-          await kommentarApi.createKommentarForInfrastruktureinrichtung(kommentar),
-        );
+        const savedKommentar =
+          props.infrastruktureinrichtungTyp ===
+          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+            ? await kommentarApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar)
+            : await kommentarApi.createKommentarForInfrastruktureinrichtung(kommentar);
+        model = new KommentarInfrastruktureinrichtungModel(savedKommentar);
       }
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
@@ -142,9 +151,12 @@ async function saveKommentar(
       if (props.context === Context.BAUVORHABEN) {
         model = new KommentarBauvorhabenModel(await kommentarApi.updateKommentarForBauvorhaben(kommentar));
       } else {
-        model = new KommentarInfrastruktureinrichtungModel(
-          await kommentarApi.updateKommentarForInfrastruktureinrichtung(kommentar),
-        );
+        const savedKommentar =
+          props.infrastruktureinrichtungTyp ===
+          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+            ? await kommentarApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar)
+            : await kommentarApi.updateKommentarForInfrastruktureinrichtung(kommentar);
+        model = new KommentarInfrastruktureinrichtungModel(savedKommentar);
       }
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
@@ -184,7 +196,14 @@ async function deleteKommentar(
     if (props.context === Context.BAUVORHABEN) {
       await kommentarApi.deleteKommentarForBauvorhaben(kommentar.id);
     } else {
-      await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+      if (
+        props.infrastruktureinrichtungTyp ===
+        InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+      ) {
+        await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar.id);
+      } else {
+        await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+      }
     }
     const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
     if (removeIndex > -1) {
