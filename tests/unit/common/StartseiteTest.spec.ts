@@ -73,5 +73,10 @@ describe("StartseiteTest.spec.ts", () => {
       const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
       expect(wrapper.findComponent({ name: "SearchInputField" }).exists()).toBe(true);
     });
+
+    test("zeigt über der Karte keinen Hinweistext an", () => {
+      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
+      expect(wrapper.findComponent({ name: "VAlert" }).exists()).toBe(false);
+    });
   });
 });

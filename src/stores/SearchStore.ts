@@ -26,6 +26,11 @@ interface State {
   selectedBauvorhaben: BauvorhabenModel | undefined;
   selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto | undefined;
   isFilterActive: boolean;
+  /**
+   * Die ID des aktuell angewendeten persönlichen Filters. Liegt im Store, da der Filter sowohl über die
+   * Suchleiste als auch beim Laden der Anwendung über die Profileinstellungen gesetzt werden kann.
+   */
+  activeFilterId: string | null;
 }
 
 export const useSearchStore = defineStore("search", {
@@ -38,6 +43,7 @@ export const useSearchStore = defineStore("search", {
       selectedBauvorhaben: undefined,
       selectedInfrastruktureinrichtung: undefined,
       isFilterActive: false,
+      activeFilterId: null,
     }) as State,
   getters: {},
   actions: {
@@ -72,6 +78,9 @@ export const useSearchStore = defineStore("search", {
     },
     setFilterActive(active: boolean): void {
       this.isFilterActive = active;
+    },
+    setActiveFilterId(filterId: string | null): void {
+      this.activeFilterId = filterId;
     },
   },
 });

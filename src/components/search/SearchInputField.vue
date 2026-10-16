@@ -1,98 +1,93 @@
 <template>
-  <v-autocomplete
-    id="suchfeld"
-    v-model="selectedSuggestion"
-    v-model:search="searchQuery"
-    :items="suggestions"
-    density="compact"
-    clearable
-    flat
-    hide-details
-    label="Suche"
-    no-filter
-    prepend-inner-icon="mdi-magnify"
-    return-object
-    variant="solo"
-    @keyup.enter="searchEntitiesForSelectedSuggestion"
-    @update:search="suggest"
-    @click:clear="clearSearch"
-  >
-    <template #no-data>
-      <v-list class="pa-3">
-        <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
-      </v-list>
-    </template>
-    <template #append>
-      <v-tooltip
-        location="bottom"
-        open-delay="500"
-      >
-        <template #activator="{ props: activatorProps }">
-          <v-icon
-            :color="lastFilterSource === 'dialog' ? 'secondary' : ''"
-            @click="openSearchAndFilterDialog"
-            v-bind="activatorProps"
-          >
-            {{ checkCurrentFilter() ? "mdi-filter-outline" : "mdi-filter" }}
-          </v-icon>
-        </template>
-        <span>Such- und Filtereinstellungen</span>
-      </v-tooltip>
-      <v-menu
-        v-model="quickFilterMenuOpen"
-        offset-y
-        min-width="220"
-        max-width="320"
-      >
-        <template #activator="{ props }">
-          <v-tooltip
-            location="bottom"
-            open-delay="500"
-          >
-            <template #activator="{ props: tooltipProps }">
-              <v-icon
-                size="18"
-                class="ml-4"
-                :color="lastFilterSource === 'quick' ? 'secondary' : ''"
-                v-bind="Object.assign({}, props, tooltipProps)"
-                @click.stop
-              >
-                mdi-bookmark-multiple-outline
-              </v-icon>
-            </template>
-            <span>Gespeicherte Filter</span>
-          </v-tooltip>
-        </template>
-        <quick-filter-list
-          :active-filter-id="activeQuickFilterId"
-          @apply-filter="onQuickFilterSelected"
-          @reset-filter="resetQuickFilter"
-        />
-      </v-menu>
-      <v-dialog
-        v-model="searchAndFilterDialogOpen"
-        max-width="1000px"
-        @click:outside="onFilterDialogClickOutside"
-      >
-        <search-and-filter-options
-          ref="filterDialogRef"
-          v-model="searchQueryAndSorting"
-          @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
-          @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
-          @close-search-and-filter-options="closeSearchAndFilterDialog"
-        />
-      </v-dialog>
-      <yes-no-dialog
-        v-model="confirmCloseDialogOpen"
-        dialogtitle="Filtermaske verlassen?"
-        dialogtext="Änderungen am ausgewählten Filter werden nicht gespeichert. Trotzdem verlassen?"
-        yes-text="Weiter"
-        no-text="Zurück"
-        @yes="confirmCloseDialogYes()"
-        @no="confirmCloseDialogNo()"
+  <div class="d-flex align-center ga-2 w-100">
+    <v-autocomplete
+      id="suchfeld"
+      v-model="selectedSuggestion"
+      v-model:search="searchQuery"
+      :items="suggestions"
+      density="compact"
+      clearable
+      hide-details
+      label="Suche"
+      no-filter
+      prepend-inner-icon="mdi-magnify"
+      return-object
+      variant="outlined"
+      base-color="primary"
+      bg-color="white"
+      color="primary"
+      class="flex-grow-1"
+      @keyup.enter="searchEntitiesForSelectedSuggestion"
+      @update:search="suggest"
+      @click:clear="clearSearch"
+    >
+      <template #no-data>
+        <v-list class="pa-3">
+          <v-list-item-title> Keine Suchvorschläge... </v-list-item-title>
+        </v-list>
+      </template>
+    </v-autocomplete>
+    <v-select
+      id="suchfeld_filter"
+      :model-value="filterAuswahl"
+      :items="filterOptionen"
+      item-title="name"
+      item-value="id"
+      label="Filter"
+      variant="outlined"
+      base-color="primary"
+      bg-color="white"
+      color="primary"
+      density="compact"
+      hide-details
+      style="max-width: 220px; min-width: 160px"
+      @update:model-value="onFilterSelected"
+      @update:menu="onFilterMenu"
+    >
+      <template #append-inner>
+        <v-tooltip
+          location="bottom"
+          open-delay="500"
+        >
+          <template #activator="{ props: tooltipProps }">
+            <!-- Der Klick öffnet das Filtermenü und nicht die Auswahlliste des Feldes. -->
+            <v-icon
+              id="suchfeld_filter_einstellungen"
+              v-bind="tooltipProps"
+              :color="isFilterActive ? 'secondary' : undefined"
+              @mousedown.stop
+              @click.stop="openSearchAndFilterDialog"
+            >
+              mdi-filter
+            </v-icon>
+          </template>
+          <span>Such- und Filtereinstellungen</span>
+        </v-tooltip>
+      </template>
+    </v-select>
+    <v-dialog
+      v-model="searchAndFilterDialogOpen"
+      max-width="1000px"
+      @click:outside="onFilterDialogClickOutside"
+    >
+      <search-and-filter-options
+        ref="filterDialogRef"
+        v-model="searchQueryAndSorting"
+        @adopt-search-and-filter-options="handleAdoptSearchAndFilterOptions"
+        @reset-search-and-filter-options="handleResetSearchAndFilterOptions"
+        @close-search-and-filter-options="closeSearchAndFilterDialog"
       />
-    </template>
-  </v-autocomplete>
+    </v-dialog>
+    <yes-no-dialog
+      v-model="confirmCloseDialogOpen"
+      dialogtitle="Filtermaske verlassen?"
+      dialogtext="Änderungen am ausgewählten Filter werden nicht gespeichert. Trotzdem verlassen?"
+      yes-text="Weiter"
+      no-text="Zurück"
+      @yes="confirmCloseDialogYes()"
+      @no="confirmCloseDialogNo()"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -104,16 +99,18 @@ import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 import SearchAndFilterOptions from "@/components/filter/SearchAndFilterOptions.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
+import { isKeineEntitaetMarkiert, useEntitySearch } from "@/composables/requests/search/useEntitySearch";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import { useRoute, useRouter } from "vue-router";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
-import QuickFilterList from "@/components/filter/QuickFilterList.vue";
-import { useToast } from "vue-toastification";
 
-const toast = useToast();
+/**
+ * Eintrag der Filterauswahl für die Standardeinstellung. Entspricht der ID im Filtermenü.
+ */
+const STANDARDEINSTELLUNG_ID = "__default__";
+
+const searchStore = useSearchStore();
 const filterDialogRef = ref();
-const quickFilterMenuOpen = ref(false);
-const lastFilterSource = ref<"dialog" | "quick" | null>(null);
-const activeQuickFilterId = ref<string | null>(null);
 const confirmCloseDialogOpen = ref(false);
 const lastSelectedFilter = ref<string | null>(null);
 const searchAndFilterDialogOpen = ref<boolean>(false);
@@ -121,36 +118,69 @@ const searchQueryAndSorting = ref<SearchQueryAndSortingModel>(createSearchQueryA
 const searchQuery = ref<string>("");
 const suggestions = ref<Array<string>>([]);
 const selectedSuggestion = ref<string | null>(null);
-const { searchForSearchwordSuggestion, searchForEntities } = useSearchApi();
+const { searchForSearchwordSuggestion } = useSearchApi();
+const { searchEntities, applyFilter } = useEntitySearch();
+const { savedFilters, loadFilters } = useFilterPersistence();
 const route = useRoute();
 const router = useRouter();
 
-const searchStore = useSearchStore();
+const isFilterActive = computed(() => searchStore.isFilterActive);
 
-onMounted(() => {
-  searchEntitiesForSelectedSuggestion();
-  clearSearch();
+const filterOptionen = computed(() => [
+  { id: STANDARDEINSTELLUNG_ID, name: "Standardeinstellung" },
+  ...savedFilters.value.map((filter) => ({ id: filter.id, name: filter.name })),
+]);
+
+/**
+ * Zeigt den aktiven persönlichen Filter an. Wurden die Einstellungen im Filtermenü individuell
+ * angepasst, bleibt die Auswahl leer, das Filtersymbol kennzeichnet den Filter aber weiterhin als aktiv.
+ */
+const filterAuswahl = computed(() => {
+  if (!_.isNil(searchStore.activeFilterId)) {
+    return searchStore.activeFilterId;
+  }
+  return isFilterActive.value ? null : STANDARDEINSTELLUNG_ID;
 });
 
-// Schnellfilter
-function onQuickFilterSelected(filter: { id: string; name: string; filterSettings: any }) {
+// Beim Laden wird bewusst keine Suche ausgelöst. Diese erfolgt erst per Enter oder über "Übernehmen".
+onMounted(() => {
+  clearSearch();
+  ladePersoenlicheFilter();
+});
+
+// Filterauswahl
+async function ladePersoenlicheFilter(): Promise<void> {
   try {
-    searchQueryAndSorting.value = { ...filter.filterSettings };
-    searchQueryAndSortingStore.value = searchQueryAndSorting.value;
-    quickFilterMenuOpen.value = false;
-    searchEntitiesForSelectedSuggestion();
-    checkCurrentFilter();
-    lastFilterSource.value = "quick";
-    searchStore.setFilterActive(true);
-    activeQuickFilterId.value = filter.id;
-  } catch (e) {
-    toast.error("Beim Übernehmen des Filters ist ein Fehler aufgetreten.");
+    await loadFilters();
+  } catch {
+    // handleError already provides user feedback.
   }
 }
 
-function resetQuickFilter() {
-  handleResetSearchAndFilterOptions();
-  quickFilterMenuOpen.value = false;
+/**
+ * Persönliche Filter können jederzeit im Filtermenü angelegt, umbenannt oder gelöscht werden.
+ * Damit die Auswahl aktuell ist, werden sie beim Öffnen der Auswahl neu geladen.
+ */
+function onFilterMenu(geoeffnet: boolean): void {
+  if (geoeffnet) {
+    ladePersoenlicheFilter();
+  }
+}
+
+function onFilterSelected(filterId: string | null): void {
+  if (_.isNil(filterId)) {
+    return;
+  }
+  if (filterId === STANDARDEINSTELLUNG_ID) {
+    applyFilter(null);
+  } else {
+    const filter = savedFilters.value.find((savedFilter) => savedFilter.id === filterId);
+    if (_.isNil(filter)) {
+      return;
+    }
+    applyFilter(filter);
+  }
+  searchEntitiesForSelectedSuggestion();
 }
 
 // Großer Filter Dialog
@@ -203,25 +233,34 @@ function openSearchAndFilterDialog(): void {
 function handleAdoptSearchAndFilterOptions(): void {
   searchQueryAndSortingStore.value = _.cloneDeep(searchQueryAndSorting.value);
   closeSearchAndFilterDialog();
+  const selectedFilter: string | null = filterDialogRef.value?.selectedFilter ?? null;
+  const isModified: boolean = filterDialogRef.value?.isFilterModified ?? false;
+  if (selectedFilter === filterDialogRef.value?.STANDARD_FILTER_ID || isModified) {
+    searchStore.setActiveFilterId(null);
+  } else if (!_.isNil(selectedFilter)) {
+    // Ein unverändert übernommener persönlicher Filter wird in der Filterauswahl angezeigt. Er kann gerade erst
+    // im Filtermenü gespeichert worden sein, weshalb die Filter für die Anzeige seines Namens neu geladen werden.
+    searchStore.setActiveFilterId(selectedFilter);
+    ladePersoenlicheFilter();
+  }
+  searchStore.setFilterActive(!checkCurrentFilter());
   searchEntitiesForSelectedSuggestion();
-  const isStandardFilter = filterDialogRef.value?.selectedFilter === filterDialogRef.value?.STANDARD_FILTER_ID;
-  searchStore.setFilterActive(!isStandardFilter);
-  lastFilterSource.value = isStandardFilter ? null : "dialog";
 }
 
 function handleResetSearchAndFilterOptions(): void {
   searchQueryAndSorting.value = createSearchQueryAndSortingModel();
   handleAdoptSearchAndFilterOptions();
-  searchEntitiesForSelectedSuggestion();
-  lastFilterSource.value = null;
   searchStore.setFilterActive(false);
-  activeQuickFilterId.value = null;
+  searchStore.setActiveFilterId(null);
 }
 
 function closeSearchAndFilterDialog(): void {
   searchAndFilterDialogOpen.value = false;
 }
 
+/**
+ * @returns true, wenn die Such- und Filtereinstellungen der Standardeinstellung entsprechen.
+ */
 function checkCurrentFilter(): boolean {
   const excludeProperties = [
     "page",
@@ -268,8 +307,9 @@ const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestS
 function suggest(query: string): void {
   const splittedSearchwords = _.split(query, " ");
   const queryForSearchwordSuggestion = _.defaultTo(_.last(splittedSearchwords), "");
-  if (!_.isEmpty(queryForSearchwordSuggestion)) {
-    const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+  const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
+  // Ohne markierte Entität lehnt das Backend die Anfrage ab, weshalb keine Vorschläge ermittelt werden.
+  if (!_.isEmpty(queryForSearchwordSuggestion) && !isKeineEntitaetMarkiert(searchQueryForEntitiesDto)) {
     const searchQueryDto = {
       searchQuery: queryForSearchwordSuggestion,
       selectBauleitplanverfahren: searchQueryForEntitiesDto.selectBauleitplanverfahren,
@@ -300,16 +340,10 @@ function suggest(query: string): void {
 
 function searchEntitiesForSelectedSuggestion(): void {
   routeToMainViewWhenNotInMain();
-  const searchQueryForEntitiesDto = getSearchQueryAndSorting.value;
-  searchQueryForEntitiesDto.searchQuery = _.isNil(searchQuery.value) ? "" : searchQuery.value;
-  searchQueryForEntitiesDto.page = 1;
-  searchQueryForEntitiesDto.pageSize = 20;
-  suggestions.value = [searchQueryForEntitiesDto.searchQuery];
-  selectedSuggestion.value = searchQueryForEntitiesDto.searchQuery;
-  searchStore.setRequestSearchQueryAndSorting(new SearchQueryAndSortingModel(searchQueryForEntitiesDto));
-  searchForEntities(searchQueryForEntitiesDto).then((searchResults) => {
-    searchStore.setSearchResults(_.cloneDeep(searchResults));
-  });
+  const suchbegriff = _.isNil(searchQuery.value) ? "" : searchQuery.value;
+  suggestions.value = [suchbegriff];
+  selectedSuggestion.value = suchbegriff;
+  searchEntities(suchbegriff);
 }
 
 function clearSearch(): void {

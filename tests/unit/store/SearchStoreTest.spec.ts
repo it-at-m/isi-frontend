@@ -66,4 +66,13 @@ describe("Search Store", () => {
     searchStore.setSelectedInfrastruktureinrichtung(newInfra);
     expect(searchStore.selectedInfrastruktureinrichtung).toEqual(newInfra);
   });
+
+  test("setActiveFilterId setzt und entfernt den aktiven persönlichen Filter", () => {
+    const searchStore = useSearchStore();
+    expect(searchStore.activeFilterId).toBeNull();
+    searchStore.setActiveFilterId("filter-1");
+    expect(searchStore.activeFilterId).toBe("filter-1");
+    searchStore.setActiveFilterId(null);
+    expect(searchStore.activeFilterId).toBeNull();
+  });
 });
