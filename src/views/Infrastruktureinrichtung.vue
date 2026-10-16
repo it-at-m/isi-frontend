@@ -77,6 +77,7 @@
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
           :is-editable="isEditable"
+          :infrastruktureinrichtung-typ="infrastruktureinrichtung.infrastruktureinrichtungTyp"
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
@@ -245,12 +246,19 @@ const {
 const searchStore = useSearchStore();
 const commonStore = useCommonStore();
 const componentSecurity = useComponentSecurity();
-const { isRoleAdminOrSachbearbeitung, isRoleAdminOrInfrastruktureinrichtungSchreibend } = useSecurity();
 const {
-  createInfrastruktureinrichtung,
+  isRoleAdminOrSachbearbeitung,
+  isRoleAdminOrInfrastruktureinrichtungSchreibend,
+  isRoleAdminOrBedarfsmeldungSozialplanung,
+} = useSecurity();
+const {
   getInfrastruktureinrichtungById,
-  deleteInfrastruktureinrichtungById,
+  createInfrastruktureinrichtung,
+  createInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   updateInfrastruktureinrichtung,
+  updateInfrastruktureinrichtungBedarfsmeldungSozialplanung,
+  deleteInfrastruktureinrichtungById,
+  deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById,
 } = useInfrastruktureinrichtungApi();
 const toast = useToast();
 const router = useRouter();
@@ -261,9 +269,28 @@ const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
 const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
 
-const isEditable = computed(
-  () => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrInfrastruktureinrichtungSchreibend.value,
-);
+const isEditable = computed(() => {
+  const hasRole =
+    isRoleAdminOrSachbearbeitung.value ||
+    isRoleAdminOrInfrastruktureinrichtungSchreibend.value ||
+    isRoleAdminOrBedarfsmeldungSozialplanung.value;
+
+  if (!hasRole) return false;
+
+  if (isNew) return true;
+
+  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
+    return (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    );
+  } else {
+    return (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    );
+  }
+});
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {
@@ -458,10 +485,18 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
       if (!_.isNil(infrastruktureinrichtung)) {
         commonStore.disableButton();
         if (isNew.value) {
-          const savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          const savedInfrastruktureinrichtung =
+            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+              ? await createInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
+              : await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
           handleSuccess(savedInfrastruktureinrichtung);
         } else {
-          const savedInfrastruktureinrichtung = await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          const savedInfrastruktureinrichtung =
+            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+              ? await updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
+              : await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
           handleSuccess(savedInfrastruktureinrichtung);
         }
       }
@@ -475,7 +510,14 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
 
 async function deleteInfrastruktureinrichtung(): Promise<void> {
   if (!_.isNil(infrastruktureinrichtungId)) {
-    await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    if (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    ) {
+      await deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(infrastruktureinrichtungId);
+    } else {
+      await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    }
     searchStore.removeSearchResultById(infrastruktureinrichtungId);
     returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", TYPE.SUCCESS);
   }

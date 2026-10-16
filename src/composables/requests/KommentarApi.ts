@@ -1,14 +1,17 @@
 import {
   type CreateKommentarForBauvorhabenRequest,
   type CreateKommentarForInfrastruktureinrichtungRequest,
+  type CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type DeleteKommentarForBauvorhabenRequest,
   type DeleteKommentarForInfrastruktureinrichtungRequest,
+  type DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type GetKommentareForBauvorhabenRequest,
   type GetKommentareForInfrastruktureinrichtungRequest,
   type KommentarBauvorhabenDto,
   type KommentarInfrastruktureinrichtungDto,
   type UpdateKommentarForBauvorhabenRequest,
   type UpdateKommentarForInfrastruktureinrichtungRequest,
+  type UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   KommentareApi,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -83,6 +86,24 @@ export function useKommentarApi() {
     }
   }
 
+  async function createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
+    };
+    try {
+      const response = await kommentareApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+        requestObject,
+        RequestUtils.getPOSTConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function updateKommentarForBauvorhaben(
     kommentarBauvorhabenDto: KommentarBauvorhabenDto,
   ): Promise<KommentarBauvorhabenDto> {
@@ -106,6 +127,24 @@ export function useKommentarApi() {
     };
     try {
       const response = await kommentareApi.updateKommentarForInfrastruktureinrichtung(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
+    };
+    try {
+      const response = await kommentareApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
         requestObject,
         RequestUtils.getPUTConfig(),
       );
@@ -145,14 +184,33 @@ export function useKommentarApi() {
     }
   }
 
+  async function deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(id: string): Promise<void> {
+    const requestObject: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      id: id,
+    };
+    try {
+      const response = await kommentareApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+        requestObject,
+        RequestUtils.getDELETEConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   return {
     getKommentareForBauvorhaben,
     getKommentareForInfrastruktureinrichtung,
     createKommentarForBauvorhaben,
     createKommentarForInfrastruktureinrichtung,
+    createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     updateKommentarForBauvorhaben,
     updateKommentarForInfrastruktureinrichtung,
+    updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     deleteKommentarForBauvorhaben,
     deleteKommentarForInfrastruktureinrichtung,
+    deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   };
 }

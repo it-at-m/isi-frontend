@@ -1,10 +1,13 @@
 import {
   type ApiResponse,
   type CreateInfrastruktureinrichtungRequest,
+  type CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type DeleteInfrastruktureinrichtungByIdRequest,
+  type DeleteInfrastruktureinrichtungBedarfsmeldungSozialplanungByIdRequest,
   type GetInfrastruktureinrichtungByIdRequest,
   type InfrastruktureinrichtungDto,
   type UpdateInfrastruktureinrichtungOperationRequest,
+  type UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type UpdateInfrastruktureinrichtungRequest,
   InfrastruktureinrichtungApi,
   InfrastruktureinrichtungDtoFromJSON,
@@ -50,8 +53,9 @@ export function useInfrastruktureinrichtungApi() {
   async function createInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
   ): Promise<InfrastruktureinrichtungDto> {
+    // create
     const requestObject: CreateInfrastruktureinrichtungRequest = {
-      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungRaw(
@@ -66,14 +70,55 @@ export function useInfrastruktureinrichtungApi() {
     }
   }
 
+  async function createInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+    dto: InfrastruktureinrichtungDto,
+  ): Promise<InfrastruktureinrichtungDto> {
+    // create
+    const requestObject: CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(
+        requestObject,
+        RequestUtils.getPOSTConfig(),
+      );
+      const mapped = await mapResponse(response);
+      resetFormDirty();
+      return mapped;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function updateInfrastruktureinrichtung(
     dto: InfrastruktureinrichtungDto,
   ): Promise<InfrastruktureinrichtungDto> {
+    // update
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
-      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungRaw(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      const mapped = await mapResponse(response);
+      resetFormDirty();
+      return mapped;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+    dto: InfrastruktureinrichtungDto,
+  ): Promise<InfrastruktureinrichtungDto> {
+    // update
+    const requestObject: UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(
         requestObject,
         RequestUtils.getPUTConfig(),
       );
@@ -101,10 +146,29 @@ export function useInfrastruktureinrichtungApi() {
     }
   }
 
+  async function deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(id: string): Promise<void> {
+    const requestObject: DeleteInfrastruktureinrichtungBedarfsmeldungSozialplanungByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(
+        requestObject,
+        RequestUtils.getDELETEConfig(),
+      );
+      resetFormDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   return {
     getInfrastruktureinrichtungById,
     createInfrastruktureinrichtung,
+    createInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     updateInfrastruktureinrichtung,
+    updateInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     deleteInfrastruktureinrichtungById,
+    deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById,
   };
 }
