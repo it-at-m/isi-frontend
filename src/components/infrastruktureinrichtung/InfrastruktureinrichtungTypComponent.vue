@@ -81,7 +81,7 @@ const props = withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
-const { isRoleAdminOrBedarfsmeldungSozialplanung } = useSecurity();
+const { isRoleAdmin, isRoleAdminOrBedarfsmeldungSozialplanung } = useSecurity();
 
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
   return !_.isUndefined(list) && !_.isNil(key)
@@ -94,23 +94,29 @@ onUnmounted(() => {
 });
 
 const infrastruktureinrichtungList = computed(() => {
-  return isRoleAdminOrBedarfsmeldungSozialplanung.value
-    ? lookupStore.infrastruktureinrichtungTyp.filter(
-        (infrastruktureinrichtungTyp) =>
-          infrastruktureinrichtungTyp.key ===
-            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff ||
-          infrastruktureinrichtungTyp.key === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
-      )
-    : lookupStore.infrastruktureinrichtungTyp.filter(
-        (infrastruktureinrichtungTyp) =>
-          infrastruktureinrichtungTyp.key !==
-          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
-      );
+  // BedarfsmeldungSozialplanung sieht nur Nachbarschaftstreff und Unspecified
+  if (isRoleAdmin.value) {
+    return lookupStore.infrastruktureinrichtungTyp;
+  }
+  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
+    return lookupStore.infrastruktureinrichtungTyp.filter(
+      (infrastruktureinrichtungTyp) =>
+        infrastruktureinrichtungTyp.key ===
+          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff ||
+        infrastruktureinrichtungTyp.key === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    );
+  }
+  // Alle anderen sehen alle ohne Nachbarschaftstreff
+  return lookupStore.infrastruktureinrichtungTyp.filter(
+    (infrastruktureinrichtungTyp) =>
+      infrastruktureinrichtungTyp.key !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
+  );
 });
 
 const infrastruktureinrichtungTypDisplay = computed(() => {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
-    const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, infrastruktureinrichtungList.value);
+    const lookupValue = getLookupValue(infrastruktureinrichtungTyp.value, lookupStore.infrastruktureinrichtungTyp);
     return !_.isNil(lookupValue) ? lookupValue : "";
   } else {
     return "";

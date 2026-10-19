@@ -11,7 +11,7 @@ import {
   type KommentarInfrastruktureinrichtungDto,
   type UpdateKommentarForBauvorhabenRequest,
   type UpdateKommentarForInfrastruktureinrichtungRequest,
-  type UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
+  type UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   KommentareApi,
 } from "@/api/api-client/isi-backend";
 import RequestUtils from "@/utils/RequestUtils";
@@ -140,7 +140,7 @@ export function useKommentarApi() {
   async function updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
   ): Promise<KommentarInfrastruktureinrichtungDto> {
-    const requestObject: UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+    const requestObject: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
       kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
     };
     try {

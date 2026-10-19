@@ -247,6 +247,7 @@ const searchStore = useSearchStore();
 const commonStore = useCommonStore();
 const componentSecurity = useComponentSecurity();
 const {
+  isRoleAdmin,
   isRoleAdminOrSachbearbeitung,
   isRoleAdminOrInfrastruktureinrichtungSchreibend,
   isRoleAdminOrBedarfsmeldungSozialplanung,
@@ -277,7 +278,8 @@ const isEditable = computed(() => {
 
   if (!hasRole) return false;
 
-  if (isNew) return true;
+  if (isNew.value) return true;
+  if (isRoleAdmin.value) return true;
 
   if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
     return (
