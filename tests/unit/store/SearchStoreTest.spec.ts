@@ -75,4 +75,22 @@ describe("Search Store", () => {
     searchStore.setActiveFilterId(null);
     expect(searchStore.activeFilterId).toBeNull();
   });
+
+  describe("isSuchhinweisSichtbar", () => {
+    test("ist ohne Filter vor der ersten Suche sichtbar", () => {
+      expect(useSearchStore().isSuchhinweisSichtbar).toBe(true);
+    });
+
+    test("verschwindet, sobald gesucht wurde", () => {
+      const searchStore = useSearchStore();
+      searchStore.setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
+      expect(searchStore.isSuchhinweisSichtbar).toBe(false);
+    });
+
+    test("verschwindet, sobald ein Filter aktiv ist", () => {
+      const searchStore = useSearchStore();
+      searchStore.setFilterActive(true);
+      expect(searchStore.isSuchhinweisSichtbar).toBe(false);
+    });
+  });
 });

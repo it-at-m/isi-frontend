@@ -18,6 +18,9 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import _ from "lodash";
 
+export const HINWEIS_SUCHE_STARTEN =
+  "Geben Sie einen Suchbegriff ein oder erstellen Sie eine Filterung, um Ergebnisse zu sehen";
+
 interface State {
   searchResults: SearchResultsDto;
   requestSearchQueryAndSorting: SearchQueryAndSortingModel;
@@ -45,7 +48,15 @@ export const useSearchStore = defineStore("search", {
       isFilterActive: false,
       activeFilterId: null,
     }) as State,
-  getters: {},
+  getters: {
+    /**
+     * Ohne Filter wird beim Laden nicht gesucht. Bis zur ersten Suche oder Filterung wird deshalb
+     * ein Hinweis angezeigt, wie Ergebnisse angezeigt werden können.
+     */
+    isSuchhinweisSichtbar(state): boolean {
+      return !state.isFilterActive && _.isNil(state.searchResults.searchResults);
+    },
+  },
   actions: {
     setSearchResults(payload: SearchResultsDto): void {
       this.searchResults = payload;
