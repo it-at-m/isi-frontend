@@ -24,6 +24,7 @@ interface State {
   anlassPlanung: LookupEntryDto[];
   einrichtungstraeger: LookupEntryDto[];
   einrichtungstraegerSchulen: LookupEntryDto[];
+  infrastruktureinrichtungArt: LookupEntryDto[];
   infrastruktureinrichtungTyp: LookupEntryDto[];
   artGsNachmittagBetreuung: LookupEntryDto[];
   sobonOrientierungswertJahr: LookupEntryDto[];
@@ -55,6 +56,7 @@ export const useLookupStore = defineStore("lookup", {
       anlassPlanung: [],
       einrichtungstraeger: [],
       einrichtungstraegerSchulen: [],
+      infrastruktureinrichtungArt: [],
       infrastruktureinrichtungTyp: [],
       artGsNachmittagBetreuung: [],
       sobonOrientierungswertJahr: [],
@@ -89,6 +91,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setAnlassPlanung(lookupLists.anlassPlanung);
         this.setEinrichtungstraeger(lookupLists.einrichtungstraeger);
         this.setEinrichtungstraegerSchulen(lookupLists.einrichtungstraegerSchulen);
+        this.setInfrastruktureinrichtungArt(lookupLists.infrastruktureinrichtungArt);
         this.setInfrastruktureinrichtungTyp(lookupLists.infrastruktureinrichtungTyp);
         this.setArtGsNachmittagBetreuung(lookupLists.artGsNachmittagBetreuung);
         this.setSobonOrientierungswertJahr(lookupLists.sobonOrientierungswertJahr);
@@ -188,6 +191,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.einrichtungstraegerSchulen = payload?.list)
         : (this.einrichtungstraegerSchulen = []);
+    },
+    setInfrastruktureinrichtungArt(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.infrastruktureinrichtungArt = payload?.list)
+        : (this.infrastruktureinrichtungArt = []);
     },
     setInfrastruktureinrichtungTyp(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)
