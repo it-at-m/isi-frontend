@@ -157,7 +157,16 @@
       class="pa-0 ma-0 w-100 d-flex justify-center align-center"
       style="height: 100%; min-height: 100px"
     >
-      <span>Keine Suchergebnisse vorhanden</span>
+      <v-alert
+        v-if="isSuchhinweisSichtbar"
+        id="search_result_list_suchhinweis"
+        type="info"
+        density="compact"
+        class="mx-3"
+      >
+        {{ HINWEIS_SUCHE_STARTEN }}
+      </v-alert>
+      <span v-else>Keine Suchergebnisse vorhanden</span>
     </v-container>
   </v-list>
 </template>
@@ -179,7 +188,7 @@ import {
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
 import { useSecurity } from "@/composables/security/Security";
 import { useLookupStore } from "@/stores/LookupStore";
-import { useSearchStore } from "@/stores/SearchStore";
+import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
 import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
@@ -227,6 +236,7 @@ const verfahrensstandList = computed(() => lookupStore.verfahrensstand);
 const getSearchQueryAndSorting = computed(() => _.cloneDeep(searchStore.requestSearchQueryAndSorting));
 const searchResults = computed(() => _.cloneDeep(searchStore.searchResults));
 const isFilterActive = computed(() => searchStore.isFilterActive);
+const isSuchhinweisSichtbar = computed(() => searchStore.isSuchhinweisSichtbar);
 
 const searchResultsAsArray = computed(() => {
   return !_.isNil(searchStore.searchResults.searchResults) ? _.cloneDeep(searchStore.searchResults.searchResults) : [];

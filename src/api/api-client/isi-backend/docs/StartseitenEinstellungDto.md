@@ -9,6 +9,7 @@ Name | Type
 `schnellfilter` | [SchnellfilterVorgaenge](SchnellfilterVorgaenge.md)
 `sortBy` | string
 `sortOrder` | string
+`standardFilterId` | string
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "schnellfilter": null,
   "sortBy": null,
   "sortOrder": null,
+  "standardFilterId": null,
 } satisfies StartseitenEinstellungDto
 
 console.log(example)

@@ -11,6 +11,12 @@ vi.mock("@/composables/requests/UserInfoApi", () => ({
   useUserInfoApi: () => ({ getUserinfo: mockGetUserinfo }),
 }));
 
+const mockApplyStandardFilter = vi.fn();
+
+vi.mock("@/composables/requests/filter/useStandardFilter", () => ({
+  useStandardFilter: () => ({ applyStandardFilter: mockApplyStandardFilter }),
+}));
+
 vi.mock("@/stores/LookupStore", () => ({
   useLookupStore: () => ({ inititalize: vi.fn(), statusAbfrage: [], verfahrensstand: [] }),
 }));
@@ -38,6 +44,13 @@ describe("AppBegruessungTest.spec.ts", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     mockGetUserinfo.mockReset();
+    mockApplyStandardFilter.mockReset();
+  });
+
+  test("übernimmt beim Laden der Anwendung einmalig den Standard-Filter aus den Profileinstellungen", async () => {
+    const wrapper = mountApp(["sachbearbeitung"], "Simon");
+    await wrapper.vm.$nextTick();
+    expect(mockApplyStandardFilter).toHaveBeenCalledTimes(1);
   });
 
   test("begrüßt Abfrageersteller in der Titelleiste mit dem Vornamen", async () => {

@@ -26,6 +26,23 @@
       </v-tabs>
     </div>
 
+    <!--
+      In der Listenansicht zeigt die Liste den Hinweis selbst an. Der Container darf nicht schrumpfen,
+      da die Karte sonst den gesamten Platz einnimmt und den Hinweis bis auf einen Streifen zusammendrückt.
+    -->
+    <div
+      v-if="ansicht === 'KARTE' && isSuchhinweisSichtbar"
+      class="mb-3"
+      style="flex: 0 0 auto"
+    >
+      <v-alert
+        id="uebersicht_suchhinweis"
+        type="info"
+        density="compact"
+      >
+        {{ HINWEIS_SUCHE_STARTEN }}
+      </v-alert>
+    </div>
     <div
       class="flex-grow-1"
       style="min-height: 0"
@@ -48,14 +65,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import SearchInputField from "@/components/search/SearchInputField.vue";
 import SearchResultCityMap from "@/components/map/SearchResultCityMap.vue";
 import SearchResultList from "@/components/search/SearchResultList.vue";
+import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
 
 type Ansicht = "KARTE" | "LISTE";
 
+const searchStore = useSearchStore();
 const ansicht = ref<Ansicht>("KARTE");
+const isSuchhinweisSichtbar = computed(() => searchStore.isSuchhinweisSichtbar);
 
-defineExpose({ ansicht });
+defineExpose({ ansicht, isSuchhinweisSichtbar });
 </script>

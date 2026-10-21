@@ -155,18 +155,15 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
-import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
-import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import FilterPanel from "@/components/filter/FilterPanel.vue";
-import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
-import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
-import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
+import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
+import FilterPanel from "@/components/filter/FilterPanel.vue";
 import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
-import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { useToast } from "vue-toastification";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
 interface Emits {
@@ -334,6 +331,12 @@ async function onSaveFilter(name: string) {
   try {
     await saveFilter(name, searchQueryAndSorting.value);
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
+    // Der neue Filter entspricht den aktuellen Einstellungen und gilt deshalb als ausgewählt und unverändert.
+    const neuerFilter = savedFilters.value.find((filter) => filter.name.trim() === name.trim());
+    if (neuerFilter) {
+      selectedFilter.value = neuerFilter.id;
+      isFilterModified.value = false;
+    }
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
       toast.error(e.message);
