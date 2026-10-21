@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import {
   type AbfrageSearchResultDto,
   type LookupEntryDto,
@@ -214,6 +214,7 @@ function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
+    selectNachbarschaftstreff: false,
     filterNurEigeneAbfragen: true,
     filterStatusAbfrage: getStatusAbfrageForSchnellfilter(schnellfilter.value),
     page: requestedPage,
@@ -310,7 +311,16 @@ function datumFormatted(datum: Date | undefined): string {
   return convertDateForFrontend(datum);
 }
 
+/**
+ * Bis die Voreinstellungen beim Mounten übernommen sind, lädt allein der Mount-Hook die Vorgänge.
+ * Andernfalls würden abweichende Voreinstellungen über den Watcher einen zweiten Request auslösen.
+ */
+let initialisiert = false;
+
 watch([schnellfilter, sortierung], () => {
+  if (!initialisiert) {
+    return;
+  }
   // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
   loadVorgaenge().catch(() => undefined);
 });
@@ -332,6 +342,9 @@ onMounted(async () => {
   await startseitenEinstellungStore.initialize();
   schnellfilter.value = startseitenEinstellungStore.schnellfilter;
   sortierung.value = startseitenEinstellungStore.sortierung;
+  // Die durch die Zuweisungen ausgelösten Watcher laufen hier noch ohne Request durch.
+  await nextTick();
+  initialisiert = true;
   // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
   await loadVorgaenge().catch(() => undefined);
 });

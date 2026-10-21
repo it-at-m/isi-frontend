@@ -73,6 +73,7 @@ export const BedarfsmeldungDtoInfrastruktureinrichtungTypEnum = {
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE',
+    Nachbarschaftstreff: 'NACHBARSCHAFTSTREFF',
 } as const;
 export type BedarfsmeldungDtoInfrastruktureinrichtungTypEnum = typeof BedarfsmeldungDtoInfrastruktureinrichtungTypEnum[keyof typeof BedarfsmeldungDtoInfrastruktureinrichtungTypEnum];
 

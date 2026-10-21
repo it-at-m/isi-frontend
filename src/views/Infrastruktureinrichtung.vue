@@ -11,7 +11,7 @@
           :is-editable="isEditable"
         />
         <infrastruktureinrichtung-component
-          v-if="isInfrastruktureinrichtungTypNotUnspecified"
+          v-if="isInfrastruktureinrichtungComponentVisible"
           id="infrastruktureinrichtung_infrastruktureinrichtung_component"
           ref="infrastruktureinrichtungComponent"
           v-model="infrastruktureinrichtung"
@@ -65,11 +65,19 @@
           :is-editable="isEditable"
           :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
+        <nachbarschaftstreff-component
+          v-if="isNachbarschaftstreff"
+          id="infrastruktureinrichtung_nachbarschaftstreff_component"
+          ref="nachbarschaftstreffComponent"
+          v-model="infrastruktureinrichtung"
+          :is-editable="isEditable"
+        />
         <kommentare
           v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
           :is-editable="isEditable"
+          :infrastruktureinrichtung-typ="infrastruktureinrichtung.infrastruktureinrichtungTyp"
         />
         <yes-no-dialog
           id="infrastruktureinrichtung_yes_no_dialog_löschen"
@@ -167,8 +175,10 @@ import {
   type GsNachmittagBetreuungDto,
   type HausFuerKinderDto,
   type InfrastruktureinrichtungDto,
+  type NachbarschaftstreffDto,
   InfrastruktureinrichtungDtoStatusEnum,
   InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum,
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
 } from "@/api/api-client/isi-backend";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
@@ -182,6 +192,7 @@ import InfrastruktureinrichtungTypComponent from "@/components/infrastruktureinr
 import KindergartenComponent from "@/components/infrastruktureinrichtung/KindergartenComponent.vue";
 import KinderkrippeComponent from "@/components/infrastruktureinrichtung/KinderkrippeComponent.vue";
 import MittelschuleComponent from "@/components/infrastruktureinrichtung/MittelschuleComponent.vue";
+import NachbarschaftstreffComponent from "@/components/infrastruktureinrichtung/NachbarschaftstreffComponent.vue";
 import DisplayMode from "@/types/common/DisplayMode";
 import GrundschuleModel from "@/types/model/infrastruktureinrichtung/GrundschuleModel";
 import GsNachmittagBetreuungModel from "@/types/model/infrastruktureinrichtung/GsNachmittagBetreuungModel";
@@ -189,6 +200,7 @@ import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuer
 import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
 import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import MittelschuleModel from "@/types/model/infrastruktureinrichtung/MittelschuleModel";
+import NachbarschaftstreffModel from "@/types/model/infrastruktureinrichtung/NachbarschaftstreffModel";
 import { Context } from "@/utils/Context";
 import {
   createGrundschuleDto,
@@ -198,6 +210,7 @@ import {
   createKindergartenDto,
   createKinderkrippeDto,
   createMittelschuleDto,
+  createNachbarschaftstreffDto,
 } from "@/utils/Factories";
 import _ from "lodash";
 import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
@@ -215,10 +228,10 @@ import {
   findFaultInGsNachmittagBetreuungForSave,
   findFaultInGrundschuleForSave,
   findFaultInMittelschuleForSave,
+  findFaultInNachbarschaftstreffForSave,
 } from "@/utils/Validators";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 import { useCommonStore } from "@/stores/CommonStore";
-import { storeToRefs } from "pinia";
 
 const {
   isFormDirty,
@@ -233,12 +246,20 @@ const {
 const searchStore = useSearchStore();
 const commonStore = useCommonStore();
 const componentSecurity = useComponentSecurity();
-const { isRoleAdminOrSachbearbeitung, isRoleAdminOrInfrastruktureinrichtungSchreibend } = useSecurity();
 const {
-  createInfrastruktureinrichtung,
+  isRoleAdmin,
+  isRoleAdminOrSachbearbeitung,
+  isRoleAdminOrInfrastruktureinrichtungSchreibend,
+  isRoleAdminOrBedarfsmeldungSozialplanung,
+} = useSecurity();
+const {
   getInfrastruktureinrichtungById,
-  deleteInfrastruktureinrichtungById,
+  createInfrastruktureinrichtung,
+  createInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   updateInfrastruktureinrichtung,
+  updateInfrastruktureinrichtungBedarfsmeldungSozialplanung,
+  deleteInfrastruktureinrichtungById,
+  deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById,
 } = useInfrastruktureinrichtungApi();
 const toast = useToast();
 const router = useRouter();
@@ -249,9 +270,29 @@ const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
 const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
 
-const isEditable = computed(
-  () => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrInfrastruktureinrichtungSchreibend.value,
-);
+const isEditable = computed(() => {
+  const hasRole =
+    isRoleAdminOrSachbearbeitung.value ||
+    isRoleAdminOrInfrastruktureinrichtungSchreibend.value ||
+    isRoleAdminOrBedarfsmeldungSozialplanung.value;
+
+  if (!hasRole) return false;
+
+  if (isNew.value) return true;
+  if (isRoleAdmin.value) return true;
+
+  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
+    return (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    );
+  } else {
+    return (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    );
+  }
+});
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {
@@ -276,15 +317,20 @@ const bearbeitungsinformationen = computed(() => {
 
 const isEinrichtungstraegerRequired = computed(() => {
   return (
-    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff &&
+    (infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
+      infrastruktureinrichtung.value.status ===
+        InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr)
   );
 });
 
-const isInfrastruktureinrichtungTypNotUnspecified = computed(() => {
+const isInfrastruktureinrichtungComponentVisible = computed(() => {
   return (
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
-    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Unspecified
+      InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Unspecified &&
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
   );
 });
 
@@ -327,6 +373,13 @@ const isMittelschule = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
     InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule
+  );
+});
+
+const isNachbarschaftstreff = computed(() => {
+  return (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
   );
 });
 
@@ -389,6 +442,8 @@ function validateInfrastruktureinrichtung(infrastruktureinrichtung: Infrastruktu
       return findFaultInGrundschuleForSave(infrastruktureinrichtung as GrundschuleDto);
     case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule:
       return findFaultInMittelschuleForSave(infrastruktureinrichtung as MittelschuleDto);
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+      return findFaultInNachbarschaftstreffForSave(infrastruktureinrichtung as NachbarschaftstreffDto);
     default:
       return null;
   }
@@ -403,6 +458,7 @@ function getModelOfNewDtoForInfrastruktureinrichtungTyp(
   | GsNachmittagBetreuungModel
   | GrundschuleModel
   | MittelschuleModel
+  | NachbarschaftstreffModel
   | InfrastruktureinrichtungModel {
   switch (infrastruktureinrichtungTyp) {
     case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
@@ -417,6 +473,8 @@ function getModelOfNewDtoForInfrastruktureinrichtungTyp(
       return new GrundschuleModel(createGrundschuleDto());
     case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Mittelschule:
       return new MittelschuleModel(createMittelschuleDto());
+    case InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+      return new NachbarschaftstreffModel(createNachbarschaftstreffDto());
     default:
       return new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto());
   }
@@ -429,10 +487,18 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
       if (!_.isNil(infrastruktureinrichtung)) {
         commonStore.disableButton();
         if (isNew.value) {
-          const savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          const savedInfrastruktureinrichtung =
+            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+              ? await createInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
+              : await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
           handleSuccess(savedInfrastruktureinrichtung);
         } else {
-          const savedInfrastruktureinrichtung = await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          const savedInfrastruktureinrichtung =
+            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+              ? await updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
+              : await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
           handleSuccess(savedInfrastruktureinrichtung);
         }
       }
@@ -446,7 +512,14 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
 
 async function deleteInfrastruktureinrichtung(): Promise<void> {
   if (!_.isNil(infrastruktureinrichtungId)) {
-    await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    if (
+      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+    ) {
+      await deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(infrastruktureinrichtungId);
+    } else {
+      await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    }
     searchStore.removeSearchResultById(infrastruktureinrichtungId);
     returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", TYPE.SUCCESS);
   }

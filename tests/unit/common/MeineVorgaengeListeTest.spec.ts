@@ -59,6 +59,7 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(query.selectKindergarten).toBe(false);
       expect(query.selectKinderkrippe).toBe(false);
       expect(query.selectMittelschule).toBe(false);
+      expect(query.selectNachbarschaftstreff).toBe(false);
     });
 
     test("setzt für 'Alle Vorgänge' keinen Statusfilter", () => {
@@ -70,10 +71,16 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const vm = wrapper.vm as any;
       vm.schnellfilter = "ZUR_BEARBEITUNG";
       await wrapper.vm.$nextTick();
-      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([
-        StatusAbfrage.EinplanungBedarfe,
-        StatusAbfrage.Angelegt,
-      ]);
+      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([StatusAbfrage.EinplanungBedarfe]);
+    });
+
+    test("beschränkt 'Entwürfe' auf die eigenen Abfragen im Status ANGELEGT", async () => {
+      const vm = wrapper.vm as any;
+      vm.schnellfilter = "ENTWUERFE";
+      await wrapper.vm.$nextTick();
+      const query = vm.createSearchQuery(1);
+      expect(query.filterStatusAbfrage).toEqual([StatusAbfrage.Angelegt]);
+      expect(query.filterNurEigeneAbfragen).toBe(true);
     });
 
     test("sortiert die Bearbeitungsfrist aufsteigend, die übrigen Kriterien absteigend", async () => {
@@ -280,6 +287,20 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const vm = eigenerWrapper.vm as any;
       expect(vm.schnellfilter).toBe("ZUR_KENNTNIS");
       expect(vm.sortierung).toBe("FRIST_BEARBEITUNG");
+    });
+
+    test("laden beim Mounten nur einmal, auch wenn sie von den Standardwerten abweichen", async () => {
+      setActivePinia(createPinia());
+      mockSearchForEntities.mockClear();
+      mockGetStartseitenEinstellung.mockResolvedValue({
+        schnellfilter: "ZUR_KENNTNIS",
+        sortBy: "FRIST_BEARBEITUNG",
+        sortOrder: "ASC",
+      });
+      mountComponent();
+      await flushPromises();
+      expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
+      expect(mockSearchForEntities.mock.calls[0][0].sortBy).toBe("FRIST_BEARBEITUNG");
     });
 
     test("werden nach dem Speichern im Profil sofort übernommen", async () => {

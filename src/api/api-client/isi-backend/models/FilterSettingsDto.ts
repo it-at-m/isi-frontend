@@ -85,6 +85,10 @@ export interface FilterSettingsDto {
     /**
      * 
      */
+    selectNachbarschaftstreff: boolean;
+    /**
+     * 
+     */
     stadtbezirkNummer?: Array<string>;
     /**
      * 
@@ -219,6 +223,7 @@ export function instanceOfFilterSettingsDto(value: object): value is FilterSetti
     if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
     if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
     if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('selectNachbarschaftstreff' in value) || value['selectNachbarschaftstreff'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
@@ -245,6 +250,7 @@ export function FilterSettingsDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'selectNachbarschaftstreff': json['selectNachbarschaftstreff'],
         'stadtbezirkNummer': json['stadtbezirkNummer'] == null ? undefined : json['stadtbezirkNummer'],
         'kitaplanungsbereichKitaPlbT': json['kitaplanungsbereichKitaPlbT'] == null ? undefined : json['kitaplanungsbereichKitaPlbT'],
         'grundschulsprengelNummer': json['grundschulsprengelNummer'] == null ? undefined : json['grundschulsprengelNummer'],
@@ -286,6 +292,7 @@ export function FilterSettingsDtoToJSONTyped(value?: FilterSettingsDto | null, i
         'selectKindergarten': value['selectKindergarten'],
         'selectKinderkrippe': value['selectKinderkrippe'],
         'selectMittelschule': value['selectMittelschule'],
+        'selectNachbarschaftstreff': value['selectNachbarschaftstreff'],
         'stadtbezirkNummer': value['stadtbezirkNummer'],
         'kitaplanungsbereichKitaPlbT': value['kitaplanungsbereichKitaPlbT'],
         'grundschulsprengelNummer': value['grundschulsprengelNummer'],

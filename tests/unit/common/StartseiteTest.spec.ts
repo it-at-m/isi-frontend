@@ -5,6 +5,7 @@ import { Userinfo } from "@/types/common/Userinfo";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import Main from "@/views/Main.vue";
 import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
+import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
 
 vi.mock("vue-router", () => ({
   useRouter: () => ({ push: vi.fn() }),
@@ -72,6 +73,37 @@ describe("StartseiteTest.spec.ts", () => {
     test("enthält eine eigene Suchleiste", () => {
       const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
       expect(wrapper.findComponent({ name: "SearchInputField" }).exists()).toBe(true);
+    });
+
+    test("zeigt über der Karte ohne Filter vor der ersten Suche einen Hinweis in einer Info-Box an", () => {
+      const wrapper: VueWrapper = mount(UebersichtPanel, {
+        shallow: true,
+        global: { renderStubDefaultSlot: true },
+      });
+      const hinweis = wrapper.findComponent({ name: "VAlert" });
+      expect(hinweis.props("type")).toBe("info");
+      expect(hinweis.text()).toBe(HINWEIS_SUCHE_STARTEN);
+    });
+
+    test("blendet den Hinweis aus, sobald gesucht wurde", async () => {
+      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
+      useSearchStore().setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(false);
+    });
+
+    test("blendet den Hinweis aus, sobald ein Filter aktiv ist", async () => {
+      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
+      useSearchStore().setFilterActive(true);
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(false);
+    });
+
+    test("zeigt den Hinweis in der Listenansicht nicht zusätzlich über der Liste an", async () => {
+      const wrapper: VueWrapper = mount(UebersichtPanel, { shallow: true });
+      (wrapper.vm as any).ansicht = "LISTE";
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find("#uebersicht_suchhinweis").exists()).toBe(false);
     });
   });
 });
