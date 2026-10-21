@@ -52,7 +52,7 @@ const statusInfrastruktureinrichtungList = computed(() => {
       )
       .filter(Boolean); // filter(Boolean) entfernt nicht gefundene Einträge
   } else {
-    return lookupStore.infrastruktureinrichtungTyp;
+    return lookupStore.statusInfrastruktureinrichtung;
   }
 });
 </script>
