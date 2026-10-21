@@ -407,7 +407,7 @@ import {
 } from "@/types/common/Abfrage";
 import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { TAB_TITLE_ABFRAGE, useTabTitle } from "@/composables/TabTitle";
+import { createAbfrageTabTitleName, TAB_TITLE_ABFRAGE, useTabTitle } from "@/composables/TabTitle";
 import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
@@ -470,7 +470,6 @@ let anmerkung = "";
 const abfrage = ref(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
 const isNew = ref(true);
 const selected = ref<AbfrageDtoWithForm>(abfrage.value);
-useTabTitle(abfrage, (abfrage) => abfrage.name, isNew, TAB_TITLE_ABFRAGE);
 const openForm = ref(AbfrageFormType.BAULEITPLANVERFAHREN);
 const dialogTextStatus = ref("");
 const possibleTransitions = ref<TransitionDto[]>([]);
@@ -536,6 +535,21 @@ const isBaugebietWeiteresVerfahrenFormularOpen = computed(
   () => openForm.value === AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN,
 );
 const isBaurateFormularOpen = computed(() => openForm.value === AbfrageFormType.BAURATE);
+
+useTabTitle(
+  () => [abfrage.value, selected.value, openForm.value] as const,
+  ([abfrage, selected, openForm]) =>
+    createAbfrageTabTitleName(
+      abfrage.name,
+      openForm === AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN ||
+        openForm === AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN ||
+        openForm === AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN
+        ? (selected as AnyAbfragevarianteModel)
+        : undefined,
+    ),
+  isNew,
+  TAB_TITLE_ABFRAGE,
+);
 
 const deleteAbfragevarianteDialogText = computed(() => {
   const item = treeItemToDelete.value;

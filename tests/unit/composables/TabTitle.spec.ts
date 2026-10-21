@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { defineComponent, nextTick, ref, type Ref } from "vue";
 import { mount } from "@vue/test-utils";
 import {
+  createAbfrageTabTitleName,
   createTabTitle,
   DEFAULT_TAB_TITLE,
   TAB_TITLE_ABFRAGE,
@@ -57,6 +58,34 @@ describe("TabTitle.spec.ts", () => {
     });
   });
 
+  describe("createAbfrageTabTitleName", () => {
+    test("hängt den Namen einer gespeicherten Abfragevariante an den Namen der Abfrage an", () => {
+      expect(createAbfrageTabTitleName("Innenstadt", { id: "variante-1", name: "Variante 1" })).toBe(
+        "Innenstadt - Variante 1",
+      );
+      expect(
+        createTabTitle(
+          TAB_TITLE_ABFRAGE,
+          createAbfrageTabTitleName("Innenstadt", { id: "variante-1", name: " Variante 1 " }),
+          false,
+        ),
+      ).toBe("Abfrage: Innenstadt - Variante 1");
+    });
+
+    test("verwendet ohne geöffnete Abfragevariante nur den Namen der Abfrage", () => {
+      expect(createAbfrageTabTitleName("Innenstadt")).toBe("Innenstadt");
+    });
+
+    test("verwendet bei einer ungespeicherten oder unbenannten Abfragevariante nur den Namen der Abfrage", () => {
+      expect(createAbfrageTabTitleName("Innenstadt", { name: "Neue Variante" })).toBe("Innenstadt");
+      expect(createAbfrageTabTitleName("Innenstadt", { id: "variante-1", name: "  " })).toBe("Innenstadt");
+    });
+
+    test("hängt ohne Namen der Abfrage keinen Variantennamen an", () => {
+      expect(createAbfrageTabTitleName(undefined, { id: "variante-1", name: "Variante 1" })).toBeUndefined();
+    });
+  });
+
   describe("useTabTitle", () => {
     test("setzt für ein neues Objekt den Text für das neue Objekt", () => {
       mountWithTabTitle(ref<Objekt>({}), ref(true));
@@ -95,6 +124,33 @@ describe("TabTitle.spec.ts", () => {
       objekt.value = { name: "Ungespeicherte Eingabe" };
       await nextTick();
       expect(document.title).toBe("Abfrage: Ungespeicherte Eingabe");
+    });
+
+    test("reagiert bei einem Getter nur auf das Austauschen der beobachteten Objekte", async () => {
+      const abfrage = ref<Objekt>({ name: "Innenstadt" });
+      const selected = ref<Objekt>({ name: "Variante 1" });
+      mount(
+        defineComponent({
+          setup() {
+            useTabTitle(
+              () => [abfrage.value, selected.value] as const,
+              ([abfrage, selected]) => `${abfrage.name} - ${selected.name}`,
+              ref(false),
+              TAB_TITLE_ABFRAGE,
+            );
+            return () => null;
+          },
+        }),
+      );
+      expect(document.title).toBe("Abfrage: Innenstadt - Variante 1");
+
+      selected.value.name = "Ungespeicherte Eingabe";
+      await nextTick();
+      expect(document.title).toBe("Abfrage: Innenstadt - Variante 1");
+
+      selected.value = { name: "Variante 2" };
+      await nextTick();
+      expect(document.title).toBe("Abfrage: Innenstadt - Variante 2");
     });
 
     test("setzt beim Verlassen den Standardtitel", () => {
