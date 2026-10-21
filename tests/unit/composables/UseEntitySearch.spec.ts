@@ -33,6 +33,7 @@ function setzeKeineEntitaetMarkiert(): void {
   model.selectKindergarten = false;
   model.selectKinderkrippe = false;
   model.selectMittelschule = false;
+  model.selectNachbarschaftstreff = false;
   useSearchStore().setRequestSearchQueryAndSorting(model);
 }
 
