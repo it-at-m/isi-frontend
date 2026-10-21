@@ -20,6 +20,10 @@ import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtun
 import { notUnspecified, pflichtfeld } from "@/utils/FieldValidationRules";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useLookupStore } from "@/stores/LookupStore";
+import {
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
+  LookupEntryDto,
+} from "@/api/api-client/isi-backend";
 
 interface Props {
   isEditable?: boolean;
@@ -30,5 +34,25 @@ withDefaults(defineProps<Props>(), { isEditable: false });
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
-const statusInfrastruktureinrichtungList = computed(() => lookupStore.statusInfrastruktureinrichtung);
+const statusInfrastruktureinrichtungList = computed(() => {
+  if (
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
+  ) {
+    const statusOrder = [
+      "UNSPECIFIED",
+      "BESTAND",
+      "UNGESICHERTE_PLANUNG",
+      "GESICHERTE_PLANUNG",
+      "PLANUNG_ZURUECKGEZOGEN",
+    ];
+    return statusOrder
+      .map((status) =>
+        lookupStore.statusInfrastruktureinrichtung.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status),
+      )
+      .filter(Boolean); // filter(Boolean) entfernt nicht gefundene Einträge
+  } else {
+    return lookupStore.statusInfrastruktureinrichtung;
+  }
+});
 </script>
