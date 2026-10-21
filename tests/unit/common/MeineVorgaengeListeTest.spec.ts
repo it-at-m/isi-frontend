@@ -289,6 +289,20 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(vm.sortierung).toBe("FRIST_BEARBEITUNG");
     });
 
+    test("laden beim Mounten nur einmal, auch wenn sie von den Standardwerten abweichen", async () => {
+      setActivePinia(createPinia());
+      mockSearchForEntities.mockClear();
+      mockGetStartseitenEinstellung.mockResolvedValue({
+        schnellfilter: "ZUR_KENNTNIS",
+        sortBy: "FRIST_BEARBEITUNG",
+        sortOrder: "ASC",
+      });
+      mountComponent();
+      await flushPromises();
+      expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
+      expect(mockSearchForEntities.mock.calls[0][0].sortBy).toBe("FRIST_BEARBEITUNG");
+    });
+
     test("werden nach dem Speichern im Profil sofort übernommen", async () => {
       const vm = wrapper.vm as any;
       expect(vm.schnellfilter).toBe("ALLE");
