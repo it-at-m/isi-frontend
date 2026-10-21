@@ -50,6 +50,7 @@ describe("RouterUtil.spec.ts", () => {
     model.selectKindergarten = false;
     model.selectKinderkrippe = false;
     model.selectMittelschule = false;
+    model.selectNachbarschaftstreff = false;
     searchStore.setRequestSearchQueryAndSorting(model);
     searchStore.setSearchResults({ searchResults: [], page: 1, numberOfPages: 0 });
     await setSearchResultList();
