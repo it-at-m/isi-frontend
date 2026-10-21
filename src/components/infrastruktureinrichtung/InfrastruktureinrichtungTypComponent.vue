@@ -31,7 +31,7 @@
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
-            :disabled="!isEditable || infrastruktureinrichtungArtList.length === 0"
+            :disabled="!isEditable || infrastruktureinrichtungArt === 'UNSPECIFIED'"
             @update:model-value="formChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   type LookupEntryDto,
@@ -99,18 +99,25 @@ const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
 const { isRoleAdmin, isRoleAdminOrBedarfsmeldungSozialplanung } = useSecurity();
-const infrastruktureinrichtungArt = ref<string>("");
-const einrichtungen = ref<LookupEntryDto[][]>([]);
+const infrastruktureinrichtungArt = ref<string>("UNSPECIFIED");
+const artToTypKeys: Record<string, string[]> = {
+  KINDERTAGESBETREUUNG: ["UNSPECIFIED", "HAUS_FUER_KINDER", "KINDERKRIPPE", "KINDERGARTEN"],
+  GANZTAGSBETREUUNG_GRUNDSCHULKINDER: ["UNSPECIFIED", "HAUS_FUER_KINDER"],
+  SCHULEN: ["UNSPECIFIED", "GRUNDSCHULE", "MITTELSCHULE"],
+  SOZIALE_EINRICHTUNGEN: ["UNSPECIFIED", "NACHBARSCHAFTSTREFF"],
+  UNSPECIFIED: [InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified],
+};
+
+watch(infrastruktureinrichtungArt, (newVal) => {
+  // Typ zurücksetzen, wenn die Art geändert wird
+  infrastruktureinrichtungTyp.value = "UNSPECIFIED";
+});
 
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
   return !_.isUndefined(list) && !_.isNil(key)
     ? list.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value
     : key;
 }
-
-onUnmounted(() => {
-  createEinrichtungenAuswahl();
-});
 
 const infrastruktureinrichtungArtList = computed(() => {
   if (isRoleAdmin.value) {
@@ -130,16 +137,17 @@ const infrastruktureinrichtungArtList = computed(() => {
 });
 
 const infrastruktureinrichtungTypList = computed(() => {
-  if (infrastruktureinrichtungArt.value !== "UNSPECIFIED") {
-    return infrastruktureinrichtungTypByPermission.value.filter((infrastruktureinrichtungTyp: LookupEntryDto) => {
-      einrichtungen.value[infrastruktureinrichtungArt.value].some(
-        (einrichtungTyp) => einrichtungTyp.key === infrastruktureinrichtungTyp.key,
-      );
-    });
-  } else return [];
+  const art = infrastruktureinrichtungArt.value;
+  if (art === "UNSPECIFIED") {
+    return lookupStore.infrastruktureinrichtungTyp.filter(
+      (infrastruktureinrichtungTyp) =>
+        infrastruktureinrichtungTyp.key === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    );
+  }
+  return infrastruktureinrichtungTypByPermission().filter((typ) => artToTypKeys[art].includes(typ.key));
 });
 
-const infrastruktureinrichtungTypByPermission = computed(() => {
+function infrastruktureinrichtungTypByPermission(): LookupEntryDto[] {
   // BedarfsmeldungSozialplanung sieht nur Nachbarschaftstreff und Unspecified
   if (isRoleAdmin.value) {
     return lookupStore.infrastruktureinrichtungTyp;
@@ -158,7 +166,7 @@ const infrastruktureinrichtungTypByPermission = computed(() => {
       infrastruktureinrichtungTyp.key !==
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
   );
-});
+}
 
 const infrastruktureinrichtungTypDisplay = computed(() => {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
@@ -168,42 +176,4 @@ const infrastruktureinrichtungTypDisplay = computed(() => {
     return "";
   }
 });
-
-function createEinrichtungenAuswahl(): void {
-  // InfrastrukturArt als 1. Dimension füllen
-  einrichtungen.value.push(lookupStore.infrastruktureinrichtungArt);
-  // Konfiguration für die Zuordnungen Infrastrukturypen zu Infrastrukturarten
-  const zuordnungen = [
-    {
-      artKey: "KINDERTAGSBETREUUNG",
-      typKeys: ["HAUS_FUER_KINDER", "KINDERKRIPPE", "KINDERGARTEN"],
-    },
-    {
-      artKey: "GANZTAGSBETREUUNG_GRUNDSCHULKINDER",
-      typKeys: ["HAUS_FUER_KINDER"],
-    },
-    {
-      artKey: "SCHULEN",
-      typKeys: ["GRUNDSCHULE", "MITTELSCHULE"],
-    },
-    {
-      artKey: "SOZIALE_EINRICHTUNGEN",
-      typKeys: ["NACHBARSCHAFTSTREFF"],
-    },
-  ];
-  // Zuordnungen für die Infrastruktureinrichtungen anwenden
-  zuordnungen.forEach(({ artKey, typKeys }) => {
-    const artIndex = einrichtungen.value.findIndex((lookupEntryArray) =>
-      lookupEntryArray.some((lookupEntry) => lookupEntry.key === artKey),
-    );
-    if (artIndex !== -1) {
-      const typ = lookupStore.infrastruktureinrichtungTyp.find(
-        (typ: LookupEntryDto) => typ?.key && typKeys.includes(typ.key as string),
-      );
-      if (typ) {
-        einrichtungen.value[artIndex].push(typ);
-      }
-    }
-  });
-}
 </script>
