@@ -23,8 +23,8 @@ vi.mock("vue-router", () => ({
 
 let wrapper: VueWrapper;
 
-function mountComponent(): VueWrapper {
-  return mount(MeineVorgaengeListe, { shallow: true });
+function mountComponent(renderStubDefaultSlot = false): VueWrapper {
+  return mount(MeineVorgaengeListe, { shallow: true, global: { renderStubDefaultSlot } });
 }
 
 describe("MeineVorgaengeListeTest.spec.ts", () => {
@@ -269,6 +269,22 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(mockSearchForEntities).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Links zu den Vorgängen", () => {
+    test("verlinkt die Vorgänge, damit sie in einem neuen Tab geöffnet werden können", async () => {
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "abfrage-1" }], numberOfPages: 1, page: 1 });
+      wrapper = mountComponent(true);
+      await flushPromises();
+      expect(wrapper.find("#meine_vorgaenge_item_0").attributes("to")).toBe("/abfrage/abfrage-1");
+    });
+
+    test("erzeugt ohne ID keinen Link", async () => {
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ name: "ohne ID" }], numberOfPages: 1, page: 1 });
+      wrapper = mountComponent(true);
+      await flushPromises();
+      expect(wrapper.find("#meine_vorgaenge_item_0").attributes("to")).toBeUndefined();
     });
   });
 

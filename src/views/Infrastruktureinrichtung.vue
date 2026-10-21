@@ -206,6 +206,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { TAB_TITLE_INFRASTRUKTUREINRICHTUNG, useTabTitle } from "@/composables/TabTitle";
 import { useToast, TYPE } from "vue-toastification";
 import { useInfrastruktureinrichtungApi } from "@/composables/requests/InfrastruktureinrichtungApi";
 import {
@@ -248,6 +249,12 @@ const deleteDialogOpen = ref(false);
 const isNew = ref(true);
 const mode = ref(DisplayMode.UNDEFINED);
 const infrastruktureinrichtung = ref(new InfrastruktureinrichtungModel(createInfrastruktureinrichtungDto()));
+useTabTitle(
+  infrastruktureinrichtung,
+  (infrastruktureinrichtung) => infrastruktureinrichtung.nameEinrichtung,
+  isNew,
+  TAB_TITLE_INFRASTRUKTUREINRICHTUNG,
+);
 
 const isEditable = computed(
   () => isRoleAdminOrSachbearbeitung.value || isRoleAdminOrInfrastruktureinrichtungSchreibend.value,

@@ -407,6 +407,7 @@ import {
 } from "@/types/common/Abfrage";
 import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { TAB_TITLE_ABFRAGE, useTabTitle } from "@/composables/TabTitle";
 import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
@@ -469,6 +470,7 @@ let anmerkung = "";
 const abfrage = ref(new BauleitplanverfahrenModel(createBauleitplanverfahrenDto()));
 const isNew = ref(true);
 const selected = ref<AbfrageDtoWithForm>(abfrage.value);
+useTabTitle(abfrage, (abfrage) => abfrage.name, isNew, TAB_TITLE_ABFRAGE);
 const openForm = ref(AbfrageFormType.BAULEITPLANVERFAHREN);
 const dialogTextStatus = ref("");
 const possibleTransitions = ref<TransitionDto[]>([]);
