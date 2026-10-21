@@ -18,7 +18,7 @@ export interface TabTitleBezeichnung {
 }
 
 export const TAB_TITLE_ABFRAGE: TabTitleBezeichnung = { neu: "Neue Abfrage", praefix: "Abfrage" };
-export const TAB_TITLE_BAUVORHABEN: TabTitleBezeichnung = { neu: "Neues Bauvorhaben", praefix: "Vorhaben" };
+export const TAB_TITLE_BAUVORHABEN: TabTitleBezeichnung = { neu: "Neues Vorhaben", praefix: "Vorhaben" };
 export const TAB_TITLE_INFRASTRUKTUREINRICHTUNG: TabTitleBezeichnung = {
   neu: "Neue Infrastruktureinrichtung",
   praefix: "Einrichtung",

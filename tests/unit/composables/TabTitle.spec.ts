@@ -44,7 +44,7 @@ describe("TabTitle.spec.ts", () => {
 
     test("zeigt bei neuen Objekten unabhängig vom Namen einen Text für das neue Objekt", () => {
       expect(createTabTitle(TAB_TITLE_ABFRAGE, "Abfrage 1", true)).toBe("Neue Abfrage");
-      expect(createTabTitle(TAB_TITLE_BAUVORHABEN, undefined, true)).toBe("Neues Bauvorhaben");
+      expect(createTabTitle(TAB_TITLE_BAUVORHABEN, undefined, true)).toBe("Neues Vorhaben");
       expect(createTabTitle(TAB_TITLE_INFRASTRUKTUREINRICHTUNG, "", true)).toBe("Neue Infrastruktureinrichtung");
     });
 
