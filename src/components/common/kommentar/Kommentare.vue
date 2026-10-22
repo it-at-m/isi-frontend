@@ -147,6 +147,7 @@ async function saveKommentar(
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
       kommentare.value.unshift(createNewUnsavedKommentar());
+      toast.success("Der Kommentar wurde erfolgreich angelegt");
     } else {
       if (props.context === Context.BAUVORHABEN) {
         model = new KommentarBauvorhabenModel(await kommentarApi.updateKommentarForBauvorhaben(kommentar));
@@ -160,6 +161,7 @@ async function saveKommentar(
       }
       model.isDirty = false;
       replaceSavedKommentarInKommentare(model);
+      toast.success("Der Kommentar wurde erfolgreich aktualisiert");
     }
   } else {
     toast.error(validationMessage, { timeout: false });
