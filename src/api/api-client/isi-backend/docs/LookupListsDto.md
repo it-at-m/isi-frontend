@@ -32,6 +32,7 @@ Name | Type
 `sobonOrientierungswertJahrWithoutStandortabfrage` | [LookupListDto](LookupListDto.md)
 `bauratenmethodik` | [LookupListDto](LookupListDto.md)
 `kooperation` | [LookupListDto](LookupListDto.md)
+`infrastruktureinrichtungArt` | [LookupListModel](LookupListModel.md)
 
 ## Example
 
@@ -66,6 +67,7 @@ const example = {
   "sobonOrientierungswertJahrWithoutStandortabfrage": null,
   "bauratenmethodik": null,
   "kooperation": null,
+  "infrastruktureinrichtungArt": null,
 } satisfies LookupListsDto
 
 console.log(example)
