@@ -282,18 +282,19 @@ export class KommentareApi extends runtime.BaseAPI {
     /**
      * Löschen eines Kommentars eines Bauvorhabens
      */
-    async deleteKommentarForBauvorhabenRaw(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteKommentarForBauvorhabenRaw(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const requestOptions = await this.deleteKommentarForBauvorhabenRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Löschen eines Kommentars eines Bauvorhabens
      */
-    async deleteKommentarForBauvorhaben(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteKommentarForBauvorhabenRaw(requestParameters, initOverrides);
+    async deleteKommentarForBauvorhaben(requestParameters: DeleteKommentarForBauvorhabenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.deleteKommentarForBauvorhabenRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -326,18 +327,19 @@ export class KommentareApi extends runtime.BaseAPI {
     /**
      * Löschen eines Kommentars einer Infrastruktureinrichtung
      */
-    async deleteKommentarForInfrastruktureinrichtungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteKommentarForInfrastruktureinrichtungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const requestOptions = await this.deleteKommentarForInfrastruktureinrichtungRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Löschen eines Kommentars einer Infrastruktureinrichtung
      */
-    async deleteKommentarForInfrastruktureinrichtung(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+    async deleteKommentarForInfrastruktureinrichtung(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.deleteKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -370,18 +372,19 @@ export class KommentareApi extends runtime.BaseAPI {
     /**
      * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
      */
-    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const requestOptions = await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
      */
-    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

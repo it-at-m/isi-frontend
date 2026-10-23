@@ -221,7 +221,7 @@ No authorization required
 
 ## deleteKommentarForBauvorhaben
 
-> deleteKommentarForBauvorhaben(id)
+> object deleteKommentarForBauvorhaben(id)
 
 Löschen eines Kommentars eines Bauvorhabens
 
@@ -264,7 +264,7 @@ example().catch(console.error);
 
 ### Return type
 
-`void` (Empty response body)
+**object**
 
 ### Authorization
 
@@ -288,7 +288,7 @@ No authorization required
 
 ## deleteKommentarForInfrastruktureinrichtung
 
-> deleteKommentarForInfrastruktureinrichtung(id)
+> object deleteKommentarForInfrastruktureinrichtung(id)
 
 Löschen eines Kommentars einer Infrastruktureinrichtung
 
@@ -331,7 +331,7 @@ example().catch(console.error);
 
 ### Return type
 
-`void` (Empty response body)
+**object**
 
 ### Authorization
 
@@ -355,7 +355,7 @@ No authorization required
 
 ## deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung
 
-> deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(id)
+> object deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(id)
 
 Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
 
@@ -398,7 +398,7 @@ example().catch(console.error);
 
 ### Return type
 
-`void` (Empty response body)
+**object**
 
 ### Authorization
 
