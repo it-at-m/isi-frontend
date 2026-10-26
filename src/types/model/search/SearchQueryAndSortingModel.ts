@@ -18,7 +18,8 @@ class SearchQueryAndSortingModel {
       this.selectHausFuerKinder &&
       this.selectKinderkrippe &&
       this.selectKindergarten &&
-      this.selectMittelschule
+      this.selectMittelschule &&
+      this.selectNachbarschaftstreff
     );
   }
 
@@ -33,7 +34,8 @@ class SearchQueryAndSortingModel {
       !this.selectHausFuerKinder &&
       !this.selectKinderkrippe &&
       !this.selectKindergarten &&
-      !this.selectMittelschule
+      !this.selectMittelschule &&
+      !this.selectNachbarschaftstreff
     );
   }
 }

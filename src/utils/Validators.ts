@@ -12,11 +12,13 @@ import {
   GsNachmittagBetreuungDto,
   HausFuerKinderDto,
   InfrastruktureinrichtungDto,
+  InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   KindergartenDto,
   KinderkrippeDto,
   KommentarBauvorhabenDto,
   KommentarInfrastruktureinrichtungDto,
   MittelschuleDto,
+  NachbarschaftstreffDto,
   SobonBerechnungDtoSobonOrientierungswertJahrSobonUrsaechlichEnum,
 } from "@/api/api-client/isi-backend";
 import {
@@ -538,6 +540,17 @@ export function findFaultInMittelschuleForSave(mittelschule: MittelschuleDto): s
   return findFaultInInfrastruktureinrichtung(mittelschule);
 }
 
+export function findFaultInNachbarschaftstreffForSave(nachbarschaftstreff: NachbarschaftstreffDto): string | null {
+  let validationMessage: string | null;
+  validationMessage = findFaultInInfrastruktureinrichtung(nachbarschaftstreff);
+  if (_.isNil(validationMessage)) {
+    if (nachbarschaftstreff.sobonRelevant === UncertainBoolean.Unspecified) {
+      validationMessage = "Bitte angeben, ob die Einrichtung SoBoN-relevant ist";
+    }
+  }
+  return validationMessage;
+}
+
 export function findFaultInVerteilungGeschossflaecheWohnenBaugebiet(baugebiet: BaugebietDto): string | null {
   let validationMessage: string | null = null;
   if (!baugebiet.technical && !_.isEmpty(baugebiet.bauraten)) {
@@ -681,7 +694,9 @@ function findFaultInInfrastruktureinrichtung(infrastruktureinrichtung: Infrastru
   }
   if (
     _.isNil(infrastruktureinrichtung.fertigstellungsjahr) &&
-    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand
+    infrastruktureinrichtung.status !== InfrastruktureinrichtungDtoStatusEnum.Bestand &&
+    infrastruktureinrichtung.infrastruktureinrichtungTyp !==
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
   ) {
     return "Bitte das Jahr der Fertigstellung der Infrastruktureinrichtung angeben";
   }

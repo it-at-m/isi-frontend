@@ -17,6 +17,7 @@ Name | Type
 `selectKindergarten` | boolean
 `selectKinderkrippe` | boolean
 `selectMittelschule` | boolean
+`selectNachbarschaftstreff` | boolean
 `filterStadtbezirkNummer` | Array&lt;string&gt;
 `filterKitaplanungsbereichKitaPlbT` | Array&lt;string&gt;
 `filterGrundschulsprengelNummer` | Array&lt;number&gt;
@@ -54,6 +55,7 @@ const example = {
   "selectKindergarten": null,
   "selectKinderkrippe": null,
   "selectMittelschule": null,
+  "selectNachbarschaftstreff": null,
   "filterStadtbezirkNummer": null,
   "filterKitaplanungsbereichKitaPlbT": null,
   "filterGrundschulsprengelNummer": null,

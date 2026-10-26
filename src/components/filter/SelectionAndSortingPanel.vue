@@ -234,6 +234,23 @@
             </template>
             <span> Die Häuser für Kinder werden in die Suche miteinbezogen. </span>
           </v-tooltip>
+          <v-tooltip
+            location="top"
+            offset="20"
+            open-delay="500"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-checkbox
+                v-model="searchQueryAndSorting.selectNachbarschaftstreff"
+                :label="'Nachbarschaftstreff'"
+                color="grey-darken-1"
+                hide-details
+                density="compact"
+                v-bind="activatorProps"
+              />
+            </template>
+            <span> Die Nachbarschaftstreffs werden in die Suche miteinbezogen. </span>
+          </v-tooltip>
         </v-col>
       </v-row>
       <v-divider />
@@ -317,6 +334,7 @@ function selectAll(): void {
   searchQueryAndSorting.value.selectKinderkrippe = true;
   searchQueryAndSorting.value.selectKindergarten = true;
   searchQueryAndSorting.value.selectMittelschule = true;
+  searchQueryAndSorting.value.selectNachbarschaftstreff = true;
 }
 
 function deselectAll() {
@@ -330,6 +348,7 @@ function deselectAll() {
   searchQueryAndSorting.value.selectKinderkrippe = false;
   searchQueryAndSorting.value.selectKindergarten = false;
   searchQueryAndSorting.value.selectMittelschule = false;
+  searchQueryAndSorting.value.selectNachbarschaftstreff = false;
 }
 
 const iconForAllObjectTypesSelected = computed(() => {
