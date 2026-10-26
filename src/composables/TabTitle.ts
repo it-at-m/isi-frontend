@@ -1,0 +1,87 @@
+import { onUnmounted, ref, watch, watchEffect, type Ref, type WatchSource } from "vue";
+import _ from "lodash";
+
+/**
+ * Titel des Browsertabs, wenn kein Objekt geöffnet ist. Entspricht dem Titel in der index.html.
+ */
+export const DEFAULT_TAB_TITLE = "ISI - Informationssystem für soziale Infrastrukturplanung";
+
+export interface TabTitleBezeichnung {
+  /**
+   * Titel für ein noch nicht gespeichertes Objekt, z.B. "Neue Abfrage".
+   */
+  neu: string;
+  /**
+   * Art des Objekts, die dem Namen eines gespeicherten Objekts vorangestellt wird, z.B. "Abfrage".
+   */
+  praefix: string;
+}
+
+export const TAB_TITLE_ABFRAGE: TabTitleBezeichnung = { neu: "Neue Abfrage", praefix: "Abfrage" };
+export const TAB_TITLE_BAUVORHABEN: TabTitleBezeichnung = { neu: "Neues Vorhaben", praefix: "Vorhaben" };
+export const TAB_TITLE_INFRASTRUKTUREINRICHTUNG: TabTitleBezeichnung = {
+  neu: "Neue Infrastruktureinrichtung",
+  praefix: "Einrichtung",
+};
+
+/**
+ * Ermittelt den Titel des Browsertabs für ein Objekt.
+ *
+ * Solange der Name eines gespeicherten Objekts noch nicht geladen ist, wird der Standardtitel verwendet.
+ */
+export function createTabTitle(bezeichnung: TabTitleBezeichnung, name: string | undefined, isNew: boolean): string {
+  if (isNew) {
+    return bezeichnung.neu;
+  }
+  const trimmedName = _.trim(name);
+  return _.isEmpty(trimmedName) ? DEFAULT_TAB_TITLE : `${bezeichnung.praefix}: ${trimmedName}`;
+}
+
+/**
+ * Ermittelt den Namen einer Abfrage für den Titel des Browsertabs. Ist eine gespeicherte Abfragevariante
+ * geöffnet, wird deren Name an den Namen der Abfrage angehängt, z.B. "Innenstadt - Variante 1".
+ *
+ * @param abfrageName Name der Abfrage.
+ * @param abfragevariante die geöffnete Abfragevariante oder undefined, wenn keine Abfragevariante geöffnet ist.
+ */
+export function createAbfrageTabTitleName(
+  abfrageName: string | undefined,
+  abfragevariante?: { id?: string; name?: string },
+): string | undefined {
+  const abfragevarianteName = _.trim(abfragevariante?.name);
+  if (_.isNil(abfragevariante?.id) || _.isEmpty(abfragevarianteName) || _.isEmpty(_.trim(abfrageName))) {
+    return abfrageName;
+  }
+  return `${_.trim(abfrageName)} - ${abfragevarianteName}`;
+}
+
+/**
+ * Zeigt das geöffnete Objekt im Titel des Browsertabs an und setzt beim Verlassen den Standardtitel.
+ *
+ * Der Name wird nur übernommen, wenn das Objekt ausgetauscht wird, also beim Laden und Speichern.
+ * Die Formulare ändern das Objekt dagegen direkt, weshalb Eingaben erst nach dem Speichern im Titel erscheinen.
+ *
+ * @param objekt das in der View geöffnete Objekt. Wird ein Getter übergeben, darf dieser nur die Refs selbst
+ *               lesen und nicht deren Inhalt, damit Eingaben im Formular keine Aktualisierung auslösen.
+ * @param getName liefert den Namen des Objekts.
+ * @param isNew kennzeichnet ein noch nicht gespeichertes Objekt.
+ * @param bezeichnung Texte für die Art des Objekts.
+ */
+export function useTabTitle<T>(
+  objekt: Ref<T> | WatchSource<T>,
+  getName: (objekt: T) => string | undefined,
+  isNew: Ref<boolean>,
+  bezeichnung: TabTitleBezeichnung,
+): void {
+  const gespeicherterName = ref<string | undefined>();
+
+  watch(objekt, (neuesObjekt) => (gespeicherterName.value = getName(neuesObjekt)), { immediate: true });
+
+  watchEffect(() => {
+    document.title = createTabTitle(bezeichnung, gespeicherterName.value, isNew.value);
+  });
+
+  onUnmounted(() => {
+    document.title = DEFAULT_TAB_TITLE;
+  });
+}

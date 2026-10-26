@@ -28,7 +28,7 @@
         :elevation="isHovering ? 6 : 1"
         class="my-2 mx-3 pt-3 scale-transition"
         :disabled="disableAbfrageCard(castToAbfrageSearchResultDto(item))"
-        @click="routeToAbfrageForm(item)"
+        :to="getRouteAbfrageForm(castToAbfrageSearchResultDto(item))"
       >
         <v-card-subtitle
           class="text-black"
@@ -66,7 +66,7 @@
         :id="'search_result_item_' + index"
         :elevation="isHovering ? 6 : 1"
         class="my-2 mx-3 pt-3 scale-transition"
-        @click="routeToBauvorhabenForm(item)"
+        :to="getRouteBauvorhabenForm(castToBauvorhabenSearchResultDto(item))"
       >
         <v-card-subtitle
           class="text-black"
@@ -99,7 +99,7 @@
         :id="'search_result_item_' + index"
         class="my-2 mx-3 pt-3 scale-transition"
         :elevation="isHovering ? 6 : 1"
-        @click="routeToInfrastruktureinrichtungForm(item)"
+        :to="getRouteInfrastruktureinrichtungForm(castToInfrastruktureinrichtungSearchResultDto(item))"
       >
         <v-card-subtitle
           class="text-black"
@@ -194,7 +194,6 @@ import { convertDateForFrontend } from "@/utils/Formatter";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
-import { useRouter } from "vue-router";
 
 interface Props {
   /**
@@ -225,7 +224,6 @@ const NICHT_ANGEGEBEN = "nicht angegeben";
 const pageRequestMutex = new Mutex();
 const lookupStore = useLookupStore();
 const searchStore = useSearchStore();
-const router = useRouter();
 const { searchForEntities } = useSearchApi();
 const { hasOnlyRoleAnwender } = useSecurity();
 const infrastruktureinrichtungTypList = computed(() => lookupStore.infrastruktureinrichtungTyp);
@@ -303,10 +301,14 @@ function castToAbfrageSearchResultDto(searchResult: SearchResultDto): AbfrageSea
   return searchResult as AbfrageSearchResultDto;
 }
 
-function routeToAbfrageForm(abfrageSearchResult: AbfrageSearchResultDto): void {
-  if (!_.isUndefined(abfrageSearchResult.id)) {
-    router.push("/abfrage/" + abfrageSearchResult.id);
-  }
+/**
+ * Die Suchergebnisse sind als Links umgesetzt, damit sie z.B. über das Kontextmenü in einem neuen Tab geöffnet werden können.
+ * Für deaktivierte Abfragen wird kein Link erzeugt.
+ */
+function getRouteAbfrageForm(abfrageSearchResult: AbfrageSearchResultDto): string | undefined {
+  return _.isNil(abfrageSearchResult.id) || disableAbfrageCard(abfrageSearchResult)
+    ? undefined
+    : "/abfrage/" + abfrageSearchResult.id;
 }
 
 function getLookupValueAbfrage(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
@@ -344,10 +346,8 @@ function castToBauvorhabenSearchResultDto(searchResult: SearchResultDto): Bauvor
   return searchResult as BauvorhabenSearchResultDto;
 }
 
-function routeToBauvorhabenForm(bauvorhabenSearchResult: BauvorhabenSearchResultDto): void {
-  if (!_.isNil(bauvorhabenSearchResult.id)) {
-    router.push("/bauvorhaben/" + bauvorhabenSearchResult.id);
-  }
+function getRouteBauvorhabenForm(bauvorhabenSearchResult: BauvorhabenSearchResultDto): string | undefined {
+  return _.isNil(bauvorhabenSearchResult.id) ? undefined : "/bauvorhaben/" + bauvorhabenSearchResult.id;
 }
 function getFormattedGrundstuecksgroesse(grundstuecksgroesse: number | undefined): string {
   return _.isNil(grundstuecksgroesse) ? "" : grundstuecksgroesse.toLocaleString("de-DE");
@@ -375,12 +375,12 @@ function disableAbfrageCard(item: AbfrageSearchResultDto): boolean {
   return result;
 }
 
-function routeToInfrastruktureinrichtungForm(
+function getRouteInfrastruktureinrichtungForm(
   infrastruktureinrichtungSearchResult: InfrastruktureinrichtungSearchResultDto,
-): void {
-  if (!_.isNil(infrastruktureinrichtungSearchResult.id)) {
-    router.push("/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResult.id);
-  }
+): string | undefined {
+  return _.isNil(infrastruktureinrichtungSearchResult.id)
+    ? undefined
+    : "/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResult.id;
 }
 
 function getLookupValueInfrastruktureinrichtung(
