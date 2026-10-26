@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { LookupListModel } from './LookupListModel';
+import {
+    LookupListModelFromJSON,
+    LookupListModelFromJSONTyped,
+    LookupListModelToJSON,
+    LookupListModelToJSONTyped,
+} from './LookupListModel';
 import type { LookupListDto } from './LookupListDto';
 import {
     LookupListDtoFromJSON,
@@ -131,6 +138,10 @@ export interface LookupListsDto {
      * 
      */
     kooperation?: LookupListDto;
+    /**
+     * 
+     */
+    infrastruktureinrichtungArt?: LookupListModel;
 }
 
 /**
@@ -176,6 +187,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'sobonOrientierungswertJahrWithoutStandortabfrage': json['sobonOrientierungswertJahrWithoutStandortabfrage'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
         'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : LookupListDtoFromJSON(json['bauratenmethodik']),
         'kooperation': json['kooperation'] == null ? undefined : LookupListDtoFromJSON(json['kooperation']),
+        'infrastruktureinrichtungArt': json['infrastruktureinrichtungArt'] == null ? undefined : LookupListModelFromJSON(json['infrastruktureinrichtungArt']),
     };
 }
 
@@ -216,6 +228,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value['sobonOrientierungswertJahrWithoutStandortabfrage']),
         'bauratenmethodik': LookupListDtoToJSON(value['bauratenmethodik']),
         'kooperation': LookupListDtoToJSON(value['kooperation']),
+        'infrastruktureinrichtungArt': LookupListModelToJSON(value['infrastruktureinrichtungArt']),
     };
 }
 
