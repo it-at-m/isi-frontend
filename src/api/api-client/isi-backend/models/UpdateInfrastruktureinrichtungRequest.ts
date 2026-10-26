@@ -55,13 +55,20 @@ import {
     MittelschuleDtoFromJSONTyped,
     MittelschuleDtoToJSON,
 } from './MittelschuleDto';
+import type { NachbarschaftstreffDto } from './NachbarschaftstreffDto';
+import {
+    instanceOfNachbarschaftstreffDto,
+    NachbarschaftstreffDtoFromJSON,
+    NachbarschaftstreffDtoFromJSONTyped,
+    NachbarschaftstreffDtoToJSON,
+} from './NachbarschaftstreffDto';
 
 /**
  * @type UpdateInfrastruktureinrichtungRequest
  * 
  * @export
  */
-export type UpdateInfrastruktureinrichtungRequest = GrundschuleDto | GsNachmittagBetreuungDto | HausFuerKinderDto | KindergartenDto | KinderkrippeDto | MittelschuleDto;
+export type UpdateInfrastruktureinrichtungRequest = GrundschuleDto | GsNachmittagBetreuungDto | HausFuerKinderDto | KindergartenDto | KinderkrippeDto | MittelschuleDto | NachbarschaftstreffDto;
 
 export function UpdateInfrastruktureinrichtungRequestFromJSON(json: any): UpdateInfrastruktureinrichtungRequest {
     return UpdateInfrastruktureinrichtungRequestFromJSONTyped(json, false);
@@ -91,6 +98,9 @@ export function UpdateInfrastruktureinrichtungRequestFromJSONTyped(json: any, ig
     }
     if (instanceOfMittelschuleDto(json)) {
         return MittelschuleDtoFromJSONTyped(json, true);
+    }
+    if (instanceOfNachbarschaftstreffDto(json)) {
+        return NachbarschaftstreffDtoFromJSONTyped(json, true);
     }
     return {} as any;
 }
@@ -123,6 +133,9 @@ export function UpdateInfrastruktureinrichtungRequestToJSONTyped(value?: UpdateI
     }
     if (instanceOfMittelschuleDto(value)) {
         return MittelschuleDtoToJSON(value as MittelschuleDto);
+    }
+    if (instanceOfNachbarschaftstreffDto(value)) {
+        return NachbarschaftstreffDtoToJSON(value as NachbarschaftstreffDto);
     }
     return {};
 }

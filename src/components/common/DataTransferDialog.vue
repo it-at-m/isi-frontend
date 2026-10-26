@@ -238,6 +238,7 @@ function createQuery(searchText: string) {
     selectKindergarten: false,
     selectKinderkrippe: false,
     selectMittelschule: false,
+    selectNachbarschaftstreff: false,
     page: 1,
     pageSize: 20,
     sortBy: SearchQueryAndSortingDtoSortByEnum.LastModifiedDateTime,

@@ -85,6 +85,10 @@ export interface FilterSettingsDto {
     /**
      * 
      */
+    selectNachbarschaftstreff: boolean;
+    /**
+     * 
+     */
     stadtbezirkNummer?: Array<string>;
     /**
      * 
@@ -196,12 +200,8 @@ export type FilterSettingsDtoVerfahrensstandEnum = typeof FilterSettingsDtoVerfa
 export const FilterSettingsDtoInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type FilterSettingsDtoInfrastruktureinrichtungStatusEnum = typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum[keyof typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum];
@@ -223,6 +223,7 @@ export function instanceOfFilterSettingsDto(value: object): value is FilterSetti
     if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
     if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
     if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('selectNachbarschaftstreff' in value) || value['selectNachbarschaftstreff'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
@@ -249,6 +250,7 @@ export function FilterSettingsDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'selectNachbarschaftstreff': json['selectNachbarschaftstreff'],
         'stadtbezirkNummer': json['stadtbezirkNummer'] == null ? undefined : json['stadtbezirkNummer'],
         'kitaplanungsbereichKitaPlbT': json['kitaplanungsbereichKitaPlbT'] == null ? undefined : json['kitaplanungsbereichKitaPlbT'],
         'grundschulsprengelNummer': json['grundschulsprengelNummer'] == null ? undefined : json['grundschulsprengelNummer'],
@@ -290,6 +292,7 @@ export function FilterSettingsDtoToJSONTyped(value?: FilterSettingsDto | null, i
         'selectKindergarten': value['selectKindergarten'],
         'selectKinderkrippe': value['selectKinderkrippe'],
         'selectMittelschule': value['selectMittelschule'],
+        'selectNachbarschaftstreff': value['selectNachbarschaftstreff'],
         'stadtbezirkNummer': value['stadtbezirkNummer'],
         'kitaplanungsbereichKitaPlbT': value['kitaplanungsbereichKitaPlbT'],
         'grundschulsprengelNummer': value['grundschulsprengelNummer'],

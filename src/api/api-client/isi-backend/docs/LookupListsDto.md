@@ -23,6 +23,7 @@ Name | Type
 `artBaulicheNutzung` | [LookupListDto](LookupListDto.md)
 `artBaulicheNutzungBauvorhaben` | [LookupListDto](LookupListDto.md)
 `statusInfrastruktureinrichtung` | [LookupListDto](LookupListDto.md)
+`anlassPlanung` | [LookupListDto](LookupListDto.md)
 `einrichtungstraeger` | [LookupListDto](LookupListDto.md)
 `einrichtungstraegerSchulen` | [LookupListDto](LookupListDto.md)
 `infrastruktureinrichtungTyp` | [LookupListDto](LookupListDto.md)
@@ -30,6 +31,7 @@ Name | Type
 `sobonOrientierungswertJahr` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahrWithoutStandortabfrage` | [LookupListDto](LookupListDto.md)
 `bauratenmethodik` | [LookupListDto](LookupListDto.md)
+`kooperation` | [LookupListDto](LookupListDto.md)
 
 ## Example
 
@@ -55,6 +57,7 @@ const example = {
   "artBaulicheNutzung": null,
   "artBaulicheNutzungBauvorhaben": null,
   "statusInfrastruktureinrichtung": null,
+  "anlassPlanung": null,
   "einrichtungstraeger": null,
   "einrichtungstraegerSchulen": null,
   "infrastruktureinrichtungTyp": null,
@@ -62,6 +65,7 @@ const example = {
   "sobonOrientierungswertJahr": null,
   "sobonOrientierungswertJahrWithoutStandortabfrage": null,
   "bauratenmethodik": null,
+  "kooperation": null,
 } satisfies LookupListsDto
 
 console.log(example)

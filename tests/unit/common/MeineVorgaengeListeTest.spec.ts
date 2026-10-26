@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { mount, type VueWrapper } from "@vue/test-utils";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue";
+import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 
 const mockSearchForEntities = vi.fn();
 const mockGetStartseitenEinstellung = vi.fn();
@@ -22,8 +23,8 @@ vi.mock("vue-router", () => ({
 
 let wrapper: VueWrapper;
 
-function mountComponent(): VueWrapper {
-  return mount(MeineVorgaengeListe, { shallow: true });
+function mountComponent(renderStubDefaultSlot = false): VueWrapper {
+  return mount(MeineVorgaengeListe, { shallow: true, global: { renderStubDefaultSlot } });
 }
 
 describe("MeineVorgaengeListeTest.spec.ts", () => {
@@ -58,6 +59,7 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(query.selectKindergarten).toBe(false);
       expect(query.selectKinderkrippe).toBe(false);
       expect(query.selectMittelschule).toBe(false);
+      expect(query.selectNachbarschaftstreff).toBe(false);
     });
 
     test("setzt für 'Alle Vorgänge' keinen Statusfilter", () => {
@@ -69,10 +71,16 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const vm = wrapper.vm as any;
       vm.schnellfilter = "ZUR_BEARBEITUNG";
       await wrapper.vm.$nextTick();
-      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([
-        StatusAbfrage.EinplanungBedarfe,
-        StatusAbfrage.Angelegt,
-      ]);
+      expect(vm.createSearchQuery(1).filterStatusAbfrage).toEqual([StatusAbfrage.EinplanungBedarfe]);
+    });
+
+    test("beschränkt 'Entwürfe' auf die eigenen Abfragen im Status ANGELEGT", async () => {
+      const vm = wrapper.vm as any;
+      vm.schnellfilter = "ENTWUERFE";
+      await wrapper.vm.$nextTick();
+      const query = vm.createSearchQuery(1);
+      expect(query.filterStatusAbfrage).toEqual([StatusAbfrage.Angelegt]);
+      expect(query.filterNurEigeneAbfragen).toBe(true);
     });
 
     test("sortiert die Bearbeitungsfrist aufsteigend, die übrigen Kriterien absteigend", async () => {
@@ -265,19 +273,61 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
     });
   });
 
+  describe("Links zu den Vorgängen", () => {
+    test("verlinkt die Vorgänge, damit sie in einem neuen Tab geöffnet werden können", async () => {
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "abfrage-1" }], numberOfPages: 1, page: 1 });
+      wrapper = mountComponent(true);
+      await flushPromises();
+      expect(wrapper.find("#meine_vorgaenge_item_0").attributes("to")).toBe("/abfrage/abfrage-1");
+    });
+
+    test("erzeugt ohne ID keinen Link", async () => {
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ name: "ohne ID" }], numberOfPages: 1, page: 1 });
+      wrapper = mountComponent(true);
+      await flushPromises();
+      expect(wrapper.find("#meine_vorgaenge_item_0").attributes("to")).toBeUndefined();
+    });
+  });
+
   describe("Voreinstellungen aus dem Profil", () => {
     test("werden beim Mounten übernommen", async () => {
+      // Frischer Store, da die Einstellungen nur einmal je Session geladen werden.
+      setActivePinia(createPinia());
       mockGetStartseitenEinstellung.mockResolvedValue({
         schnellfilter: "ZUR_KENNTNIS",
         sortBy: "FRIST_BEARBEITUNG",
         sortOrder: "ASC",
       });
       const eigenerWrapper = mountComponent();
-      await eigenerWrapper.vm.$nextTick();
-      await eigenerWrapper.vm.$nextTick();
+      await flushPromises();
       const vm = eigenerWrapper.vm as any;
       expect(vm.schnellfilter).toBe("ZUR_KENNTNIS");
       expect(vm.sortierung).toBe("FRIST_BEARBEITUNG");
+    });
+
+    test("laden beim Mounten nur einmal, auch wenn sie von den Standardwerten abweichen", async () => {
+      setActivePinia(createPinia());
+      mockSearchForEntities.mockClear();
+      mockGetStartseitenEinstellung.mockResolvedValue({
+        schnellfilter: "ZUR_KENNTNIS",
+        sortBy: "FRIST_BEARBEITUNG",
+        sortOrder: "ASC",
+      });
+      mountComponent();
+      await flushPromises();
+      expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
+      expect(mockSearchForEntities.mock.calls[0][0].sortBy).toBe("FRIST_BEARBEITUNG");
+    });
+
+    test("werden nach dem Speichern im Profil sofort übernommen", async () => {
+      const vm = wrapper.vm as any;
+      expect(vm.schnellfilter).toBe("ALLE");
+
+      useStartseitenEinstellungStore().setEinstellung("ABGESCHLOSSEN", "LAST_MODIFIED_DATE_TIME");
+      await flushPromises();
+
+      expect(vm.schnellfilter).toBe("ABGESCHLOSSEN");
+      expect(vm.sortierung).toBe("LAST_MODIFIED_DATE_TIME");
     });
 
     test("fallen bei einem Fehler auf die Standardwerte zurück", () => {

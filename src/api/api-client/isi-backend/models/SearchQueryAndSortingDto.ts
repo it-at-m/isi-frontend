@@ -81,6 +81,10 @@ export interface SearchQueryAndSortingDto {
     /**
      * 
      */
+    selectNachbarschaftstreff: boolean;
+    /**
+     * 
+     */
     filterStadtbezirkNummer?: Array<string>;
     /**
      * 
@@ -141,6 +145,10 @@ export interface SearchQueryAndSortingDto {
     /**
      * 
      */
+    filterAnlassPlanung?: Array<SearchQueryAndSortingDtoFilterAnlassPlanungEnum>;
+    /**
+     * 
+     */
     page?: number;
     /**
      * 
@@ -188,15 +196,26 @@ export type SearchQueryAndSortingDtoFilterVerfahrensstandEnum = typeof SearchQue
 export const SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
-    GesichertePlanungNeueEinr: 'GESICHERTE_PLANUNG_NEUE_EINR',
-    GesichertePlanungErwPlaetzeBestEinr: 'GESICHERTE_PLANUNG_ERW_PLAETZE_BEST_EINR',
-    GesichertePlanungTfKitaStandort: 'GESICHERTE_PLANUNG_TF_KITA_STANDORT',
-    GesichertePlanungReduzierungPlaetze: 'GESICHERTE_PLANUNG_REDUZIERUNG_PLAETZE',
-    GesichertePlanungInterimsstandort: 'GESICHERTE_PLANUNG_INTERIMSSTANDORT',
-    UngesichertePlanungTfKitaStandort: 'UNGESICHERTE_PLANUNG_TF_KITA_STANDORT',
+    GesichertePlanung: 'GESICHERTE_PLANUNG',
+    PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
     Bestand: 'BESTAND',
 } as const;
 export type SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryAndSortingDtoFilterInfrastruktureinrichtungStatusEnum];
+
+/**
+ * @export
+ */
+export const SearchQueryAndSortingDtoFilterAnlassPlanungEnum = {
+    Unspecified: 'UNSPECIFIED',
+    NeubauBebauungsplan: 'NEUBAU_BEBAUUNGSPLAN',
+    NeubauBauGb: 'NEUBAU_BAU_GB',
+    Bauprogramm: 'BAUPROGRAMM',
+    NeueEinrichtungPrivaterTraeger: 'NEUE_EINRICHTUNG_PRIVATER_TRAEGER',
+    ReduzierungPlaetzeBeiBestandseinrichtung: 'REDUZIERUNG_PLAETZE_BEI_BESTANDSEINRICHTUNG',
+    ErweiterungBestehenderEinrichtung: 'ERWEITERUNG_BESTEHENDER_EINRICHTUNG',
+    Schliessung: 'SCHLIESSUNG',
+} as const;
+export type SearchQueryAndSortingDtoFilterAnlassPlanungEnum = typeof SearchQueryAndSortingDtoFilterAnlassPlanungEnum[keyof typeof SearchQueryAndSortingDtoFilterAnlassPlanungEnum];
 
 /**
  * @export
@@ -234,6 +253,7 @@ export function instanceOfSearchQueryAndSortingDto(value: object): value is Sear
     if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
     if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
     if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('selectNachbarschaftstreff' in value) || value['selectNachbarschaftstreff'] === undefined) return false;
     if (!('sortBy' in value) || value['sortBy'] === undefined) return false;
     if (!('sortOrder' in value) || value['sortOrder'] === undefined) return false;
     return true;
@@ -260,6 +280,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'selectNachbarschaftstreff': json['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': json['filterStadtbezirkNummer'] == null ? undefined : json['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': json['filterKitaplanungsbereichKitaPlbT'] == null ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': json['filterGrundschulsprengelNummer'] == null ? undefined : json['filterGrundschulsprengelNummer'],
@@ -275,6 +296,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'filterGfWohnenGeplantBis': json['filterGfWohnenGeplantBis'] == null ? undefined : json['filterGfWohnenGeplantBis'],
         'filterVerfahrensstand': json['filterVerfahrensstand'] == null ? undefined : json['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': json['filterInfrastruktureinrichtungStatus'] == null ? undefined : json['filterInfrastruktureinrichtungStatus'],
+        'filterAnlassPlanung': json['filterAnlassPlanung'] == null ? undefined : json['filterAnlassPlanung'],
         'page': json['page'] == null ? undefined : json['page'],
         'pageSize': json['pageSize'] == null ? undefined : json['pageSize'],
         'sortBy': json['sortBy'],
@@ -304,6 +326,7 @@ export function SearchQueryAndSortingDtoToJSONTyped(value?: SearchQueryAndSortin
         'selectKindergarten': value['selectKindergarten'],
         'selectKinderkrippe': value['selectKinderkrippe'],
         'selectMittelschule': value['selectMittelschule'],
+        'selectNachbarschaftstreff': value['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': value['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': value['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': value['filterGrundschulsprengelNummer'],
@@ -319,6 +342,7 @@ export function SearchQueryAndSortingDtoToJSONTyped(value?: SearchQueryAndSortin
         'filterGfWohnenGeplantBis': value['filterGfWohnenGeplantBis'],
         'filterVerfahrensstand': value['filterVerfahrensstand'],
         'filterInfrastruktureinrichtungStatus': value['filterInfrastruktureinrichtungStatus'],
+        'filterAnlassPlanung': value['filterAnlassPlanung'],
         'page': value['page'],
         'pageSize': value['pageSize'],
         'sortBy': value['sortBy'],

@@ -17,6 +17,7 @@ Name | Type
 `selectKindergarten` | boolean
 `selectKinderkrippe` | boolean
 `selectMittelschule` | boolean
+`selectNachbarschaftstreff` | boolean
 `filterStadtbezirkNummer` | Array&lt;string&gt;
 `filterKitaplanungsbereichKitaPlbT` | Array&lt;string&gt;
 `filterGrundschulsprengelNummer` | Array&lt;number&gt;
@@ -32,6 +33,7 @@ Name | Type
 `filterGfWohnenGeplantBis` | number
 `filterVerfahrensstand` | Array&lt;string&gt;
 `filterInfrastruktureinrichtungStatus` | Array&lt;string&gt;
+`filterAnlassPlanung` | Array&lt;string&gt;
 `page` | number
 `pageSize` | number
 `sortBy` | string
@@ -55,6 +57,7 @@ const example = {
   "selectKindergarten": null,
   "selectKinderkrippe": null,
   "selectMittelschule": null,
+  "selectNachbarschaftstreff": null,
   "filterStadtbezirkNummer": null,
   "filterKitaplanungsbereichKitaPlbT": null,
   "filterGrundschulsprengelNummer": null,
@@ -70,6 +73,7 @@ const example = {
   "filterGfWohnenGeplantBis": null,
   "filterVerfahrensstand": null,
   "filterInfrastruktureinrichtungStatus": null,
+  "filterAnlassPlanung": null,
   "page": null,
   "pageSize": null,
   "sortBy": null,

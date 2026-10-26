@@ -14,6 +14,7 @@ const frontendTemplate = {
   selectKindergarten: false,
   selectKinderkrippe: false,
   selectMittelschule: false,
+  selectNachbarschaftstreff: false,
   sortBy: "NAME",
   sortOrder: "ASC",
   page: 1,
@@ -49,6 +50,7 @@ describe("mapBackendFilterToFrontend", () => {
       selectKindergarten: true,
       selectKinderkrippe: true,
       selectMittelschule: true,
+      selectNachbarschaftstreff: true,
       sortBy: "CREATED_DATE_TIME",
       sortOrder: "DESC",
       page: 2,
@@ -68,6 +70,7 @@ describe("mapBackendFilterToFrontend", () => {
     expect(mapped.selectKindergarten).toBe(true);
     expect(mapped.selectKinderkrippe).toBe(true);
     expect(mapped.selectMittelschule).toBe(true);
+    expect(mapped.selectNachbarschaftstreff).toBe(true);
     expect(mapped.sortBy).toBe("CREATED_DATE_TIME");
     expect(mapped.sortOrder).toBe("DESC");
     expect(mapped.page).toBe(2);
