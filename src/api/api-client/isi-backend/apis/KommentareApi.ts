@@ -43,6 +43,13 @@ export interface CreateKommentarForInfrastruktureinrichtungRequest {
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
 }
 
+export interface CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest {
+    /**
+     * 
+     */
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
+}
+
 export interface DeleteKommentarForBauvorhabenRequest {
     /**
      * 
@@ -51,6 +58,13 @@ export interface DeleteKommentarForBauvorhabenRequest {
 }
 
 export interface DeleteKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
+    id: string;
+}
+
+export interface DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest {
     /**
      * 
      */
@@ -79,6 +93,13 @@ export interface UpdateKommentarForBauvorhabenRequest {
 }
 
 export interface UpdateKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
+}
+
+export interface UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest {
     /**
      * 
      */
@@ -185,6 +206,53 @@ export class KommentareApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung without sending the request
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['kommentarInfrastruktureinrichtungDto'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarInfrastruktureinrichtungDto',
+                'Required parameter "kommentarInfrastruktureinrichtungDto" was null or undefined when calling createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_sozialplanung`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters['kommentarInfrastruktureinrichtungDto']),
+        };
+    }
+
+    /**
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        const requestOptions = await this.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for deleteKommentarForBauvorhaben without sending the request
      */
     async deleteKommentarForBauvorhabenRequestOpts(requestParameters: DeleteKommentarForBauvorhabenRequest): Promise<runtime.RequestOpts> {
@@ -270,6 +338,50 @@ export class KommentareApi extends runtime.BaseAPI {
      */
     async deleteKommentarForInfrastruktureinrichtung(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung without sending the request
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_sozialplanung/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -453,6 +565,53 @@ export class KommentareApi extends runtime.BaseAPI {
      */
     async updateKommentarForInfrastruktureinrichtung(requestParameters: UpdateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
         const response = await this.updateKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung without sending the request
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['kommentarInfrastruktureinrichtungDto'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarInfrastruktureinrichtungDto',
+                'Required parameter "kommentarInfrastruktureinrichtungDto" was null or undefined when calling updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_sozialplanung`;
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters['kommentarInfrastruktureinrichtungDto']),
+        };
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        const requestOptions = await this.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

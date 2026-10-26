@@ -1,7 +1,14 @@
 <template>
   <v-card flat>
-    <v-card-title class="d-flex align-center justify-space-between">
-      <div class="d-flex align-center">
+    <v-card-title
+      class="d-flex align-center justify-space-between"
+      style="gap: 0"
+    >
+      <!-- Links: Titel -->
+      <div
+        class="d-flex align-center"
+        style="min-width: 0"
+      >
         <v-icon
           start
           size="20"
@@ -9,9 +16,11 @@
         >
         <span class="text-subtitle-1">Such- und Filtereinstellungen</span>
       </div>
+
+      <!-- Mitte: Dropdown & Einstellungen -->
       <div
-        class="d-flex align-center"
-        style="min-width: 0"
+        class="d-flex align-center justify-center flex-grow-1"
+        style="min-width: 0; max-width: 400px; margin: 0 auto"
       >
         <v-tooltip
           text="Filter löschen oder umbenennen"
@@ -29,7 +38,6 @@
             </v-btn>
           </template>
         </v-tooltip>
-
         <v-select
           v-model="selectedFilter"
           :items="filterDropdownItems"
@@ -38,7 +46,7 @@
           density="compact"
           variant="solo"
           hide-details
-          style="width: 300px"
+          style="width: 300px; max-width: 300px"
           placeholder="Filtereinstellungen übernehmen"
           :menu-props="{ maxWidth: '300px', minWidth: '300px' }"
         >
@@ -49,6 +57,31 @@
             />
           </template>
         </v-select>
+      </div>
+
+      <!-- Rechts: Schließen -->
+      <div
+        class="d-flex align-center"
+        style="min-width: 0"
+      >
+        <v-tooltip
+          text="Filtermaske schließen"
+          location="top"
+        >
+          <template #activator="{ props }">
+            <v-btn
+              icon
+              variant="text"
+              class="ml-2"
+              size="20"
+              v-bind="props"
+              @click="onCloseFiltermask"
+              aria-label="Filtermaske schließen"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
       </div>
     </v-card-title>
     <v-card-text>
@@ -122,23 +155,21 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
-import { PersonalFilterEntityControllerApi } from "@/api/api-client/isi-backend/apis/PersonalFilterEntityControllerApi";
-import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
-import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
-import FilterPanel from "@/components/filter/FilterPanel.vue";
-import RequestUtils from "@/utils/RequestUtils";
 import { useDisplay } from "vuetify";
-import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
-import { mapModelToFilterSettingsDto } from "@/composables/requests/filter/useFilterMapping";
+import SelectionAndSortingPanel from "@/components/filter/SelectionAndSortingPanel.vue";
+import FilterPanel from "@/components/filter/FilterPanel.vue";
 import FilterSaveDialog from "@/components/filter/FilterSaveDialog.vue";
-import { useToast } from "vue-toastification";
 import FilterManagementDialog from "@/components/filter/FilterManagementDialog.vue";
 import YesNoDialog from "@/components/common/YesNoDialog.vue";
+import SearchQueryAndSortingModel from "@/types/model/search/SearchQueryAndSortingModel";
+import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
+import { useToast } from "vue-toastification";
 import { createSearchQueryAndSortingModel } from "@/utils/Factories";
 
 interface Emits {
   (event: "adopt-search-and-filter-options", value: void): void;
   (event: "reset-search-and-filter-options", value: void): void;
+  (event: "close-search-and-filter-options", value: void): void;
 }
 
 const { xl } = useDisplay();
@@ -153,7 +184,7 @@ const selectedFilter = ref<string | null>(null);
 const searchQueryAndSorting = defineModel<SearchQueryAndSortingModel>({ required: true });
 const toast = useToast();
 const confirmCloseDialogOpen = ref(false);
-const confirmAction = ref<"adopt" | "reset" | null>(null);
+const confirmAction = ref<"adopt" | "reset" | "close" | null>(null);
 
 const STANDARD_FILTER_ID = "__default__";
 const standardFilter = { id: STANDARD_FILTER_ID, name: "Standardeinstellung" };
@@ -204,6 +235,15 @@ function onFiltermaskOpen(selectedFilterId?: string) {
     selectedFilter.value = null;
   } else {
     selectedFilter.value = selectedFilterId;
+  }
+}
+
+function onCloseFiltermask() {
+  if (isFilterModified.value || selectedFilter.value) {
+    confirmAction.value = "close";
+    confirmCloseDialogOpen.value = true;
+  } else {
+    emit("close-search-and-filter-options");
   }
 }
 
@@ -260,6 +300,8 @@ function confirmCloseDialog(yes: boolean) {
       emit("adopt-search-and-filter-options");
     } else if (confirmAction.value === "reset") {
       emit("reset-search-and-filter-options");
+    } else if (confirmAction.value === "close") {
+      emit("close-search-and-filter-options");
     }
   }
   confirmAction.value = null;
@@ -279,6 +321,8 @@ function getConfirmDialogText() {
     return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem übernehmen?`;
   } else if (confirmAction.value === "reset") {
     return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem zurücksetzen?`;
+  } else if (confirmAction.value === "close") {
+    return `Änderungen am Filter werden nicht übernommen und nicht gespeichert. Trotzdem Filtermaske schließen?`;
   }
   return `Änderungen am Filter '${filterName}' werden nicht gespeichert. Trotzdem verlassen?`;
 }
@@ -287,6 +331,12 @@ async function onSaveFilter(name: string) {
   try {
     await saveFilter(name, searchQueryAndSorting.value);
     toast.success("Neuer Filter wurde erfolgreich erstellt.");
+    // Der neue Filter entspricht den aktuellen Einstellungen und gilt deshalb als ausgewählt und unverändert.
+    const neuerFilter = savedFilters.value.find((filter) => filter.name.trim() === name.trim());
+    if (neuerFilter) {
+      selectedFilter.value = neuerFilter.id;
+      isFilterModified.value = false;
+    }
   } catch (e: any) {
     if (e?.name === "FilterNameError") {
       toast.error(e.message);
@@ -334,5 +384,5 @@ async function onDeleteFilter(id: string) {
   }
 }
 
-defineExpose({ onFiltermaskOpen, isFilterModified, selectedFilter });
+defineExpose({ onFiltermaskOpen, isFilterModified, selectedFilter, STANDARD_FILTER_ID });
 </script>

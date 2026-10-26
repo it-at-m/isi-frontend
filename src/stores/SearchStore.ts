@@ -18,6 +18,9 @@ import WeiteresVerfahrenModel from "@/types/model/abfrage/WeiteresVerfahrenModel
 import BauvorhabenModel from "@/types/model/bauvorhaben/BauvorhabenModel";
 import _ from "lodash";
 
+export const HINWEIS_SUCHE_STARTEN =
+  "Geben Sie einen Suchbegriff ein oder erstellen Sie eine Filterung, um Ergebnisse zu sehen";
+
 interface State {
   searchResults: SearchResultsDto;
   requestSearchQueryAndSorting: SearchQueryAndSortingModel;
@@ -25,6 +28,12 @@ interface State {
   defaultSearchQueryAndSortingFilter: SearchQueryAndSortingModel;
   selectedBauvorhaben: BauvorhabenModel | undefined;
   selectedInfrastruktureinrichtung: InfrastruktureinrichtungDto | undefined;
+  isFilterActive: boolean;
+  /**
+   * Die ID des aktuell angewendeten persönlichen Filters. Liegt im Store, da der Filter sowohl über die
+   * Suchleiste als auch beim Laden der Anwendung über die Profileinstellungen gesetzt werden kann.
+   */
+  activeFilterId: string | null;
 }
 
 export const useSearchStore = defineStore("search", {
@@ -36,8 +45,18 @@ export const useSearchStore = defineStore("search", {
       defaultSearchQueryAndSortingFilter: createSearchQueryAndSortingModel(),
       selectedBauvorhaben: undefined,
       selectedInfrastruktureinrichtung: undefined,
+      isFilterActive: false,
+      activeFilterId: null,
     }) as State,
-  getters: {},
+  getters: {
+    /**
+     * Ohne Filter wird beim Laden nicht gesucht. Bis zur ersten Suche oder Filterung wird deshalb
+     * ein Hinweis angezeigt, wie Ergebnisse angezeigt werden können.
+     */
+    isSuchhinweisSichtbar(state): boolean {
+      return !state.isFilterActive && _.isNil(state.searchResults.searchResults);
+    },
+  },
   actions: {
     setSearchResults(payload: SearchResultsDto): void {
       this.searchResults = payload;
@@ -67,6 +86,12 @@ export const useSearchStore = defineStore("search", {
     },
     setSelectedInfrastruktureinrichtung(payload: InfrastruktureinrichtungDto | undefined): void {
       this.selectedInfrastruktureinrichtung = payload;
+    },
+    setFilterActive(active: boolean): void {
+      this.isFilterActive = active;
+    },
+    setActiveFilterId(filterId: string | null): void {
+      this.activeFilterId = filterId;
     },
   },
 });

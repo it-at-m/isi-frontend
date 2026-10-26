@@ -41,6 +41,7 @@ import { type HausFuerKinderDto, HausFuerKinderDtoFromJSONTyped, HausFuerKinderD
 import { type KindergartenDto, KindergartenDtoFromJSONTyped, KindergartenDtoToJSON, KindergartenDtoToJSONTyped } from './KindergartenDto';
 import { type KinderkrippeDto, KinderkrippeDtoFromJSONTyped, KinderkrippeDtoToJSON, KinderkrippeDtoToJSONTyped } from './KinderkrippeDto';
 import { type MittelschuleDto, MittelschuleDtoFromJSONTyped, MittelschuleDtoToJSON, MittelschuleDtoToJSONTyped } from './MittelschuleDto';
+import { type NachbarschaftstreffDto, NachbarschaftstreffDtoFromJSONTyped, NachbarschaftstreffDtoToJSON, NachbarschaftstreffDtoToJSONTyped } from './NachbarschaftstreffDto';
 /**
  * InfrastruktureinrichtungDto
  * @export
@@ -102,10 +103,6 @@ export interface InfrastruktureinrichtungDto {
     /**
      * 
      */
-    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum;
-    /**
-     * 
-     */
     flaecheGesamtgrundstueck?: number;
     /**
      * 
@@ -115,6 +112,10 @@ export interface InfrastruktureinrichtungDto {
      * 
      */
     idKibigWeb?: string;
+    /**
+     * 
+     */
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum;
 }
 
 
@@ -129,6 +130,7 @@ export const InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = {
     HausFuerKinder: 'HAUS_FUER_KINDER',
     Grundschule: 'GRUNDSCHULE',
     Mittelschule: 'MITTELSCHULE',
+    Nachbarschaftstreff: 'NACHBARSCHAFTSTREFF',
 } as const;
 export type InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum[keyof typeof InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum];
 
@@ -197,6 +199,9 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         if (json['infrastruktureinrichtungTyp'] === 'MITTELSCHULE') {
             return MittelschuleDtoFromJSONTyped(json, ignoreDiscriminator);
         }
+        if (json['infrastruktureinrichtungTyp'] === 'NACHBARSCHAFTSTREFF') {
+            return NachbarschaftstreffDtoFromJSONTyped(json, ignoreDiscriminator);
+        }
 
     }
     return {
@@ -214,10 +219,10 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
-        'anlassPlanung': json['anlassPlanung'],
         'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
+        'anlassPlanung': json['anlassPlanung'],
     };
 }
 
@@ -244,6 +249,8 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
                 return KinderkrippeDtoToJSONTyped(value as KinderkrippeDto, ignoreDiscriminator);
             case 'MITTELSCHULE':
                 return MittelschuleDtoToJSONTyped(value as MittelschuleDto, ignoreDiscriminator);
+            case 'NACHBARSCHAFTSTREFF':
+                return NachbarschaftstreffDtoToJSONTyped(value as NachbarschaftstreffDto, ignoreDiscriminator);
             default:
                 return value;
         }
@@ -264,10 +271,10 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
         'nameEinrichtung': value['nameEinrichtung'],
         'fertigstellungsjahr': value['fertigstellungsjahr'],
         'status': value['status'],
-        'anlassPlanung': value['anlassPlanung'],
         'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
         'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
+        'anlassPlanung': value['anlassPlanung'],
     };
 }
 

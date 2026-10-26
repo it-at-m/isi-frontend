@@ -81,6 +81,10 @@ export interface SearchQueryAndSortingDto {
     /**
      * 
      */
+    selectNachbarschaftstreff: boolean;
+    /**
+     * 
+     */
     filterStadtbezirkNummer?: Array<string>;
     /**
      * 
@@ -249,6 +253,7 @@ export function instanceOfSearchQueryAndSortingDto(value: object): value is Sear
     if (!('selectKindergarten' in value) || value['selectKindergarten'] === undefined) return false;
     if (!('selectKinderkrippe' in value) || value['selectKinderkrippe'] === undefined) return false;
     if (!('selectMittelschule' in value) || value['selectMittelschule'] === undefined) return false;
+    if (!('selectNachbarschaftstreff' in value) || value['selectNachbarschaftstreff'] === undefined) return false;
     if (!('sortBy' in value) || value['sortBy'] === undefined) return false;
     if (!('sortOrder' in value) || value['sortOrder'] === undefined) return false;
     return true;
@@ -275,6 +280,7 @@ export function SearchQueryAndSortingDtoFromJSONTyped(json: any, ignoreDiscrimin
         'selectKindergarten': json['selectKindergarten'],
         'selectKinderkrippe': json['selectKinderkrippe'],
         'selectMittelschule': json['selectMittelschule'],
+        'selectNachbarschaftstreff': json['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': json['filterStadtbezirkNummer'] == null ? undefined : json['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': json['filterKitaplanungsbereichKitaPlbT'] == null ? undefined : json['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': json['filterGrundschulsprengelNummer'] == null ? undefined : json['filterGrundschulsprengelNummer'],
@@ -320,6 +326,7 @@ export function SearchQueryAndSortingDtoToJSONTyped(value?: SearchQueryAndSortin
         'selectKindergarten': value['selectKindergarten'],
         'selectKinderkrippe': value['selectKinderkrippe'],
         'selectMittelschule': value['selectMittelschule'],
+        'selectNachbarschaftstreff': value['selectNachbarschaftstreff'],
         'filterStadtbezirkNummer': value['filterStadtbezirkNummer'],
         'filterKitaplanungsbereichKitaPlbT': value['filterKitaplanungsbereichKitaPlbT'],
         'filterGrundschulsprengelNummer': value['filterGrundschulsprengelNummer'],

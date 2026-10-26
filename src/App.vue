@@ -127,8 +127,14 @@
             </template>
             <v-list class="text-center">
               <v-list-item @click="showVersionInfo = true">
-                <v-list-item-title>Versionsinformationen</v-list-item-title>
+                <template #default>
+                  <div class="d-flex align-center w-100">
+                    <v-list-item-title>Versionsinformationen</v-list-item-title>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </div>
+                </template>
               </v-list-item>
+
               <v-list-item>
                 <v-list-item-title>
                   <a
@@ -181,7 +187,10 @@
               >
                 <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
               </span>
-              <startseiten-einstellungen v-if="hasRoleAbfrageerstellung" />
+              <startseiten-einstellungen
+                :show-meine-vorgaenge="hasRoleAbfrageerstellung"
+                @gespeichert="menu = false"
+              />
             </v-card>
           </v-menu>
         </v-col>
@@ -207,6 +216,7 @@ import { useUserinfoStore } from "@/stores/Userinfostore";
 import { useMetabaseReportingStore } from "@/stores/MetabaseReportingStore";
 import { useUserInfoApi } from "./composables/requests/UserInfoApi";
 import { useSecurity } from "./composables/security/Security";
+import { useStandardFilter } from "@/composables/requests/filter/useStandardFilter";
 
 const lookupStore = useLookupStore();
 const stammdatenStore = useStammdatenStore();
@@ -214,6 +224,7 @@ const userInfoStore = useUserinfoStore();
 const { getUserinfo } = useUserInfoApi();
 const metabaseReportingStore = useMetabaseReportingStore();
 const { isRoleAdminOrSachbearbeitung, isRoleAdminOrBedarfsmeldungLesend } = useSecurity();
+const { applyStandardFilter } = useStandardFilter();
 const datenschutzhinweisUrl: string = import.meta.env.VITE_DATENSCHUTZHINWEIS_URL;
 const logo = new URL("./assets/isi-logo.svg", import.meta.url).href;
 const showVersionInfo = ref(false);
@@ -274,6 +285,8 @@ onBeforeMount(() => {
 });
 
 onMounted(async () => {
+  // Der Standard-Filter wird nur beim Laden der Anwendung übernommen, nicht bei jedem Betreten der Startseite.
+  applyStandardFilter();
   userinfo.value = await getUserinfo();
 });
 </script>
