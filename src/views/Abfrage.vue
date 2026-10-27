@@ -536,6 +536,11 @@ const isBaugebietWeiteresVerfahrenFormularOpen = computed(
 );
 const isBaurateFormularOpen = computed(() => openForm.value === AbfrageFormType.BAURATE);
 
+/**
+ * Setzt den Tab-Titel auf "Abfrage: <Name>" bzw. bei geöffneter Abfragevariante auf "Abfrage: <Name> - <Variante>".
+ * Beobachtet werden nur die Abfrage, das ausgewählte Element und das offene Formular selbst, nicht deren Inhalt.
+ * Der Titel ändert sich daher nur beim Laden, Speichern oder Auswählen im Baum und nicht bei jeder Eingabe.
+ */
 useTabTitle(
   () => [abfrage.value, selected.value, openForm.value] as const,
   ([abfrage, selected, openForm]) =>
