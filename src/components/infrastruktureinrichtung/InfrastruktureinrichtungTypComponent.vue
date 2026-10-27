@@ -5,17 +5,33 @@
         v-if="isNewInfrastruktureinrichtung"
         justify="center"
       >
-        <v-col cols="12">
+        <v-col cols="6">
           <v-select
-            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_dropdown"
-            v-model="infrastruktureinrichtungTyp"
+            id="infrastruktureinrichtung_infrastruktureinrichtungart_dropdown"
+            v-model="infrastruktureinrichtungArt"
             class="mx-3"
-            :items="infrastruktureinrichtungList"
+            :items="infrastruktureinrichtungArtList"
             variant="underlined"
             item-value="key"
             item-title="value"
             :rules="[pflichtfeld, notUnspecified]"
             :disabled="!isEditable"
+            @update:model-value="formChanged"
+          >
+            <template #label> Infrastruktureinrichtung Art <span class="text-secondary">*</span> </template>
+          </v-select>
+        </v-col>
+        <v-col cols="6">
+          <v-select
+            id="infrastruktureinrichtung_infrastruktureinrichtungtyp_dropdown"
+            v-model="infrastruktureinrichtungTyp"
+            class="mx-3"
+            :items="infrastruktureinrichtungTypList"
+            variant="underlined"
+            item-value="key"
+            item-title="value"
+            :rules="[pflichtfeld, notUnspecified]"
+            :disabled="!isEditable || infrastruktureinrichtungArt === 'UNSPECIFIED'"
             @update:model-value="formChanged"
           >
             <template #label> Infrastruktureinrichtung Typ <span class="text-secondary">*</span> </template>
@@ -56,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   type LookupEntryDto,
@@ -78,10 +94,24 @@ interface Props {
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
 const props = withDefaults(defineProps<Props>(), { isEditable: false });
+
 const infrastruktureinrichtungTyp = defineModel<string>({ required: true });
 const lfdNrInfrastruktureinrichtung = computed(() => props.lfdNr);
 const isNewInfrastruktureinrichtung = computed(() => props.mode === DisplayMode.NEU);
 const { isRoleAdmin, isRoleAdminOrBedarfsmeldungSozialplanung } = useSecurity();
+const infrastruktureinrichtungArt = ref<string>("UNSPECIFIED");
+const artToTypKeys: Record<string, string[]> = {
+  KINDERTAGESBETREUUNG: ["UNSPECIFIED", "HAUS_FUER_KINDER", "KINDERKRIPPE", "KINDERGARTEN"],
+  GANZTAGSBETREUUNG_GRUNDSCHULKINDER: ["UNSPECIFIED", "HAUS_FUER_KINDER"],
+  SCHULEN: ["UNSPECIFIED", "GRUNDSCHULE", "MITTELSCHULE"],
+  SOZIALE_EINRICHTUNGEN: ["UNSPECIFIED", "NACHBARSCHAFTSTREFF"],
+  UNSPECIFIED: [InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified],
+};
+
+watch(infrastruktureinrichtungArt, (newVal) => {
+  // Typ zurücksetzen, wenn die Art geändert wird
+  infrastruktureinrichtungTyp.value = "UNSPECIFIED";
+});
 
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {
   return !_.isUndefined(list) && !_.isNil(key)
@@ -89,11 +119,35 @@ function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): s
     : key;
 }
 
-onUnmounted(() => {
-  infrastruktureinrichtungTyp.value = "";
+const infrastruktureinrichtungArtList = computed(() => {
+  if (isRoleAdmin.value) {
+    return lookupStore.infrastruktureinrichtungArt;
+  }
+  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
+    return lookupStore.infrastruktureinrichtungArt.filter(
+      (infrastruktureinrichtungArt) =>
+        infrastruktureinrichtungArt.key === "UNSPECIFIED" ||
+        infrastruktureinrichtungArt.key === "SOZIALE_EINRICHTUNGEN",
+    );
+  }
+  // Alle anderen sehen alle ohne Soziale Einrichtungen
+  return lookupStore.infrastruktureinrichtungArt.filter(
+    (infrastruktureinrichtungArt) => infrastruktureinrichtungArt.key !== "SOZIALE_EINRICHTUNGEN",
+  );
 });
 
-const infrastruktureinrichtungList = computed(() => {
+const infrastruktureinrichtungTypList = computed(() => {
+  const art = infrastruktureinrichtungArt.value;
+  if (art === "UNSPECIFIED") {
+    return lookupStore.infrastruktureinrichtungTyp.filter(
+      (infrastruktureinrichtungTyp) =>
+        infrastruktureinrichtungTyp.key === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Unspecified,
+    );
+  }
+  return infrastruktureinrichtungTypByPermission().filter((typ) => artToTypKeys[art].includes(typ.key));
+});
+
+function infrastruktureinrichtungTypByPermission(): LookupEntryDto[] {
   // BedarfsmeldungSozialplanung sieht nur Nachbarschaftstreff und Unspecified
   if (isRoleAdmin.value) {
     return lookupStore.infrastruktureinrichtungTyp;
@@ -112,7 +166,7 @@ const infrastruktureinrichtungList = computed(() => {
       infrastruktureinrichtungTyp.key !==
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
   );
-});
+}
 
 const infrastruktureinrichtungTypDisplay = computed(() => {
   if (!_.isNil(infrastruktureinrichtungTyp)) {
