@@ -127,6 +127,10 @@ export interface LookupListsDto {
      * 
      */
     bauratenmethodik?: LookupListDto;
+    /**
+     * 
+     */
+    kooperation?: LookupListDto;
 }
 
 /**
@@ -171,6 +175,7 @@ export function LookupListsDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'sobonOrientierungswertJahr': json['sobonOrientierungswertJahr'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': json['sobonOrientierungswertJahrWithoutStandortabfrage'] == null ? undefined : LookupListDtoFromJSON(json['sobonOrientierungswertJahrWithoutStandortabfrage']),
         'bauratenmethodik': json['bauratenmethodik'] == null ? undefined : LookupListDtoFromJSON(json['bauratenmethodik']),
+        'kooperation': json['kooperation'] == null ? undefined : LookupListDtoFromJSON(json['kooperation']),
     };
 }
 
@@ -210,6 +215,7 @@ export function LookupListsDtoToJSONTyped(value?: LookupListsDto | null, ignoreD
         'sobonOrientierungswertJahr': LookupListDtoToJSON(value['sobonOrientierungswertJahr']),
         'sobonOrientierungswertJahrWithoutStandortabfrage': LookupListDtoToJSON(value['sobonOrientierungswertJahrWithoutStandortabfrage']),
         'bauratenmethodik': LookupListDtoToJSON(value['bauratenmethodik']),
+        'kooperation': LookupListDtoToJSON(value['kooperation']),
     };
 }
 

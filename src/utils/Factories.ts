@@ -1,4 +1,4 @@
-import type {
+import {
   // Adresse
   AdresseDto,
   // AbfrageDto's
@@ -32,6 +32,7 @@ import type {
   SchuleDto,
   GrundschuleDto,
   MittelschuleDto,
+  NachbarschaftstreffDto,
   // Dokumente
   DokumentDto,
   FilepathDto,
@@ -42,6 +43,7 @@ import type {
   // Suche
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
+  InfrastruktureinrichtungDtoAnlassPlanungEnum,
 } from "@/api/api-client/isi-backend";
 import {
   // dreiwertiges Boolean
@@ -81,6 +83,7 @@ import {
   KindergartenDtoEinrichtungstraegerEnum,
   HausFuerKinderDtoEinrichtungstraegerEnum,
   GsNachmittagBetreuungDtoEinrichtungstraegerEnum,
+  NachbarschaftstreffDtoKooperationEnum,
   // Dokumente
   DokumentDtoArtDokumentEnum,
   // Suche
@@ -104,6 +107,7 @@ export function createSearchQueryAndSortingModel(): SearchQueryAndSortingModel {
     selectKindergarten: true,
     selectKinderkrippe: true,
     selectMittelschule: true,
+    selectNachbarschaftstreff: true,
     filterStadtbezirkNummer: undefined,
     filterKitaplanungsbereichKitaPlbT: undefined,
     filterGrundschulsprengelNummer: undefined,
@@ -650,6 +654,7 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -687,6 +692,7 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKinderkrippeGruppen: Number.NaN,
     wohnungsnaheKinderkrippePlaetze: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -713,6 +719,7 @@ export function createKindergartenDto(): KindergartenDto {
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlKindergartenGruppen: Number.NaN,
     wohnungsnaheKindergartenPlaetze: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -745,6 +752,7 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     wohnungsnaheKinderkrippePlaetze: undefined,
     wohnungsnaheKindergartenPlaetze: undefined,
     wohnungsnaheHortPlaetze: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -771,6 +779,7 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 
@@ -793,6 +802,7 @@ export function createGrundschuleDto(): GrundschuleDto {
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
   };
 }
@@ -816,7 +826,32 @@ export function createMittelschuleDto(): MittelschuleDto {
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     flaecheGesamtgrundstueck: undefined,
     flaecheTeilgrundstueck: undefined,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
+  };
+}
+
+/**
+ * NachbarschaftstreffDto
+ */
+export function createNachbarschaftstreffDto(): NachbarschaftstreffDto {
+  return {
+    id: "",
+    createdDateTime: undefined,
+    lastModifiedDateTime: undefined,
+    bearbeitendePerson: undefined,
+    infrastruktureinrichtungTyp: InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
+    lfdNr: undefined,
+    bauvorhaben: undefined,
+    adresse: createAdresseDto(),
+    verortung: undefined,
+    nameEinrichtung: "",
+    fertigstellungsjahr: Number.NaN,
+    status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
+    kooperation: NachbarschaftstreffDtoKooperationEnum.Unspecified,
+    kooperationFreieEingabe: "",
+    sobonRelevant: UncertainBoolean.Unspecified,
+    anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
 

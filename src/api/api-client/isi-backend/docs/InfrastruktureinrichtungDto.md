@@ -20,10 +20,10 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
-`anlassPlanung` | string
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
+`anlassPlanung` | string
 
 ## Example
 
@@ -45,10 +45,10 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
-  "anlassPlanung": null,
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
+  "anlassPlanung": null,
 } satisfies InfrastruktureinrichtungDto
 
 console.log(example)

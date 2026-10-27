@@ -322,6 +322,7 @@ function suggest(query: string): void {
       selectKindergarten: searchQueryForEntitiesDto.selectKindergarten,
       selectKinderkrippe: searchQueryForEntitiesDto.selectKinderkrippe,
       selectMittelschule: searchQueryForEntitiesDto.selectMittelschule,
+      selectNachbarschaftstreff: searchQueryForEntitiesDto.selectNachbarschaftstreff,
       page: undefined,
       pageSize: undefined,
     } as SearchQueryDto;

@@ -19,10 +19,10 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
-`anlassPlanung` | string
 `flaecheGesamtgrundstueck` | number
 `flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
+`anlassPlanung` | string
 `schule` | [SchuleDto](SchuleDto.md)
 `artGsNachmittagBetreuung` | string
 `anzahlHortPlaetze` | number
@@ -35,6 +35,9 @@ Name | Type
 `anzahlKindergartenGruppen` | number
 `wohnungsnaheKinderkrippePlaetze` | number
 `wohnungsnaheKindergartenPlaetze` | number
+`kooperation` | string
+`kooperationFreieEingabe` | string
+`sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 
 ## Example
 
@@ -56,10 +59,10 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
-  "anlassPlanung": null,
   "flaecheGesamtgrundstueck": null,
   "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
+  "anlassPlanung": null,
   "schule": null,
   "artGsNachmittagBetreuung": null,
   "anzahlHortPlaetze": null,
@@ -72,6 +75,9 @@ const example = {
   "anzahlKindergartenGruppen": null,
   "wohnungsnaheKinderkrippePlaetze": null,
   "wohnungsnaheKindergartenPlaetze": null,
+  "kooperation": null,
+  "kooperationFreieEingabe": null,
+  "sobonRelevant": null,
 } satisfies UpdateInfrastruktureinrichtungRequest
 
 console.log(example)
