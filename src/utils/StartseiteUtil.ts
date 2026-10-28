@@ -1,11 +1,23 @@
-import { StatusAbfrage } from "@/api/api-client/isi-backend";
+import {
+  type AbfrageSearchResultDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type SchnellfilterVorgaenge,
+  StatusAbfrage,
+} from "@/api/api-client/isi-backend";
 
 /**
- * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge".
+ * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge" aller Rollen.
  *
- * Die Werte entsprechen dem Backend-Enum `SchnellfilterVorgaenge`.
+ * Die Werte entsprechen dem Backend-Enum `SchnellfilterVorgaenge`. Welche Schnellfilter einer Rolle angeboten
+ * werden, legt deren Startseitenkonfiguration fest (siehe `StartseitenKonfiguration.ts`).
  */
-export type SchnellfilterVorgaenge = "ALLE" | "ENTWUERFE" | "ZUR_BEARBEITUNG" | "ZUR_KENNTNIS" | "ABGESCHLOSSEN";
+export type { SchnellfilterVorgaenge };
+
+/**
+ * Ein Eintrag im Bereich "Meine Vorgänge".
+ */
+export type Vorgang = AbfrageSearchResultDto | BauvorhabenSearchResultDto | InfrastruktureinrichtungSearchResultDto;
 
 /**
  * Die Sortierkriterien des Startseitenbereichs "Meine Vorgänge".
@@ -23,6 +35,9 @@ export interface AuswahlOption<T> {
   value: T;
 }
 
+/**
+ * Die Schnellfilter der Startseite für Abfrageersteller.
+ */
 export const SCHNELLFILTER_OPTIONEN: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
   { title: "Alle Vorgänge", value: "ALLE" },
   { title: "Entwürfe", value: "ENTWUERFE" },
@@ -81,3 +96,72 @@ export function getStatusAbfrageForSchnellfilter(
 export function getSortOrderForSortierung(sortierung: SortierungVorgaenge | undefined): "ASC" | "DESC" {
   return sortierung === "FRIST_BEARBEITUNG" ? "ASC" : "DESC";
 }
+
+/**
+ * Die Schnellfilter der Startseite für die Sachbearbeitung.
+ */
+export const SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
+  { title: "Alle", value: "ALLE" },
+  { title: "Übermittelt zur Bearbeitung", value: "UEBERMITTELT_ZUR_BEARBEITUNG" },
+  { title: "Start Bearbeitung", value: "START_BEARBEITUNG" },
+  { title: "Einpflegen Bedarfsmeldung", value: "EINPFLEGEN_BEDARFSMELDUNG" },
+  { title: "Einplanung Bedarfe", value: "EINPLANUNG_BEDARFE" },
+  { title: "Erledigt", value: "ERLEDIGT" },
+  { title: "Vorhaben", value: "VORHABEN" },
+  { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
+];
+
+/**
+ * Liefert den Schnellfilter, falls er zu den angebotenen Optionen gehört, andernfalls den Standard-Schnellfilter.
+ *
+ * Die Voreinstellung wird je Nutzer gespeichert. Ein Nutzer mit mehreren Rollen kann daher einen Schnellfilter
+ * gespeichert haben, den die aktuell angezeigte Startseite nicht anbietet.
+ *
+ * @param schnellfilter der gespeicherte oder ausgewählte Schnellfilter.
+ * @param optionen die angebotenen Schnellfilter.
+ * @returns einen angebotenen Schnellfilter.
+ */
+export function getGueltigenSchnellfilter(
+  schnellfilter: SchnellfilterVorgaenge | undefined,
+  optionen: Array<AuswahlOption<SchnellfilterVorgaenge>>,
+): SchnellfilterVorgaenge {
+  return optionen.some((option) => option.value === schnellfilter)
+    ? (schnellfilter as SchnellfilterVorgaenge)
+    : DEFAULT_SCHNELLFILTER;
+}
+
+/**
+ * Die Stadtbezirke der Landeshauptstadt München zur Filterung der Vorgänge.
+ *
+ * Die Werte entsprechen dem Suchfilter `filterStadtbezirkNummer`.
+ */
+export const STADTBEZIRK_OPTIONEN: Array<AuswahlOption<string>> = [
+  "Altstadt-Lehel",
+  "Ludwigsvorstadt-Isarvorstadt",
+  "Maxvorstadt",
+  "Schwabing-West",
+  "Au-Haidhausen",
+  "Sendling",
+  "Sendling-Westpark",
+  "Schwanthalerhöhe",
+  "Neuhausen-Nymphenburg",
+  "Moosach",
+  "Milbertshofen-Am Hart",
+  "Schwabing-Freimann",
+  "Bogenhausen",
+  "Berg am Laim",
+  "Trudering-Riem",
+  "Ramersdorf-Perlach",
+  "Obergiesing-Fasangarten",
+  "Untergiesing-Harlaching",
+  "Thalkirchen-Obersendling-Forstenried-Fürstenried-Solln",
+  "Hadern",
+  "Pasing-Obermenzing",
+  "Aubing-Lochhausen-Langwied",
+  "Allach-Untermenzing",
+  "Feldmoching-Hasenbergl",
+  "Laim",
+].map((name, index) => {
+  const nummer = String(index + 1).padStart(2, "0");
+  return { title: nummer + " " + name, value: nummer };
+});

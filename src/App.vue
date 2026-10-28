@@ -188,7 +188,7 @@
                 <v-icon>mdi-account-badge</v-icon>{{ userRoles }}
               </span>
               <startseiten-einstellungen
-                :show-meine-vorgaenge="hasRoleAbfrageerstellung"
+                :schnellfilter-optionen="startseitenKonfiguration?.schnellfilterOptionen"
                 @gespeichert="menu = false"
               />
             </v-card>
@@ -210,6 +210,7 @@ import { Userinfo } from "./types/common/Userinfo";
 import _ from "lodash";
 import SearchInputField from "@/components/search/SearchInputField.vue";
 import StartseitenEinstellungen from "@/components/startseite/StartseitenEinstellungen.vue";
+import { useStartseitenKonfiguration } from "@/composables/startseite/useStartseitenKonfiguration";
 import { useLookupStore } from "@/stores/LookupStore";
 import { useStammdatenStore } from "@/stores/StammdatenStore";
 import { useUserinfoStore } from "@/stores/Userinfostore";
@@ -257,16 +258,19 @@ const urlAndereReports = computed(() => {
 // Schreibt alle Nutzerollen in einen String für die Darstellung
 const userRoles = computed(() => _.join(userinfo.value.roles, ", "));
 
-const hasRoleAbfrageerstellung = computed(() => userInfoStore.hasRoleAbfrageerstellung);
+// Rollen mit personalisierter Startseite, siehe StartseitenKonfiguration.
+const startseitenKonfiguration = useStartseitenKonfiguration();
 
-// Abfrageersteller werden in der Titelleiste persönlich begrüßt.
-const showBegruessung = computed(() => hasRoleAbfrageerstellung.value && !_.isEmpty(userinfo.value.givenname));
+// Nutzer mit personalisierter Startseite werden in der Titelleiste persönlich begrüßt.
+const showBegruessung = computed(
+  () => !_.isNil(startseitenKonfiguration.value) && !_.isEmpty(userinfo.value.givenname),
+);
 
 /**
- * Für Abfrageersteller entfällt die Suchleiste in der Titelleiste, da der Startseitenbereich
+ * Bei personalisierter Startseite entfällt die Suchleiste in der Titelleiste, da der Startseitenbereich
  * "Übersicht" eine eigene Suchleiste besitzt. Alle übrigen Rollen behalten die globale Suche.
  */
-const showGlobaleSuche = computed(() => !hasRoleAbfrageerstellung.value);
+const showGlobaleSuche = computed(() => _.isNil(startseitenKonfiguration.value));
 
 const userinfo = computed({
   get() {

@@ -2,25 +2,25 @@
   <v-main>
     <v-container
       fluid
-      class="pa-6 d-flex flex-column startseite-abfrageerstellung__container"
+      class="pa-6 d-flex flex-column startseite-personalisiert__container"
     >
       <v-row
-        class="flex-grow-1 flex-md-nowrap startseite-abfrageerstellung__row"
+        class="flex-grow-1 flex-md-nowrap startseite-personalisiert__row"
         no-gutters
       >
         <v-col
           cols="12"
           md="5"
           lg="4"
-          class="pr-md-6 pb-6 pb-md-0 d-flex flex-column startseite-abfrageerstellung__col"
+          class="pr-md-6 pb-6 pb-md-0 d-flex flex-column startseite-personalisiert__col"
         >
-          <meine-vorgaenge-liste />
+          <meine-vorgaenge-liste :konfiguration="konfiguration" />
         </v-col>
         <v-col
           cols="12"
           md="7"
           lg="8"
-          class="d-flex flex-column startseite-abfrageerstellung__col"
+          class="d-flex flex-column startseite-personalisiert__col"
         >
           <uebersicht-panel />
         </v-col>
@@ -32,6 +32,18 @@
 <script setup lang="ts">
 import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue";
 import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
+import type { StartseitenKonfiguration } from "@/utils/StartseitenKonfiguration";
+
+/**
+ * Personalisierte Startseite mit den Bereichen "Meine Vorgänge" und "Übersicht".
+ *
+ * Der Aufbau ist für alle Rollen gleich, die rollenspezifischen Teile kommen aus der Konfiguration.
+ */
+interface Props {
+  konfiguration: StartseitenKonfiguration;
+}
+
+defineProps<Props>();
 </script>
 
 <style scoped>
@@ -46,7 +58,7 @@ import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
  * box-sizing: border-box bereits in dieser Höhe.
  */
 @media (min-width: 960px) {
-  .startseite-abfrageerstellung__container {
+  .startseite-personalisiert__container {
     height: calc(100dvh - var(--v-layout-top, 0px) - var(--v-layout-bottom, 0px));
   }
 
@@ -59,15 +71,15 @@ import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
    * wären dadurch so hoch wie die längere Liste, obwohl der Container korrekt begrenzt ist. Ab md
    * liegen ohnehin beide Spalten (5 + 7) auf einer Zeile, nowrap ändert also nur die Höhenberechnung.
    */
-  .startseite-abfrageerstellung__row,
-  .startseite-abfrageerstellung__col {
+  .startseite-personalisiert__row,
+  .startseite-personalisiert__col {
     min-height: 0;
   }
 }
 
 /* Untereinander angeordnet behalten beide Bereiche eine sinnvolle Mindesthöhe. */
 @media (max-width: 959.98px) {
-  .startseite-abfrageerstellung__col {
+  .startseite-personalisiert__col {
     min-height: 60vh;
   }
 }

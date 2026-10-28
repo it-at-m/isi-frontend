@@ -25,6 +25,7 @@ Name | Type
 `filterRealisierungsbeginnVon` | number
 `filterRealisierungsbeginnBis` | number
 `filterNurEigeneAbfragen` | boolean
+`filterNurEigeneVorgaenge` | boolean
 `filterStatusAbfrage` | [Array&lt;StatusAbfrage&gt;](StatusAbfrage.md)
 `filterSobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `filterWeGesamtVon` | number
@@ -63,6 +64,7 @@ const example = {
   "filterRealisierungsbeginnVon": null,
   "filterRealisierungsbeginnBis": null,
   "filterNurEigeneAbfragen": null,
+  "filterNurEigeneVorgaenge": null,
   "filterStatusAbfrage": null,
   "filterSobonRelevant": null,
   "filterWeGesamtVon": null,

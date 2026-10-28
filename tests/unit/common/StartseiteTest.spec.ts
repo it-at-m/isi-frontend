@@ -6,6 +6,7 @@ import { useUserinfoStore } from "@/stores/Userinfostore";
 import Main from "@/views/Main.vue";
 import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
 import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
+import { STARTSEITE_ABFRAGEERSTELLUNG, STARTSEITE_SACHBEARBEITUNG } from "@/utils/StartseitenKonfiguration";
 
 vi.mock("vue-router", () => ({
   useRouter: () => ({ push: vi.fn() }),
@@ -24,26 +25,38 @@ describe("StartseiteTest.spec.ts", () => {
   });
 
   describe("Rollenweiche der Startseite", () => {
-    test("zeigt Abfrageerstellern die neue Startseite", () => {
+    test("zeigt Abfrageerstellern die personalisierte Startseite der Abfrageerstellung", () => {
       setRoles(["abfrageerstellung"]);
       const wrapper: VueWrapper = mount(Main, { shallow: true });
-      expect((wrapper.vm as any).hasRoleAbfrageerstellung).toBe(true);
-      expect(wrapper.findComponent({ name: "StartseiteAbfrageerstellung" }).exists()).toBe(true);
+      const startseite = wrapper.findComponent({ name: "StartseitePersonalisiert" });
+      expect(startseite.exists()).toBe(true);
+      expect(startseite.props("konfiguration")).toBe(STARTSEITE_ABFRAGEERSTELLUNG);
       expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(false);
     });
 
-    test("zeigt die neue Startseite auch bei Mischrollen", () => {
+    test("zeigt der Sachbearbeitung die personalisierte Startseite der Sachbearbeitung", () => {
+      setRoles(["sachbearbeitung"]);
+      const wrapper: VueWrapper = mount(Main, { shallow: true });
+      const startseite = wrapper.findComponent({ name: "StartseitePersonalisiert" });
+      expect(startseite.exists()).toBe(true);
+      expect(startseite.props("konfiguration")).toBe(STARTSEITE_SACHBEARBEITUNG);
+      expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(false);
+    });
+
+    test("bevorzugt bei Mischrollen die Startseite der Abfrageerstellung", () => {
       setRoles(["sachbearbeitung", "abfrageerstellung"]);
       const wrapper: VueWrapper = mount(Main, { shallow: true });
-      expect(wrapper.findComponent({ name: "StartseiteAbfrageerstellung" }).exists()).toBe(true);
+      expect(wrapper.findComponent({ name: "StartseitePersonalisiert" }).props("konfiguration")).toBe(
+        STARTSEITE_ABFRAGEERSTELLUNG,
+      );
     });
 
     test("lässt die Startseite für alle anderen Rollen unverändert", () => {
-      setRoles(["sachbearbeitung"]);
+      setRoles(["bedarfsmeldung_kita"]);
       const wrapper: VueWrapper = mount(Main, { shallow: true });
-      expect((wrapper.vm as any).hasRoleAbfrageerstellung).toBe(false);
+      expect((wrapper.vm as any).startseitenKonfiguration).toBeUndefined();
       expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(true);
-      expect(wrapper.findComponent({ name: "StartseiteAbfrageerstellung" }).exists()).toBe(false);
+      expect(wrapper.findComponent({ name: "StartseitePersonalisiert" }).exists()).toBe(false);
     });
 
     test("zeigt ohne geladene Nutzerinformationen die bisherige Startseite", () => {

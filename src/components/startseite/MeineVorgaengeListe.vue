@@ -45,15 +45,34 @@
         </template>
         <v-list>
           <v-list-item
-            v-for="art in abfrageArten"
-            :key="art.value"
-            :prepend-icon="art.icon"
-            :title="art.title"
-            @click="createAbfrage(art.value)"
+            v-for="option in neuanlageOptionen"
+            :key="option.route"
+            :prepend-icon="option.icon"
+            :title="option.title"
+            @click="router.push(option.route)"
           />
         </v-list>
       </v-menu>
     </div>
+
+    <v-select
+      v-if="konfiguration.stadtbezirkFilter"
+      id="meine_vorgaenge_stadtbezirke"
+      v-model="stadtbezirke"
+      :items="stadtbezirkOptionen"
+      label="Stadtbezirke"
+      placeholder="Alle Stadtbezirke"
+      persistent-placeholder
+      variant="outlined"
+      density="compact"
+      hide-details
+      multiple
+      chips
+      closable-chips
+      clearable
+      class="mb-3"
+      style="flex: 0 0 auto"
+    />
 
     <v-list
       v-if="vorgaenge.length > 0"
@@ -62,46 +81,12 @@
       class="pa-0 ma-0 flex-grow-1 overflow-y-auto"
       style="min-height: 0"
     >
-      <v-hover
+      <vorgang-karte
         v-for="(vorgang, index) in vorgaenge"
+        :id="'meine_vorgaenge_item_' + index"
         :key="vorgang.id ?? index"
-        v-slot="{ isHovering }"
-      >
-        <v-card
-          :id="'meine_vorgaenge_item_' + index"
-          :elevation="isHovering ? 6 : 1"
-          class="my-2 mr-2 pt-3 scale-transition"
-          @click="routeToAbfrage(vorgang)"
-        >
-          <v-card-subtitle
-            class="text-black"
-            opacity="1"
-          >
-            <v-icon
-              start
-              color="green-lighten-1"
-            >
-              {{ getAbfrageIcon(vorgang.artAbfrage) }}
-            </v-icon>
-            <span class="font-weight-bold">{{ vorgang.name }}</span>
-            - {{ getAbfrageArtLabel(vorgang.artAbfrage) }}
-          </v-card-subtitle>
-          <v-card-text class="d-flex flex-wrap ga-4 text-caption">
-            <span>
-              <v-icon size="small">mdi-information-outline</v-icon>
-              {{ getStatusBezeichnung(vorgang.statusAbfrage) }}
-            </span>
-            <span>
-              <v-icon size="small">mdi-calendar-clock</v-icon>
-              Bearbeitungsfrist: {{ datumFormatted(vorgang.fristBearbeitung) }}
-            </span>
-            <span>
-              <v-icon size="small">mdi-map-marker</v-icon>
-              {{ getStadtbezirke(vorgang.stadtbezirke) }}
-            </span>
-          </v-card-text>
-        </v-card>
-      </v-hover>
+        :vorgang="vorgang"
+      />
       <div
         v-if="hasWeitereSeiten"
         class="d-flex justify-center my-2"
@@ -129,36 +114,38 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from "vue";
-import {
-  type AbfrageSearchResultDto,
-  type LookupEntryDto,
-  type SearchQueryAndSortingDto,
-  type StadtbezirkDto,
-  AbfrageDtoArtAbfrageEnum,
-} from "@/api/api-client/isi-backend";
+import type { SearchQueryAndSortingDto } from "@/api/api-client/isi-backend";
+import VorgangKarte from "@/components/startseite/VorgangKarte.vue";
 import { useSearchApi } from "@/composables/requests/search/SearchApi";
-import { useLookupStore } from "@/stores/LookupStore";
 import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
-import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
-import { convertDateForFrontend } from "@/utils/Formatter";
 import {
   DEFAULT_SCHNELLFILTER,
   DEFAULT_SORTIERUNG,
-  SCHNELLFILTER_OPTIONEN,
   SORTIERUNG_OPTIONEN,
+  STADTBEZIRK_OPTIONEN,
+  getGueltigenSchnellfilter,
   getSortOrderForSortierung,
-  getStatusAbfrageForSchnellfilter,
   type SchnellfilterVorgaenge,
   type SortierungVorgaenge,
+  type Vorgang,
 } from "@/utils/StartseiteUtil";
+import type { StartseitenKonfiguration } from "@/utils/StartseitenKonfiguration";
 import { Mutex, tryAcquire } from "async-mutex";
 import _ from "lodash";
 import { useRouter } from "vue-router";
 
+interface Props {
+  /**
+   * Die rollenspezifische Ausprägung des Bereichs: Schnellfilter, Suchkriterien, Neuanlage und Stadtbezirksfilter.
+   */
+  konfiguration: StartseitenKonfiguration;
+}
+
+const props = defineProps<Props>();
+
 const PAGE_SIZE = 20;
 
 const router = useRouter();
-const lookupStore = useLookupStore();
 const startseitenEinstellungStore = useStartseitenEinstellungStore();
 const { searchForEntities } = useSearchApi();
 
@@ -166,7 +153,8 @@ const pageRequestMutex = new Mutex();
 
 const schnellfilter = ref<SchnellfilterVorgaenge>(DEFAULT_SCHNELLFILTER);
 const sortierung = ref<SortierungVorgaenge>(DEFAULT_SORTIERUNG);
-const vorgaenge = ref<Array<AbfrageSearchResultDto>>([]);
+const stadtbezirke = ref<Array<string>>([]);
+const vorgaenge = ref<Array<Vorgang>>([]);
 const page = ref(1);
 const numberOfPages = ref(0);
 
@@ -181,42 +169,22 @@ const generation = ref(0);
 
 const hasWeitereSeiten = computed(() => page.value < numberOfPages.value);
 
-const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
+const schnellfilterOptionen = computed(() => props.konfiguration.schnellfilterOptionen);
+const neuanlageOptionen = computed(() => props.konfiguration.neuanlageOptionen);
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
-const statusAbfrageList = computed(() => lookupStore.statusAbfrage);
-
-const abfrageArten = [
-  AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
-  AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren,
-  AbfrageDtoArtAbfrageEnum.WeiteresVerfahren,
-].map((value) => ({
-  value,
-  title: getAbfrageArtLabel(value) + " erstellen",
-  icon: getAbfrageIcon(value),
-}));
+const stadtbezirkOptionen = STADTBEZIRK_OPTIONEN;
 
 /**
  * Baut die Suchanfrage für die eigenen Vorgänge auf.
  *
- * Es werden ausschließlich die drei Abfragearten durchsucht und serverseitig über
- * filterNurEigeneAbfragen auf die selbst angelegten Abfragen eingeschränkt.
+ * Die zu durchsuchenden Objekte und die Einschränkung auf die eigenen Vorgänge ergeben sich aus dem
+ * Schnellfilter und der Startseitenkonfiguration der Rolle.
  */
 function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
   return {
     searchQuery: "",
-    selectBauleitplanverfahren: true,
-    selectBaugenehmigungsverfahren: true,
-    selectWeiteresVerfahren: true,
-    selectBauvorhaben: false,
-    selectGrundschule: false,
-    selectGsNachmittagBetreuung: false,
-    selectHausFuerKinder: false,
-    selectKindergarten: false,
-    selectKinderkrippe: false,
-    selectMittelschule: false,
-    selectNachbarschaftstreff: false,
-    filterNurEigeneAbfragen: true,
-    filterStatusAbfrage: getStatusAbfrageForSchnellfilter(schnellfilter.value),
+    ...props.konfiguration.getSuchkriterien(schnellfilter.value),
+    filterStadtbezirkNummer: _.isEmpty(stadtbezirke.value) ? undefined : stadtbezirke.value,
     page: requestedPage,
     pageSize: PAGE_SIZE,
     // Die Werte von sortBy/sortOrder entsprechen den Backend-Enums SortAttribute und SortOrder.
@@ -238,7 +206,7 @@ async function loadVorgaenge(): Promise<void> {
   }
   page.value = 1;
   numberOfPages.value = searchResults.numberOfPages ?? 0;
-  vorgaenge.value = _.toArray(searchResults.searchResults) as Array<AbfrageSearchResultDto>;
+  vorgaenge.value = _.toArray(searchResults.searchResults) as Array<Vorgang>;
 }
 
 /**
@@ -264,10 +232,7 @@ function loadAndAppendNextPage(): void {
           }
           page.value = nextPage;
           numberOfPages.value = searchResults.numberOfPages ?? 0;
-          vorgaenge.value = _.concat(
-            vorgaenge.value,
-            _.toArray(searchResults.searchResults) as Array<AbfrageSearchResultDto>,
-          );
+          vorgaenge.value = _.concat(vorgaenge.value, _.toArray(searchResults.searchResults) as Array<Vorgang>);
         })
         .catch(() => {
           // Der Fehler wurde bereits im ErrorHandler der SearchApi behandelt.
@@ -286,29 +251,12 @@ function onScroll(scrollEvent: any): void {
   }
 }
 
-function routeToAbfrage(vorgang: AbfrageSearchResultDto): void {
-  if (!_.isNil(vorgang.id)) {
-    router.push("/abfrage/" + vorgang.id);
-  }
-}
-
-function createAbfrage(artAbfrage: AbfrageDtoArtAbfrageEnum): void {
-  router.push("/abfrage?art=" + artAbfrage);
-}
-
-function getStatusBezeichnung(statusAbfrage: string | undefined): string {
-  return statusAbfrageList.value?.find((lookupEntry: LookupEntryDto) => lookupEntry.key === statusAbfrage)?.value ?? "";
-}
-
-function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
-  const bezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), ["nummer"]).map(
-    (stadtbezirk: StadtbezirkDto) => stadtbezirk.nummer + "/" + stadtbezirk.name,
-  );
-  return _.join(bezeichnungen, ", ");
-}
-
-function datumFormatted(datum: Date | undefined): string {
-  return convertDateForFrontend(datum);
+/**
+ * Übernimmt eine Voreinstellung, sofern die Startseite der Rolle den Schnellfilter anbietet.
+ */
+function uebernehmeEinstellung(neuerSchnellfilter: SchnellfilterVorgaenge, neueSortierung: SortierungVorgaenge): void {
+  schnellfilter.value = getGueltigenSchnellfilter(neuerSchnellfilter, schnellfilterOptionen.value);
+  sortierung.value = neueSortierung;
 }
 
 /**
@@ -317,7 +265,7 @@ function datumFormatted(datum: Date | undefined): string {
  */
 let initialisiert = false;
 
-watch([schnellfilter, sortierung], () => {
+watch([schnellfilter, sortierung, stadtbezirke], () => {
   if (!initialisiert) {
     return;
   }
@@ -332,16 +280,13 @@ watch([schnellfilter, sortierung], () => {
  */
 watch(
   () => [startseitenEinstellungStore.schnellfilter, startseitenEinstellungStore.sortierung],
-  ([neuerSchnellfilter, neueSortierung]) => {
-    schnellfilter.value = neuerSchnellfilter as SchnellfilterVorgaenge;
-    sortierung.value = neueSortierung as SortierungVorgaenge;
-  },
+  ([neuerSchnellfilter, neueSortierung]) =>
+    uebernehmeEinstellung(neuerSchnellfilter as SchnellfilterVorgaenge, neueSortierung as SortierungVorgaenge),
 );
 
 onMounted(async () => {
   await startseitenEinstellungStore.initialize();
-  schnellfilter.value = startseitenEinstellungStore.schnellfilter;
-  sortierung.value = startseitenEinstellungStore.sortierung;
+  uebernehmeEinstellung(startseitenEinstellungStore.schnellfilter, startseitenEinstellungStore.sortierung);
   // Die durch die Zuweisungen ausgelösten Watcher laufen hier noch ohne Request durch.
   await nextTick();
   initialisiert = true;
@@ -352,7 +297,9 @@ onMounted(async () => {
 defineExpose({
   schnellfilter,
   sortierung,
+  stadtbezirke,
   vorgaenge,
+  numberOfPages,
   hasWeitereSeiten,
   createSearchQuery,
   loadVorgaenge,

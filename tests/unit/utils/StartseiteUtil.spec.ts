@@ -4,7 +4,10 @@ import {
   DEFAULT_SCHNELLFILTER,
   DEFAULT_SORTIERUNG,
   SCHNELLFILTER_OPTIONEN,
+  SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
   SORTIERUNG_OPTIONEN,
+  STADTBEZIRK_OPTIONEN,
+  getGueltigenSchnellfilter,
   getSortOrderForSortierung,
   getStatusAbfrageForSchnellfilter,
   type SchnellfilterVorgaenge,
@@ -82,6 +85,35 @@ describe("StartseiteUtil.spec.ts", () => {
       const sortierungWerte = SORTIERUNG_OPTIONEN.map((option) => option.value);
       expect(new Set(schnellfilterWerte).size).toBe(schnellfilterWerte.length);
       expect(new Set(sortierungWerte).size).toBe(sortierungWerte.length);
+    });
+  });
+
+  describe("getGueltigenSchnellfilter", () => {
+    test("übernimmt einen angebotenen Schnellfilter", () => {
+      expect(getGueltigenSchnellfilter("ERLEDIGT", SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG)).toBe("ERLEDIGT");
+      expect(getGueltigenSchnellfilter("ENTWUERFE", SCHNELLFILTER_OPTIONEN)).toBe("ENTWUERFE");
+    });
+
+    test("ersetzt einen nicht angebotenen oder fehlenden Schnellfilter durch den Standard", () => {
+      expect(getGueltigenSchnellfilter("ENTWUERFE", SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG)).toBe(
+        DEFAULT_SCHNELLFILTER,
+      );
+      expect(getGueltigenSchnellfilter("VORHABEN", SCHNELLFILTER_OPTIONEN)).toBe(DEFAULT_SCHNELLFILTER);
+      expect(getGueltigenSchnellfilter(undefined, SCHNELLFILTER_OPTIONEN)).toBe(DEFAULT_SCHNELLFILTER);
+    });
+
+    test("enthält den Standard in den Schnellfiltern der Sachbearbeitung ohne Duplikate", () => {
+      const werte = SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG.map((option) => option.value);
+      expect(werte).toContain(DEFAULT_SCHNELLFILTER);
+      expect(new Set(werte).size).toBe(werte.length);
+    });
+  });
+
+  describe("STADTBEZIRK_OPTIONEN", () => {
+    test("enthält die 25 Stadtbezirke mit zweistelliger Nummer", () => {
+      expect(STADTBEZIRK_OPTIONEN).toHaveLength(25);
+      expect(STADTBEZIRK_OPTIONEN[0]).toEqual({ title: "01 Altstadt-Lehel", value: "01" });
+      expect(STADTBEZIRK_OPTIONEN[24]).toEqual({ title: "25 Laim", value: "25" });
     });
   });
 });

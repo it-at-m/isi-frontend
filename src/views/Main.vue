@@ -1,21 +1,21 @@
 <template>
-  <startseite-abfrageerstellung v-if="hasRoleAbfrageerstellung" />
+  <startseite-personalisiert
+    v-if="startseitenKonfiguration"
+    :konfiguration="startseitenKonfiguration"
+  />
   <startseite-standard v-else />
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import StartseiteAbfrageerstellung from "@/views/startseite/StartseiteAbfrageerstellung.vue";
+import StartseitePersonalisiert from "@/views/startseite/StartseitePersonalisiert.vue";
 import StartseiteStandard from "@/views/startseite/StartseiteStandard.vue";
-import { useUserinfoStore } from "@/stores/Userinfostore";
-
-const userinfoStore = useUserinfoStore();
+import { useStartseitenKonfiguration } from "@/composables/startseite/useStartseitenKonfiguration";
 
 /**
- * Nutzer mit der Rolle "abfrageerstellung" erhalten die personalisierte Startseite.
+ * Rollen mit einer personalisierten Startseite erhalten diese, siehe StartseitenKonfiguration.
  * Für alle übrigen Rollen bleibt die bisherige Startseite unverändert.
  */
-const hasRoleAbfrageerstellung = computed(() => userinfoStore.hasRoleAbfrageerstellung);
+const startseitenKonfiguration = useStartseitenKonfiguration();
 
-defineExpose({ hasRoleAbfrageerstellung });
+defineExpose({ startseitenKonfiguration });
 </script>

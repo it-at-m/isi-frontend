@@ -3,6 +3,7 @@ import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { ref } from "vue";
 import StartseitenEinstellungen from "@/components/startseite/StartseitenEinstellungen.vue";
+import { SCHNELLFILTER_OPTIONEN, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG } from "@/utils/StartseiteUtil";
 
 const mockGetStartseitenEinstellung = vi.fn();
 const mockSaveStartseitenEinstellung = vi.fn();
@@ -29,8 +30,14 @@ vi.mock("vue-toastification", () => ({
   useToast: () => ({ success: vi.fn() }),
 }));
 
-async function mountComponent(showMeineVorgaenge: boolean): Promise<VueWrapper> {
-  const wrapper = mount(StartseitenEinstellungen, { shallow: true, props: { showMeineVorgaenge } });
+async function mountComponent(
+  showMeineVorgaenge: boolean,
+  schnellfilterOptionen = SCHNELLFILTER_OPTIONEN,
+): Promise<VueWrapper> {
+  const wrapper = mount(StartseitenEinstellungen, {
+    shallow: true,
+    props: { schnellfilterOptionen: showMeineVorgaenge ? schnellfilterOptionen : undefined },
+  });
   await flushPromises();
   return wrapper;
 }
@@ -65,7 +72,7 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
     expect((wrapper.vm as any).standardFilterId).toBe("filter-1");
   });
 
-  test("zeigt den Standard-Filter allen Rollen, die Einstellungen für Meine Vorgänge nur Abfrageerstellern", async () => {
+  test("zeigt den Standard-Filter allen Rollen, Meine Vorgänge nur mit personalisierter Startseite", async () => {
     const ohneMeineVorgaenge = await mountComponent(false);
     expect(ohneMeineVorgaenge.find("#startseiten_einstellungen_standard_filter").exists()).toBe(true);
     expect(ohneMeineVorgaenge.find("#startseiten_einstellungen_schnellfilter").exists()).toBe(false);
@@ -117,5 +124,23 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
     (wrapper.vm as any).standardFilterId = "filter-2";
     await expect((wrapper.vm as any).speichern()).rejects.toThrow();
     expect(mockUebernehmeStandardFilter).not.toHaveBeenCalled();
+  });
+
+  test("bietet die Schnellfilter der übergebenen Startseite an", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
+    expect(wrapper.findComponent("#startseiten_einstellungen_schnellfilter").props("items")).toEqual(
+      SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
+    );
+  });
+
+  test("ersetzt einen von der Startseite nicht angebotenen Schnellfilter durch 'Alle'", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
+    expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
+  });
+
+  test("behält ohne personalisierte Startseite den gespeicherten Schnellfilter beim Speichern", async () => {
+    const wrapper = await mountComponent(false);
+    await (wrapper.vm as any).speichern();
+    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ZUR_KENNTNIS");
   });
 });

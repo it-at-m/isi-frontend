@@ -4,6 +4,11 @@ import { createPinia, setActivePinia } from "pinia";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue";
 import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
+import {
+  STARTSEITE_ABFRAGEERSTELLUNG,
+  STARTSEITE_SACHBEARBEITUNG,
+  type StartseitenKonfiguration,
+} from "@/utils/StartseitenKonfiguration";
 
 const mockSearchForEntities = vi.fn();
 const mockGetStartseitenEinstellung = vi.fn();
@@ -23,8 +28,8 @@ vi.mock("vue-router", () => ({
 
 let wrapper: VueWrapper;
 
-function mountComponent(): VueWrapper {
-  return mount(MeineVorgaengeListe, { shallow: true });
+function mountComponent(konfiguration: StartseitenKonfiguration = STARTSEITE_ABFRAGEERSTELLUNG): VueWrapper {
+  return mount(MeineVorgaengeListe, { shallow: true, props: { konfiguration } });
 }
 
 describe("MeineVorgaengeListeTest.spec.ts", () => {
@@ -318,6 +323,82 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const vm = wrapper.vm as any;
       expect(vm.schnellfilter).toBe("ALLE");
       expect(vm.sortierung).toBe("CREATED_DATE_TIME");
+    });
+  });
+
+  describe("Startseite der Sachbearbeitung", () => {
+    let sachbearbeitung: VueWrapper;
+
+    beforeEach(async () => {
+      setActivePinia(createPinia());
+      sachbearbeitung = mountComponent(STARTSEITE_SACHBEARBEITUNG);
+      await flushPromises();
+    });
+
+    test("bietet die Schnellfilter der Sachbearbeitung an", () => {
+      const select = sachbearbeitung.findComponent("#meine_vorgaenge_schnellfilter");
+      expect((select.props("items") as Array<{ value: string }>).map((option) => option.value)).toEqual([
+        "ALLE",
+        "UEBERMITTELT_ZUR_BEARBEITUNG",
+        "START_BEARBEITUNG",
+        "EINPFLEGEN_BEDARFSMELDUNG",
+        "EINPLANUNG_BEDARFE",
+        "ERLEDIGT",
+        "VORHABEN",
+        "INFRASTRUKTUREINRICHTUNGEN",
+      ]);
+    });
+
+    test("durchsucht bei 'Alle' alle Objekte und schränkt auf die eigenen Vorgänge ein", () => {
+      const query = (sachbearbeitung.vm as any).createSearchQuery(1);
+      expect(query.filterNurEigeneVorgaenge).toBe(true);
+      expect(query.filterNurEigeneAbfragen).toBeUndefined();
+      expect(query.filterStatusAbfrage).toBeUndefined();
+      expect(query.selectBauleitplanverfahren).toBe(true);
+      expect(query.selectBauvorhaben).toBe(true);
+      expect(query.selectKinderkrippe).toBe(true);
+    });
+
+    test("bietet den Filter nach Stadtbezirken an und übernimmt die Auswahl in die Suche", async () => {
+      const vm = sachbearbeitung.vm as any;
+      expect(sachbearbeitung.find("#meine_vorgaenge_stadtbezirke").exists()).toBe(true);
+      expect(vm.createSearchQuery(1).filterStadtbezirkNummer).toBeUndefined();
+
+      mockSearchForEntities.mockClear();
+      vm.stadtbezirke = ["01", "25"];
+      await flushPromises();
+      expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
+      expect(mockSearchForEntities.mock.calls[0][0].filterStadtbezirkNummer).toEqual(["01", "25"]);
+    });
+
+    test("bietet als Neuanlage Vorhaben und Infrastruktureinrichtungen an", () => {
+      expect((sachbearbeitung.vm as any).$.setupState.neuanlageOptionen.map((option: any) => option.route)).toEqual([
+        "/bauvorhaben",
+        "/infrastruktureinrichtung",
+      ]);
+    });
+
+    test("fällt bei einer für die Rolle unbekannten Voreinstellung auf 'Alle' zurück", async () => {
+      useStartseitenEinstellungStore().setEinstellung("ENTWUERFE", "LAST_MODIFIED_DATE_TIME");
+      await flushPromises();
+      const vm = sachbearbeitung.vm as any;
+      expect(vm.schnellfilter).toBe("ALLE");
+      expect(vm.sortierung).toBe("LAST_MODIFIED_DATE_TIME");
+    });
+  });
+
+  describe("Startseite der Abfrageerstellung", () => {
+    test("bietet keinen Filter nach Stadtbezirken an", () => {
+      expect(wrapper.find("#meine_vorgaenge_stadtbezirke").exists()).toBe(false);
+      expect((wrapper.vm as any).createSearchQuery(1).filterStadtbezirkNummer).toBeUndefined();
+    });
+
+    test("bietet als Neuanlage die drei Abfragearten an", () => {
+      expect((wrapper.vm as any).$.setupState.neuanlageOptionen.map((option: any) => option.route)).toEqual([
+        "/abfrage?art=BAULEITPLANVERFAHREN",
+        "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
+        "/abfrage?art=WEITERES_VERFAHREN",
+      ]);
     });
   });
 });

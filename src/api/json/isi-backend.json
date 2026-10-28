@@ -2175,7 +2175,20 @@
     "schemas": {
       "SchnellfilterVorgaenge": {
         "type": "string",
-        "enum": ["ALLE", "ENTWUERFE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
+        "enum": [
+          "ALLE",
+          "ENTWUERFE",
+          "ZUR_BEARBEITUNG",
+          "ZUR_KENNTNIS",
+          "ABGESCHLOSSEN",
+          "UEBERMITTELT_ZUR_BEARBEITUNG",
+          "START_BEARBEITUNG",
+          "EINPFLEGEN_BEDARFSMELDUNG",
+          "EINPLANUNG_BEDARFE",
+          "ERLEDIGT",
+          "VORHABEN",
+          "INFRASTRUKTUREINRICHTUNGEN"
+        ]
       },
       "StartseitenEinstellungDto": {
         "type": "object",
@@ -2997,6 +3010,7 @@
           "filterRealisierungsbeginnVon": { "type": "integer", "format": "int32" },
           "filterRealisierungsbeginnBis": { "type": "integer", "format": "int32" },
           "filterNurEigeneAbfragen": { "type": "boolean" },
+          "filterNurEigeneVorgaenge": { "type": "boolean" },
           "filterStatusAbfrage": { "type": "array", "items": { "$ref": "#/components/schemas/StatusAbfrage" } },
           "filterSobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
           "filterWeGesamtVon": { "type": "integer", "format": "int32" },
@@ -3096,6 +3110,7 @@
           "filterRealisierungsbeginnVon": { "type": "integer", "format": "int32" },
           "filterRealisierungsbeginnBis": { "type": "integer", "format": "int32" },
           "filterNurEigeneAbfragen": { "type": "boolean" },
+          "filterNurEigeneVorgaenge": { "type": "boolean" },
           "filterStatusAbfrage": { "type": "array", "items": { "$ref": "#/components/schemas/StatusAbfrage" } },
           "filterSobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
           "filterWeGesamtVon": { "type": "integer", "format": "int32" },
