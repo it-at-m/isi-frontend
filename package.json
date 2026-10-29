@@ -34,7 +34,7 @@
     "@muenchen/prettier-codeformat": "^1.0.2",
     "@types/leaflet": "^1.9.21",
     "@types/lodash": "^4.17.21",
-    "@types/node": "^24.10.4",
+    "@types/node": "^26.0.0",
     "@types/uuid": "^11.0.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/eslint-config-typescript": "^14.6.0",
