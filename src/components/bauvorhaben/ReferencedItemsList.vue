@@ -18,19 +18,14 @@
           <v-list v-else>
             <v-list-item
               v-for="(abfrage, index) in abfragen"
+              :id="'abfragen_bauvorhaben_reference' + index"
               :key="index"
-              link
+              :to="getRouteAbfrageInfo(abfrage)"
             >
-              <v-list-item-title
-                :id="'abfragen_bauvorhaben_reference_title' + index"
-                @click="routeToAbfrageInfo(abfrage)"
-              >
+              <v-list-item-title :id="'abfragen_bauvorhaben_reference_title' + index">
                 {{ abfrage.name }}
               </v-list-item-title>
-              <v-list-item-subtitle
-                :id="'abfragen_bauvorhaben_reference_subtitle' + index"
-                @click="routeToAbfrageInfo(abfrage)"
-              >
+              <v-list-item-subtitle :id="'abfragen_bauvorhaben_reference_subtitle' + index">
                 Erstellungsdatum: {{ formatDate(abfrage.createdDateTime) }}
               </v-list-item-subtitle>
               <template #append>
@@ -67,19 +62,14 @@
           <v-list v-else>
             <v-list-item
               v-for="(infra, index) in infrastruktureinrichtungen"
+              :id="'infrastruktureinrichtungen_bauvorhaben_reference' + index"
               :key="index"
-              link
+              :to="getRouteInfrastruktureinrichtungInfo(infra)"
             >
-              <v-list-item-title
-                :id="'infrastruktureinrichtungen_bauvorhaben_reference_title' + index"
-                @click="routeToInfrastruktureinrichtungInfo(infra)"
-              >
+              <v-list-item-title :id="'infrastruktureinrichtungen_bauvorhaben_reference_title' + index">
                 {{ infra.nameEinrichtung }}
               </v-list-item-title>
-              <v-list-item-subtitle
-                :id="'infrastruktureinrichtungen_bauvorhaben_reference_subtitle' + index"
-                @click="routeToInfrastruktureinrichtungInfo(infra)"
-              >
+              <v-list-item-subtitle :id="'infrastruktureinrichtungen_bauvorhaben_reference_subtitle' + index">
                 Typ: {{ getLookupValue(infra.infrastruktureinrichtungTyp, lookupStore.infrastruktureinrichtungTyp) }}
               </v-list-item-subtitle>
             </v-list-item>
@@ -103,7 +93,7 @@ import {
 import _ from "lodash";
 import moment from "moment";
 import { useLookupStore } from "@/stores/LookupStore";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { computed, ref } from "vue";
 import { useSearchStore } from "@/stores/SearchStore";
@@ -115,7 +105,6 @@ const lookupStore = useLookupStore();
 const searchStore = useSearchStore();
 const { getReferencedAbfrageList, getReferencedInfrastruktureinrichtungenList } = useBauvorhabenApi();
 const { getById } = useAbfragenApi();
-const router = useRouter();
 const routeId = useRoute().params.id as string;
 const abfragen = ref<AbfrageSearchResultDto[]>([]);
 const abfrageWithRelevanteAbfragevarianteId = ref("");
@@ -207,27 +196,27 @@ function formatDate(dateTime: Date | undefined): string {
 }
 
 /**
- * Routing zur Detailansicht der Abfrage
+ * Route zur Detailansicht der Abfrage. Die Einträge sind als Links umgesetzt,
+ * damit sie z.B. über das Kontextmenü in einem neuen Tab geöffnet werden können.
  *
  * @param abfrageSearchResultDto zum ermitteln der Route.
  */
-function routeToAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): void {
-  if (!_.isNil(abfrageSearchResultDto.id)) {
-    router.push("/abfrage/" + abfrageSearchResultDto.id);
-  }
+function getRouteAbfrageInfo(abfrageSearchResultDto: AbfrageSearchResultDto): string | undefined {
+  return _.isNil(abfrageSearchResultDto.id) ? undefined : "/abfrage/" + abfrageSearchResultDto.id;
 }
 
 /**
- * Routing zur Detailansicht der Infrastruktureinrichtung
+ * Route zur Detailansicht der Infrastruktureinrichtung. Die Einträge sind als Links umgesetzt,
+ * damit sie z.B. über das Kontextmenü in einem neuen Tab geöffnet werden können.
  *
  * @param infrastruktureinrichtungSearchResultDto zum ermitteln der Route.
  */
-function routeToInfrastruktureinrichtungInfo(
+function getRouteInfrastruktureinrichtungInfo(
   infrastruktureinrichtungSearchResultDto: InfrastruktureinrichtungSearchResultDto,
-): void {
-  if (!_.isNil(infrastruktureinrichtungSearchResultDto.id)) {
-    router.push("/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResultDto.id);
-  }
+): string | undefined {
+  return _.isNil(infrastruktureinrichtungSearchResultDto.id)
+    ? undefined
+    : "/infrastruktureinrichtung/" + infrastruktureinrichtungSearchResultDto.id;
 }
 
 function getLookupValue(key: string | undefined, list: Array<LookupEntryDto>): string | undefined {

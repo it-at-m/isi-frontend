@@ -3,13 +3,11 @@ import { mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
+import { useUserinfoStore } from "@/stores/Userinfostore";
+import { type SearchResultDto, SearchResultDtoTypeEnum, StatusAbfrage } from "@/api/api-client/isi-backend";
 
 vi.mock("@/composables/requests/search/SearchApi", () => ({
   useSearchApi: () => ({ searchForEntities: vi.fn() }),
-}));
-
-vi.mock("vue-router", () => ({
-  useRouter: () => ({ push: vi.fn() }),
 }));
 
 describe("SearchResultListPropsTest.spec.ts", () => {
@@ -44,5 +42,44 @@ describe("SearchResultListPropsTest.spec.ts", () => {
     const wrapper: VueWrapper = mount(SearchResultList, { shallow: true, global: { renderStubDefaultSlot: true } });
     expect(wrapper.text()).toContain("Keine Suchergebnisse vorhanden");
     expect(wrapper.findComponent({ name: "VAlert" }).exists()).toBe(false);
+  });
+
+  describe("Links zu den Suchergebnissen", () => {
+    function mountWithSearchResults(searchResults: Array<SearchResultDto>): VueWrapper {
+      useSearchStore().setSearchResults({ searchResults, page: 1, numberOfPages: 1 });
+      return mount(SearchResultList, { shallow: true, global: { renderStubDefaultSlot: true } });
+    }
+
+    test("verlinkt die Suchergebnisse, damit sie in einem neuen Tab geöffnet werden können", () => {
+      const wrapper = mountWithSearchResults([
+        { type: SearchResultDtoTypeEnum.Abfrage, id: "abfrage-1" },
+        { type: SearchResultDtoTypeEnum.Bauvorhaben, id: "bauvorhaben-1" },
+        { type: SearchResultDtoTypeEnum.Infrastruktureinrichtung, id: "einrichtung-1" },
+      ]);
+      expect(wrapper.find("#search_result_item_0").attributes("to")).toBe("/abfrage/abfrage-1");
+      expect(wrapper.find("#search_result_item_1").attributes("to")).toBe("/bauvorhaben/bauvorhaben-1");
+      expect(wrapper.find("#search_result_item_2").attributes("to")).toBe("/infrastruktureinrichtung/einrichtung-1");
+    });
+
+    test("erzeugt ohne ID keinen Link", () => {
+      const wrapper = mountWithSearchResults([
+        { type: SearchResultDtoTypeEnum.Abfrage },
+        { type: SearchResultDtoTypeEnum.Bauvorhaben },
+        { type: SearchResultDtoTypeEnum.Infrastruktureinrichtung },
+      ]);
+      expect(wrapper.find("#search_result_item_0").attributes("to")).toBeUndefined();
+      expect(wrapper.find("#search_result_item_1").attributes("to")).toBeUndefined();
+      expect(wrapper.find("#search_result_item_2").attributes("to")).toBeUndefined();
+    });
+
+    test("erzeugt für Anwender keinen Link zu nicht erledigten Abfragen", () => {
+      useUserinfoStore().setUserinfo({ roles: ["anwender"] } as never);
+      const wrapper = mountWithSearchResults([
+        { type: SearchResultDtoTypeEnum.Abfrage, id: "offen", statusAbfrage: StatusAbfrage.Angelegt },
+        { type: SearchResultDtoTypeEnum.Abfrage, id: "erledigt", statusAbfrage: StatusAbfrage.ErledigtMitFachreferat },
+      ]);
+      expect(wrapper.find("#search_result_item_0").attributes("to")).toBeUndefined();
+      expect(wrapper.find("#search_result_item_1").attributes("to")).toBe("/abfrage/erledigt");
+    });
   });
 });

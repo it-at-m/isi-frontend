@@ -407,6 +407,7 @@ import {
 } from "@/types/common/Abfrage";
 import { useRoute, useRouter } from "vue-router";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { createAbfrageTabTitleName, TAB_TITLE_ABFRAGE, useTabTitle } from "@/composables/TabTitle";
 import { useTransitionApi } from "@/composables/requests/TransitionApi";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
@@ -534,6 +535,26 @@ const isBaugebietWeiteresVerfahrenFormularOpen = computed(
   () => openForm.value === AbfrageFormType.BAUGEBIET_WEITERES_VERFAHREN,
 );
 const isBaurateFormularOpen = computed(() => openForm.value === AbfrageFormType.BAURATE);
+
+/**
+ * Setzt den Tab-Titel auf "Abfrage: <Name>" bzw. bei geöffneter Abfragevariante auf "Abfrage: <Name> - <Variante>".
+ * Beobachtet werden nur die Abfrage, das ausgewählte Element und das offene Formular selbst, nicht deren Inhalt.
+ * Der Titel ändert sich daher nur beim Laden, Speichern oder Auswählen im Baum und nicht bei jeder Eingabe.
+ */
+useTabTitle(
+  () => [abfrage.value, selected.value, openForm.value] as const,
+  ([abfrage, selected, openForm]) =>
+    createAbfrageTabTitleName(
+      abfrage.name,
+      openForm === AbfrageFormType.ABFRAGEVARIANTE_BAULEITPLANVERFAHREN ||
+        openForm === AbfrageFormType.ABFRAGEVARIANTE_BAUGENEHMIGUNGSVERFAHREN ||
+        openForm === AbfrageFormType.ABFRAGEVARIANTE_WEITERES_VERFAHREN
+        ? (selected as AnyAbfragevarianteModel)
+        : undefined,
+    ),
+  isNew,
+  TAB_TITLE_ABFRAGE,
+);
 
 const deleteAbfragevarianteDialogText = computed(() => {
   const item = treeItemToDelete.value;
