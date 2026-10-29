@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: "24"
+          node-version: "26"
       - name: Execute npm install, test, build
         working-directory: .
         run: |
