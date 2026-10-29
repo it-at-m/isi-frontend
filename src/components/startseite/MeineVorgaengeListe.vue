@@ -71,7 +71,7 @@
           :id="'meine_vorgaenge_item_' + index"
           :elevation="isHovering ? 6 : 1"
           class="my-2 mr-2 pt-3 scale-transition"
-          @click="routeToAbfrage(vorgang)"
+          :to="getRouteAbfrage(vorgang)"
         >
           <v-card-subtitle
             class="text-black"
@@ -286,10 +286,11 @@ function onScroll(scrollEvent: any): void {
   }
 }
 
-function routeToAbfrage(vorgang: AbfrageSearchResultDto): void {
-  if (!_.isNil(vorgang.id)) {
-    router.push("/abfrage/" + vorgang.id);
-  }
+/**
+ * Die Vorgänge sind als Links umgesetzt, damit sie z.B. über das Kontextmenü in einem neuen Tab geöffnet werden können.
+ */
+function getRouteAbfrage(vorgang: AbfrageSearchResultDto): string | undefined {
+  return _.isNil(vorgang.id) ? undefined : "/abfrage/" + vorgang.id;
 }
 
 function createAbfrage(artAbfrage: AbfrageDtoArtAbfrageEnum): void {
