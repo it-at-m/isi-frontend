@@ -11,7 +11,7 @@
       "katex": "0.18.10"
     },
     "markdownlint": {
-      "re2js": "2.8.7"
+      "re2js": "2.9.1"
     }
   },
   "name": "refarch-templates-docs",
