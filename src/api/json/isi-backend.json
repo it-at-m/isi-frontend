@@ -2094,7 +2094,17 @@
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
-        "responses": { "204": { "description": "NO CONTENT" } }
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
       }
     },
     "/kommentar/infrastruktureinrichtung/bedarfsmeldung_sozialplanung/{id}": {
@@ -2105,7 +2115,17 @@
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
-        "responses": { "204": { "description": "NO CONTENT" } }
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
       }
     },
     "/kommentar/bauvorhaben/{id}": {
@@ -2116,7 +2136,17 @@
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
-        "responses": { "204": { "description": "NO CONTENT" } }
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
       }
     },
     "/infrastruktureinrichtung/bedarfsmeldung_sozialplanung/{id}": {
@@ -5193,9 +5223,17 @@
         "type": "object",
         "properties": { "key": { "type": "string" }, "value": { "type": "string" } }
       },
+      "LookupEntryModel": {
+        "type": "object",
+        "properties": { "key": { "type": "string" }, "value": { "type": "string" } }
+      },
       "LookupListDto": {
         "type": "object",
         "properties": { "list": { "type": "array", "items": { "$ref": "#/components/schemas/LookupEntryDto" } } }
+      },
+      "LookupListModel": {
+        "type": "object",
+        "properties": { "list": { "type": "array", "items": { "$ref": "#/components/schemas/LookupEntryModel" } } }
       },
       "LookupListsDto": {
         "type": "object",
@@ -5225,7 +5263,8 @@
           "sobonOrientierungswertJahr": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonOrientierungswertJahrWithoutStandortabfrage": { "$ref": "#/components/schemas/LookupListDto" },
           "bauratenmethodik": { "$ref": "#/components/schemas/LookupListDto" },
-          "kooperation": { "$ref": "#/components/schemas/LookupListDto" }
+          "kooperation": { "$ref": "#/components/schemas/LookupListDto" },
+          "infrastruktureinrichtungArt": { "$ref": "#/components/schemas/LookupListModel" }
         }
       },
       "DokumenteDto": {

@@ -273,13 +273,15 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: `*/*`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
+| **400** | BAD_REQUEST -&gt; Kommentar konnte nicht gelöscht werden |  -  |
+| **404** | NOT FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -338,13 +340,15 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: `*/*`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
+| **400** | BAD_REQUEST -&gt; Kommentar konnte nicht gelöscht werden |  -  |
+| **404** | NOT FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -403,13 +407,15 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: `*/*`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
+| **400** | BAD_REQUEST -&gt; Kommentar konnte nicht gelöscht werden |  -  |
+| **404** | NOT FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

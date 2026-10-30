@@ -2,10 +2,16 @@
   "_comment": "TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES",
   "overrides": {
     "vitepress": {
-      "vite": "6.4.4"
+      "vite": "6.4.5"
     },
     "vitepress-plugin-mermaid": {
       "mermaid": "$mermaid"
+    },
+    "micromark-extension-math": {
+      "katex": "0.18.10"
+    },
+    "markdownlint": {
+      "re2js": "2.8.7"
     }
   },
   "name": "refarch-templates-docs",
@@ -25,7 +31,7 @@
   },
   "devDependencies": {
     "@muenchen/prettier-codeformat": "1.0.2",
-    "markdownlint-cli": "0.49.1",
+    "markdownlint-cli": "0.50.0",
     "mermaid": "12.2.0",
     "prettier": "3.9.10",
     "vitepress": "1.6.4",
