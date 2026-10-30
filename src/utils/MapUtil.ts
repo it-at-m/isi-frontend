@@ -33,6 +33,22 @@ export const LAYER_OPTIONS: WMSOptions = { format: "image/png", minZoom: MIN_ZOO
 
 export const COLOR_POLYGON_UMGRIFF = "#E91E63";
 
+/**
+ * Vorübergehend deaktiviert, da der ArcGIS-Dienst "Schulsprengel" auf gsp-test keine Abfragen beantwortet.
+ * Sobald der Dienst wieder funktioniert, auf true setzen.
+ */
+export const SCHULSPRENGEL_ABFRAGE_AKTIV = false;
+
+export const TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR = "Aktuell nicht verfügbar";
+
+/**
+ * Liefert true, wenn für eine vorhandene Verortung keine Schulsprengel angezeigt werden können,
+ * weil die Abfrage der Schulsprengel deaktiviert ist.
+ */
+export function isSchulsprengelNichtVerfuegbar(anzahlSchulsprengel: number, anzahlStadtbezirke: number): boolean {
+  return !SCHULSPRENGEL_ABFRAGE_AKTIV && anzahlSchulsprengel === 0 && anzahlStadtbezirke !== 0;
+}
+
 enum GRUPPE {
   UNDEFINED,
   VERWALTUNG,
