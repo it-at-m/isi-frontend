@@ -9,12 +9,22 @@ type Result = true | string;
 
 export type Rule = (v: string | undefined | null) => true | string;
 
+export const PFLICHTFELD = "Pflichtfeld";
+
+/**
+ * Prüft, ob eine Validierungsmeldung eine fehlende Pflichtangabe meldet.
+ * Beim Speichern eines Entwurfs werden solche Meldungen nicht als Fehler gewertet.
+ */
+export function isPflichtfeldMeldung(message: string): boolean {
+  return message.startsWith(PFLICHTFELD);
+}
+
 export function pflichtfeld(v: string | Nil): Result {
-  return !!v || "Pflichtfeld";
+  return !!v || PFLICHTFELD;
 }
 
 export function pflichtfeldMehrfachauswahl(v: unknown[] | Nil): Result {
-  return !!(v && v.length) || "Pflichtfeld";
+  return !!(v && v.length) || PFLICHTFELD;
 }
 
 export function buchstaben(v: string | Nil): Result {
@@ -42,7 +52,7 @@ export function digits(v: string | Nil): Result {
 }
 
 export function notUnspecified(v: string | Nil): Result {
-  return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || "Pflichtfeld";
+  return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || PFLICHTFELD;
 }
 
 /**

@@ -291,7 +291,7 @@
           style="width: 200px"
           @click="saveAbfrage()"
         >
-          {{ isNew ? "Entwurf Speichern" : "Aktualisieren" }}
+          {{ isNew || isEditableByAbfrageerstellung ? "Entwurf speichern" : "Aktualisieren" }}
         </v-btn>
         <v-btn
           id="abfrage_abbrechen_button"
@@ -393,7 +393,8 @@ import {
 import _ from "lodash";
 import { useToast, TYPE } from "vue-toastification";
 import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
-import { findFaultInAbfrageForSave } from "@/utils/Validators";
+import { findFaultInAbfrageForEntwurf, findFaultInAbfrageForSave } from "@/utils/Validators";
+import { isPflichtfeldMeldung } from "@/utils/FieldValidationRules";
 import { useSearchStore } from "@/stores/SearchStore";
 import { Context } from "@/utils/Context";
 import {
@@ -752,8 +753,16 @@ function yesNoDialogRelevanteAbfragevarianteNo(): void {
 }
 
 async function saveAbfrage(): Promise<void> {
-  if ((await form.value?.validate())?.valid) {
-    const validationMessage: string | null = findFaultInAbfrageForSave(abfrage.value);
+  // Im Status ANGELEGT wird die Abfrage als Entwurf gespeichert. Fehlende Pflichtangaben werden erst vor der Freigabe geprüft.
+  const isEntwurf = isNew.value || isEditableByAbfrageerstellung.value;
+  const validationResult = await form.value?.validate();
+  const isFormValid = isEntwurf
+    ? _.every(validationResult?.errors, (error) => _.every(error.errorMessages, isPflichtfeldMeldung))
+    : validationResult?.valid;
+  if (isFormValid) {
+    const validationMessage: string | null = isEntwurf
+      ? findFaultInAbfrageForEntwurf(abfrage.value)
+      : findFaultInAbfrageForSave(abfrage.value);
     if (_.isNil(validationMessage)) {
       lastSelection.value = {
         itemId: selectedTreeItemId.value,

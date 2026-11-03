@@ -1,13 +1,66 @@
 import { describe, expect, test } from "vitest";
 import BaurateModel from "@/types/model/bauraten/BaurateModel";
-import { findFaultInBaurate, findFaultInBauleitplanverfahrenForSave } from "@/utils/Validators";
+import {
+  findFaultInAbfrageForEntwurf,
+  findFaultInAbfrageForSave,
+  findFaultInBaurate,
+  findFaultInBauleitplanverfahrenForSave,
+} from "@/utils/Validators";
 import { UncertainBoolean } from "@/api/api-client/isi-backend";
 import type BauleitplanverfahrenModel from "@/types/model/abfrage/BauleitplanverfahrenModel";
+import {
+  createAbfragevarianteBauleitplanverfahrenDto,
+  createBauabschnittDto,
+  createBauleitplanverfahrenDto,
+} from "@/utils/Factories";
+
+function createEntwurf(): BauleitplanverfahrenModel {
+  return { ...createBauleitplanverfahrenDto(), name: "Entwurf" } as BauleitplanverfahrenModel;
+}
 
 const ENTWEDER_ODER_FEHLERMELDUNG =
   "Bitte 'Start 4.2-Verfahren' angeben oder 'Datum unbekannt / nicht zutreffend' ankreuzen";
 
 describe("Validators Test", () => {
+  test("should findFaultInAbfrageForEntwurf allow Entwurf without Pflichtangaben", () => {
+    const entwurf = createEntwurf();
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBeNull();
+
+    // Abfragevariante ohne Pflichtangaben
+    entwurf.abfragevariantenBauleitplanverfahren?.push(createAbfragevarianteBauleitplanverfahrenDto());
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBeNull();
+
+    // Die Pflichtangaben werden weiterhin vor dem Statusübergang geprüft
+    expect(findFaultInAbfrageForSave(entwurf)).not.toBeNull();
+  });
+
+  test("should findFaultInAbfrageForEntwurf require Name der Abfrage", () => {
+    const entwurf = createEntwurf();
+    entwurf.name = "  ";
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBe("Der Name der Abfrage ist anzugeben.");
+
+    entwurf.name = "a".repeat(71);
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBe("Der Name der Abfrage ist zu lang.");
+  });
+
+  test("should findFaultInAbfrageForEntwurf allow at most five Abfragevarianten", () => {
+    const entwurf = createEntwurf();
+    entwurf.abfragevariantenBauleitplanverfahren = Array.from({ length: 6 }, () =>
+      createAbfragevarianteBauleitplanverfahrenDto(),
+    );
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBe(
+      "Die Abfrageerstellung kann maximal fünf Abfragevarianten erstellen.",
+    );
+  });
+
+  test("should findFaultInAbfrageForEntwurf check Bauabschnitte", () => {
+    const entwurf = createEntwurf();
+    const abfragevariante = createAbfragevarianteBauleitplanverfahrenDto();
+    abfragevariante.bauabschnitte = [{ ...createBauabschnittDto(), bezeichnung: "Bauabschnitt 1" }];
+    entwurf.abfragevariantenBauleitplanverfahren = [abfragevariante];
+    expect(findFaultInAbfrageForEntwurf(entwurf)).toBe("Die Baugebiete sind anzugeben.");
+  });
+
   test("should findFaultInBauleitplanverfahrenForSave enforce Start42Verfahren entweder-oder Regel", () => {
     const abfrage = {
       sobonRelevant: UncertainBoolean.False,

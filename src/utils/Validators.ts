@@ -78,6 +78,49 @@ export function findFaultInAbfrageForSave(abfrage: AnyAbfrageModel): string | nu
 }
 
 /**
+ * Prüfung beim Speichern einer Abfrage als Entwurf im Status ANGELEGT.
+ * Die Pflichtangaben werden erst vor dem Statusübergang über {@link findFaultInAbfrageForSave} geprüft.
+ * Bauabschnitte, Baugebiete und Bauraten müssen bereits vollständig sein, da aus ihnen beim Speichern die Bedarfe berechnet werden.
+ */
+export function findFaultInAbfrageForEntwurf(abfrage: AnyAbfrageModel): string | null {
+  if (_.isEmpty(_.trim(abfrage.name))) {
+    return "Der Name der Abfrage ist anzugeben.";
+  }
+  if (_.size(abfrage.name) > 70) {
+    return "Der Name der Abfrage ist zu lang.";
+  }
+  const messageFaultInDokumente = findFaultInDokumente(abfrage.dokumente);
+  if (!_.isNil(messageFaultInDokumente)) {
+    return messageFaultInDokumente;
+  }
+  const abfragevarianten = getAbfragevariantenAbfrageerstellung(abfrage);
+  if (abfragevarianten.length > 5) {
+    return "Die Abfrageerstellung kann maximal fünf Abfragevarianten erstellen.";
+  }
+  for (const abfragevariante of abfragevarianten) {
+    if (_.size(abfragevariante.name) > 30) {
+      return `Der Name der Abfragevariante ${abfragevariante.name} ist zu lang.`;
+    }
+    const messageFault = findFaultInBauabschnitte(abfragevariante) ?? findFaultInDokumente(abfragevariante.dokumente);
+    if (!_.isNil(messageFault)) {
+      return messageFault;
+    }
+  }
+  return null;
+}
+
+function getAbfragevariantenAbfrageerstellung(abfrage: AnyAbfrageModel): AnyAbfragevarianteDto[] {
+  switch (abfrage.artAbfrage) {
+    case AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren:
+      return _.toArray((abfrage as BauleitplanverfahrenModel).abfragevariantenBauleitplanverfahren);
+    case AbfrageDtoArtAbfrageEnum.Baugenehmigungsverfahren:
+      return _.toArray((abfrage as BaugenehmigungsverfahrenModel).abfragevariantenBaugenehmigungsverfahren);
+    default:
+      return _.toArray((abfrage as WeiteresVerfahrenModel).abfragevariantenWeiteresVerfahren);
+  }
+}
+
+/**
  * Bauleitplanverfahren wird vor dem Speichern komplett geprüft
  */
 export function findFaultInBauleitplanverfahrenForSave(abfrage: BauleitplanverfahrenModel): string | null {

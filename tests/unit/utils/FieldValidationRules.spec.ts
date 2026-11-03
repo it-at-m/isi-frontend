@@ -11,11 +11,18 @@ import {
   min5,
   nichtGleich100Prozent,
   notUnspecified,
+  isPflichtfeldMeldung,
   pflichtfeld,
   pflichtfeldMehrfachauswahl,
 } from "@/utils/FieldValidationRules";
 
 describe("FieldValidationRules", () => {
+  test("isPflichtfeldMeldung", () => {
+    expect(isPflichtfeldMeldung("Pflichtfeld")).toBe(true);
+    expect(isPflichtfeldMeldung("Pflichtfeld, wenn Adresse leer ist")).toBe(true);
+    expect(isPflichtfeldMeldung("Es sind maximal 70 Zeichen erlaubt")).toBe(false);
+  });
+
   test("should be required", () => {
     const theRule = pflichtfeld;
     const thisMessage = "Pflichtfeld";
