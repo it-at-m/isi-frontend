@@ -892,6 +892,8 @@ async function handleSuccess(dto: AnyAbfrageDto, showToast: boolean): Promise<vo
 
   await nextTick();
   restoreSelectionAfterSave();
+  // Beim Speichern eines Entwurfs blockieren fehlende Pflichtangaben nicht. Deren Markierungen werden daher entfernt.
+  form.value?.resetValidation();
   commonStore.enableButton();
 }
 
