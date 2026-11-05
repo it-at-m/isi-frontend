@@ -96,7 +96,15 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="grundschulsprengel.length !== 0">Grundschulsprengel</v-label>
+        <v-label v-if="grundschulsprengel.length !== 0 || grundschulsprengelNichtVerfuegbar">
+          Grundschulsprengel
+        </v-label>
+        <p
+          v-if="grundschulsprengelNichtVerfuegbar"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
           title="Grundschulsprengel"
@@ -142,7 +150,15 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="mittelschulsprengel.length !== 0">Mittelschulsprengel</v-label>
+        <v-label v-if="mittelschulsprengel.length !== 0 || mittelschulsprengelNichtVerfuegbar">
+          Mittelschulsprengel
+        </v-label>
+        <p
+          v-if="mittelschulsprengelNichtVerfuegbar"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
           title="Mittelschulsprengel"
@@ -196,7 +212,12 @@ import type {
   PointGeometryDto,
 } from "@/api/api-client/isi-geodata-eai";
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
-import { ICON_INFRASTRUKTUREINRICHTUNG } from "@/utils/MapUtil";
+import {
+  ICON_INFRASTRUKTUREINRICHTUNG,
+  SCHULSPRENGEL_ABFRAGE_AKTIV,
+  TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR,
+  isSchulsprengelNichtVerfuegbar,
+} from "@/utils/MapUtil";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useKoordinatenApi } from "@/composables/requests/KoordinatenApi";
@@ -284,6 +305,12 @@ const grundschulsprengel = computed(() =>
 );
 const mittelschulsprengel = computed(() =>
   _.sortBy(_.toArray(verortungModel.value?.mittelschulsprengel) as Array<MittelschulsprengelDto>, ["nummer"]),
+);
+const grundschulsprengelNichtVerfuegbar = computed(() =>
+  isSchulsprengelNichtVerfuegbar(grundschulsprengel.value.length, stadtbezirke.value.length),
+);
+const mittelschulsprengelNichtVerfuegbar = computed(() =>
+  isSchulsprengelNichtVerfuegbar(mittelschulsprengel.value.length, stadtbezirke.value.length),
 );
 
 const lookAt = computed(() => {
@@ -456,8 +483,12 @@ async function createVerortungPointDtoFromSelectedPoint(
     const promiseGemarkungen = geoApi.getGemarkungenForPoint(point);
     const promiseFlurstuecke = geoApi.getFlurstueckeForPoint(point);
     const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForPoint(point);
-    const promiseGrundschulsprengel = geoApi.getGrundschulsprengelForPoint(point);
-    const promiseMittelschulsprengel = geoApi.getMittelschulsprengelForPoint(point);
+    const promiseGrundschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
+      ? geoApi.getGrundschulsprengelForPoint(point)
+      : Promise.resolve([]);
+    const promiseMittelschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
+      ? geoApi.getMittelschulsprengelForPoint(point)
+      : Promise.resolve([]);
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(

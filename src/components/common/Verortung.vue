@@ -109,7 +109,15 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="grundschulsprengel.length !== 0">Grundschulsprengel</v-label>
+        <v-label v-if="grundschulsprengel.length !== 0 || grundschulsprengelNichtVerfuegbar">
+          Grundschulsprengel
+        </v-label>
+        <p
+          v-if="grundschulsprengelNichtVerfuegbar"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
           title="Grundschulsprengel"
@@ -155,7 +163,15 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="mittelschulsprengel.length !== 0">Mittelschulsprengel</v-label>
+        <v-label v-if="mittelschulsprengel.length !== 0 || mittelschulsprengelNichtVerfuegbar">
+          Mittelschulsprengel
+        </v-label>
+        <p
+          v-if="mittelschulsprengelNichtVerfuegbar"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
           title="Mittelschulsprengel"
@@ -238,7 +254,12 @@ import L, { LatLng, Layer } from "leaflet";
 import _ from "lodash";
 import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import { Context } from "@/utils/Context";
-import { COLOR_POLYGON_UMGRIFF } from "@/utils/MapUtil";
+import {
+  COLOR_POLYGON_UMGRIFF,
+  SCHULSPRENGEL_ABFRAGE_AKTIV,
+  TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR,
+  isSchulsprengelNichtVerfuegbar,
+} from "@/utils/MapUtil";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
@@ -312,6 +333,12 @@ const grundschulsprengel = computed(() =>
 );
 const mittelschulsprengel = computed(() =>
   _.sortBy(Array.from(verortungModel.value?.mittelschulsprengel ?? []), ["nummer"]),
+);
+const grundschulsprengelNichtVerfuegbar = computed(() =>
+  isSchulsprengelNichtVerfuegbar(grundschulsprengel.value.length, stadtbezirke.value.length),
+);
+const mittelschulsprengelNichtVerfuegbar = computed(() =>
+  isSchulsprengelNichtVerfuegbar(mittelschulsprengel.value.length, stadtbezirke.value.length),
 );
 
 const isEditable = computed(() => {
@@ -515,8 +542,12 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
     const promiseViertel = await geoApi.getViertelForMultipolygon(unifiedMultipolygon);
     const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
     const promiseKitaplanungsbereiche = await geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon);
-    const promiseGrundschulsprengel = await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon);
-    const promiseMittelschulsprengel = await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon);
+    const promiseGrundschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
+      ? await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon)
+      : [];
+    const promiseMittelschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
+      ? await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon)
+      : [];
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(promiseStadtbezirke);
