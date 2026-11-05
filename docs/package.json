@@ -8,7 +8,7 @@
       "mermaid": "$mermaid"
     },
     "micromark-extension-math": {
-      "katex": "0.18.10"
+      "katex": "0.19.1"
     },
     "markdownlint": {
       "re2js": "2.8.7"
