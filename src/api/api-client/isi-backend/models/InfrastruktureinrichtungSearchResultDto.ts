@@ -81,10 +81,10 @@ export type InfrastruktureinrichtungSearchResultDtoInfrastruktureinrichtungTypEn
  */
 export const InfrastruktureinrichtungSearchResultDtoStatusEnum = {
     Unspecified: 'UNSPECIFIED',
+    Bestand: 'BESTAND',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
     GesichertePlanung: 'GESICHERTE_PLANUNG',
     PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
-    Bestand: 'BESTAND',
 } as const;
 export type InfrastruktureinrichtungSearchResultDtoStatusEnum = typeof InfrastruktureinrichtungSearchResultDtoStatusEnum[keyof typeof InfrastruktureinrichtungSearchResultDtoStatusEnum];
 

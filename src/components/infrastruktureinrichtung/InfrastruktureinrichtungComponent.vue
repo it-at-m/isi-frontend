@@ -65,11 +65,6 @@
         </v-col>
       </v-row>
     </field-group-card>
-    <infrastruktureinrichtung-flaechenangaben-component
-      id="infrastruktureinrichtung_flaechenangaben_component"
-      v-model="infrastruktureinrichtung"
-      :is-editable="isEditable"
-    />
   </div>
 </template>
 
@@ -82,7 +77,6 @@ import InfrastruktureinrichtungStatusComponent from "./InfrastruktureinrichtungS
 import InfrastruktureinrichtungAnlassPlanungComponent from "./InfrastruktureinrichtungAnlassPlanungComponent.vue";
 import InfrastruktureinrichtungFertigstellungsjahrComponent from "./InfrastruktureinrichtungFertigstellungsjahrComponent.vue";
 import InfrastruktureinrichtungVorhabenComponent from "./InfrastruktureinrichtungVorhabenComponent.vue";
-import InfrastruktureinrichtungFlaechenangabenComponent from "./InfrastruktureinrichtungFlaechenangabenComponent.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";

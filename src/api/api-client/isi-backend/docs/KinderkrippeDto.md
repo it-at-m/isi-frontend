@@ -6,10 +6,23 @@
 
 Name | Type
 ------------ | -------------
-`anzahlKinderkrippePlaetze` | number
-`anzahlKinderkrippeGruppen` | number
-`wohnungsnaheKinderkrippePlaetze` | number
 `einrichtungstraeger` | string
+`fertigstellungsmonat` | number
+`sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
+`muenchnerKitafoerderung` | [UncertainBoolean](UncertainBoolean.md)
+`miniKita` | boolean
+`integrationseinrichtung` | boolean
+`nameTraeger` | string
+`gesamtplaetzeNachBE` | number
+`kinderkrippenplaetzeNachBE` | number
+`ueberregionaleKinderkrippenplaetze` | number
+`belegungKinderkrippenplaetze` | number
+`sollBelegungKinderkrippenplaetzeKePlus` | number
+`sollBelegungKinderkrippenplaetze` | number
+`integrationsplaetzeKinderkrippeKePlus` | number
+`integrationsplaetzeKinderkrippe` | number
+`belegungIntegrationsplaetzeKinderkrippe` | number
+`linkKePlus` | string
 
 ## Example
 
@@ -18,10 +31,23 @@ import type { KinderkrippeDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "anzahlKinderkrippePlaetze": null,
-  "anzahlKinderkrippeGruppen": null,
-  "wohnungsnaheKinderkrippePlaetze": null,
   "einrichtungstraeger": null,
+  "fertigstellungsmonat": null,
+  "sobonRelevant": null,
+  "muenchnerKitafoerderung": null,
+  "miniKita": null,
+  "integrationseinrichtung": null,
+  "nameTraeger": null,
+  "gesamtplaetzeNachBE": null,
+  "kinderkrippenplaetzeNachBE": null,
+  "ueberregionaleKinderkrippenplaetze": null,
+  "belegungKinderkrippenplaetze": null,
+  "sollBelegungKinderkrippenplaetzeKePlus": null,
+  "sollBelegungKinderkrippenplaetze": null,
+  "integrationsplaetzeKinderkrippeKePlus": null,
+  "integrationsplaetzeKinderkrippe": null,
+  "belegungIntegrationsplaetzeKinderkrippe": null,
+  "linkKePlus": null,
 } satisfies KinderkrippeDto
 
 console.log(example)

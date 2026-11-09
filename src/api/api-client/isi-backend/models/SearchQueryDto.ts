@@ -187,10 +187,10 @@ export type SearchQueryDtoFilterVerfahrensstandEnum = typeof SearchQueryDtoFilte
  */
 export const SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
+    Bestand: 'BESTAND',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
     GesichertePlanung: 'GESICHERTE_PLANUNG',
     PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
-    Bestand: 'BESTAND',
 } as const;
 export type SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum = typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum[keyof typeof SearchQueryDtoFilterInfrastruktureinrichtungStatusEnum];
 

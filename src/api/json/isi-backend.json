@@ -2287,7 +2287,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           }
         },
@@ -2509,11 +2509,8 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
-                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG",
-                  "PRIVATE_TRAEGERSCHAFT",
-                  "KIRCHLICHE_TRAEGERSCHAFT"
+                  "STAATLICHE_EINRICHTUNG"
                 ]
               }
             }
@@ -2543,11 +2540,8 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
-                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG",
-                  "PRIVATE_TRAEGERSCHAFT",
-                  "KIRCHLICHE_TRAEGERSCHAFT"
+                  "STAATLICHE_EINRICHTUNG"
                 ]
               }
             }
@@ -2597,10 +2591,8 @@
           "fertigstellungsjahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "status": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+            "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
           },
-          "flaecheGesamtgrundstueck": { "type": "number" },
-          "flaecheTeilgrundstueck": { "type": "number" },
           "idKibigWeb": { "type": "string" },
           "anlassPlanung": {
             "type": "string",
@@ -2624,9 +2616,6 @@
           {
             "type": "object",
             "properties": {
-              "anzahlKindergartenPlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKindergartenGruppen": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKindergartenPlaetze": { "type": "integer", "format": "int32" },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -2634,21 +2623,34 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
-                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG",
-                  "PRIVATE_TRAEGERSCHAFT",
-                  "KIRCHLICHE_TRAEGERSCHAFT"
+                  "STAATLICHE_EINRICHTUNG"
                 ]
-              }
+              },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "muenchnerKitafoerderung": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "miniKita": { "type": "boolean" },
+              "integrationseinrichtung": { "type": "boolean" },
+              "nameTraeger": { "type": "string" },
+              "gesamtplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "kindergartenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergartenKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "linkKePlus": { "type": "string" }
             }
           }
         ],
         "required": [
           "anlassPlanung",
-          "anzahlKindergartenGruppen",
-          "anzahlKindergartenPlaetze",
+          "einrichtungstraeger",
+          "muenchnerKitafoerderung",
           "nameEinrichtung",
+          "sobonRelevant",
           "status"
         ]
       },
@@ -2658,9 +2660,6 @@
           {
             "type": "object",
             "properties": {
-              "anzahlKinderkrippePlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKinderkrippeGruppen": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKinderkrippePlaetze": { "type": "integer", "format": "int32" },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -2668,21 +2667,35 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
-                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG",
-                  "PRIVATE_TRAEGERSCHAFT",
-                  "KIRCHLICHE_TRAEGERSCHAFT"
+                  "STAATLICHE_EINRICHTUNG"
                 ]
-              }
+              },
+              "fertigstellungsmonat": { "type": "integer", "format": "int32", "maximum": 12, "minimum": 1 },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "muenchnerKitafoerderung": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "miniKita": { "type": "boolean" },
+              "integrationseinrichtung": { "type": "boolean" },
+              "nameTraeger": { "type": "string" },
+              "gesamtplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "kinderkrippenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippeKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "linkKePlus": { "type": "string" }
             }
           }
         ],
         "required": [
           "anlassPlanung",
-          "anzahlKinderkrippeGruppen",
-          "anzahlKinderkrippePlaetze",
+          "einrichtungstraeger",
+          "muenchnerKitafoerderung",
           "nameEinrichtung",
+          "sobonRelevant",
           "status"
         ]
       },
@@ -2765,11 +2778,8 @@
               "STAEDTISCHE_EINRICHTUNG",
               "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
               "FREIE_GEMEINNUETZIGE_SONSTIGE",
-              "EINRICHTUNG_GESAMTSTAEDTISCH",
               "ELTERN_KIND_INITIATIVE",
-              "STAATLICHE_EINRICHTUNG",
-              "PRIVATE_TRAEGERSCHAFT",
-              "KIRCHLICHE_TRAEGERSCHAFT"
+              "STAATLICHE_EINRICHTUNG"
             ]
           }
         },
@@ -3033,7 +3043,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           },
           "filterAnlassPlanung": {
@@ -3132,7 +3142,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           },
           "filterAnlassPlanung": {
@@ -3291,10 +3301,10 @@
                 "type": "string",
                 "enum": [
                   "UNSPECIFIED",
+                  "BESTAND",
                   "UNGESICHERTE_PLANUNG",
                   "GESICHERTE_PLANUNG",
-                  "PLANUNG_ZURUECKGEZOGEN",
-                  "BESTAND"
+                  "PLANUNG_ZURUECKGEZOGEN"
                 ]
               },
               "anlassPlanung": {

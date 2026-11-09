@@ -6,10 +6,22 @@
 
 Name | Type
 ------------ | -------------
-`anzahlKindergartenPlaetze` | number
-`anzahlKindergartenGruppen` | number
-`wohnungsnaheKindergartenPlaetze` | number
 `einrichtungstraeger` | string
+`sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
+`muenchnerKitafoerderung` | [UncertainBoolean](UncertainBoolean.md)
+`miniKita` | boolean
+`integrationseinrichtung` | boolean
+`nameTraeger` | string
+`gesamtplaetzeNachBE` | number
+`kindergartenplaetzeNachBE` | number
+`ueberregionaleKindergartenplaetze` | number
+`belegungKindergartenplaetze` | number
+`sollBelegungKindergartenplaetzeKePlus` | number
+`sollBelegungKindergartenplaetze` | number
+`integrationsplaetzeKindergartenKePlus` | number
+`integrationsplaetzeKindergarten` | number
+`belegungIntegrationsplaetzeKindergarten` | number
+`linkKePlus` | string
 
 ## Example
 
@@ -18,10 +30,22 @@ import type { KindergartenDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "anzahlKindergartenPlaetze": null,
-  "anzahlKindergartenGruppen": null,
-  "wohnungsnaheKindergartenPlaetze": null,
   "einrichtungstraeger": null,
+  "sobonRelevant": null,
+  "muenchnerKitafoerderung": null,
+  "miniKita": null,
+  "integrationseinrichtung": null,
+  "nameTraeger": null,
+  "gesamtplaetzeNachBE": null,
+  "kindergartenplaetzeNachBE": null,
+  "ueberregionaleKindergartenplaetze": null,
+  "belegungKindergartenplaetze": null,
+  "sollBelegungKindergartenplaetzeKePlus": null,
+  "sollBelegungKindergartenplaetze": null,
+  "integrationsplaetzeKindergartenKePlus": null,
+  "integrationsplaetzeKindergarten": null,
+  "belegungIntegrationsplaetzeKindergarten": null,
+  "linkKePlus": null,
 } satisfies KindergartenDto
 
 console.log(example)

@@ -42,11 +42,8 @@ export const SchuleDtoEinrichtungstraegerEnum = {
     StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
     EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
     FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
-    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
-    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
-    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type SchuleDtoEinrichtungstraegerEnum = typeof SchuleDtoEinrichtungstraegerEnum[keyof typeof SchuleDtoEinrichtungstraegerEnum];
 
