@@ -4,7 +4,7 @@
       v-bind="$attrs"
       :elevation="isHovering ? 6 : 1"
       class="my-2 mr-2 pt-3 scale-transition"
-      @click="routeToVorgang"
+      :to="link"
     >
       <v-card-subtitle
         class="text-black"
@@ -52,7 +52,6 @@ import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
 import { convertDateForFrontend } from "@/utils/Formatter";
 import type { Vorgang } from "@/utils/StartseiteUtil";
 import _ from "lodash";
-import { useRouter } from "vue-router";
 
 interface Props {
   vorgang: Vorgang;
@@ -76,7 +75,6 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps<Props>();
 
-const router = useRouter();
 const lookupStore = useLookupStore();
 
 const abfrage = computed(() =>
@@ -125,6 +123,9 @@ const darstellung = computed<Darstellung>(() => {
   }
 });
 
+// Die Vorgänge sind als Links umgesetzt, damit sie z.B. über das Kontextmenü in einem neuen Tab geöffnet werden können.
+const link = computed(() => (_.isNil(props.vorgang.id) ? undefined : darstellung.value.route));
+
 function getLookupValue(key: string | undefined, lookupList: Array<LookupEntryDto> | undefined): string {
   return lookupList?.find((lookupEntry: LookupEntryDto) => lookupEntry.key === key)?.value ?? "";
 }
@@ -136,11 +137,5 @@ function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string 
   return _.join(bezeichnungen, ", ");
 }
 
-function routeToVorgang(): void {
-  if (!_.isNil(props.vorgang.id)) {
-    router.push(darstellung.value.route);
-  }
-}
-
-defineExpose({ darstellung, routeToVorgang });
+defineExpose({ darstellung, link });
 </script>

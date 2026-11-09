@@ -2,6 +2,9 @@ name: build and test
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   build-test-npm:
     runs-on: ubuntu-latest

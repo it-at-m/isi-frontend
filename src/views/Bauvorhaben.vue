@@ -160,6 +160,7 @@ import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { TAB_TITLE_BAUVORHABEN, useTabTitle } from "@/composables/TabTitle";
 import { useBauvorhabenApi } from "@/composables/requests/BauvorhabenApi";
 import { useToast, TYPE } from "vue-toastification";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
@@ -190,6 +191,7 @@ const deleteDialogOpen = ref(false);
 const dataTransferDialogOpen = ref(false);
 const isNew = ref(true);
 const bauvorhaben = ref(new BauvorhabenModel(createBauvorhabenDto()));
+useTabTitle(bauvorhaben, (bauvorhaben) => bauvorhaben.nameVorhaben, isNew, TAB_TITLE_BAUVORHABEN);
 let datenuebernahmeAbfrageId: string | undefined = undefined;
 
 const bearbeitungsinformationen = computed(
