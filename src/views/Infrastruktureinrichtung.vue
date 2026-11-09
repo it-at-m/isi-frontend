@@ -119,7 +119,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
+              <bearbeitungshistorie v-model="infrastruktureinrichtung.bearbeitungshistorie" />
             </v-col>
           </v-row>
         </v-container>
@@ -213,8 +213,7 @@ import {
   createNachbarschaftstreffDto,
 } from "@/utils/Factories";
 import _ from "lodash";
-import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
-import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
+import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
@@ -313,13 +312,6 @@ const infrastruktureinrichtungDisplayName = computed(() => {
     return infrastruktureinrichtung.value.nameEinrichtung;
   }
   return "";
-});
-
-const bearbeitungsinformationen = computed(() => {
-  return new BenutzerinformationenModel(
-    infrastruktureinrichtung.value?.bearbeitendePerson,
-    infrastruktureinrichtung.value?.lastModifiedDateTime,
-  );
 });
 
 const isEinrichtungstraegerRequired = computed(() => {

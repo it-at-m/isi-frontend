@@ -2589,6 +2589,10 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" },
+          "bearbeitungshistorie": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BearbeitungshistorieDto" }
+          },
           "infrastruktureinrichtungTyp": {
             "type": "string",
             "enum": [
@@ -2869,6 +2873,10 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" },
+          "bearbeitungshistorie": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BearbeitungshistorieDto" }
+          },
           "nameVorhaben": { "type": "string", "maxLength": 255, "minLength": 0 },
           "grundstuecksgroesse": { "type": "number" },
           "verfahrensstand": {
@@ -4290,9 +4298,11 @@
           }
         }
       },
+      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
       "BearbeitungshistorieDto": {
         "type": "object",
         "properties": {
+          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
           "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
           "zeitpunkt": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }

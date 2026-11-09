@@ -128,7 +128,7 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
 
   test("bietet die Schnellfilter der übergebenen Startseite an", async () => {
     const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
-    expect(wrapper.findComponent("#startseiten_einstellungen_schnellfilter").props("items")).toEqual(
+    expect((wrapper.findComponent("#startseiten_einstellungen_schnellfilter") as any).props("items")).toEqual(
       SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
     );
   });

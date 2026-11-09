@@ -130,9 +130,9 @@ export const STARTSEITE_ABFRAGEERSTELLUNG: StartseitenKonfiguration = {
 /**
  * Bildet die Schnellfilter der Sachbearbeitung auf die Suchkriterien ab.
  * <p>
- * "Eigene Vorgänge" sind die selbst erstellten oder zuletzt bearbeiteten Vorhaben und Infrastruktureinrichtungen
- * sowie die Abfragen, welche die Sachbearbeitung in den Status "Start Bearbeitung" übernommen hat. Die noch nicht
- * übernommenen Abfragen im Status "Übermittelt zur Bearbeitung" werden ohne Personenbezug angezeigt.
+ * "Eigene Vorgänge" sind alle Abfragen, Vorhaben und Infrastruktureinrichtungen, welche die Person laut
+ * Bearbeitungshistorie erstellt oder bearbeitet hat. Die noch nicht übernommenen Abfragen im Status
+ * "Übermittelt zur Bearbeitung" werden ohne Personenbezug angezeigt.
  *
  * @param schnellfilter der ausgewählte Schnellfilter.
  * @returns die Suchkriterien.

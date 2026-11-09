@@ -336,7 +336,7 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
     });
 
     test("bietet die Schnellfilter der Sachbearbeitung an", () => {
-      const select = sachbearbeitung.findComponent("#meine_vorgaenge_schnellfilter");
+      const select = sachbearbeitung.findComponent("#meine_vorgaenge_schnellfilter") as any;
       expect((select.props("items") as Array<{ value: string }>).map((option) => option.value)).toEqual([
         "ALLE",
         "UEBERMITTELT_ZUR_BEARBEITUNG",

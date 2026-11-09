@@ -5,6 +5,7 @@ import {
   type AbfrageSearchResultDto,
   type BauvorhabenSearchResultDto,
   type InfrastruktureinrichtungSearchResultDto,
+  type StadtbezirkDto,
   AbfrageDtoArtAbfrageEnum,
   SearchResultDtoTypeEnum,
 } from "@/api/api-client/isi-backend";
@@ -36,7 +37,7 @@ describe("VorgangKarteTest.spec.ts", () => {
       stadtbezirke: new Set([
         { nummer: "12", name: "Schwabing-Freimann" },
         { nummer: "01", name: "Altstadt-Lehel" },
-      ]),
+      ]) as Set<StadtbezirkDto>,
     };
     const wrapper = mountKarte(abfrage);
     const darstellung = (wrapper.vm as any).darstellung;

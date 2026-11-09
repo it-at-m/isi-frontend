@@ -19,15 +19,15 @@
       <v-card-title>Bearbeitungsinformationen</v-card-title>
       <v-data-table
         :headers="bearbeitungshistorieHeaders"
-        :items="bearbeitungshistorie"
+        :items="eintraege"
         density="compact"
         disable-sort
       >
         <template #item.zeitpunkt="{ item }">
           {{ zeitpunktFormatted(item.zeitpunkt) }}
         </template>
-        <template #item.zielStatus="{ item }">
-          {{ zielstatusText(item.zielStatus) }}
+        <template #item.art="{ item }">
+          {{ aktionText(item) }}
         </template>
       </v-data-table>
     </v-card>
@@ -36,7 +36,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { BearbeitungshistorieDto, LookupEntryDto, StatusAbfrage } from "@/api/api-client/isi-backend";
+import {
+  BearbeitungsArt,
+  type BearbeitungshistorieDto,
+  type LookupEntryDto,
+  type StatusAbfrage,
+} from "@/api/api-client/isi-backend";
 import _ from "lodash";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
@@ -49,12 +54,25 @@ const bearbeitungshistorieHeaders = ref<Array<any>>([
   { title: "Email", key: "bearbeitendePerson.email", sortable: false },
   { title: "Organisationseinheit", key: "bearbeitendePerson.organisationseinheit", sortable: false },
   { title: "Datum der Änderung", key: "zeitpunkt", sortable: false },
-  { title: "Zielstatus", key: "zielStatus", sortable: false },
+  { title: "Aktion", key: "art", sortable: false },
 ]);
 const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(bearbeitungshistorie.value));
+// Die Historie wächst mit jeder Bearbeitung, die aktuellsten Einträge stehen deshalb oben.
+const eintraege = computed(() => _.orderBy(bearbeitungshistorie.value, "zeitpunkt", "desc"));
 
 function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
   return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);
+}
+
+function aktionText(eintrag: BearbeitungshistorieDto): string | undefined {
+  switch (eintrag.art) {
+    case BearbeitungsArt.Erstellt:
+      return "Erstellt";
+    case BearbeitungsArt.Aktualisiert:
+      return "Aktualisiert";
+    default:
+      return `Statusänderung: ${zielstatusText(eintrag.zielStatus) ?? ""}`;
+  }
 }
 
 function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
@@ -62,4 +80,6 @@ function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
     ? lookupStore.statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
     : "";
 }
+
+defineExpose({ eintraege, aktionText });
 </script>
