@@ -70,8 +70,10 @@ function aktionText(eintrag: BearbeitungshistorieDto): string | undefined {
       return "Erstellt";
     case BearbeitungsArt.Aktualisiert:
       return "Aktualisiert";
-    default:
+    case BearbeitungsArt.Statusaenderung:
       return `Statusänderung: ${zielstatusText(eintrag.zielStatus) ?? ""}`;
+    default:
+      return "";
   }
 }
 

@@ -39,6 +39,12 @@ describe("BearbeitungshistorieTest.spec.ts", () => {
     );
   });
 
+  test("gibt einen Eintrag ohne Art nicht als Statusänderung aus", () => {
+    const vm = mountComponent([]).vm as any;
+
+    expect(vm.aktionText({ zielStatus: StatusAbfrage.StartBearbeitung })).toBe("");
+  });
+
   test("blendet die Historie ohne Einträge aus", () => {
     expect(mountComponent(undefined).find("#benutzerinformation_menu").exists()).toBe(false);
     expect(mountComponent([]).find("#benutzerinformation_menu").exists()).toBe(false);
