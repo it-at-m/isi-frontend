@@ -27,28 +27,52 @@ function getAusgewaehlteObjekte(suchkriterien: Suchkriterien): Array<string> {
 
 describe("StartseitenKonfiguration.spec.ts", () => {
   describe("getStartseitenKonfiguration", () => {
+    const KEINE_ROLLEN = { hasRoleAdmin: false, hasRoleAbfrageerstellung: false, hasRoleSachbearbeitung: false };
+
     test("liefert für Abfrageersteller die Startseite der Abfrageerstellung", () => {
-      expect(getStartseitenKonfiguration({ hasRoleAbfrageerstellung: true, hasRoleSachbearbeitung: false })).toBe(
+      expect(getStartseitenKonfiguration({ ...KEINE_ROLLEN, hasRoleAbfrageerstellung: true })).toBe(
         STARTSEITE_ABFRAGEERSTELLUNG,
       );
     });
 
     test("liefert für die Sachbearbeitung die Startseite der Sachbearbeitung", () => {
-      expect(getStartseitenKonfiguration({ hasRoleAbfrageerstellung: false, hasRoleSachbearbeitung: true })).toBe(
+      expect(getStartseitenKonfiguration({ ...KEINE_ROLLEN, hasRoleSachbearbeitung: true })).toBe(
         STARTSEITE_SACHBEARBEITUNG,
       );
     });
 
-    test("bevorzugt bei Mischrollen die Abfrageerstellung", () => {
-      expect(getStartseitenKonfiguration({ hasRoleAbfrageerstellung: true, hasRoleSachbearbeitung: true })).toBe(
-        STARTSEITE_ABFRAGEERSTELLUNG,
-      );
+    test("liefert bei Mischrollen die Startseite der Sachbearbeitung mit den Neuanlagen beider Rollen", () => {
+      const konfiguration = getStartseitenKonfiguration({
+        ...KEINE_ROLLEN,
+        hasRoleAbfrageerstellung: true,
+        hasRoleSachbearbeitung: true,
+      });
+
+      expect(konfiguration?.schnellfilterOptionen).toBe(STARTSEITE_SACHBEARBEITUNG.schnellfilterOptionen);
+      expect(konfiguration?.getSuchkriterien).toBe(STARTSEITE_SACHBEARBEITUNG.getSuchkriterien);
+      expect(konfiguration?.stadtbezirkFilter).toBe(true);
+      expect(konfiguration?.neuanlageOptionen.map((option) => option.route)).toEqual([
+        "/bauvorhaben",
+        "/infrastruktureinrichtung",
+        "/abfrage?art=BAULEITPLANVERFAHREN",
+        "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
+        "/abfrage?art=WEITERES_VERFAHREN",
+      ]);
+    });
+
+    test("liefert Administratoren unabhängig von weiteren Rollen keine personalisierte Startseite", () => {
+      expect(getStartseitenKonfiguration({ ...KEINE_ROLLEN, hasRoleAdmin: true })).toBeUndefined();
+      expect(
+        getStartseitenKonfiguration({
+          hasRoleAdmin: true,
+          hasRoleAbfrageerstellung: true,
+          hasRoleSachbearbeitung: true,
+        }),
+      ).toBeUndefined();
     });
 
     test("liefert für alle übrigen Rollen keine personalisierte Startseite", () => {
-      expect(
-        getStartseitenKonfiguration({ hasRoleAbfrageerstellung: false, hasRoleSachbearbeitung: false }),
-      ).toBeUndefined();
+      expect(getStartseitenKonfiguration(KEINE_ROLLEN)).toBeUndefined();
     });
   });
 
@@ -100,6 +124,7 @@ describe("StartseitenKonfiguration.spec.ts", () => {
     });
 
     test.each([
+      ["ANGELEGT", [StatusAbfrage.Angelegt]],
       ["START_BEARBEITUNG", [StatusAbfrage.StartBearbeitung]],
       ["EINPFLEGEN_BEDARFSMELDUNG", [StatusAbfrage.EinpflegenBedarfsmeldung]],
       ["EINPLANUNG_BEDARFE", [StatusAbfrage.EinplanungBedarfe]],

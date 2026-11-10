@@ -43,12 +43,22 @@ describe("StartseiteTest.spec.ts", () => {
       expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(false);
     });
 
-    test("bevorzugt bei Mischrollen die Startseite der Abfrageerstellung", () => {
+    test("zeigt bei Mischrollen die Startseite der Sachbearbeitung mit den Neuanlagen beider Rollen", () => {
       setRoles(["sachbearbeitung", "abfrageerstellung"]);
       const wrapper: VueWrapper = mount(Main, { shallow: true });
-      expect(wrapper.findComponent({ name: "StartseitePersonalisiert" }).props("konfiguration")).toBe(
-        STARTSEITE_ABFRAGEERSTELLUNG,
-      );
+      const konfiguration = wrapper.findComponent({ name: "StartseitePersonalisiert" }).props("konfiguration");
+      expect(konfiguration.schnellfilterOptionen).toBe(STARTSEITE_SACHBEARBEITUNG.schnellfilterOptionen);
+      expect(konfiguration.neuanlageOptionen).toEqual([
+        ...STARTSEITE_SACHBEARBEITUNG.neuanlageOptionen,
+        ...STARTSEITE_ABFRAGEERSTELLUNG.neuanlageOptionen,
+      ]);
+    });
+
+    test("zeigt Administratoren auch mit weiteren Rollen die bisherige Startseite", () => {
+      setRoles(["admin", "sachbearbeitung", "abfrageerstellung"]);
+      const wrapper: VueWrapper = mount(Main, { shallow: true });
+      expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(true);
+      expect(wrapper.findComponent({ name: "StartseitePersonalisiert" }).exists()).toBe(false);
     });
 
     test("lässt die Startseite für alle anderen Rollen unverändert", () => {

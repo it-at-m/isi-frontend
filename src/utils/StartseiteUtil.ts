@@ -102,6 +102,7 @@ export function getSortOrderForSortierung(sortierung: SortierungVorgaenge | unde
  */
 export const SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
   { title: "Alle", value: "ALLE" },
+  { title: "Angelegt", value: "ANGELEGT" },
   { title: "Übermittelt zur Bearbeitung", value: "UEBERMITTELT_ZUR_BEARBEITUNG" },
   { title: "Start Bearbeitung", value: "START_BEARBEITUNG" },
   { title: "Einpflegen Bedarfsmeldung", value: "EINPFLEGEN_BEDARFSMELDUNG" },

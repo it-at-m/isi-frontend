@@ -339,6 +339,7 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       const select = sachbearbeitung.findComponent("#meine_vorgaenge_schnellfilter") as any;
       expect((select.props("items") as Array<{ value: string }>).map((option) => option.value)).toEqual([
         "ALLE",
+        "ANGELEGT",
         "UEBERMITTELT_ZUR_BEARBEITUNG",
         "START_BEARBEITUNG",
         "EINPFLEGEN_BEDARFSMELDUNG",

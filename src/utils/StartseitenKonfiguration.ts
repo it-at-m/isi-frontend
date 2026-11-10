@@ -1,5 +1,6 @@
 import { AbfrageDtoArtAbfrageEnum, type SearchQueryAndSortingDto, StatusAbfrage } from "@/api/api-client/isi-backend";
 import { getAbfrageArtLabel, getAbfrageIcon } from "@/utils/AbfrageIconUtil";
+import _ from "lodash";
 import {
   type AuswahlOption,
   type SchnellfilterVorgaenge,
@@ -139,6 +140,8 @@ export const STARTSEITE_ABFRAGEERSTELLUNG: StartseitenKonfiguration = {
  */
 export function getSuchkriterienSachbearbeitung(schnellfilter: SchnellfilterVorgaenge): Suchkriterien {
   switch (schnellfilter) {
+    case "ANGELEGT":
+      return { ...ABFRAGEN, filterNurEigeneVorgaenge: true, filterStatusAbfrage: [StatusAbfrage.Angelegt] };
     case "UEBERMITTELT_ZUR_BEARBEITUNG":
       return { ...ABFRAGEN, filterStatusAbfrage: [StatusAbfrage.UebermitteltZurBearbeitung] };
     case "START_BEARBEITUNG":
@@ -184,6 +187,7 @@ export const STARTSEITE_SACHBEARBEITUNG: StartseitenKonfiguration = {
  * Die Rollen, für die eine personalisierte Startseite existiert.
  */
 export interface StartseitenRollen {
+  hasRoleAdmin: boolean;
   hasRoleAbfrageerstellung: boolean;
   hasRoleSachbearbeitung: boolean;
 }
@@ -191,18 +195,33 @@ export interface StartseitenRollen {
 /**
  * Ermittelt die personalisierte Startseite anhand der Rollen des Nutzers.
  * <p>
- * Bei mehreren Rollen gewinnt die erste passende Rolle in der hier festgelegten Reihenfolge.
+ * Bei mehreren Rollen bestimmt die erste passende Rolle in der hier festgelegten Reihenfolge Schnellfilter,
+ * Suchkriterien und Stadtbezirksfilter. Das Menü "Neu" bietet die Neuanlagen aller Rollen des Nutzers an.
+ * Administratoren erhalten unabhängig von weiteren Rollen die Standard-Startseite.
  *
  * @param rollen die Rollen des Nutzers.
  * @returns die Konfiguration der Startseite oder `undefined`, falls für keine Rolle eine personalisierte
  *          Startseite existiert und die Standard-Startseite angezeigt wird.
  */
 export function getStartseitenKonfiguration(rollen: StartseitenRollen): StartseitenKonfiguration | undefined {
-  if (rollen.hasRoleAbfrageerstellung) {
-    return STARTSEITE_ABFRAGEERSTELLUNG;
+  if (rollen.hasRoleAdmin) {
+    return undefined;
   }
+  const konfigurationen: Array<StartseitenKonfiguration> = [];
   if (rollen.hasRoleSachbearbeitung) {
-    return STARTSEITE_SACHBEARBEITUNG;
+    konfigurationen.push(STARTSEITE_SACHBEARBEITUNG);
   }
-  return undefined;
+  if (rollen.hasRoleAbfrageerstellung) {
+    konfigurationen.push(STARTSEITE_ABFRAGEERSTELLUNG);
+  }
+  if (konfigurationen.length <= 1) {
+    return konfigurationen[0];
+  }
+  return {
+    ...konfigurationen[0],
+    neuanlageOptionen: _.uniqBy(
+      konfigurationen.flatMap((konfiguration) => konfiguration.neuanlageOptionen),
+      (option) => option.route,
+    ),
+  };
 }
