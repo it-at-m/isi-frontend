@@ -52,8 +52,52 @@
           cols="12"
           md="6"
         >
+          <infrastruktureinrichtung-fertigstellungsmonat-component
+            id="infrastruktureinrichtung_fertigstellungsmonat_component"
+            v-if="fertigstellungsmonatVisible"
+            v-model="infrastruktureinrichtung as KinderkrippeModel"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
           <infrastruktureinrichtung-vorhaben-component
             id="infrastruktureinrichtung_bauvorhaben_component"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <infrastruktureinrichtung-so-bon-relevant-component
+            id="infrastruktureinrichtung_sobon_relevant_component"
+            v-if="sobonRelevantVisible"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <infrastruktureinrichtung-muenchner-kitafoerderung-component
+            id="infrastruktureinrichtung_muenchner_kitafoerderung_component"
+            v-if="muenchnerKitafoerderungVisible"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <infrastruktureinrichtung-ki-bi-g-web-id-component
+            id="infrastruktureinrichtung_kibig_web_id_component"
+            v-if="kibigWebIdVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
@@ -69,17 +113,23 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, computed } from "vue";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import FieldGroupCard from "@/components/common/FieldGroupCard.vue";
 import InfrastruktureinrichtungNameComponent from "./InfrastruktureinrichtungNameComponent.vue";
 import InfrastruktureinrichtungStatusComponent from "./InfrastruktureinrichtungStatusComponent.vue";
 import InfrastruktureinrichtungAnlassPlanungComponent from "./InfrastruktureinrichtungAnlassPlanungComponent.vue";
 import InfrastruktureinrichtungFertigstellungsjahrComponent from "./InfrastruktureinrichtungFertigstellungsjahrComponent.vue";
+import InfrastruktureinrichtungFertigstellungsmonatComponent from "./InfrastruktureinrichtungFertigstellungsmonatComponent.vue";
 import InfrastruktureinrichtungVorhabenComponent from "./InfrastruktureinrichtungVorhabenComponent.vue";
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
+import InfrastruktureinrichtungSoBonRelevantComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungSoBonRelevantComponent.vue";
+import InfrastruktureinrichtungMuenchnerKitafoerderungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMuenchnerKitafoerderungComponent.vue";
+import InfrastruktureinrichtungKiBiGWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKiBiGWebIdComponent.vue";
 interface Props {
   isEditable?: boolean;
 }
@@ -95,5 +145,35 @@ watch(
     emit("update:modelValue", infrastruktureinrichtung.value);
   },
   { immediate: true, deep: true },
+);
+
+const fertigstellungsmonatVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
+);
+
+const sobonRelevantVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
+);
+
+const muenchnerKitafoerderungVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
+);
+
+const kibigWebIdVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
 );
 </script>

@@ -41,6 +41,10 @@ export function digits(v: string | Nil): Result {
   return !v || /^\d*$/.test(v) || "Nur Ziffern erlaubt";
 }
 
+export function month(v: string | Nil): Result {
+  return !v || /^(?:[1-9]|1[0-2])$/.test(v) || "Nur ganze Monate von 1 bis 12 erlaubt";
+}
+
 export function notUnspecified(v: string | Nil): Result {
   return (!_.isNil(v) && v !== UncertainBoolean.Unspecified) || "Pflichtfeld";
 }
