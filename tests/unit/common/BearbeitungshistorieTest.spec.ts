@@ -45,6 +45,13 @@ describe("BearbeitungshistorieTest.spec.ts", () => {
     expect(vm.aktionText({ zielStatus: StatusAbfrage.StartBearbeitung })).toBe("");
   });
 
+  test("zeigt Datum und Uhrzeit der Änderung", () => {
+    const vm = mountComponent([]).vm as any;
+
+    expect(vm.zeitpunktFormatted(new Date("2026-11-10T09:05:00"))).toBe("10.11.2026 09:05");
+    expect(vm.zeitpunktFormatted(undefined)).toBe("");
+  });
+
   test("blendet die Historie ohne Einträge aus", () => {
     expect(mountComponent(undefined).find("#benutzerinformation_menu").exists()).toBe(false);
     expect(mountComponent([]).find("#benutzerinformation_menu").exists()).toBe(false);

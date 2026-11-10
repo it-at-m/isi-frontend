@@ -46,7 +46,7 @@ import _ from "lodash";
 import moment from "moment/moment";
 import { useLookupStore } from "@/stores/LookupStore";
 
-const DISPLAY_FORMAT = "DD.MM.YYYY";
+const DISPLAY_FORMAT = "DD.MM.YYYY HH:mm";
 const lookupStore = useLookupStore();
 const bearbeitungshistorie = defineModel<Array<BearbeitungshistorieDto>>({ required: false });
 const bearbeitungshistorieHeaders = ref<Array<any>>([
@@ -61,7 +61,8 @@ const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(bearbeitungshist
 const eintraege = computed(() => _.orderBy(bearbeitungshistorie.value, "zeitpunkt", "desc"));
 
 function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
-  return _.isNil(zeitpunkt) ? "" : moment.utc(zeitpunkt, true).format(DISPLAY_FORMAT);
+  // Das Backend liefert den Zeitpunkt ohne Zeitzone, der Client liest ihn deshalb als lokale Zeit ein.
+  return _.isNil(zeitpunkt) ? "" : moment(zeitpunkt).format(DISPLAY_FORMAT);
 }
 
 function aktionText(eintrag: BearbeitungshistorieDto): string | undefined {
@@ -83,5 +84,5 @@ function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
     : "";
 }
 
-defineExpose({ eintraege, aktionText });
+defineExpose({ eintraege, aktionText, zeitpunktFormatted });
 </script>
