@@ -4,7 +4,11 @@ import { createPinia, setActivePinia } from "pinia";
 import { Userinfo } from "@/types/common/Userinfo";
 import { useUserinfoStore } from "@/stores/Userinfostore";
 import App from "@/App.vue";
-import { SCHNELLFILTER_OPTIONEN, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG } from "@/utils/StartseiteUtil";
+import {
+  SCHNELLFILTER_OPTIONEN,
+  SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+  SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
+} from "@/utils/StartseiteUtil";
 
 const mockGetUserinfo = vi.fn();
 
@@ -67,8 +71,21 @@ describe("AppBegruessungTest.spec.ts", () => {
     expect((wrapper.vm as any).showBegruessung).toBe(true);
   });
 
+  test.each(["bedarfsmeldung_kita", "bedarfsmeldung_schule", "bedarfsmeldung_sozialplanung", "flaechenbedarfsmeldung"])(
+    "begrüßt die Bedarfsmeldungsrolle '%s' und entfernt die Suchleiste in der Titelleiste",
+    async (rolle) => {
+      const wrapper = mountApp([rolle], "Simon");
+      await wrapper.vm.$nextTick();
+      expect((wrapper.vm as any).showBegruessung).toBe(true);
+      expect((wrapper.vm as any).showGlobaleSuche).toBe(false);
+      expect((wrapper.vm as any).startseitenKonfiguration?.schnellfilterOptionen).toEqual(
+        SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+      );
+    },
+  );
+
   test("begrüßt andere Rollen nicht", async () => {
-    const wrapper = mountApp(["bedarfsmeldung_kita"], "Simon");
+    const wrapper = mountApp(["anwender"], "Simon");
     await wrapper.vm.$nextTick();
     expect((wrapper.vm as any).showBegruessung).toBe(false);
     expect(wrapper.find("#app_begruessung").exists()).toBe(false);
@@ -93,7 +110,7 @@ describe("AppBegruessungTest.spec.ts", () => {
   });
 
   test("behält die Suchleiste in der Titelleiste für alle anderen Rollen", async () => {
-    const wrapper = mountApp(["bedarfsmeldung_kita"], "Simon");
+    const wrapper = mountApp(["anwender"], "Simon");
     await wrapper.vm.$nextTick();
     expect((wrapper.vm as any).showGlobaleSuche).toBe(true);
   });
@@ -119,7 +136,7 @@ describe("AppBegruessungTest.spec.ts", () => {
     );
 
     setActivePinia(createPinia());
-    const andereRolle = mountApp(["bedarfsmeldung_kita"], "Simon");
+    const andereRolle = mountApp(["anwender"], "Simon");
     await andereRolle.vm.$nextTick();
     expect((andereRolle.vm as any).startseitenKonfiguration?.schnellfilterOptionen).toBeUndefined();
   });

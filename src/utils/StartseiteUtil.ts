@@ -113,6 +113,18 @@ export const SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG: Array<AuswahlOption<Schnell
 ];
 
 /**
+ * Die Schnellfilter der Startseite für die Bedarfsmeldung.
+ */
+export const SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
+  { title: "Alle", value: "ALLE" },
+  { title: "Zur Bearbeitung", value: "ZUR_BEARBEITUNG" },
+  { title: "Meine zur Kenntnis", value: "ZUR_KENNTNIS" },
+  { title: "Meine erledigt", value: "ERLEDIGT" },
+  { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
+  { title: "Vorhaben", value: "VORHABEN" },
+];
+
+/**
  * Liefert den Schnellfilter, falls er zu den angebotenen Optionen gehört, andernfalls den Standard-Schnellfilter.
  *
  * Die Voreinstellung wird je Nutzer gespeichert. Ein Nutzer mit mehreren Rollen kann daher einen Schnellfilter
