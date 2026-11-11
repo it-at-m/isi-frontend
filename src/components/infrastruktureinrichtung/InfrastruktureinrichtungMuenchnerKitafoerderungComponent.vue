@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { AnyInfrastruktureinrichtungModel } from "@/types/common/Infrastruktureinrichtung";
+import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { InfrastruktureinrichtungDtoAnlassPlanungEnum, UncertainBoolean } from "@/api/api-client/isi-backend";
 
@@ -25,7 +25,7 @@ withDefaults(defineProps<Props>(), {
   isEditable: false,
 });
 
-const infrastruktureinrichtung = defineModel<AnyInfrastruktureinrichtungModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
   required: true,
 });
 

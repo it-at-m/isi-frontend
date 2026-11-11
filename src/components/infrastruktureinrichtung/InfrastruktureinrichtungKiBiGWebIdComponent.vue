@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { AnyInfrastruktureinrichtungModel } from "@/types/common/Infrastruktureinrichtung";
+import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 
 interface Props {
   isEditable?: boolean;
@@ -20,7 +20,7 @@ withDefaults(defineProps<Props>(), {
   isEditable: false,
 });
 
-const infrastruktureinrichtung = defineModel<AnyInfrastruktureinrichtungModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
   required: true,
 });
 </script>

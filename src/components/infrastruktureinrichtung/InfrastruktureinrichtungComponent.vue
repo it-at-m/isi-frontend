@@ -106,6 +106,28 @@
           cols="12"
           md="6"
         >
+          <infrastruktureinrichtung-mini-kita-component
+            id="infrastruktureinrichtung_mini_kita_component"
+            v-if="miniKitaVisible"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <infrastruktureinrichtung-integrationseinrichtung-component
+            id="infrastruktureinrichtung_integrationseinrichtung_component"
+            v-if="integrationseinrichtungVisible"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
       </v-row>
     </field-group-card>
@@ -130,6 +152,8 @@ import { InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum } from "@/ap
 import InfrastruktureinrichtungSoBonRelevantComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungSoBonRelevantComponent.vue";
 import InfrastruktureinrichtungMuenchnerKitafoerderungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMuenchnerKitafoerderungComponent.vue";
 import InfrastruktureinrichtungKiBiGWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKiBiGWebIdComponent.vue";
+import InfrastruktureinrichtungMiniKitaComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMiniKitaComponent.vue";
+import InfrastruktureinrichtungIntegrationseinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungIntegrationseinrichtungComponent.vue";
 interface Props {
   isEditable?: boolean;
 }
@@ -153,23 +177,12 @@ const fertigstellungsmonatVisible = computed(
     InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
 );
 
-const sobonRelevantVisible = computed(
-  () =>
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
-);
-
-const muenchnerKitafoerderungVisible = computed(
-  () =>
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
-);
-
-const kibigWebIdVisible = computed(
+const sobonRelevantVisible = computed(() => isKinderkrippeOrKindergarten);
+const muenchnerKitafoerderungVisible = computed(() => isKinderkrippeOrKindergarten);
+const kibigWebIdVisible = computed(() => isKinderkrippeOrKindergarten);
+const miniKitaVisible = computed(() => isKinderkrippeOrKindergarten);
+const integrationseinrichtungVisible = computed(() => isKinderkrippeOrKindergarten);
+const isKinderkrippeOrKindergarten = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
