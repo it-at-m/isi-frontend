@@ -1,32 +1,25 @@
 <template>
-  <field-group-card :card-title="einrichutngstraegerCardTitle">
-    <v-col
-      cols="12"
-      md="6"
-    >
-      <v-select
-        id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
-        v-model="einrichtung.einrichtungstraeger"
-        :items="einrichtungstraegerList"
-        variant="underlined"
-        item-value="key"
-        item-title="value"
-        :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
-        :disabled="!isEditable"
-        @update:model-value="formChanged"
+  <v-select
+    id="infrastruktureinrichtung_einrichtungstraeger_dropdown"
+    v-model="einrichtung.einrichtungstraeger"
+    :items="einrichtungstraegerList"
+    variant="underlined"
+    item-value="key"
+    item-title="value"
+    :rules="isEinrichtungstraegerRequired ? [pflichtfeld, notUnspecified] : []"
+    :disabled="!isEditable"
+    @update:model-value="formChanged"
+  >
+    <template #label>
+      Einrichtungsträger
+      <span
+        v-if="isEinrichtungstraegerRequired"
+        class="text-secondary"
       >
-        <template #label>
-          Einrichtungsträger
-          <span
-            v-if="isEinrichtungstraegerRequired"
-            class="text-secondary"
-          >
-            *
-          </span>
-        </template>
-      </v-select>
-    </v-col>
-  </field-group-card>
+        *
+      </span>
+    </template>
+  </v-select>
 </template>
 <script setup lang="ts">
 import { pflichtfeld, notUnspecified } from "@/utils/FieldValidationRules";

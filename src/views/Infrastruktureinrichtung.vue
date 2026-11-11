@@ -326,9 +326,7 @@ const isEinrichtungstraegerRequired = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff &&
-    (infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-      infrastruktureinrichtung.value.status ===
-        InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr)
+    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand
   );
 });
 

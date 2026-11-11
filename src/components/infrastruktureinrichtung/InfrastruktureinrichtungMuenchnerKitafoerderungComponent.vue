@@ -12,10 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 import TriSwitch from "@/components/common/TriSwitch.vue";
-import { InfrastruktureinrichtungDtoAnlassPlanungEnum, UncertainBoolean } from "@/api/api-client/isi-backend";
 
 interface Props {
   isEditable?: boolean;
@@ -28,25 +26,4 @@ withDefaults(defineProps<Props>(), {
 const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
   required: true,
 });
-
-const sobonRelevantEditable = ref(false);
-
-watch(
-  () => infrastruktureinrichtung.value.anlassPlanung,
-  () => {
-    anlassPlanungChanged();
-  },
-  { immediate: true },
-);
-
-function anlassPlanungChanged(): void {
-  if (
-    infrastruktureinrichtung.value.anlassPlanung === InfrastruktureinrichtungDtoAnlassPlanungEnum.NeubauBebauungsplan
-  ) {
-    sobonRelevantEditable.value = true;
-  } else {
-    infrastruktureinrichtung.value.sobonRelevant = UncertainBoolean.Unspecified;
-    sobonRelevantEditable.value = false;
-  }
-}
 </script>

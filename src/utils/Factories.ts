@@ -44,6 +44,7 @@ import {
   SearchQueryAndSortingDto,
   SobonBerechnungDto,
   InfrastruktureinrichtungDtoAnlassPlanungEnum,
+  KinderkrippeDtoEinrichtungstraegerEnum,
 } from "@/api/api-client/isi-backend";
 import {
   // dreiwertiges Boolean
@@ -685,14 +686,26 @@ export function createKinderkrippeDto(): KinderkrippeDto {
     verortung: undefined,
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
+    fertigstellungsmonat: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    einrichtungstraeger: KindergartenDtoEinrichtungstraegerEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
-    anzahlKinderkrippePlaetze: Number.NaN,
-    anzahlKinderkrippeGruppen: Number.NaN,
-    wohnungsnaheKinderkrippePlaetze: undefined,
     anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
+    einrichtungstraeger: KinderkrippeDtoEinrichtungstraegerEnum.Unspecified,
+    sobonRelevant: UncertainBoolean.Unspecified,
+    muenchnerKitafoerderung: UncertainBoolean.Unspecified,
+    miniKita: false,
+    integrationseinrichtung: false,
+    nameTraeger: "",
+    gesamtplaetzeNachBE: Number.NaN,
+    anzahlKinderkrippeGruppen: Number.NaN,
+    kinderkrippenplaetzeNachBE: Number.NaN,
+    ueberregionaleKinderkrippenplaetze: Number.NaN,
+    belegungKinderkrippenplaetze: Number.NaN,
+    sollBelegungKinderkrippenplaetzeKePlus: Number.NaN,
+    sollBelegungKinderkrippenplaetze: Number.NaN,
+    integrationsplaetzeKinderkrippeKePlus: Number.NaN,
+    integrationsplaetzeKinderkrippe: Number.NaN,
+    belegungIntegrationsplaetzeKinderkrippe: Number.NaN,
+    linkKePlus: "",
   };
 }
 

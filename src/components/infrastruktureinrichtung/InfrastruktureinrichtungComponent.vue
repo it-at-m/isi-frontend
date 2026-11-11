@@ -73,7 +73,7 @@
           cols="12"
           md="6"
         >
-          <infrastruktureinrichtung-so-bon-relevant-component
+          <infrastruktureinrichtung-sobon-relevant-component
             id="infrastruktureinrichtung_sobon_relevant_component"
             v-if="sobonRelevantVisible"
             v-model="infrastruktureinrichtung"
@@ -95,7 +95,7 @@
           cols="12"
           md="6"
         >
-          <infrastruktureinrichtung-ki-bi-g-web-id-component
+          <infrastruktureinrichtung-kibig-web-id-component
             id="infrastruktureinrichtung_kibig_web_id_component"
             v-if="kibigWebIdVisible"
             v-model="infrastruktureinrichtung"
@@ -128,6 +128,18 @@
           cols="12"
           md="6"
         >
+          <einrichtungstraeger-component
+            v-model="infrastruktureinrichtung"
+            v-if="einrichtungstraegerVisible"
+            :einrichtungstraeger-list="einrichtungstraegerList"
+            :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+        >
         </v-col>
       </v-row>
     </field-group-card>
@@ -148,18 +160,21 @@ import InfrastruktureinrichtungVorhabenComponent from "./Infrastruktureinrichtun
 import AdresseComponent from "@/components/common/AdresseComponent.vue";
 import InfrastruktureinrichtungVerortung from "./InfrastruktureinrichtungVerortung.vue";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import { useLookupStore } from "@/stores/LookupStore";
 import { InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum } from "@/api/api-client/isi-backend";
-import InfrastruktureinrichtungSoBonRelevantComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungSoBonRelevantComponent.vue";
+import InfrastruktureinrichtungSobonRelevantComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungSobonRelevantComponent.vue";
 import InfrastruktureinrichtungMuenchnerKitafoerderungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMuenchnerKitafoerderungComponent.vue";
-import InfrastruktureinrichtungKiBiGWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKiBiGWebIdComponent.vue";
+import InfrastruktureinrichtungKibigWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKibigWebIdComponent.vue";
 import InfrastruktureinrichtungMiniKitaComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMiniKitaComponent.vue";
 import InfrastruktureinrichtungIntegrationseinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungIntegrationseinrichtungComponent.vue";
+import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 interface Props {
   isEditable?: boolean;
 }
 
 const { formChanged } = useSaveLeave();
-withDefaults(defineProps<Props>(), { isEditable: false });
+const lookupStore = useLookupStore();
+withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
 const emit = defineEmits(["update:modelValue"]);
 
@@ -171,12 +186,17 @@ watch(
   { immediate: true, deep: true },
 );
 
+const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 const fertigstellungsmonatVisible = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
     InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
 );
-
+const einrichtungstraegerVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
+    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
+);
 const sobonRelevantVisible = computed(() => isKinderkrippeOrKindergarten);
 const muenchnerKitafoerderungVisible = computed(() => isKinderkrippeOrKindergarten);
 const kibigWebIdVisible = computed(() => isKinderkrippeOrKindergarten);
