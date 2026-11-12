@@ -6,6 +6,7 @@ import { useUserinfoStore } from "@/stores/Userinfostore";
 import App from "@/App.vue";
 import {
   SCHNELLFILTER_OPTIONEN,
+  SCHNELLFILTER_OPTIONEN_ANWENDER,
   SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
   SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
 } from "@/utils/StartseiteUtil";
@@ -84,8 +85,18 @@ describe("AppBegruessungTest.spec.ts", () => {
     },
   );
 
-  test("begrüßt andere Rollen nicht", async () => {
+  test("begrüßt Nutzer mit der Rolle Anwender und entfernt die Suchleiste in der Titelleiste", async () => {
     const wrapper = mountApp(["anwender"], "Simon");
+    await wrapper.vm.$nextTick();
+    expect((wrapper.vm as any).showBegruessung).toBe(true);
+    expect((wrapper.vm as any).showGlobaleSuche).toBe(false);
+    expect((wrapper.vm as any).startseitenKonfiguration?.schnellfilterOptionen).toEqual(
+      SCHNELLFILTER_OPTIONEN_ANWENDER,
+    );
+  });
+
+  test("begrüßt andere Rollen nicht", async () => {
+    const wrapper = mountApp(["bedarfsmeldung"], "Simon");
     await wrapper.vm.$nextTick();
     expect((wrapper.vm as any).showBegruessung).toBe(false);
     expect(wrapper.find("#app_begruessung").exists()).toBe(false);
@@ -110,7 +121,7 @@ describe("AppBegruessungTest.spec.ts", () => {
   });
 
   test("behält die Suchleiste in der Titelleiste für alle anderen Rollen", async () => {
-    const wrapper = mountApp(["anwender"], "Simon");
+    const wrapper = mountApp(["bedarfsmeldung"], "Simon");
     await wrapper.vm.$nextTick();
     expect((wrapper.vm as any).showGlobaleSuche).toBe(true);
   });
@@ -136,7 +147,7 @@ describe("AppBegruessungTest.spec.ts", () => {
     );
 
     setActivePinia(createPinia());
-    const andereRolle = mountApp(["anwender"], "Simon");
+    const andereRolle = mountApp(["bedarfsmeldung"], "Simon");
     await andereRolle.vm.$nextTick();
     expect((andereRolle.vm as any).startseitenKonfiguration?.schnellfilterOptionen).toBeUndefined();
   });

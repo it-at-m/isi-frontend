@@ -27,6 +27,7 @@
       />
       <v-spacer />
       <v-menu
+        v-if="neuanlageOptionen.length > 0"
         id="meine_vorgaenge_neu_menu"
         location="bottom end"
         transition="slide-y-transition"

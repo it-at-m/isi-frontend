@@ -125,6 +125,16 @@ export const SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG: Array<AuswahlOption<Schnellf
 ];
 
 /**
+ * Die Schnellfilter der Startseite für Nutzer (Rolle Anwender).
+ */
+export const SCHNELLFILTER_OPTIONEN_ANWENDER: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
+  { title: "Alle", value: "ALLE" },
+  { title: "Erledigte Abfragen", value: "ERLEDIGT" },
+  { title: "Vorhaben", value: "VORHABEN" },
+  { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
+];
+
+/**
  * Liefert den Schnellfilter, falls er zu den angebotenen Optionen gehört, andernfalls den Standard-Schnellfilter.
  *
  * Die Voreinstellung wird je Nutzer gespeichert. Ein Nutzer mit mehreren Rollen kann daher einen Schnellfilter

@@ -6,6 +6,7 @@ import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue
 import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 import {
   STARTSEITE_ABFRAGEERSTELLUNG,
+  STARTSEITE_ANWENDER,
   STARTSEITE_SACHBEARBEITUNG,
   type StartseitenKonfiguration,
 } from "@/utils/StartseitenKonfiguration";
@@ -394,12 +395,24 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect((wrapper.vm as any).createSearchQuery(1).filterStadtbezirkNummer).toBeUndefined();
     });
 
+    test("zeigt den Button 'Neu' an", () => {
+      expect(wrapper.findComponent({ name: "VMenu" }).exists()).toBe(true);
+    });
+
     test("bietet als Neuanlage die drei Abfragearten an", () => {
       expect((wrapper.vm as any).$.setupState.neuanlageOptionen.map((option: any) => option.route)).toEqual([
         "/abfrage?art=BAULEITPLANVERFAHREN",
         "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
         "/abfrage?art=WEITERES_VERFAHREN",
       ]);
+    });
+  });
+
+  describe("Startseite der Nutzer", () => {
+    test("zeigt ohne Neuanlage keinen Button 'Neu' an", async () => {
+      const anwender = mountComponent(STARTSEITE_ANWENDER);
+      await anwender.vm.$nextTick();
+      expect(anwender.findComponent({ name: "VMenu" }).exists()).toBe(false);
     });
   });
 });

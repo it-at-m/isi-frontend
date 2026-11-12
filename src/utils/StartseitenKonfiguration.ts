@@ -7,6 +7,7 @@ import {
   SCHNELLFILTER_OPTIONEN,
   SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
   SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+  SCHNELLFILTER_OPTIONEN_ANWENDER,
   getStatusAbfrageForSchnellfilter,
 } from "@/utils/StartseiteUtil";
 
@@ -52,7 +53,7 @@ export interface StartseitenKonfiguration {
   schnellfilterOptionen: Array<AuswahlOption<SchnellfilterVorgaenge>>;
   /** Bildet den gewählten Schnellfilter auf die Suchkriterien ab. */
   getSuchkriterien: (schnellfilter: SchnellfilterVorgaenge) => Suchkriterien;
-  /** Die Einträge des Menüs "Neu". */
+  /** Die Einträge des Menüs "Neu". Ohne Einträge wird der Button "Neu" nicht angezeigt. */
   neuanlageOptionen: Array<NeuanlageOption>;
   /** Ob die Vorgänge zusätzlich nach Stadtbezirken gefiltert werden können. */
   stadtbezirkFilter: boolean;
@@ -247,6 +248,44 @@ export const STARTSEITE_BEDARFSMELDUNG: StartseitenKonfiguration = {
 };
 
 /**
+ * Bildet die Schnellfilter der Nutzer (Rolle Anwender) auf die Suchkriterien ab.
+ * <p>
+ * Nutzer lesen ausschließlich und sehen daher alle Vorgänge ohne Personenbezug. Die Einschränkung auf erledigte
+ * Abfragen bei "Alle" nimmt das Backend für Nutzer mit ausschließlich der Rolle Anwender selbst vor, damit Vorhaben
+ * und Infrastruktureinrichtungen nicht durch den Statusfilter der Abfragen herausfallen.
+ *
+ * @param schnellfilter der ausgewählte Schnellfilter.
+ * @returns die Suchkriterien.
+ */
+export function getSuchkriterienAnwender(schnellfilter: SchnellfilterVorgaenge): Suchkriterien {
+  switch (schnellfilter) {
+    case "ERLEDIGT":
+      return {
+        ...ABFRAGEN,
+        filterStatusAbfrage: [StatusAbfrage.ErledigtMitFachreferat, StatusAbfrage.ErledigtOhneFachreferat],
+      };
+    case "VORHABEN":
+      return { ...VORHABEN };
+    case "INFRASTRUKTUREINRICHTUNGEN":
+      return { ...INFRASTRUKTUREINRICHTUNGEN };
+    case "ALLE":
+    default:
+      return { ...ALLE_OBJEKTE };
+  }
+}
+
+/**
+ * Nutzer (Rolle Anwender) sehen die erledigten Abfragen sowie alle Vorhaben und Infrastruktureinrichtungen und
+ * können diese nach Stadtbezirken filtern. Da sie nur lesen, gibt es keine Neuanlage.
+ */
+export const STARTSEITE_ANWENDER: StartseitenKonfiguration = {
+  schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_ANWENDER,
+  getSuchkriterien: getSuchkriterienAnwender,
+  neuanlageOptionen: [],
+  stadtbezirkFilter: true,
+};
+
+/**
  * Die Rollen, für die eine personalisierte Startseite existiert.
  */
 export interface StartseitenRollen {
@@ -257,6 +296,7 @@ export interface StartseitenRollen {
   hasRoleBedarfsmeldungSchule: boolean;
   hasRoleBedarfsmeldungSozialplanung: boolean;
   hasRoleFlaechenbedarfsmeldung: boolean;
+  hasOnlyRoleAnwender: boolean;
 }
 
 /**
@@ -288,6 +328,10 @@ export function getStartseitenKonfiguration(rollen: StartseitenRollen): Startsei
   }
   if (rollen.hasRoleAbfrageerstellung) {
     konfigurationen.push(STARTSEITE_ABFRAGEERSTELLUNG);
+  }
+  // Wie im Backend gilt die Einschränkung auf erledigte Abfragen nur für Nutzer, die ausschließlich Anwender sind.
+  if (rollen.hasOnlyRoleAnwender) {
+    konfigurationen.push(STARTSEITE_ANWENDER);
   }
   if (konfigurationen.length <= 1) {
     return konfigurationen[0];

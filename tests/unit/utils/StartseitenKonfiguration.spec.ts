@@ -2,9 +2,11 @@ import { describe, expect, test } from "vitest";
 import { StatusAbfrage } from "@/api/api-client/isi-backend";
 import {
   STARTSEITE_ABFRAGEERSTELLUNG,
+  STARTSEITE_ANWENDER,
   STARTSEITE_BEDARFSMELDUNG,
   STARTSEITE_SACHBEARBEITUNG,
   getStartseitenKonfiguration,
+  getSuchkriterienAnwender,
   getSuchkriterienBedarfsmeldung,
   getSuchkriterienSachbearbeitung,
   type Suchkriterien,
@@ -37,6 +39,7 @@ describe("StartseitenKonfiguration.spec.ts", () => {
       hasRoleBedarfsmeldungSchule: false,
       hasRoleBedarfsmeldungSozialplanung: false,
       hasRoleFlaechenbedarfsmeldung: false,
+      hasOnlyRoleAnwender: false,
     };
 
     test("liefert für Abfrageersteller die Startseite der Abfrageerstellung", () => {
@@ -108,6 +111,10 @@ describe("StartseitenKonfiguration.spec.ts", () => {
         "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
         "/abfrage?art=WEITERES_VERFAHREN",
       ]);
+    });
+
+    test("liefert Nutzern mit ausschließlich der Rolle Anwender die Startseite der Nutzer", () => {
+      expect(getStartseitenKonfiguration({ ...KEINE_ROLLEN, hasOnlyRoleAnwender: true })).toBe(STARTSEITE_ANWENDER);
     });
 
     test("liefert Administratoren unabhängig von weiteren Rollen keine personalisierte Startseite", () => {
@@ -283,6 +290,61 @@ describe("StartseitenKonfiguration.spec.ts", () => {
         JSON.stringify(getSuchkriterienBedarfsmeldung(option.value)),
       );
       expect(new Set(kriterien).size).toBe(kriterien.length);
+    });
+  });
+
+  describe("Startseite der Nutzer", () => {
+    test("bietet den Stadtbezirksfilter und keine Neuanlage an", () => {
+      expect(STARTSEITE_ANWENDER.stadtbezirkFilter).toBe(true);
+      expect(STARTSEITE_ANWENDER.neuanlageOptionen).toEqual([]);
+    });
+
+    test("bietet die Schnellfilter der Anforderung in der vorgegebenen Reihenfolge an", () => {
+      expect(STARTSEITE_ANWENDER.schnellfilterOptionen.map((option) => option.title)).toEqual([
+        "Alle",
+        "Erledigte Abfragen",
+        "Vorhaben",
+        "Infrastruktureinrichtungen",
+      ]);
+    });
+
+    test("durchsucht bei 'Alle' alle Objektarten ohne Personenbezug und ohne Statusfilter", () => {
+      const suchkriterien = getSuchkriterienAnwender("ALLE");
+      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual([
+        ...ABFRAGEARTEN,
+        "selectBauvorhaben",
+        ...INFRASTRUKTUREINRICHTUNGEN,
+      ]);
+      expect(suchkriterien.filterNurEigeneVorgaenge).toBeUndefined();
+      expect(suchkriterien.filterNurEigeneAbfragen).toBeUndefined();
+      // Die Einschränkung auf erledigte Abfragen nimmt das Backend vor.
+      expect(suchkriterien.filterStatusAbfrage).toBeUndefined();
+    });
+
+    test("zeigt bei 'Erledigte Abfragen' die Abfragen in beiden erledigten Status", () => {
+      const suchkriterien = getSuchkriterienAnwender("ERLEDIGT");
+      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual(ABFRAGEARTEN);
+      expect(suchkriterien.filterNurEigeneVorgaenge).toBeUndefined();
+      expect(suchkriterien.filterStatusAbfrage).toEqual([
+        StatusAbfrage.ErledigtMitFachreferat,
+        StatusAbfrage.ErledigtOhneFachreferat,
+      ]);
+    });
+
+    test("zeigt bei 'Vorhaben' alle Vorhaben ohne Personenbezug", () => {
+      const suchkriterien = getSuchkriterienAnwender("VORHABEN");
+      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual(["selectBauvorhaben"]);
+      expect(suchkriterien.filterNurEigeneVorgaenge).toBeUndefined();
+    });
+
+    test("zeigt bei 'Infrastruktureinrichtungen' alle Infrastruktureinrichtungen ohne Personenbezug", () => {
+      const suchkriterien = getSuchkriterienAnwender("INFRASTRUKTUREINRICHTUNGEN");
+      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual(INFRASTRUKTUREINRICHTUNGEN);
+      expect(suchkriterien.filterNurEigeneVorgaenge).toBeUndefined();
+    });
+
+    test("behandelt einen nicht angebotenen Schnellfilter wie 'Alle'", () => {
+      expect(getSuchkriterienAnwender("ZUR_BEARBEITUNG")).toEqual(getSuchkriterienAnwender("ALLE"));
     });
   });
 });
