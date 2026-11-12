@@ -4,8 +4,8 @@
     ref="kibigWebIdField"
     v-model="infrastruktureinrichtung.idKibigWeb"
     label="KiBiG-Web-ID"
+    maxlength="255"
     variant="underlined"
-    readonly
   />
 </template>
 

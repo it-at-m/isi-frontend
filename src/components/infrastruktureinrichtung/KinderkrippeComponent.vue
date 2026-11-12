@@ -12,7 +12,6 @@
             class="mx-3"
             label="Gesamtplätze nach BE"
             integer
-            required
             :readonly="!isEditable"
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />
@@ -27,7 +26,6 @@
             class="mx-3"
             label="Kinderkrippenplätze nach BE"
             integer
-            required
             :readonly="!isEditable"
             :class="isEditable ? '' : 'text-grey-lighten-1'"
           />

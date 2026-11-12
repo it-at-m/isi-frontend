@@ -186,6 +186,7 @@ watch(
   { immediate: true, deep: true },
 );
 
+const isEinrichtungstraegerRequired = computed(() => isKinderkrippeOrKindergarten);
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 const fertigstellungsmonatVisible = computed(
   () =>

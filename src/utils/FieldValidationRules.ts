@@ -42,7 +42,13 @@ export function digits(v: string | Nil): Result {
 }
 
 export function month(v: string | Nil): Result {
-  return !v || /^(?:[1-9]|1[0-2])$/.test(v) || "Nur ganze Monate von 1 bis 12 erlaubt";
+  if (!v) return true;
+  v = v.trim();
+  // disallow decimal separators or thousand separators (',' or '.')
+  if (/[.,]/.test(v)) return "Nur ganze Monate von 1 bis 12 erlaubt";
+  if (!/^\d+$/.test(v)) return "Nur ganze Monate von 1 bis 12 erlaubt";
+  const num = parseInt(v, 10);
+  return (num >= 1 && num <= 12) || "Nur ganze Monate von 1 bis 12 erlaubt";
 }
 
 export function notUnspecified(v: string | Nil): Result {
