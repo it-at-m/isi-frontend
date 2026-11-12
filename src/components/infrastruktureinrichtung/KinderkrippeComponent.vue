@@ -144,7 +144,6 @@ import NumField from "@/components/common/NumField.vue";
 
 interface Props {
   isEditable: boolean;
-  isEinrichtungstraegerRequired?: boolean;
 }
 
 withDefaults(defineProps<Props>(), { isEditable: false });
