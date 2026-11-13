@@ -37,7 +37,7 @@ export const COLOR_POLYGON_UMGRIFF = "#E91E63";
  * Vorübergehend deaktiviert, da der ArcGIS-Dienst "Schulsprengel" auf gsp-test keine Abfragen beantwortet.
  * Sobald der Dienst wieder funktioniert, auf true setzen.
  */
-export const SCHULSPRENGEL_ABFRAGE_AKTIV = false;
+export const SCHULSPRENGEL_ABFRAGE_AKTIV = true;
 
 export const TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR = "Aktuell nicht verfügbar";
 
