@@ -109,7 +109,6 @@ export const SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG: Array<AuswahlOption<Schnell
   { title: "Einplanung Bedarfe", value: "EINPLANUNG_BEDARFE" },
   { title: "Erledigt", value: "ERLEDIGT" },
   { title: "Vorhaben", value: "VORHABEN" },
-  { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
 ];
 
 /**

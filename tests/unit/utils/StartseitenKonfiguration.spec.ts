@@ -103,7 +103,6 @@ describe("StartseitenKonfiguration.spec.ts", () => {
       expect(konfiguration?.stadtbezirkFilter).toBe(true);
       expect(konfiguration?.neuanlageOptionen.map((option) => option.route)).toEqual([
         "/bauvorhaben",
-        "/infrastruktureinrichtung",
         "/abfrage?art=BAULEITPLANVERFAHREN",
         "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
         "/abfrage?art=WEITERES_VERFAHREN",
@@ -148,11 +147,10 @@ describe("StartseitenKonfiguration.spec.ts", () => {
   });
 
   describe("Startseite der Sachbearbeitung", () => {
-    test("bietet den Stadtbezirksfilter und die Neuanlage von Vorhaben und Infrastruktureinrichtungen an", () => {
+    test("bietet den Stadtbezirksfilter und ausschließlich die Neuanlage von Vorhaben an", () => {
       expect(STARTSEITE_SACHBEARBEITUNG.stadtbezirkFilter).toBe(true);
       expect(STARTSEITE_SACHBEARBEITUNG.neuanlageOptionen.map((option) => option.title)).toEqual([
         "Vorhaben erstellen",
-        "Infrastruktureinrichtung erstellen",
       ]);
     });
 
@@ -195,15 +193,18 @@ describe("StartseitenKonfiguration.spec.ts", () => {
       expect(suchkriterien.filterStatusAbfrage).toBeUndefined();
     });
 
-    test("zeigt bei 'Infrastruktureinrichtungen' ausschließlich die eigenen Infrastruktureinrichtungen", () => {
-      const suchkriterien = getSuchkriterienSachbearbeitung("INFRASTRUKTUREINRICHTUNGEN");
-      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual(INFRASTRUKTUREINRICHTUNGEN);
-      expect(suchkriterien.filterNurEigeneVorgaenge).toBe(true);
+    test("bietet keinen Schnellfilter 'Infrastruktureinrichtungen' an", () => {
+      expect(STARTSEITE_SACHBEARBEITUNG.schnellfilterOptionen.map((option) => option.value)).not.toContain(
+        "INFRASTRUKTUREINRICHTUNGEN",
+      );
     });
 
-    test("behandelt einen nicht angebotenen Schnellfilter wie 'Alle'", () => {
-      expect(getSuchkriterienSachbearbeitung("ENTWUERFE")).toEqual(getSuchkriterienSachbearbeitung("ALLE"));
-    });
+    test.each(["ENTWUERFE", "INFRASTRUKTUREINRICHTUNGEN"] as const)(
+      "behandelt den nicht angebotenen Schnellfilter '%s' wie 'Alle'",
+      (schnellfilter) => {
+        expect(getSuchkriterienSachbearbeitung(schnellfilter)).toEqual(getSuchkriterienSachbearbeitung("ALLE"));
+      },
+    );
 
     test("bietet für jeden Schnellfilter eigene Suchkriterien an", () => {
       const kriterien = STARTSEITE_SACHBEARBEITUNG.schnellfilterOptionen.map((option) =>

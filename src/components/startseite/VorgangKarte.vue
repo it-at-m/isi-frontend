@@ -103,8 +103,7 @@ const darstellung = computed<Darstellung>(() => {
         name: einrichtung.nameEinrichtung,
         art: getLookupValue(einrichtung.infrastruktureinrichtungTyp, lookupStore.infrastruktureinrichtungTyp),
         status: getLookupValue(einrichtung.status, lookupStore.statusInfrastruktureinrichtung),
-        // Das Suchergebnis einer Infrastruktureinrichtung enthält keine Stadtbezirke.
-        stadtbezirke: undefined,
+        stadtbezirke: getStadtbezirke(einrichtung.stadtbezirke),
         route: "/infrastruktureinrichtung/" + einrichtung.id,
       };
     }

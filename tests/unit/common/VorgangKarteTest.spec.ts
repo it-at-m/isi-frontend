@@ -66,7 +66,7 @@ describe("VorgangKarteTest.spec.ts", () => {
     expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBe("/bauvorhaben/bauvorhaben-1");
   });
 
-  test("stellt eine Infrastruktureinrichtung ohne Stadtbezirke dar und verlinkt die Einrichtung", () => {
+  test("stellt eine Infrastruktureinrichtung mit Stadtbezirk dar und verlinkt die Einrichtung", () => {
     const einrichtung: InfrastruktureinrichtungSearchResultDto = {
       type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
       id: "einrichtung-1",
@@ -74,14 +74,21 @@ describe("VorgangKarteTest.spec.ts", () => {
       infrastruktureinrichtungTyp:
         "KINDERKRIPPE" as InfrastruktureinrichtungSearchResultDto["infrastruktureinrichtungTyp"],
       status: "BESTAND" as InfrastruktureinrichtungSearchResultDto["status"],
+      stadtbezirke: new Set([{ nummer: "06", name: "Sendling" }]) as Set<StadtbezirkDto>,
     };
     const wrapper = mountKarte(einrichtung);
     const darstellung = (wrapper.vm as any).darstellung;
     expect(darstellung.art).toBe("Kinderkrippe");
     expect(darstellung.status).toBe("Bestand");
-    expect(darstellung.stadtbezirke).toBeUndefined();
+    expect(darstellung.stadtbezirke).toBe("06/Sendling");
+    expect(wrapper.text()).toContain("06/Sendling");
 
     expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBe("/infrastruktureinrichtung/einrichtung-1");
+  });
+
+  test("zeigt bei einer Infrastruktureinrichtung ohne Verortung keinen Stadtbezirk an", () => {
+    const wrapper = mountKarte({ type: SearchResultDtoTypeEnum.Infrastruktureinrichtung, nameEinrichtung: "Ohne Ort" });
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("");
   });
 
   test("erzeugt ohne id keinen Link", () => {
