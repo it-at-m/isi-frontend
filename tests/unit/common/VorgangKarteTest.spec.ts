@@ -1,0 +1,98 @@
+import { beforeEach, describe, expect, test } from "vitest";
+import { mount } from "@vue/test-utils";
+import { createPinia, setActivePinia } from "pinia";
+import {
+  type AbfrageSearchResultDto,
+  type BauvorhabenSearchResultDto,
+  type InfrastruktureinrichtungSearchResultDto,
+  type StadtbezirkDto,
+  AbfrageDtoArtAbfrageEnum,
+  SearchResultDtoTypeEnum,
+} from "@/api/api-client/isi-backend";
+import VorgangKarte from "@/components/startseite/VorgangKarte.vue";
+import { useLookupStore } from "@/stores/LookupStore";
+import type { Vorgang } from "@/utils/StartseiteUtil";
+
+function mountKarte(vorgang: Vorgang) {
+  return mount(VorgangKarte, { shallow: true, props: { vorgang }, global: { renderStubDefaultSlot: true } });
+}
+
+describe("VorgangKarteTest.spec.ts", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    const lookupStore = useLookupStore();
+    lookupStore.statusAbfrage = [{ key: "ANGELEGT", value: "Angelegt" }];
+    lookupStore.verfahrensstand = [{ key: "RAHMENPLANUNG", value: "Rahmenplanung" }];
+    lookupStore.infrastruktureinrichtungTyp = [{ key: "KINDERKRIPPE", value: "Kinderkrippe" }];
+    lookupStore.statusInfrastruktureinrichtung = [{ key: "BESTAND", value: "Bestand" }];
+  });
+
+  test("stellt eine Abfrage wie bisher dar und verlinkt die Abfrage", async () => {
+    const abfrage: AbfrageSearchResultDto = {
+      type: SearchResultDtoTypeEnum.Abfrage,
+      id: "abfrage-1",
+      name: "Osterangerstraße 3",
+      artAbfrage: AbfrageDtoArtAbfrageEnum.Bauleitplanverfahren,
+      statusAbfrage: "ANGELEGT" as AbfrageSearchResultDto["statusAbfrage"],
+      stadtbezirke: new Set([
+        { nummer: "12", name: "Schwabing-Freimann" },
+        { nummer: "01", name: "Altstadt-Lehel" },
+      ]) as Set<StadtbezirkDto>,
+    };
+    const wrapper = mountKarte(abfrage);
+    const darstellung = (wrapper.vm as any).darstellung;
+    expect(darstellung.name).toBe("Osterangerstraße 3");
+    expect(darstellung.farbe).toBe("green-lighten-1");
+    expect(darstellung.status).toBe("Angelegt");
+    expect(darstellung.stadtbezirke).toBe("01/Altstadt-Lehel, 12/Schwabing-Freimann");
+
+    expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBe("/abfrage/abfrage-1");
+  });
+
+  test("stellt ein Vorhaben dar und verlinkt das Vorhaben", () => {
+    const bauvorhaben: BauvorhabenSearchResultDto = {
+      type: SearchResultDtoTypeEnum.Bauvorhaben,
+      id: "bauvorhaben-1",
+      nameVorhaben: "Neubaugebiet",
+      verfahrensstand: "RAHMENPLANUNG" as BauvorhabenSearchResultDto["verfahrensstand"],
+    };
+    const wrapper = mountKarte(bauvorhaben);
+    const darstellung = (wrapper.vm as any).darstellung;
+    expect(darstellung.name).toBe("Neubaugebiet");
+    expect(darstellung.art).toBe("Vorhaben");
+    expect(darstellung.status).toBe("Rahmenplanung");
+    expect(darstellung.icon).toBe("mdi-account-hard-hat");
+
+    expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBe("/bauvorhaben/bauvorhaben-1");
+  });
+
+  test("stellt eine Infrastruktureinrichtung mit Stadtbezirk dar und verlinkt die Einrichtung", () => {
+    const einrichtung: InfrastruktureinrichtungSearchResultDto = {
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      id: "einrichtung-1",
+      nameEinrichtung: "Krippe am Park",
+      infrastruktureinrichtungTyp:
+        "KINDERKRIPPE" as InfrastruktureinrichtungSearchResultDto["infrastruktureinrichtungTyp"],
+      status: "BESTAND" as InfrastruktureinrichtungSearchResultDto["status"],
+      stadtbezirke: new Set([{ nummer: "06", name: "Sendling" }]) as Set<StadtbezirkDto>,
+    };
+    const wrapper = mountKarte(einrichtung);
+    const darstellung = (wrapper.vm as any).darstellung;
+    expect(darstellung.art).toBe("Kinderkrippe");
+    expect(darstellung.status).toBe("Bestand");
+    expect(darstellung.stadtbezirke).toBe("06/Sendling");
+    expect(wrapper.text()).toContain("06/Sendling");
+
+    expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBe("/infrastruktureinrichtung/einrichtung-1");
+  });
+
+  test("zeigt bei einer Infrastruktureinrichtung ohne Verortung keinen Stadtbezirk an", () => {
+    const wrapper = mountKarte({ type: SearchResultDtoTypeEnum.Infrastruktureinrichtung, nameEinrichtung: "Ohne Ort" });
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("");
+  });
+
+  test("erzeugt ohne id keinen Link", () => {
+    const wrapper = mountKarte({ type: SearchResultDtoTypeEnum.Bauvorhaben, nameVorhaben: "Ohne id" });
+    expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBeUndefined();
+  });
+});

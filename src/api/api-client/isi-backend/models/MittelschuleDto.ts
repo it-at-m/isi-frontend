@@ -48,6 +48,13 @@ import {
     SchuleDtoToJSON,
     SchuleDtoToJSONTyped,
 } from './SchuleDto';
+import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
+import {
+    BearbeitungshistorieDtoFromJSON,
+    BearbeitungshistorieDtoFromJSONTyped,
+    BearbeitungshistorieDtoToJSON,
+    BearbeitungshistorieDtoToJSONTyped,
+} from './BearbeitungshistorieDto';
 
 /**
  * 

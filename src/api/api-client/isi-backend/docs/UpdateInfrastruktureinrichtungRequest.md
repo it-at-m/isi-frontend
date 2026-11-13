@@ -11,6 +11,7 @@ Name | Type
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
 `bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
+`bearbeitungshistorie` | [Array&lt;BearbeitungshistorieDto&gt;](BearbeitungshistorieDto.md)
 `infrastruktureinrichtungTyp` | string
 `lfdNr` | number
 `bauvorhaben` | string
@@ -51,6 +52,7 @@ const example = {
   "createdDateTime": null,
   "lastModifiedDateTime": null,
   "bearbeitendePerson": null,
+  "bearbeitungshistorie": null,
   "infrastruktureinrichtungTyp": null,
   "lfdNr": null,
   "bauvorhaben": null,

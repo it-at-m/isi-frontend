@@ -34,6 +34,13 @@ import {
     AdresseDtoToJSON,
     AdresseDtoToJSONTyped,
 } from './AdresseDto';
+import type { BearbeitungshistorieDto } from './BearbeitungshistorieDto';
+import {
+    BearbeitungshistorieDtoFromJSON,
+    BearbeitungshistorieDtoFromJSONTyped,
+    BearbeitungshistorieDtoToJSON,
+    BearbeitungshistorieDtoToJSONTyped,
+} from './BearbeitungshistorieDto';
 
 import { type GrundschuleDto, GrundschuleDtoFromJSONTyped, GrundschuleDtoToJSON, GrundschuleDtoToJSONTyped } from './GrundschuleDto';
 import { type GsNachmittagBetreuungDto, GsNachmittagBetreuungDtoFromJSONTyped, GsNachmittagBetreuungDtoToJSON, GsNachmittagBetreuungDtoToJSONTyped } from './GsNachmittagBetreuungDto';
@@ -68,6 +75,10 @@ export interface InfrastruktureinrichtungDto {
      * 
      */
     bearbeitendePerson?: BearbeitendePersonDto;
+    /**
+     * 
+     */
+    bearbeitungshistorie?: Array<BearbeitungshistorieDto>;
     /**
      * 
      */
@@ -211,6 +222,7 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'createdDateTime': json['createdDateTime'] == null ? undefined : (parseDateTime(json['createdDateTime'])),
         'lastModifiedDateTime': json['lastModifiedDateTime'] == null ? undefined : (parseDateTime(json['lastModifiedDateTime'])),
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
+        'bearbeitungshistorie': json['bearbeitungshistorie'] == null ? undefined : ((json['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoFromJSON)),
         'infrastruktureinrichtungTyp': json['infrastruktureinrichtungTyp'] == null ? undefined : json['infrastruktureinrichtungTyp'],
         'lfdNr': json['lfdNr'] == null ? undefined : json['lfdNr'],
         'bauvorhaben': json['bauvorhaben'] == null ? undefined : json['bauvorhaben'],
@@ -263,6 +275,7 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
         'createdDateTime': value['createdDateTime'] == null ? value['createdDateTime'] : serializeDateTime(value['createdDateTime']),
         'lastModifiedDateTime': value['lastModifiedDateTime'] == null ? value['lastModifiedDateTime'] : serializeDateTime(value['lastModifiedDateTime']),
         'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),
+        'bearbeitungshistorie': value['bearbeitungshistorie'] == null ? undefined : ((value['bearbeitungshistorie'] as Array<any>).map(BearbeitungshistorieDtoToJSON)),
         'infrastruktureinrichtungTyp': value['infrastruktureinrichtungTyp'],
         'lfdNr': value['lfdNr'],
         'bauvorhaben': value['bauvorhaben'],

@@ -12,6 +12,7 @@ Name | Type
 `status` | string
 `anlassPlanung` | string
 `zugehoerigesBauvorhaben` | string
+`stadtbezirke` | [Set&lt;StadtbezirkDto&gt;](StadtbezirkDto.md)
 
 ## Example
 
@@ -26,6 +27,7 @@ const example = {
   "status": null,
   "anlassPlanung": null,
   "zugehoerigesBauvorhaben": null,
+  "stadtbezirke": null,
 } satisfies InfrastruktureinrichtungSearchResultDto
 
 console.log(example)
