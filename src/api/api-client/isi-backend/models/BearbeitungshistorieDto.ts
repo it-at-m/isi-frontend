@@ -27,6 +27,13 @@ import {
     BearbeitendePersonDtoToJSON,
     BearbeitendePersonDtoToJSONTyped,
 } from './BearbeitendePersonDto';
+import type { BearbeitungsArt } from './BearbeitungsArt';
+import {
+    BearbeitungsArtFromJSON,
+    BearbeitungsArtFromJSONTyped,
+    BearbeitungsArtToJSON,
+    BearbeitungsArtToJSONTyped,
+} from './BearbeitungsArt';
 
 /**
  * 
@@ -34,6 +41,10 @@ import {
  * @interface BearbeitungshistorieDto
  */
 export interface BearbeitungshistorieDto {
+    /**
+     * 
+     */
+    art?: BearbeitungsArt;
     /**
      * 
      */
@@ -67,6 +78,7 @@ export function BearbeitungshistorieDtoFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
+        'art': json['art'] == null ? undefined : BearbeitungsArtFromJSON(json['art']),
         'zielStatus': json['zielStatus'] == null ? undefined : StatusAbfrageFromJSON(json['zielStatus']),
         'zeitpunkt': json['zeitpunkt'] == null ? undefined : (parseDateTime(json['zeitpunkt'])),
         'bearbeitendePerson': json['bearbeitendePerson'] == null ? undefined : BearbeitendePersonDtoFromJSON(json['bearbeitendePerson']),
@@ -84,6 +96,7 @@ export function BearbeitungshistorieDtoToJSONTyped(value?: BearbeitungshistorieD
 
     return {
         
+        'art': BearbeitungsArtToJSON(value['art']),
         'zielStatus': StatusAbfrageToJSON(value['zielStatus']),
         'zeitpunkt': value['zeitpunkt'] == null ? value['zeitpunkt'] : serializeDateTime(value['zeitpunkt']),
         'bearbeitendePerson': BearbeitendePersonDtoToJSON(value['bearbeitendePerson']),

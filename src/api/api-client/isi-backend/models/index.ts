@@ -42,6 +42,7 @@ export * from './BauratendateiInputDto';
 export * from './BauvorhabenDto';
 export * from './BauvorhabenSearchResultDto';
 export * from './BearbeitendePersonDto';
+export * from './BearbeitungsArt';
 export * from './BearbeitungshistorieDto';
 export * from './BedarfsmeldungDto';
 export * from './BezirksteilDto';

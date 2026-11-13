@@ -27,6 +27,13 @@ import {
     Wgs84DtoToJSON,
     Wgs84DtoToJSONTyped,
 } from './Wgs84Dto';
+import type { StadtbezirkDto } from './StadtbezirkDto';
+import {
+    StadtbezirkDtoFromJSON,
+    StadtbezirkDtoFromJSONTyped,
+    StadtbezirkDtoToJSON,
+    StadtbezirkDtoToJSONTyped,
+} from './StadtbezirkDto';
 
 /**
  * 
@@ -58,6 +65,10 @@ export interface InfrastruktureinrichtungSearchResultDto extends SearchResultDto
      * 
      */
     zugehoerigesBauvorhaben?: string;
+    /**
+     * 
+     */
+    stadtbezirke?: Set<StadtbezirkDto>;
 }
 
 
@@ -133,6 +144,7 @@ export function InfrastruktureinrichtungSearchResultDtoFromJSONTyped(json: any, 
         'status': json['status'] == null ? undefined : json['status'],
         'anlassPlanung': json['anlassPlanung'] == null ? undefined : json['anlassPlanung'],
         'zugehoerigesBauvorhaben': json['zugehoerigesBauvorhaben'] == null ? undefined : json['zugehoerigesBauvorhaben'],
+        'stadtbezirke': json['stadtbezirke'] == null ? undefined : (new Set((json['stadtbezirke'] as Array<any>).map(StadtbezirkDtoFromJSON))),
     };
 }
 
@@ -160,6 +172,7 @@ export function InfrastruktureinrichtungSearchResultDtoToJSONTyped(value?: Infra
         'status': value['status'],
         'anlassPlanung': value['anlassPlanung'],
         'zugehoerigesBauvorhaben': value['zugehoerigesBauvorhaben'],
+        'stadtbezirke': value['stadtbezirke'] == null ? undefined : (Array.from(value['stadtbezirke'] as Set<any>).map(StadtbezirkDtoToJSON)),
     };
 }
 
