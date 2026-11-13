@@ -30,7 +30,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="stadtbezirke.length !== 0">Stadtbezirk</v-label>
+        <v-label v-if="stadtbezirke.length !== 0 || verortungVorhanden">Stadtbezirk</v-label>
+        <p
+          v-if="isNichtVerfuegbar(stadtbezirke.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="stadtbezirke.length !== 0"
           title="Stadtbezirke"
@@ -50,7 +56,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="kitaplanungsbereiche.length !== 0">Kitaplanungsbereich</v-label>
+        <v-label v-if="kitaplanungsbereiche.length !== 0 || verortungVorhanden">Kitaplanungsbereich</v-label>
+        <p
+          v-if="isNichtVerfuegbar(kitaplanungsbereiche.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="kitaplanungsbereiche.length !== 0"
           title="Kitaplanungsbereiche"
@@ -75,7 +87,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="bezirksteile.length !== 0">Bezirksteil</v-label>
+        <v-label v-if="bezirksteile.length !== 0 || verortungVorhanden">Bezirksteil</v-label>
+        <p
+          v-if="isNichtVerfuegbar(bezirksteile.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="bezirksteile.length !== 0"
           title="Bezirksteile"
@@ -96,14 +114,12 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="grundschulsprengel.length !== 0 || grundschulsprengelNichtVerfuegbar">
-          Grundschulsprengel
-        </v-label>
+        <v-label v-if="grundschulsprengel.length !== 0 || verortungVorhanden">Grundschulsprengel</v-label>
         <p
-          v-if="grundschulsprengelNichtVerfuegbar"
+          v-if="isNichtVerfuegbar(grundschulsprengel.length)"
           class="text-medium-emphasis"
         >
-          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
         </p>
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
@@ -129,7 +145,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="gemarkungen.length !== 0">Gemarkung</v-label>
+        <v-label v-if="gemarkungen.length !== 0 || verortungVorhanden">Gemarkung</v-label>
+        <p
+          v-if="isNichtVerfuegbar(gemarkungen.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="gemarkungen.length !== 0"
           title="Gemarkungen"
@@ -150,14 +172,12 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="mittelschulsprengel.length !== 0 || mittelschulsprengelNichtVerfuegbar">
-          Mittelschulsprengel
-        </v-label>
+        <v-label v-if="mittelschulsprengel.length !== 0 || verortungVorhanden">Mittelschulsprengel</v-label>
         <p
-          v-if="mittelschulsprengelNichtVerfuegbar"
+          v-if="isNichtVerfuegbar(mittelschulsprengel.length)"
           class="text-medium-emphasis"
         >
-          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
         </p>
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
@@ -214,9 +234,8 @@ import type {
 import VerortungPointModel from "@/types/model/common/VerortungPointModel";
 import {
   ICON_INFRASTRUKTUREINRICHTUNG,
-  SCHULSPRENGEL_ABFRAGE_AKTIV,
-  TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR,
-  isSchulsprengelNichtVerfuegbar,
+  TEXT_GEODATEN_NICHT_VERFUEGBAR,
+  isGeodatenNichtVerfuegbar,
 } from "@/utils/MapUtil";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
@@ -306,12 +325,14 @@ const grundschulsprengel = computed(() =>
 const mittelschulsprengel = computed(() =>
   _.sortBy(_.toArray(verortungModel.value?.mittelschulsprengel) as Array<MittelschulsprengelDto>, ["nummer"]),
 );
-const grundschulsprengelNichtVerfuegbar = computed(() =>
-  isSchulsprengelNichtVerfuegbar(grundschulsprengel.value.length, stadtbezirke.value.length),
-);
-const mittelschulsprengelNichtVerfuegbar = computed(() =>
-  isSchulsprengelNichtVerfuegbar(mittelschulsprengel.value.length, stadtbezirke.value.length),
-);
+const verortungVorhanden = computed(() => !_.isNil(verortungModel.value?.point));
+
+/**
+ * Liefert true, wenn die Geodaten eines Feldes bei vorhandener Verortung nicht ermittelt werden konnten.
+ */
+function isNichtVerfuegbar(anzahl: number): boolean {
+  return isGeodatenNichtVerfuegbar(anzahl, verortungVorhanden.value);
+}
 
 const lookAt = computed(() => {
   if (!_.isEmpty(geoJson.value)) {
@@ -471,24 +492,23 @@ function setGeoJsonFromLatLng(latlng: LatLngLiteral): void {
 
 /**
  * Erstellt das VerortungPointDto auf Basis einer Punktkoordinate.
- * Tritt ein fehler bei der Erstellung des VerortungPointDtos auf, so wird undefined zurückgegeben.
+ * Fehler beim Ermitteln einzelner Geodaten führen zu leeren Feldern in der Verortung.
  */
 async function createVerortungPointDtoFromSelectedPoint(
   point: PointGeometryDto,
 ): Promise<VerortungPointDto | undefined> {
   try {
-    const promiseStadtbezirke = geoApi.getStadtbezirkeForPoint(point);
-    const promiseBezirksteile = geoApi.getBezirksteileForPoint(point);
-    const promiseViertel = geoApi.getViertelForPoint(point);
-    const promiseGemarkungen = geoApi.getGemarkungenForPoint(point);
-    const promiseFlurstuecke = geoApi.getFlurstueckeForPoint(point);
-    const promiseKitaplanungsbereiche = geoApi.getKitaplanungsbereicheForPoint(point);
-    const promiseGrundschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
-      ? geoApi.getGrundschulsprengelForPoint(point)
-      : Promise.resolve([]);
-    const promiseMittelschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
-      ? geoApi.getMittelschulsprengelForPoint(point)
-      : Promise.resolve([]);
+    // Die Geodaten werden fehlertolerant ermittelt. Kann ein Feld nicht ermittelt werden,
+    // bleibt es leer und wird als "Aktuell nicht verfügbar" angezeigt.
+    const tolerantLoader = geoApi.createTolerantLoader();
+    const promiseStadtbezirke = tolerantLoader.load(geoApi.getStadtbezirkeForPoint(point, false));
+    const promiseBezirksteile = tolerantLoader.load(geoApi.getBezirksteileForPoint(point, false));
+    const promiseViertel = tolerantLoader.load(geoApi.getViertelForPoint(point, false));
+    const promiseGemarkungen = tolerantLoader.load(geoApi.getGemarkungenForPoint(point, false));
+    const promiseFlurstuecke = tolerantLoader.load(geoApi.getFlurstueckeForPoint(point, false));
+    const promiseKitaplanungsbereiche = tolerantLoader.load(geoApi.getKitaplanungsbereicheForPoint(point, false));
+    const promiseGrundschulsprengel = tolerantLoader.load(geoApi.getGrundschulsprengelForPoint(point, false));
+    const promiseMittelschulsprengel = tolerantLoader.load(geoApi.getMittelschulsprengelForPoint(point, false));
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(
@@ -528,6 +548,8 @@ async function createVerortungPointDtoFromSelectedPoint(
     // Mittelschulsprengel ermitteln
     const mittelschulsprengelBackend: Array<MittelschulsprengelDto> =
       mittelschulsprengelGeoDataEaiToMittelschulsprengelBackend(await promiseMittelschulsprengel);
+
+    tolerantLoader.showErrorIfOccurred();
 
     // Erstellung des VerortungPointDto
     return new VerortungPointModel({
