@@ -83,17 +83,6 @@ const VORHABEN: Suchkriterien = {
   selectBauvorhaben: true,
 };
 
-const INFRASTRUKTUREINRICHTUNGEN: Suchkriterien = {
-  ...KEINE_OBJEKTE,
-  selectGrundschule: true,
-  selectGsNachmittagBetreuung: true,
-  selectHausFuerKinder: true,
-  selectKindergarten: true,
-  selectKinderkrippe: true,
-  selectMittelschule: true,
-  selectNachbarschaftstreff: true,
-};
-
 const ALLE_OBJEKTE: Suchkriterien = {
   ...ABFRAGEN,
   selectBauvorhaben: true,
@@ -162,8 +151,6 @@ export function getSuchkriterienSachbearbeitung(schnellfilter: SchnellfilterVorg
       };
     case "VORHABEN":
       return { ...VORHABEN, filterNurEigeneVorgaenge: true };
-    case "INFRASTRUKTUREINRICHTUNGEN":
-      return { ...INFRASTRUKTUREINRICHTUNGEN, filterNurEigeneVorgaenge: true };
     case "ALLE":
     default:
       return { ...ALLE_OBJEKTE, filterNurEigeneVorgaenge: true };
@@ -172,14 +159,12 @@ export function getSuchkriterienSachbearbeitung(schnellfilter: SchnellfilterVorg
 
 /**
  * Die Sachbearbeitung sieht ihre Vorgänge und überwacht ihren Zuständigkeitsbereich über den Stadtbezirksfilter.
+ * Über die Startseite legt sie ausschließlich Vorhaben an.
  */
 export const STARTSEITE_SACHBEARBEITUNG: StartseitenKonfiguration = {
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
   getSuchkriterien: getSuchkriterienSachbearbeitung,
-  neuanlageOptionen: [
-    { title: "Vorhaben erstellen", icon: "mdi-account-hard-hat", route: "/bauvorhaben" },
-    { title: "Infrastruktureinrichtung erstellen", icon: "mdi-home", route: "/infrastruktureinrichtung" },
-  ],
+  neuanlageOptionen: [{ title: "Vorhaben erstellen", icon: "mdi-account-hard-hat", route: "/bauvorhaben" }],
   stadtbezirkFilter: true,
 };
 
