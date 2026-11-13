@@ -347,7 +347,6 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
         "EINPLANUNG_BEDARFE",
         "ERLEDIGT",
         "VORHABEN",
-        "INFRASTRUKTUREINRICHTUNGEN",
       ]);
     });
 
@@ -373,10 +372,9 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(mockSearchForEntities.mock.calls[0][0].filterStadtbezirkNummer).toEqual(["01", "25"]);
     });
 
-    test("bietet als Neuanlage Vorhaben und Infrastruktureinrichtungen an", () => {
+    test("bietet als Neuanlage ausschließlich Vorhaben an", () => {
       expect((sachbearbeitung.vm as any).$.setupState.neuanlageOptionen.map((option: any) => option.route)).toEqual([
         "/bauvorhaben",
-        "/infrastruktureinrichtung",
       ]);
     });
 

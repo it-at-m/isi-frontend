@@ -76,7 +76,7 @@
           v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
-          :is-editable="isEditable"
+          :is-editable="isKommentarEditable"
           :infrastruktureinrichtung-typ="infrastruktureinrichtung.infrastruktureinrichtungTyp"
         />
         <yes-no-dialog
@@ -232,6 +232,7 @@ import {
 } from "@/utils/Validators";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 import { useCommonStore } from "@/stores/CommonStore";
+import { isInfrastruktureinrichtungEditable } from "@/utils/InfrastruktureinrichtungUtil";
 
 const {
   isFormDirty,
@@ -276,29 +277,28 @@ useTabTitle(
   TAB_TITLE_INFRASTRUKTUREINRICHTUNG,
 );
 
-const isEditable = computed(() => {
-  const hasRole =
-    isRoleAdminOrSachbearbeitung.value ||
-    isRoleAdminOrInfrastruktureinrichtungSchreibend.value ||
-    isRoleAdminOrBedarfsmeldungSozialplanung.value;
+// Die Sachbearbeitung darf Infrastruktureinrichtungen nur lesen.
+const isEditable = computed(() =>
+  isInfrastruktureinrichtungEditable(
+    {
+      isAdmin: isRoleAdmin.value,
+      isInfrastruktureinrichtungSchreibend: isRoleAdminOrInfrastruktureinrichtungSchreibend.value,
+      isBedarfsmeldungSozialplanung: isRoleAdminOrBedarfsmeldungSozialplanung.value,
+    },
+    isNew.value,
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp,
+  ),
+);
 
-  if (!hasRole) return false;
-
-  if (isNew.value) return true;
-  if (isRoleAdmin.value) return true;
-
-  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
-    return (
-      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-    );
-  } else {
-    return (
+// Kommentare sind ein eigenes Recht. Die Sachbearbeitung kommentiert weiterhin wie bisher alle Einrichtungen außer
+// Nachbarschaftstreffs.
+const isKommentarEditable = computed(
+  () =>
+    isEditable.value ||
+    (isRoleAdminOrSachbearbeitung.value &&
       infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-    );
-  }
-});
+        InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff),
+);
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {

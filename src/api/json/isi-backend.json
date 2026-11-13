@@ -3334,7 +3334,12 @@
                   "SCHLIESSUNG"
                 ]
               },
-              "zugehoerigesBauvorhaben": { "type": "string" }
+              "zugehoerigesBauvorhaben": { "type": "string" },
+              "stadtbezirke": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+                "uniqueItems": true
+              }
             }
           }
         ]
