@@ -76,7 +76,7 @@
           v-if="componentSecurity.areKommentareVisible(Context.INFRASTRUKTUREINRICHTUNG) && !isNew"
           id="infrastruktureinrichtung_kommentare"
           :context="Context.INFRASTRUKTUREINRICHTUNG"
-          :is-editable="isEditable"
+          :is-editable="isKommentarEditable"
           :infrastruktureinrichtung-typ="infrastruktureinrichtung.infrastruktureinrichtungTyp"
         />
         <yes-no-dialog
@@ -119,7 +119,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
+              <bearbeitungshistorie v-model="infrastruktureinrichtung.bearbeitungshistorie" />
             </v-col>
           </v-row>
         </v-container>
@@ -213,8 +213,7 @@ import {
   createNachbarschaftstreffDto,
 } from "@/utils/Factories";
 import _ from "lodash";
-import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
-import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
+import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
@@ -233,6 +232,7 @@ import {
 } from "@/utils/Validators";
 import { useComponentSecurity } from "@/composables/security/ComponentSecurity";
 import { useCommonStore } from "@/stores/CommonStore";
+import { isInfrastruktureinrichtungEditable } from "@/utils/InfrastruktureinrichtungUtil";
 
 const {
   isFormDirty,
@@ -277,29 +277,28 @@ useTabTitle(
   TAB_TITLE_INFRASTRUKTUREINRICHTUNG,
 );
 
-const isEditable = computed(() => {
-  const hasRole =
-    isRoleAdminOrSachbearbeitung.value ||
-    isRoleAdminOrInfrastruktureinrichtungSchreibend.value ||
-    isRoleAdminOrBedarfsmeldungSozialplanung.value;
+// Die Sachbearbeitung darf Infrastruktureinrichtungen nur lesen.
+const isEditable = computed(() =>
+  isInfrastruktureinrichtungEditable(
+    {
+      isAdmin: isRoleAdmin.value,
+      isInfrastruktureinrichtungSchreibend: isRoleAdminOrInfrastruktureinrichtungSchreibend.value,
+      isBedarfsmeldungSozialplanung: isRoleAdminOrBedarfsmeldungSozialplanung.value,
+    },
+    isNew.value,
+    infrastruktureinrichtung.value.infrastruktureinrichtungTyp,
+  ),
+);
 
-  if (!hasRole) return false;
-
-  if (isNew.value) return true;
-  if (isRoleAdmin.value) return true;
-
-  if (isRoleAdminOrBedarfsmeldungSozialplanung.value) {
-    return (
-      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-    );
-  } else {
-    return (
+// Kommentare sind ein eigenes Recht. Die Sachbearbeitung kommentiert weiterhin wie bisher alle Einrichtungen außer
+// Nachbarschaftstreffs.
+const isKommentarEditable = computed(
+  () =>
+    isEditable.value ||
+    (isRoleAdminOrSachbearbeitung.value &&
       infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-    );
-  }
-});
+        InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff),
+);
 
 const lfdNr = computed(() => {
   if (!_.isNil(infrastruktureinrichtung.value) && !_.isNil(infrastruktureinrichtung.value.lfdNr)) {
@@ -313,13 +312,6 @@ const infrastruktureinrichtungDisplayName = computed(() => {
     return infrastruktureinrichtung.value.nameEinrichtung;
   }
   return "";
-});
-
-const bearbeitungsinformationen = computed(() => {
-  return new BenutzerinformationenModel(
-    infrastruktureinrichtung.value?.bearbeitendePerson,
-    infrastruktureinrichtung.value?.lastModifiedDateTime,
-  );
 });
 
 const isEinrichtungstraegerRequired = computed(() => {
