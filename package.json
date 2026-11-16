@@ -53,5 +53,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "overrides": {
+    "minimatch": "11.0.8"
   }
 }
