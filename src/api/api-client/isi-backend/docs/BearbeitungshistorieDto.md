@@ -6,6 +6,7 @@
 
 Name | Type
 ------------ | -------------
+`art` | [BearbeitungsArt](BearbeitungsArt.md)
 `zielStatus` | [StatusAbfrage](StatusAbfrage.md)
 `zeitpunkt` | Date
 `bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
@@ -17,6 +18,7 @@ import type { BearbeitungshistorieDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
+  "art": null,
   "zielStatus": null,
   "zeitpunkt": null,
   "bearbeitendePerson": null,
