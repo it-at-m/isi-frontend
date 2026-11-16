@@ -12,6 +12,9 @@
     },
     "markdownlint": {
       "re2js": "2.10.0"
+    },
+    "markdownlint-cli": {
+      "minimatch": "11.0.8"
     }
   },
   "name": "refarch-templates-docs",
