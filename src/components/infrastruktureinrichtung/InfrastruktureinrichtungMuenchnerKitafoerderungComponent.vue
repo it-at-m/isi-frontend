@@ -1,14 +1,15 @@
 <template>
-  <tri-switch
-    id="muenchner_kitafoerderung_triswitch"
-    ref="muenchnerKitafoerderungTriswitch"
+  <v-checkbox
+    id="muechner_kitafoerderung"
+    ref="muenchnerKitafoerderungCheckbox"
     v-model="infrastruktureinrichtung.muenchnerKitafoerderung"
     :disabled="!isEditable"
-    off-text="Nein"
-    on-text="Ja"
-  >
-    <template #label> Münchner Kitaförderung <span class="text-secondary">*</span></template>
-  </tri-switch>
+    class="mx-3"
+    color="primary"
+    label="Münchner"
+    Kitaförderung
+    hide-details
+  />
 </template>
 
 <script setup lang="ts">

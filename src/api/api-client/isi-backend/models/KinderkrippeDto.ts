@@ -70,7 +70,7 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    muenchnerKitafoerderung: UncertainBoolean;
+    muenchnerKitafoerderung?: boolean;
     /**
      * 
      */
@@ -146,7 +146,6 @@ export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinri
 export function instanceOfKinderkrippeDto(value: object): value is KinderkrippeDto {
     if (!('einrichtungstraeger' in value) || value['einrichtungstraeger'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
-    if (!('muenchnerKitafoerderung' in value) || value['muenchnerKitafoerderung'] === undefined) return false;
     return true;
 }
 
@@ -169,7 +168,7 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'einrichtungstraeger': json['einrichtungstraeger'],
         'fertigstellungsmonat': json['fertigstellungsmonat'] == null ? undefined : json['fertigstellungsmonat'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
-        'muenchnerKitafoerderung': UncertainBooleanFromJSON(json['muenchnerKitafoerderung']),
+        'muenchnerKitafoerderung': json['muenchnerKitafoerderung'] == null ? undefined : json['muenchnerKitafoerderung'],
         'miniKita': json['miniKita'] == null ? undefined : json['miniKita'],
         'integrationseinrichtung': json['integrationseinrichtung'] == null ? undefined : json['integrationseinrichtung'],
         'nameTraeger': json['nameTraeger'] == null ? undefined : json['nameTraeger'],
@@ -207,7 +206,7 @@ export function KinderkrippeDtoToJSONTyped(value?: KinderkrippeDto | null, ignor
         'einrichtungstraeger': value['einrichtungstraeger'],
         'fertigstellungsmonat': value['fertigstellungsmonat'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
-        'muenchnerKitafoerderung': UncertainBooleanToJSON(value['muenchnerKitafoerderung']),
+        'muenchnerKitafoerderung': value['muenchnerKitafoerderung'],
         'miniKita': value['miniKita'],
         'integrationseinrichtung': value['integrationseinrichtung'],
         'nameTraeger': value['nameTraeger'],

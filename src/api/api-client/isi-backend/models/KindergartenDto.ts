@@ -66,7 +66,7 @@ export interface KindergartenDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    muenchnerKitafoerderung: UncertainBoolean;
+    muenchnerKitafoerderung?: boolean;
     /**
      * 
      */
@@ -142,7 +142,6 @@ export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinri
 export function instanceOfKindergartenDto(value: object): value is KindergartenDto {
     if (!('einrichtungstraeger' in value) || value['einrichtungstraeger'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
-    if (!('muenchnerKitafoerderung' in value) || value['muenchnerKitafoerderung'] === undefined) return false;
     return true;
 }
 
@@ -164,7 +163,7 @@ export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
         'einrichtungstraeger': json['einrichtungstraeger'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
-        'muenchnerKitafoerderung': UncertainBooleanFromJSON(json['muenchnerKitafoerderung']),
+        'muenchnerKitafoerderung': json['muenchnerKitafoerderung'] == null ? undefined : json['muenchnerKitafoerderung'],
         'miniKita': json['miniKita'] == null ? undefined : json['miniKita'],
         'integrationseinrichtung': json['integrationseinrichtung'] == null ? undefined : json['integrationseinrichtung'],
         'nameTraeger': json['nameTraeger'] == null ? undefined : json['nameTraeger'],
@@ -201,7 +200,7 @@ export function KindergartenDtoToJSONTyped(value?: KindergartenDto | null, ignor
         ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
         'einrichtungstraeger': value['einrichtungstraeger'],
         'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
-        'muenchnerKitafoerderung': UncertainBooleanToJSON(value['muenchnerKitafoerderung']),
+        'muenchnerKitafoerderung': value['muenchnerKitafoerderung'],
         'miniKita': value['miniKita'],
         'integrationseinrichtung': value['integrationseinrichtung'],
         'nameTraeger': value['nameTraeger'],

@@ -31,11 +31,25 @@ export interface CreateInfrastruktureinrichtungRequest {
     updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
 }
 
+export interface CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest {
+    /**
+     * 
+     */
+    updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
+}
+
 export interface CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest {
     /**
      * 
      */
     updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
+}
+
+export interface DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest {
+    /**
+     * 
+     */
+    id: string;
 }
 
 export interface DeleteInfrastruktureinrichtungBedarfsmeldungSozialplanungByIdRequest {
@@ -60,6 +74,13 @@ export interface GetInfrastruktureinrichtungByIdRequest {
 }
 
 export interface UpdateInfrastruktureinrichtungOperationRequest {
+    /**
+     * 
+     */
+    updateInfrastruktureinrichtungRequest: UpdateInfrastruktureinrichtungRequest;
+}
+
+export interface UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest {
     /**
      * 
      */
@@ -126,6 +147,53 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for createInfrastruktureinrichtungBedarfsmeldungKita without sending the request
+     */
+    async createInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters: CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['updateInfrastruktureinrichtungRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateInfrastruktureinrichtungRequest',
+                'Required parameter "updateInfrastruktureinrichtungRequest" was null or undefined when calling createInfrastruktureinrichtungBedarfsmeldungKita().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/infrastruktureinrichtung/bedarfsmeldung_kita`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateInfrastruktureinrichtungRequestToJSON(requestParameters['updateInfrastruktureinrichtungRequest']),
+        };
+    }
+
+    /**
+     * Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async createInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters: CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+        const requestOptions = await this.createInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpdateInfrastruktureinrichtungRequestFromJSON(jsonValue));
+    }
+
+    /**
+     * Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async createInfrastruktureinrichtungBedarfsmeldungKita(requestParameters: CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
+        const response = await this.createInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for createInfrastruktureinrichtungBedarfsmeldungSozialplanung without sending the request
      */
     async createInfrastruktureinrichtungBedarfsmeldungSozialplanungRequestOpts(requestParameters: CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest): Promise<runtime.RequestOpts> {
@@ -170,6 +238,50 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
     async createInfrastruktureinrichtungBedarfsmeldungSozialplanung(requestParameters: CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.createInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Creates request options for deleteInfrastruktureinrichtungBedarfsmeldungKitaById without sending the request
+     */
+    async deleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequestOpts(requestParameters: DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteInfrastruktureinrichtungBedarfsmeldungKitaById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/infrastruktureinrichtung/bedarfsmeldung_kita/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async deleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRaw(requestParameters: DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async deleteInfrastruktureinrichtungBedarfsmeldungKitaById(requestParameters: DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -349,6 +461,53 @@ export class InfrastruktureinrichtungApi extends runtime.BaseAPI {
      */
     async updateInfrastruktureinrichtung(requestParameters: UpdateInfrastruktureinrichtungOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
         const response = await this.updateInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for updateInfrastruktureinrichtungBedarfsmeldungKita without sending the request
+     */
+    async updateInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters: UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['updateInfrastruktureinrichtungRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateInfrastruktureinrichtungRequest',
+                'Required parameter "updateInfrastruktureinrichtungRequest" was null or undefined when calling updateInfrastruktureinrichtungBedarfsmeldungKita().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/infrastruktureinrichtung/bedarfsmeldung_kita`;
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateInfrastruktureinrichtungRequestToJSON(requestParameters['updateInfrastruktureinrichtungRequest']),
+        };
+    }
+
+    /**
+     * Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async updateInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters: UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpdateInfrastruktureinrichtungRequest>> {
+        const requestOptions = await this.updateInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpdateInfrastruktureinrichtungRequestFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async updateInfrastruktureinrichtungBedarfsmeldungKita(requestParameters: UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpdateInfrastruktureinrichtungRequest> {
+        const response = await this.updateInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

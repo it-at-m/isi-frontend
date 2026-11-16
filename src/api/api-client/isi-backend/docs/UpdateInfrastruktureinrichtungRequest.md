@@ -34,7 +34,7 @@ Name | Type
 `wohnungsnaheKinderkrippePlaetze` | number
 `wohnungsnaheKindergartenPlaetze` | number
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
-`muenchnerKitafoerderung` | [UncertainBoolean](UncertainBoolean.md)
+`muenchnerKitafoerderung` | boolean
 `miniKita` | boolean
 `integrationseinrichtung` | boolean
 `nameTraeger` | string

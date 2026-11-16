@@ -43,6 +43,13 @@ export interface CreateKommentarForInfrastruktureinrichtungRequest {
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
 }
 
+export interface CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest {
+    /**
+     * 
+     */
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
+}
+
 export interface CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest {
     /**
      * 
@@ -58,6 +65,13 @@ export interface DeleteKommentarForBauvorhabenRequest {
 }
 
 export interface DeleteKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
+    id: string;
+}
+
+export interface DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest {
     /**
      * 
      */
@@ -93,6 +107,13 @@ export interface UpdateKommentarForBauvorhabenRequest {
 }
 
 export interface UpdateKommentarForInfrastruktureinrichtungRequest {
+    /**
+     * 
+     */
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto;
+}
+
+export interface UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest {
     /**
      * 
      */
@@ -202,6 +223,53 @@ export class KommentareApi extends runtime.BaseAPI {
      */
     async createKommentarForInfrastruktureinrichtung(requestParameters: CreateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
         const response = await this.createKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for createKommentarForInfrastruktureinrichtungBedarfsmeldungKita without sending the request
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['kommentarInfrastruktureinrichtungDto'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarInfrastruktureinrichtungDto',
+                'Required parameter "kommentarInfrastruktureinrichtungDto" was null or undefined when calling createKommentarForInfrastruktureinrichtungBedarfsmeldungKita().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_kita`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters['kommentarInfrastruktureinrichtungDto']),
+        };
+    }
+
+    /**
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        const requestOptions = await this.createKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async createKommentarForInfrastruktureinrichtungBedarfsmeldungKita(requestParameters: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.createKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -338,6 +406,50 @@ export class KommentareApi extends runtime.BaseAPI {
      */
     async deleteKommentarForInfrastruktureinrichtung(requestParameters: DeleteKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita without sending the request
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_kita/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita(requestParameters: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -565,6 +677,53 @@ export class KommentareApi extends runtime.BaseAPI {
      */
     async updateKommentarForInfrastruktureinrichtung(requestParameters: UpdateKommentarForInfrastruktureinrichtungRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
         const response = await this.updateKommentarForInfrastruktureinrichtungRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita without sending the request
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['kommentarInfrastruktureinrichtungDto'] == null) {
+            throw new runtime.RequiredError(
+                'kommentarInfrastruktureinrichtungDto',
+                'Required parameter "kommentarInfrastruktureinrichtungDto" was null or undefined when calling updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/kommentar/infrastruktureinrichtung/bedarfsmeldung_kita`;
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: KommentarInfrastruktureinrichtungDtoToJSON(requestParameters['kommentarInfrastruktureinrichtungDto']),
+        };
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<KommentarInfrastruktureinrichtungDto>> {
+        const requestOptions = await this.updateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => KommentarInfrastruktureinrichtungDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Aktualisierung eines Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+     */
+    async updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita(requestParameters: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<KommentarInfrastruktureinrichtungDto> {
+        const response = await this.updateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

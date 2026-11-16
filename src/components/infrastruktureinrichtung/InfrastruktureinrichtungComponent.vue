@@ -140,6 +140,11 @@
           cols="12"
           md="6"
         >
+          <infrastruktureinrichtung-name-traeger-component
+            v-model="infrastruktureinrichtung"
+            v-if="nameTraegerVisible"
+            :is-editable="isEditable"
+          />
         </v-col>
       </v-row>
     </field-group-card>
@@ -167,6 +172,7 @@ import InfrastruktureinrichtungMuenchnerKitafoerderungComponent from "@/componen
 import InfrastruktureinrichtungKibigWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKibigWebIdComponent.vue";
 import InfrastruktureinrichtungMiniKitaComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMiniKitaComponent.vue";
 import InfrastruktureinrichtungIntegrationseinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungIntegrationseinrichtungComponent.vue";
+import InfrastruktureinrichtungNameTraegerComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungNameTraegerComponent.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
 interface Props {
   isEditable?: boolean;
@@ -186,18 +192,15 @@ watch(
   { immediate: true, deep: true },
 );
 
-const isEinrichtungstraegerRequired = computed(() => isKinderkrippeOrKindergarten);
+const isEinrichtungstraegerRequired = computed(() => false);
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
 const fertigstellungsmonatVisible = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
     InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
 );
-const einrichtungstraegerVisible = computed(
-  () =>
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp !==
-    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff,
-);
+const einrichtungstraegerVisible = computed(() => isKinderkrippeOrKindergarten);
+const nameTraegerVisible = computed(() => isKinderkrippeOrKindergarten);
 const sobonRelevantVisible = computed(() => isKinderkrippeOrKindergarten);
 const muenchnerKitafoerderungVisible = computed(() => isKinderkrippeOrKindergarten);
 const kibigWebIdVisible = computed(() => isKinderkrippeOrKindergarten);

@@ -9,7 +9,7 @@ Name | Type
 `einrichtungstraeger` | string
 `fertigstellungsmonat` | number
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
-`muenchnerKitafoerderung` | [UncertainBoolean](UncertainBoolean.md)
+`muenchnerKitafoerderung` | boolean
 `miniKita` | boolean
 `integrationseinrichtung` | boolean
 `nameTraeger` | string

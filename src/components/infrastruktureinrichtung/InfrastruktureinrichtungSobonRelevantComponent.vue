@@ -7,6 +7,7 @@
     :disabled="!isEditable || !isSobonRelevant"
     off-text="Nein"
     on-text="Ja"
+    :rules="[notUnspecified]"
   >
     <template #label> SoBoN-relevant <span class="text-secondary">*</span></template>
   </tri-switch>
@@ -17,6 +18,7 @@ import { ref, watch } from "vue";
 import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { InfrastruktureinrichtungDtoAnlassPlanungEnum, UncertainBoolean } from "@/api/api-client/isi-backend";
+import { notUnspecified } from "@/utils/FieldValidationRules";
 interface Props {
   isEditable?: boolean;
 }
