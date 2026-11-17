@@ -9,6 +9,7 @@
     :readonly="!isEditable"
     maxlength="4"
     :class="isEditable ? '' : 'text-grey-lighten-1'"
+    @update:model-value="formChanged"
   >
     <template
       #label
@@ -28,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
+import { useSaveLeave } from "@/composables/SaveLeave";
 import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
-import NumField from "@/components/common/NumField.vue";
 import {
   InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum,
   InfrastruktureinrichtungDtoStatusEnum,
@@ -45,7 +46,7 @@ type ValidationRule = UnwrapReadonlyArray<VSelect["rules"]>;
 interface Props {
   isEditable?: boolean;
 }
-
+const { formChanged } = useSaveLeave();
 const props = withDefaults(defineProps<Props>(), {
   isEditable: false,
 });

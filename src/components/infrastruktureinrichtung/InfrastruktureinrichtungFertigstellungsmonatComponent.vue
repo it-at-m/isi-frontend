@@ -9,12 +9,14 @@
     :readonly="!isEditable"
     maxlength="2"
     :class="isEditable ? '' : 'text-grey-lighten-1'"
+    @update:model-value="formChanged"
   />
 </template>
 
 <script setup lang="ts">
 import KinderkrippeModelModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
 import { digits, min, max } from "@/utils/FieldValidationRules";
+import { useSaveLeave } from "@/composables/SaveLeave";
 
 interface Props {
   isEditable?: boolean;
@@ -22,5 +24,6 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { isEditable: false });
 
+const { formChanged } = useSaveLeave();
 const infrastruktureinrichtung = defineModel<KinderkrippeModelModel>({ required: true });
 </script>

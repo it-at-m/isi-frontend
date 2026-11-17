@@ -217,7 +217,7 @@ async function deleteKommentar(
       switch (props.infrastruktureinrichtungTyp) {
         case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
         case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
-          await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar);
+          await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita(kommentar.id);
           break;
         case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
           await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar.id);

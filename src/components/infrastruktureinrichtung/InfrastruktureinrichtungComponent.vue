@@ -194,18 +194,6 @@ watch(
 
 const isEinrichtungstraegerRequired = computed(() => false);
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
-const fertigstellungsmonatVisible = computed(
-  () =>
-    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
-);
-const einrichtungstraegerVisible = computed(() => isKinderkrippeOrKindergarten);
-const nameTraegerVisible = computed(() => isKinderkrippeOrKindergarten);
-const sobonRelevantVisible = computed(() => isKinderkrippeOrKindergarten);
-const muenchnerKitafoerderungVisible = computed(() => isKinderkrippeOrKindergarten);
-const kibigWebIdVisible = computed(() => isKinderkrippeOrKindergarten);
-const miniKitaVisible = computed(() => isKinderkrippeOrKindergarten);
-const integrationseinrichtungVisible = computed(() => isKinderkrippeOrKindergarten);
 const isKinderkrippeOrKindergarten = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
@@ -213,4 +201,16 @@ const isKinderkrippeOrKindergarten = computed(
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
 );
+const fertigstellungsmonatVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
+);
+const einrichtungstraegerVisible = isKinderkrippeOrKindergarten;
+const nameTraegerVisible = isKinderkrippeOrKindergarten;
+const sobonRelevantVisible = isKinderkrippeOrKindergarten;
+const muenchnerKitafoerderungVisible = isKinderkrippeOrKindergarten;
+const kibigWebIdVisible = isKinderkrippeOrKindergarten;
+const miniKitaVisible = isKinderkrippeOrKindergarten;
+const integrationseinrichtungVisible = isKinderkrippeOrKindergarten;
 </script>

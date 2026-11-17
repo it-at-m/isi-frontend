@@ -2652,6 +2652,16 @@
           "angabeLageErgaenzendeAdressinformation": { "type": "string", "maxLength": 255, "minLength": 0 }
         }
       },
+      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
+      "BearbeitungshistorieDto": {
+        "type": "object",
+        "properties": {
+          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
+          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
+          "zeitpunkt": { "type": "string", "format": "date-time" },
+          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }
+        }
+      },
       "BezirksteilDto": {
         "type": "object",
         "properties": {
@@ -2729,8 +2739,11 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
+                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG"
+                  "STAATLICHE_EINRICHTUNG",
+                  "PRIVATE_TRAEGERSCHAFT",
+                  "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
               }
             }
@@ -2760,8 +2773,11 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
+                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG"
+                  "STAATLICHE_EINRICHTUNG",
+                  "PRIVATE_TRAEGERSCHAFT",
+                  "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
               }
             }
@@ -2847,8 +2863,11 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
+                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG"
+                  "STAATLICHE_EINRICHTUNG",
+                  "PRIVATE_TRAEGERSCHAFT",
+                  "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
               },
               "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
@@ -2869,7 +2888,7 @@
             }
           }
         ],
-        "required": ["anlassPlanung", "einrichtungstraeger", "nameEinrichtung", "sobonRelevant", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "KinderkrippeDto": {
         "allOf": [
@@ -2884,8 +2903,11 @@
                   "STAEDTISCHE_EINRICHTUNG",
                   "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
                   "FREIE_GEMEINNUETZIGE_SONSTIGE",
+                  "EINRICHTUNG_GESAMTSTAEDTISCH",
                   "ELTERN_KIND_INITIATIVE",
-                  "STAATLICHE_EINRICHTUNG"
+                  "STAATLICHE_EINRICHTUNG",
+                  "PRIVATE_TRAEGERSCHAFT",
+                  "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
               },
               "fertigstellungsmonat": { "type": "integer", "format": "int32", "maximum": 12, "minimum": 1 },
@@ -2907,7 +2929,7 @@
             }
           }
         ],
-        "required": ["anlassPlanung", "einrichtungstraeger", "nameEinrichtung", "sobonRelevant", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "KitaplanungsbereichDto": {
         "type": "object",
@@ -2988,8 +3010,11 @@
               "STAEDTISCHE_EINRICHTUNG",
               "EINRICHTUNG_BETRIEBSTRAEGERSCHAFT",
               "FREIE_GEMEINNUETZIGE_SONSTIGE",
+              "EINRICHTUNG_GESAMTSTAEDTISCH",
               "ELTERN_KIND_INITIATIVE",
-              "STAATLICHE_EINRICHTUNG"
+              "STAATLICHE_EINRICHTUNG",
+              "PRIVATE_TRAEGERSCHAFT",
+              "KIRCHLICHE_TRAEGERSCHAFT"
             ]
           }
         },
@@ -4504,16 +4529,6 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/WohneinheitenProFoerderartProJahrDto" }
           }
-        }
-      },
-      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
-      "BearbeitungshistorieDto": {
-        "type": "object",
-        "properties": {
-          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
-          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
-          "zeitpunkt": { "type": "string", "format": "date-time" },
-          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }
         }
       },
       "BedarfsmeldungDto": {
