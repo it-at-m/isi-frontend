@@ -26,7 +26,7 @@
               cols="12"
               sm="1"
             >
-              <benutzerinformationen :benutzerinformationen="bearbeitungsinformationen" />
+              <bearbeitungshistorie v-model="bauvorhaben.bearbeitungshistorie" />
             </v-col>
           </v-row>
         </v-container>
@@ -154,8 +154,7 @@ import type { AnyAbfrageDto } from "@/types/common/Abfrage";
 import { containsNotAllowedDokument } from "@/utils/DokumenteUtil";
 import Kommentare from "@/components/common/kommentar/Kommentare.vue";
 import { Context } from "@/utils/Context";
-import Benutzerinformationen from "@/components/common/Benutzerinformationen.vue";
-import BenutzerinformationenModel from "@/types/model/common/Benutzerinformationen";
+import Bearbeitungshistorie from "@/components/common/Bearbeitungshistorie.vue";
 import { useSearchStore } from "@/stores/SearchStore";
 import { useRoute, useRouter } from "vue-router";
 import { useSecurity } from "@/composables/security/Security";
@@ -193,10 +192,6 @@ const isNew = ref(true);
 const bauvorhaben = ref(new BauvorhabenModel(createBauvorhabenDto()));
 useTabTitle(bauvorhaben, (bauvorhaben) => bauvorhaben.nameVorhaben, isNew, TAB_TITLE_BAUVORHABEN);
 let datenuebernahmeAbfrageId: string | undefined = undefined;
-
-const bearbeitungsinformationen = computed(
-  () => new BenutzerinformationenModel(bauvorhaben.value.bearbeitendePerson, bauvorhaben.value.lastModifiedDateTime),
-);
 
 watch(
   bauvorhaben,
