@@ -12,18 +12,25 @@
       @click-in-map="handleClickInMap"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
-    />
-    <v-progress-linear
-      v-if="geodatenLadefortschritt.status.value !== 'inaktiv'"
-      id="verortung_geodaten_ladefortschritt"
-      :model-value="geodatenLadefortschritt.prozent.value"
-      :color="geodatenLadeColor"
-      height="22"
-      rounded
-      class="mt-2"
     >
-      <span class="text-caption">{{ geodatenLadeText }}</span>
-    </v-progress-linear>
+      <template
+        v-if="geodatenLadefortschritt.status.value !== 'inaktiv'"
+        #overlay
+      >
+        <v-progress-linear
+          id="verortung_geodaten_ladefortschritt"
+          :model-value="geodatenLadefortschritt.prozent.value"
+          :color="geodatenLadeColor"
+          bg-color="white"
+          bg-opacity="0.9"
+          height="22"
+          rounded
+          class="elevation-2"
+        >
+          <span class="text-caption font-weight-medium">{{ geodatenLadeText }}</span>
+        </v-progress-linear>
+      </template>
+    </city-map>
     <v-btn-toggle
       v-if="isEditable"
       v-model="selectionMode"
