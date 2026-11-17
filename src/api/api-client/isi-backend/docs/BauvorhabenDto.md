@@ -11,6 +11,7 @@ Name | Type
 `createdDateTime` | Date
 `lastModifiedDateTime` | Date
 `bearbeitendePerson` | [BearbeitendePersonDto](BearbeitendePersonDto.md)
+`bearbeitungshistorie` | [Array&lt;BearbeitungshistorieDto&gt;](BearbeitungshistorieDto.md)
 `nameVorhaben` | string
 `grundstuecksgroesse` | number
 `verfahrensstand` | string
@@ -43,6 +44,7 @@ const example = {
   "createdDateTime": null,
   "lastModifiedDateTime": null,
   "bearbeitendePerson": null,
+  "bearbeitungshistorie": null,
   "nameVorhaben": null,
   "grundstuecksgroesse": null,
   "verfahrensstand": null,

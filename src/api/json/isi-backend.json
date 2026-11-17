@@ -2381,7 +2381,21 @@
     "schemas": {
       "SchnellfilterVorgaenge": {
         "type": "string",
-        "enum": ["ALLE", "ENTWUERFE", "ZUR_BEARBEITUNG", "ZUR_KENNTNIS", "ABGESCHLOSSEN"]
+        "enum": [
+          "ALLE",
+          "ENTWUERFE",
+          "ZUR_BEARBEITUNG",
+          "ZUR_KENNTNIS",
+          "ABGESCHLOSSEN",
+          "ANGELEGT",
+          "UEBERMITTELT_ZUR_BEARBEITUNG",
+          "START_BEARBEITUNG",
+          "EINPFLEGEN_BEDARFSMELDUNG",
+          "EINPLANUNG_BEDARFE",
+          "ERLEDIGT",
+          "VORHABEN",
+          "INFRASTRUKTUREINRICHTUNGEN"
+        ]
       },
       "StartseitenEinstellungDto": {
         "type": "object",
@@ -2776,6 +2790,10 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" },
+          "bearbeitungshistorie": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BearbeitungshistorieDto" }
+          },
           "infrastruktureinrichtungTyp": {
             "type": "string",
             "enum": [
@@ -3058,6 +3076,10 @@
           "createdDateTime": { "type": "string", "format": "date-time" },
           "lastModifiedDateTime": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" },
+          "bearbeitungshistorie": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BearbeitungshistorieDto" }
+          },
           "nameVorhaben": { "type": "string", "maxLength": 255, "minLength": 0 },
           "grundstuecksgroesse": { "type": "number" },
           "verfahrensstand": {
@@ -3199,6 +3221,7 @@
           "filterRealisierungsbeginnVon": { "type": "integer", "format": "int32" },
           "filterRealisierungsbeginnBis": { "type": "integer", "format": "int32" },
           "filterNurEigeneAbfragen": { "type": "boolean" },
+          "filterNurEigeneVorgaenge": { "type": "boolean" },
           "filterStatusAbfrage": { "type": "array", "items": { "$ref": "#/components/schemas/StatusAbfrage" } },
           "filterSobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
           "filterWeGesamtVon": { "type": "integer", "format": "int32" },
@@ -3298,6 +3321,7 @@
           "filterRealisierungsbeginnVon": { "type": "integer", "format": "int32" },
           "filterRealisierungsbeginnBis": { "type": "integer", "format": "int32" },
           "filterNurEigeneAbfragen": { "type": "boolean" },
+          "filterNurEigeneVorgaenge": { "type": "boolean" },
           "filterStatusAbfrage": { "type": "array", "items": { "$ref": "#/components/schemas/StatusAbfrage" } },
           "filterSobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
           "filterWeGesamtVon": { "type": "integer", "format": "int32" },
@@ -3512,7 +3536,12 @@
                   "SCHLIESSUNG"
                 ]
               },
-              "zugehoerigesBauvorhaben": { "type": "string" }
+              "zugehoerigesBauvorhaben": { "type": "string" },
+              "stadtbezirke": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/StadtbezirkDto" },
+                "uniqueItems": true
+              }
             }
           }
         ]
@@ -4477,9 +4506,11 @@
           }
         }
       },
+      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
       "BearbeitungshistorieDto": {
         "type": "object",
         "properties": {
+          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
           "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
           "zeitpunkt": { "type": "string", "format": "date-time" },
           "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }

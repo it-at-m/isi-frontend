@@ -113,6 +113,10 @@ export interface SearchQueryDto {
     /**
      * 
      */
+    filterNurEigeneVorgaenge?: boolean;
+    /**
+     * 
+     */
     filterStatusAbfrage?: Array<StatusAbfrage>;
     /**
      * 
@@ -258,6 +262,7 @@ export function SearchQueryDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'filterRealisierungsbeginnVon': json['filterRealisierungsbeginnVon'] == null ? undefined : json['filterRealisierungsbeginnVon'],
         'filterRealisierungsbeginnBis': json['filterRealisierungsbeginnBis'] == null ? undefined : json['filterRealisierungsbeginnBis'],
         'filterNurEigeneAbfragen': json['filterNurEigeneAbfragen'] == null ? undefined : json['filterNurEigeneAbfragen'],
+        'filterNurEigeneVorgaenge': json['filterNurEigeneVorgaenge'] == null ? undefined : json['filterNurEigeneVorgaenge'],
         'filterStatusAbfrage': json['filterStatusAbfrage'] == null ? undefined : ((json['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageFromJSON)),
         'filterSobonRelevant': json['filterSobonRelevant'] == null ? undefined : UncertainBooleanFromJSON(json['filterSobonRelevant']),
         'filterWeGesamtVon': json['filterWeGesamtVon'] == null ? undefined : json['filterWeGesamtVon'],
@@ -302,6 +307,7 @@ export function SearchQueryDtoToJSONTyped(value?: SearchQueryDto | null, ignoreD
         'filterRealisierungsbeginnVon': value['filterRealisierungsbeginnVon'],
         'filterRealisierungsbeginnBis': value['filterRealisierungsbeginnBis'],
         'filterNurEigeneAbfragen': value['filterNurEigeneAbfragen'],
+        'filterNurEigeneVorgaenge': value['filterNurEigeneVorgaenge'],
         'filterStatusAbfrage': value['filterStatusAbfrage'] == null ? undefined : ((value['filterStatusAbfrage'] as Array<any>).map(StatusAbfrageToJSON)),
         'filterSobonRelevant': UncertainBooleanToJSON(value['filterSobonRelevant']),
         'filterWeGesamtVon': value['filterWeGesamtVon'],

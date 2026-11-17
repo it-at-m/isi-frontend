@@ -58,7 +58,7 @@ export function useInfrastruktureinrichtungApi() {
   ): Promise<InfrastruktureinrichtungDto> {
     // create
     const requestObject: CreateInfrastruktureinrichtungRequest = {
-      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungRaw(
@@ -98,7 +98,7 @@ export function useInfrastruktureinrichtungApi() {
   ): Promise<InfrastruktureinrichtungDto> {
     // create
     const requestObject: CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
-      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(
@@ -118,7 +118,7 @@ export function useInfrastruktureinrichtungApi() {
   ): Promise<InfrastruktureinrichtungDto> {
     // update
     const requestObject: UpdateInfrastruktureinrichtungOperationRequest = {
-      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungRaw(
@@ -158,7 +158,7 @@ export function useInfrastruktureinrichtungApi() {
   ): Promise<InfrastruktureinrichtungDto> {
     // update
     const requestObject: UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
-      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+      updateInfrastruktureinrichtungRequest: toBackendJson(dto) as unknown as UpdateInfrastruktureinrichtungRequest,
     };
     try {
       const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungBedarfsmeldungSozialplanungRaw(

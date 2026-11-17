@@ -18,7 +18,7 @@
       class="mt-2"
       @update:menu="onStandardFilterMenu"
     />
-    <template v-if="showMeineVorgaenge">
+    <template v-if="schnellfilterOptionen">
       <v-select
         id="startseiten_einstellungen_schnellfilter"
         v-model="schnellfilter"
@@ -61,10 +61,11 @@ import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
 import { useStandardFilter } from "@/composables/requests/filter/useStandardFilter";
 import {
+  type AuswahlOption,
   DEFAULT_SCHNELLFILTER,
   DEFAULT_SORTIERUNG,
-  SCHNELLFILTER_OPTIONEN,
   SORTIERUNG_OPTIONEN,
+  getGueltigenSchnellfilter,
   getSortOrderForSortierung,
   type SchnellfilterVorgaenge,
   type SortierungVorgaenge,
@@ -76,14 +77,13 @@ const emit = defineEmits<{ (e: "gespeichert"): void }>();
 
 interface Props {
   /**
-   * Die Einstellungen für den Startseitenbereich "Meine Vorgänge" sind nur für Abfrageersteller relevant.
+   * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge". Ohne personalisierte Startseite entfallen
+   * die Einstellungen für "Meine Vorgänge".
    */
-  showMeineVorgaenge?: boolean;
+  schnellfilterOptionen?: Array<AuswahlOption<SchnellfilterVorgaenge>>;
 }
 
-withDefaults(defineProps<Props>(), {
-  showMeineVorgaenge: false,
-});
+const props = defineProps<Props>();
 
 const toast = useToast();
 const { getStartseitenEinstellung, saveStartseitenEinstellung } = useStartseitenEinstellungApi();
@@ -92,7 +92,6 @@ const { uebernehmeStandardFilter } = useStandardFilter();
 
 const startseitenEinstellungStore = useStartseitenEinstellungStore();
 
-const schnellfilterOptionen = SCHNELLFILTER_OPTIONEN;
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
 
 const schnellfilter = ref<SchnellfilterVorgaenge>(DEFAULT_SCHNELLFILTER);
@@ -160,7 +159,10 @@ onMounted(async () => {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }
   await startseitenEinstellungStore.initialize();
-  schnellfilter.value = startseitenEinstellungStore.schnellfilter;
+  // Ohne angebotene Schnellfilter bleibt die gespeicherte Voreinstellung beim Speichern unverändert erhalten.
+  schnellfilter.value = props.schnellfilterOptionen
+    ? getGueltigenSchnellfilter(startseitenEinstellungStore.schnellfilter, props.schnellfilterOptionen)
+    : startseitenEinstellungStore.schnellfilter;
   sortierung.value = startseitenEinstellungStore.sortierung;
 });
 
