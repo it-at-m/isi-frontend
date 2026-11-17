@@ -84,9 +84,9 @@
           cols="12"
           md="6"
         >
-          <infrastruktureinrichtung-muenchner-kitafoerderung-component
-            id="infrastruktureinrichtung_muenchner_kitafoerderung_component"
-            v-if="muenchnerKitafoerderungVisible"
+          <infrastruktureinrichtung-kibig-web-id-component
+            id="infrastruktureinrichtung_kibig_web_id_component"
+            v-if="kibigWebIdVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
@@ -95,9 +95,9 @@
           cols="12"
           md="6"
         >
-          <infrastruktureinrichtung-kibig-web-id-component
-            id="infrastruktureinrichtung_kibig_web_id_component"
-            v-if="kibigWebIdVisible"
+          <infrastruktureinrichtung-muenchner-kitafoerderung-component
+            id="infrastruktureinrichtung_muenchner_kitafoerderung_component"
+            v-if="muenchnerKitafoerderungVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />

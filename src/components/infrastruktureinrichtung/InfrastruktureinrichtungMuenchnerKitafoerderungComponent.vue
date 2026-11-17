@@ -6,7 +6,7 @@
     :disabled="!isEditable"
     class="mx-3"
     color="primary"
-    label="Münchner"
+    label="Münchner Kitaförderung"
     Kitaförderung
     hide-details
   />
