@@ -7,7 +7,7 @@
     :disabled="!isEditable || !isSobonRelevant"
     off-text="Nein"
     on-text="Ja"
-    :rules="[notUnspecified]"
+    :rules="isEditable && isSobonRelevant ? [notUnspecified] : undefined"
   >
     <template #label> SoBoN-relevant <span class="text-secondary">*</span></template>
   </tri-switch>

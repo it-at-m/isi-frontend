@@ -67,7 +67,7 @@ const fertigstellungsjahrValidator = computed<ValidationRule[]>(() => {
   }
   const usedRules: ValidationRule[] = [digits, min(1900), max(2100)];
 
-  if (isFertigstellungsjahrRequired) {
+  if (isFertigstellungsjahrRequired.value) {
     usedRules.push(pflichtfeld);
   }
 

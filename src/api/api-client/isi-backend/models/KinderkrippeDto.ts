@@ -65,7 +65,7 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    einrichtungstraeger: KinderkrippeDtoEinrichtungstraegerEnum;
+    einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;
     /**
      * 
      */
@@ -141,8 +141,11 @@ export const KinderkrippeDtoEinrichtungstraegerEnum = {
     StaedtischeEinrichtung: 'STAEDTISCHE_EINRICHTUNG',
     EinrichtungBetriebstraegerschaft: 'EINRICHTUNG_BETRIEBSTRAEGERSCHAFT',
     FreieGemeinnuetzigeSonstige: 'FREIE_GEMEINNUETZIGE_SONSTIGE',
+    EinrichtungGesamtstaedtisch: 'EINRICHTUNG_GESAMTSTAEDTISCH',
     ElternKindInitiative: 'ELTERN_KIND_INITIATIVE',
     StaatlicheEinrichtung: 'STAATLICHE_EINRICHTUNG',
+    PrivateTraegerschaft: 'PRIVATE_TRAEGERSCHAFT',
+    KirchlicheTraegerschaft: 'KIRCHLICHE_TRAEGERSCHAFT',
 } as const;
 export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinrichtungstraegerEnum[keyof typeof KinderkrippeDtoEinrichtungstraegerEnum];
 
@@ -151,7 +154,6 @@ export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinri
  * Check if a given object implements the KinderkrippeDto interface.
  */
 export function instanceOfKinderkrippeDto(value: object): value is KinderkrippeDto {
-    if (!('einrichtungstraeger' in value) || value['einrichtungstraeger'] === undefined) return false;
     if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
@@ -172,7 +174,7 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
-        'einrichtungstraeger': json['einrichtungstraeger'],
+        'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
         'fertigstellungsmonat': json['fertigstellungsmonat'] == null ? undefined : json['fertigstellungsmonat'],
         'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
         'muenchnerKitafoerderung': json['muenchnerKitafoerderung'] == null ? undefined : json['muenchnerKitafoerderung'],
