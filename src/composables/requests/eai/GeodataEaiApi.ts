@@ -335,7 +335,11 @@ export function useGeodataEaiApi() {
       }
     }
 
-    return { load, showErrorIfOccurred };
+    function hasErrorOccurred(): boolean {
+      return errorOccurred;
+    }
+
+    return { load, showErrorIfOccurred, hasErrorOccurred };
   }
 
   return {

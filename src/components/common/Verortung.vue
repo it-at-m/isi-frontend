@@ -13,6 +13,17 @@
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
     />
+    <v-progress-linear
+      v-if="geodatenLadefortschritt.status.value !== 'inaktiv'"
+      id="verortung_geodaten_ladefortschritt"
+      :model-value="geodatenLadefortschritt.prozent.value"
+      :color="geodatenLadeColor"
+      height="22"
+      rounded
+      class="mt-2"
+    >
+      <span class="text-caption">{{ geodatenLadeText }}</span>
+    </v-progress-linear>
     <v-btn-toggle
       v-if="isEditable"
       v-model="selectionMode"
@@ -280,6 +291,7 @@ import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useToast } from "vue-toastification";
+import { useLadefortschritt } from "@/composables/Ladefortschritt";
 
 interface Props {
   context?: Context;
@@ -350,6 +362,29 @@ const mittelschulsprengel = computed(() =>
   _.sortBy(Array.from(verortungModel.value?.mittelschulsprengel ?? []), ["nummer"]),
 );
 const verortungVorhanden = computed(() => !_.isNil(verortungModel.value?.multiPolygon));
+// Vereinigung, Gemarkungen, Stadtbezirke, Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel
+const ANZAHL_GEODATEN_LADESCHRITTE = 8;
+const geodatenLadefortschritt = useLadefortschritt(ANZAHL_GEODATEN_LADESCHRITTE);
+const geodatenLadeText = computed(() => {
+  switch (geodatenLadefortschritt.status.value) {
+    case "abgeschlossen":
+      return "Alle Geodaten wurden geladen";
+    case "unvollstaendig":
+      return "Geodaten geladen – nicht alle Daten verfügbar";
+    default:
+      return `Geodaten werden geladen … (${geodatenLadefortschritt.erledigteSchritte.value} von ${ANZAHL_GEODATEN_LADESCHRITTE})`;
+  }
+});
+const geodatenLadeColor = computed(() => {
+  switch (geodatenLadefortschritt.status.value) {
+    case "abgeschlossen":
+      return "success";
+    case "unvollstaendig":
+      return "warning";
+    default:
+      return "primary";
+  }
+});
 
 /**
  * Liefert true, wenn die Geodaten eines Feldes bei vorhandener Verortung nicht ermittelt werden konnten.
@@ -553,30 +588,35 @@ function createMultiPolygonGeometryFromSelectedFlurstuecke(): MultiPolygonGeomet
  */
 async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<VerortungMultiPolygonDto | undefined> {
   const multipolygon = createMultiPolygonGeometryFromSelectedFlurstuecke();
+  const { schritt } = geodatenLadefortschritt;
+  geodatenLadefortschritt.starte();
   try {
-    const unifiedMultipolygon = await geoApi.getUnionOfMultipolygon(multipolygon);
+    const unifiedMultipolygon = await schritt(geoApi.getUnionOfMultipolygon(multipolygon));
     // Die Gemarkungen sind zwingend erforderlich, da an diesen die gewählten Flurstücke hängen.
-    const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
+    const promiseGemarkungen = await schritt(geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon));
     // Die übrigen Geodaten werden fehlertolerant ermittelt. Kann ein Feld nicht ermittelt werden,
     // bleibt es leer und wird als "Aktuell nicht verfügbar" angezeigt.
     const tolerantLoader = geoApi.createTolerantLoader();
-    const promiseStadtbezirke = await tolerantLoader.load(
-      geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon, false),
+    const promiseStadtbezirke = await schritt(
+      tolerantLoader.load(geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon, false)),
     );
-    const promiseBezirksteile = await tolerantLoader.load(
-      geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon, false),
+    const promiseBezirksteile = await schritt(
+      tolerantLoader.load(geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon, false)),
     );
-    const promiseViertel = await tolerantLoader.load(geoApi.getViertelForMultipolygon(unifiedMultipolygon, false));
-    const promiseKitaplanungsbereiche = await tolerantLoader.load(
-      geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, false),
+    const promiseViertel = await schritt(
+      tolerantLoader.load(geoApi.getViertelForMultipolygon(unifiedMultipolygon, false)),
     );
-    const promiseGrundschulsprengel = await tolerantLoader.load(
-      geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, false),
+    const promiseKitaplanungsbereiche = await schritt(
+      tolerantLoader.load(geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, false)),
     );
-    const promiseMittelschulsprengel = await tolerantLoader.load(
-      geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, false),
+    const promiseGrundschulsprengel = await schritt(
+      tolerantLoader.load(geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseMittelschulsprengel = await schritt(
+      tolerantLoader.load(geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, false)),
     );
     tolerantLoader.showErrorIfOccurred();
+    geodatenLadefortschritt.beende(!tolerantLoader.hasErrorOccurred());
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(promiseStadtbezirke);
@@ -622,6 +662,7 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
       multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
     } as VerortungMultiPolygonDto;
   } catch (error) {
+    geodatenLadefortschritt.brecheAb();
     return undefined;
   }
 }
