@@ -146,6 +146,17 @@
             :is-editable="isEditable"
           />
         </v-col>
+        <v-col
+          cols="12"
+          md="12"
+        >
+          <infrastruktureinrichtung-link-ke-plus-component
+            id="infrastruktureinrichtung_link_ke_plus_component"
+            v-if="linkKePlusVisible"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
       </v-row>
     </field-group-card>
   </div>
@@ -174,6 +185,7 @@ import InfrastruktureinrichtungMiniKitaComponent from "@/components/infrastruktu
 import InfrastruktureinrichtungIntegrationseinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungIntegrationseinrichtungComponent.vue";
 import InfrastruktureinrichtungNameTraegerComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungNameTraegerComponent.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
+import InfrastruktureinrichtungLinkKePlusComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungLinkKePlusComponent.vue";
 interface Props {
   isEditable?: boolean;
 }
@@ -213,4 +225,5 @@ const muenchnerKitafoerderungVisible = isKinderkrippeOrKindergarten;
 const kibigWebIdVisible = isKinderkrippeOrKindergarten;
 const miniKitaVisible = isKinderkrippeOrKindergarten;
 const integrationseinrichtungVisible = isKinderkrippeOrKindergarten;
+const linkKePlusVisible = isKinderkrippeOrKindergarten;
 </script>

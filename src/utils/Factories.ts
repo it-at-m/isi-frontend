@@ -868,7 +868,7 @@ export function createNachbarschaftstreffDto(): NachbarschaftstreffDto {
     adresse: createAdresseDto(),
     verortung: undefined,
     nameEinrichtung: "",
-    fertigstellungsjahr: Number.NaN,
+    fertigstellungsjahr: undefined,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     kooperation: NachbarschaftstreffDtoKooperationEnum.Unspecified,
     kooperationFreieEingabe: "",
