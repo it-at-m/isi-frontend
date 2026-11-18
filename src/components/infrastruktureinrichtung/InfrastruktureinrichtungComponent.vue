@@ -49,12 +49,12 @@
           />
         </v-col>
         <v-col
+          v-if="fertigstellungsmonatVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-fertigstellungsmonat-component
             id="infrastruktureinrichtung_fertigstellungsmonat_component"
-            v-if="fertigstellungsmonatVisible"
             v-model="infrastruktureinrichtung as KinderkrippeModel"
             :is-editable="isEditable"
           />
@@ -70,81 +70,87 @@
           />
         </v-col>
         <v-col
+          v-if="sobonRelevantVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-sobon-relevant-component
             id="infrastruktureinrichtung_sobon_relevant_component"
-            v-if="sobonRelevantVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="kibigWebIdVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-kibig-web-id-component
             id="infrastruktureinrichtung_kibig_web_id_component"
-            v-if="kibigWebIdVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="muenchnerKitafoerderungVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-muenchner-kitafoerderung-component
             id="infrastruktureinrichtung_muenchner_kitafoerderung_component"
-            v-if="muenchnerKitafoerderungVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="miniKitaVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-mini-kita-component
             id="infrastruktureinrichtung_mini_kita_component"
-            v-if="miniKitaVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="integrationseinrichtungVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-integrationseinrichtung-component
             id="infrastruktureinrichtung_integrationseinrichtung_component"
-            v-if="integrationseinrichtungVisible"
             v-model="infrastruktureinrichtung"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="einrichtungstraegerVisible"
           cols="12"
           md="6"
         >
           <einrichtungstraeger-component
             v-model="infrastruktureinrichtung"
-            v-if="einrichtungstraegerVisible"
             :einrichtungstraeger-list="einrichtungstraegerList"
             :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
             :is-editable="isEditable"
           />
         </v-col>
         <v-col
+          v-if="nameTraegerVisible"
           cols="12"
           md="6"
         >
           <infrastruktureinrichtung-name-traeger-component
             v-model="infrastruktureinrichtung"
-            v-if="nameTraegerVisible"
             :is-editable="isEditable"
           />
+        </v-col>
+        <v-col
+          v-if="nameTraegerVisible"
+          cols="12"
+          md="6"
+        >
         </v-col>
         <v-col
           cols="12"
