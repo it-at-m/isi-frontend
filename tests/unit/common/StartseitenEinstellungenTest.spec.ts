@@ -3,7 +3,11 @@ import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { ref } from "vue";
 import StartseitenEinstellungen from "@/components/startseite/StartseitenEinstellungen.vue";
-import { SCHNELLFILTER_OPTIONEN, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG } from "@/utils/StartseiteUtil";
+import {
+  SCHNELLFILTER_OPTIONEN,
+  SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+  SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
+} from "@/utils/StartseiteUtil";
 
 const mockGetStartseitenEinstellung = vi.fn();
 const mockSaveStartseitenEinstellung = vi.fn();
@@ -136,6 +140,50 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
   test("ersetzt einen von der Startseite nicht angebotenen Schnellfilter durch 'Alle'", async () => {
     const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
     expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
+  });
+
+  test("speichert einen nicht angebotenen Schnellfilter unverändert, solange er nicht geändert wurde", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
+    expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
+
+    await (wrapper.vm as any).speichern();
+
+    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ZUR_KENNTNIS");
+  });
+
+  test("speichert einen von der Person gewählten Schnellfilter", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
+    await (wrapper.findComponent("#startseiten_einstellungen_schnellfilter") as any).vm.$emit(
+      "update:modelValue",
+      "ANGELEGT",
+    );
+    (wrapper.vm as any).schnellfilter = "ANGELEGT";
+
+    await (wrapper.vm as any).speichern();
+
+    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ANGELEGT");
+  });
+
+  test("prüft den Schnellfilter erneut, wenn sich die angebotenen Schnellfilter ändern", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN);
+    expect((wrapper.vm as any).schnellfilter).toBe("ZUR_KENNTNIS");
+
+    await wrapper.setProps({ schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG });
+
+    expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
+  });
+
+  test("behält eine weiterhin angebotene Auswahl, wenn sich die angebotenen Schnellfilter ändern", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN);
+    await (wrapper.findComponent("#startseiten_einstellungen_schnellfilter") as any).vm.$emit(
+      "update:modelValue",
+      "ZUR_BEARBEITUNG",
+    );
+    (wrapper.vm as any).schnellfilter = "ZUR_BEARBEITUNG";
+
+    await wrapper.setProps({ schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG });
+
+    expect((wrapper.vm as any).schnellfilter).toBe("ZUR_BEARBEITUNG");
   });
 
   test("behält ohne personalisierte Startseite den gespeicherten Schnellfilter beim Speichern", async () => {

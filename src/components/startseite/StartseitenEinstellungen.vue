@@ -23,6 +23,7 @@
         id="startseiten_einstellungen_schnellfilter"
         v-model="schnellfilter"
         :items="schnellfilterOptionen"
+        @update:model-value="schnellfilterGeaendert = true"
         label="Standard-Schnellfilter"
         variant="outlined"
         density="compact"
@@ -55,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { StartseitenEinstellungDto } from "@/api/api-client/isi-backend";
 import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
@@ -95,6 +96,9 @@ const startseitenEinstellungStore = useStartseitenEinstellungStore();
 const sortierungOptionen = SORTIERUNG_OPTIONEN;
 
 const schnellfilter = ref<SchnellfilterVorgaenge>(DEFAULT_SCHNELLFILTER);
+// Nur ein von der Person gewählter Schnellfilter wird gespeichert. Ein angezeigter Ersatzwert überschreibt die
+// gespeicherte Voreinstellung nicht, da diese für eine andere Startseite der Person gelten kann.
+const schnellfilterGeaendert = ref(false);
 const sortierung = ref<SortierungVorgaenge>(DEFAULT_SORTIERUNG);
 const standardFilterId = ref<string | null>(null);
 const gespeicherteStandardFilterId = ref<string | null>(null);
@@ -109,16 +113,19 @@ const standardFilterOptionen = computed(() => [
 async function speichern(): Promise<void> {
   saving.value = true;
   try {
+    const zuSpeichernderSchnellfilter = schnellfilterGeaendert.value
+      ? schnellfilter.value
+      : startseitenEinstellungStore.schnellfilter;
     // Die Werte entsprechen den Backend-Enums SchnellfilterVorgaenge, SortAttribute und SortOrder.
     await saveStartseitenEinstellung({
-      schnellfilter: schnellfilter.value,
+      schnellfilter: zuSpeichernderSchnellfilter,
       sortBy: sortierung.value,
       sortOrder: getSortOrderForSortierung(sortierung.value),
       standardFilterId: standardFilterId.value ?? undefined,
     } as unknown as StartseitenEinstellungDto);
     // Erst nach erfolgreichem Speichern übernehmen, damit die Vorgangsliste keine verworfene
     // Einstellung anzeigt.
-    startseitenEinstellungStore.setEinstellung(schnellfilter.value, sortierung.value);
+    startseitenEinstellungStore.setEinstellung(zuSpeichernderSchnellfilter, sortierung.value);
     toast.success("Die Startseiteneinstellungen wurden gespeichert.");
     // Ein geänderter Standard-Filter wirkt sofort und nicht erst beim nächsten Laden der Anwendung.
     if (standardFilterId.value !== gespeicherteStandardFilterId.value) {
@@ -159,12 +166,32 @@ onMounted(async () => {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }
   await startseitenEinstellungStore.initialize();
-  // Ohne angebotene Schnellfilter bleibt die gespeicherte Voreinstellung beim Speichern unverändert erhalten.
-  schnellfilter.value = props.schnellfilterOptionen
-    ? getGueltigenSchnellfilter(startseitenEinstellungStore.schnellfilter, props.schnellfilterOptionen)
-    : startseitenEinstellungStore.schnellfilter;
+  zeigeGueltigenSchnellfilter();
   sortierung.value = startseitenEinstellungStore.sortierung;
 });
+
+/**
+ * Zeigt einen von der Startseite angebotenen Schnellfilter an. Eine noch nicht gespeicherte Auswahl der Person bleibt
+ * erhalten, solange sie angeboten wird. Andernfalls wird die gespeicherte Voreinstellung oder ein Ersatzwert angezeigt.
+ * Ohne angebotene Schnellfilter bleibt die gespeicherte Voreinstellung unverändert erhalten.
+ */
+function zeigeGueltigenSchnellfilter(): void {
+  const optionen = props.schnellfilterOptionen;
+  if (!optionen) {
+    schnellfilter.value = startseitenEinstellungStore.schnellfilter;
+    schnellfilterGeaendert.value = false;
+    return;
+  }
+  if (schnellfilterGeaendert.value && optionen.some((option) => option.value === schnellfilter.value)) {
+    return;
+  }
+  // Eine nicht mehr angebotene Auswahl der Person wird durch einen gültigen Wert ersetzt, damit beim Speichern
+  // kein von der Startseite nicht angebotener Schnellfilter übernommen wird.
+  schnellfilter.value = getGueltigenSchnellfilter(startseitenEinstellungStore.schnellfilter, optionen);
+}
+
+// Die Schnellfilter stehen erst fest, wenn die Rollen der Person geladen sind.
+watch(() => props.schnellfilterOptionen, zeigeGueltigenSchnellfilter);
 
 defineExpose({ schnellfilter, sortierung, standardFilterId, standardFilterOptionen, speichern });
 </script>

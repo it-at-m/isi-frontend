@@ -102,6 +102,18 @@ describe("StartseiteUtil.spec.ts", () => {
       expect(getGueltigenSchnellfilter(undefined, SCHNELLFILTER_OPTIONEN)).toBe(DEFAULT_SCHNELLFILTER);
     });
 
+    test("ersetzt ohne angebotenes 'Alle' durch den ersten angebotenen Schnellfilter", () => {
+      const optionen = [
+        { title: "Zur Bearbeitung", value: "ZUR_BEARBEITUNG" as const },
+        { title: "Erledigt", value: "ERLEDIGT" as const },
+      ];
+      expect(getGueltigenSchnellfilter("VORHABEN", optionen)).toBe("ZUR_BEARBEITUNG");
+    });
+
+    test("liefert ohne angebotene Schnellfilter den Standard", () => {
+      expect(getGueltigenSchnellfilter("VORHABEN", [])).toBe(DEFAULT_SCHNELLFILTER);
+    });
+
     test("enthält den Standard in den Schnellfiltern der Sachbearbeitung ohne Duplikate", () => {
       const werte = SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG.map((option) => option.value);
       expect(werte).toContain(DEFAULT_SCHNELLFILTER);

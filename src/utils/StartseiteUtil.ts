@@ -146,9 +146,14 @@ export function getGueltigenSchnellfilter(
   schnellfilter: SchnellfilterVorgaenge | undefined,
   optionen: Array<AuswahlOption<SchnellfilterVorgaenge>>,
 ): SchnellfilterVorgaenge {
-  return optionen.some((option) => option.value === schnellfilter)
-    ? (schnellfilter as SchnellfilterVorgaenge)
-    : DEFAULT_SCHNELLFILTER;
+  if (optionen.some((option) => option.value === schnellfilter)) {
+    return schnellfilter as SchnellfilterVorgaenge;
+  }
+  // Ersatzwert ist "Alle", falls angeboten, sonst der erste angebotene Schnellfilter. Ohne Optionen bleibt es bei "Alle".
+  if (optionen.length === 0 || optionen.some((option) => option.value === DEFAULT_SCHNELLFILTER)) {
+    return DEFAULT_SCHNELLFILTER;
+  }
+  return optionen[0].value;
 }
 
 /**

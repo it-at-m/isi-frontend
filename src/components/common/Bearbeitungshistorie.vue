@@ -58,7 +58,14 @@ const bearbeitungshistorieHeaders = ref<Array<any>>([
 ]);
 const bearbeitungshistorieAvailable = computed(() => !_.isEmpty(bearbeitungshistorie.value));
 // Die Historie wächst mit jeder Bearbeitung, die aktuellsten Einträge stehen deshalb oben.
-const eintraege = computed(() => _.orderBy(bearbeitungshistorie.value, "zeitpunkt", "desc"));
+// Einträge ohne Zeitpunkt bleiben sichtbar und stehen am Ende.
+const eintraege = computed(() =>
+  _.orderBy(
+    bearbeitungshistorie.value,
+    [(eintrag: BearbeitungshistorieDto) => _.isNil(eintrag.zeitpunkt), "zeitpunkt"],
+    ["asc", "desc"],
+  ),
+);
 
 function zeitpunktFormatted(zeitpunkt: Date | undefined): string {
   // Das Backend liefert den Zeitpunkt ohne Zeitzone, der Client liest ihn deshalb als lokale Zeit ein.
@@ -72,16 +79,21 @@ function aktionText(eintrag: BearbeitungshistorieDto): string | undefined {
     case BearbeitungsArt.Aktualisiert:
       return "Aktualisiert";
     case BearbeitungsArt.Statusaenderung:
-      return `Statusänderung: ${zielstatusText(eintrag.zielStatus) ?? ""}`;
+      return _.isNil(eintrag.zielStatus) ? "Statusänderung" : `Statusänderung: ${zielstatusText(eintrag.zielStatus)}`;
     default:
-      return "";
+      // Ältere Einträge ohne Art enthalten nur den Zielstatus. Dieser wird ohne Einordnung als Statusänderung angezeigt.
+      return _.isNil(eintrag.zielStatus) ? "" : zielstatusText(eintrag.zielStatus);
   }
 }
 
-function zielstatusText(status: StatusAbfrage | undefined): string | undefined {
-  return !_.isEmpty(lookupStore.statusAbfrage)
-    ? lookupStore.statusAbfrage.find((lookupEntry: LookupEntryDto) => lookupEntry.key === status)?.value
-    : "";
+/**
+ * Liefert die Bezeichnung des Status. Ist (noch) keine Bezeichnung verfügbar, wird der Status selbst angezeigt.
+ */
+function zielstatusText(status: StatusAbfrage): string {
+  const bezeichnung = lookupStore.statusAbfrage?.find(
+    (lookupEntry: LookupEntryDto) => lookupEntry.key === status,
+  )?.value;
+  return _.isEmpty(bezeichnung) ? status : (bezeichnung as string);
 }
 
 defineExpose({ eintraege, aktionText, zeitpunktFormatted });
