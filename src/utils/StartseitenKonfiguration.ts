@@ -211,8 +211,6 @@ export function getSuchkriterienBedarfsmeldung(schnellfilter: SchnellfilterVorga
       return { ...ABFRAGEN, filterNurEigeneVorgaenge: true, filterStatusAbfrage: STATUS_BEDARFSMELDUNG.erledigt };
     case "INFRASTRUKTUREINRICHTUNGEN":
       return { ...INFRASTRUKTUREINRICHTUNGEN, filterNurEigeneVorgaenge: true };
-    case "VORHABEN":
-      return { ...VORHABEN, filterNurEigeneVorgaenge: true };
     case "ALLE":
     default:
       return {
@@ -231,7 +229,7 @@ export function getSuchkriterienBedarfsmeldung(schnellfilter: SchnellfilterVorga
  * Zuständigkeitsbereichs und ihre Vorgänge und kann diese nach Stadtbezirken filtern.
  * <p>
  * Die Neuanlage beschränkt sich auf Infrastruktureinrichtungen, da Vorhaben nur von der Sachbearbeitung angelegt
- * werden dürfen (Authority `ISI_BACKEND_WRITE_BAUVORHABEN`).
+ * werden dürfen (Authority `ISI_BACKEND_WRITE_BAUVORHABEN`). Aus demselben Grund gibt es keinen Schnellfilter "Vorhaben".
  */
 export const STARTSEITE_BEDARFSMELDUNG: StartseitenKonfiguration = {
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
