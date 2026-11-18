@@ -27,6 +27,7 @@
       />
       <v-spacer />
       <v-menu
+        v-if="neuanlageOptionen.length > 0"
         id="meine_vorgaenge_neu_menu"
         location="bottom end"
         transition="slide-y-transition"
@@ -107,7 +108,7 @@
       class="pa-0 ma-0 w-100 d-flex justify-center align-center flex-grow-1"
       style="min-height: 100px"
     >
-      <span>Keine eigenen Vorgänge vorhanden</span>
+      <span>Keine Vorgänge gefunden</span>
     </v-container>
   </div>
 </template>
@@ -200,6 +201,9 @@ function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
  */
 async function loadVorgaenge(): Promise<void> {
   const aktuelleGeneration = ++generation.value;
+  // Bis die neue erste Seite vorliegt, darf das Scrollen keine weitere Seite der neuen Suche nachladen.
+  page.value = 1;
+  numberOfPages.value = 0;
   const searchResults = await searchForEntities(createSearchQuery(1));
   if (aktuelleGeneration !== generation.value) {
     return;

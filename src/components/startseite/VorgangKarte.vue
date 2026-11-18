@@ -28,7 +28,10 @@
           <v-icon size="small">mdi-calendar-clock</v-icon>
           Bearbeitungsfrist: {{ convertDateForFrontend(abfrage.fristBearbeitung) }}
         </span>
-        <span v-if="darstellung.stadtbezirke !== undefined">
+        <span
+          v-if="darstellung.stadtbezirke"
+          id="vorgang_karte_stadtbezirke"
+        >
           <v-icon size="small">mdi-map-marker</v-icon>
           {{ darstellung.stadtbezirke }}
         </span>
@@ -131,7 +134,8 @@ function getLookupValue(key: string | undefined, lookupList: Array<LookupEntryDt
 
 function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string {
   const bezeichnungen = _.sortBy(_.isNil(stadtbezirke) ? [] : Array.from(stadtbezirke), ["nummer"]).map(
-    (stadtbezirk: StadtbezirkDto) => stadtbezirk.nummer + "/" + stadtbezirk.name,
+    // Fehlt die Nummer oder der Name, wird nur der vorhandene Teil angezeigt.
+    (stadtbezirk: StadtbezirkDto) => _.join(_.compact([stadtbezirk.nummer, stadtbezirk.name]), "/"),
   );
   return _.join(bezeichnungen, ", ");
 }

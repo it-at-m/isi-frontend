@@ -6,6 +6,8 @@ import {
   type SchnellfilterVorgaenge,
   SCHNELLFILTER_OPTIONEN,
   SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
+  SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+  SCHNELLFILTER_OPTIONEN_ANWENDER,
   getStatusAbfrageForSchnellfilter,
 } from "@/utils/StartseiteUtil";
 
@@ -51,7 +53,7 @@ export interface StartseitenKonfiguration {
   schnellfilterOptionen: Array<AuswahlOption<SchnellfilterVorgaenge>>;
   /** Bildet den gewählten Schnellfilter auf die Suchkriterien ab. */
   getSuchkriterien: (schnellfilter: SchnellfilterVorgaenge) => Suchkriterien;
-  /** Die Einträge des Menüs "Neu". */
+  /** Die Einträge des Menüs "Neu". Ohne Einträge wird der Button "Neu" nicht angezeigt. */
   neuanlageOptionen: Array<NeuanlageOption>;
   /** Ob die Vorgänge zusätzlich nach Stadtbezirken gefiltert werden können. */
   stadtbezirkFilter: boolean;
@@ -81,6 +83,17 @@ const ABFRAGEN: Suchkriterien = {
 const VORHABEN: Suchkriterien = {
   ...KEINE_OBJEKTE,
   selectBauvorhaben: true,
+};
+
+const INFRASTRUKTUREINRICHTUNGEN: Suchkriterien = {
+  ...KEINE_OBJEKTE,
+  selectGrundschule: true,
+  selectGsNachmittagBetreuung: true,
+  selectHausFuerKinder: true,
+  selectKindergarten: true,
+  selectKinderkrippe: true,
+  selectMittelschule: true,
+  selectNachbarschaftstreff: true,
 };
 
 const ALLE_OBJEKTE: Suchkriterien = {
@@ -169,12 +182,115 @@ export const STARTSEITE_SACHBEARBEITUNG: StartseitenKonfiguration = {
 };
 
 /**
+ * Die Abfragestatus, in denen die Bedarfsmeldung eingebunden ist bzw. war.
+ * <p>
+ * "Erledigt ohne Einbindung Fachreferat" fehlt bewusst, da die Bedarfsmeldung an diesen Abfragen nie beteiligt war.
+ */
+const STATUS_BEDARFSMELDUNG = {
+  zurBearbeitung: [StatusAbfrage.EinpflegenBedarfsmeldung],
+  zurKenntnis: [StatusAbfrage.EinplanungBedarfe],
+  erledigt: [StatusAbfrage.ErledigtMitFachreferat],
+};
+
+/**
+ * Bildet die Schnellfilter der Bedarfsmeldung auf die Suchkriterien ab.
+ * <p>
+ * "Alle" und "Zur Bearbeitung" zeigen die Abfragen im Zuständigkeitsbereich der Bedarfsmeldung ohne Personenbezug.
+ * Die übrigen Schnellfilter zeigen nur die Vorgänge, welche die Person laut Bearbeitungshistorie erstellt oder
+ * bearbeitet hat.
+ *
+ * @param schnellfilter der ausgewählte Schnellfilter.
+ * @returns die Suchkriterien.
+ */
+export function getSuchkriterienBedarfsmeldung(schnellfilter: SchnellfilterVorgaenge): Suchkriterien {
+  switch (schnellfilter) {
+    case "ZUR_BEARBEITUNG":
+      return { ...ABFRAGEN, filterStatusAbfrage: STATUS_BEDARFSMELDUNG.zurBearbeitung };
+    case "ZUR_KENNTNIS":
+      return { ...ABFRAGEN, filterNurEigeneVorgaenge: true, filterStatusAbfrage: STATUS_BEDARFSMELDUNG.zurKenntnis };
+    case "ERLEDIGT":
+      return { ...ABFRAGEN, filterNurEigeneVorgaenge: true, filterStatusAbfrage: STATUS_BEDARFSMELDUNG.erledigt };
+    case "INFRASTRUKTUREINRICHTUNGEN":
+      return { ...INFRASTRUKTUREINRICHTUNGEN, filterNurEigeneVorgaenge: true };
+    case "ALLE":
+    default:
+      return {
+        ...ABFRAGEN,
+        filterStatusAbfrage: [
+          ...STATUS_BEDARFSMELDUNG.zurBearbeitung,
+          ...STATUS_BEDARFSMELDUNG.zurKenntnis,
+          ...STATUS_BEDARFSMELDUNG.erledigt,
+        ],
+      };
+  }
+}
+
+/**
+ * Die Bedarfsmeldung (Kita, Schule, Sozialplanung und Flächenbedarfsmeldung) sieht die Abfragen ihres
+ * Zuständigkeitsbereichs und ihre Vorgänge und kann diese nach Stadtbezirken filtern.
+ * <p>
+ * Die Neuanlage beschränkt sich auf Infrastruktureinrichtungen, da Vorhaben nur von der Sachbearbeitung angelegt
+ * werden dürfen (Authority `ISI_BACKEND_WRITE_BAUVORHABEN`). Aus demselben Grund gibt es keinen Schnellfilter "Vorhaben".
+ */
+export const STARTSEITE_BEDARFSMELDUNG: StartseitenKonfiguration = {
+  schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
+  getSuchkriterien: getSuchkriterienBedarfsmeldung,
+  neuanlageOptionen: [
+    { title: "Infrastruktureinrichtung erstellen", icon: "mdi-home", route: "/infrastruktureinrichtung" },
+  ],
+  stadtbezirkFilter: true,
+};
+
+/**
+ * Bildet die Schnellfilter der Nutzer (Rolle Anwender) auf die Suchkriterien ab.
+ * <p>
+ * Nutzer lesen ausschließlich und sehen daher alle Vorgänge ohne Personenbezug. Die Einschränkung auf erledigte
+ * Abfragen bei "Alle" nimmt das Backend für Nutzer mit ausschließlich der Rolle Anwender selbst vor, damit Vorhaben
+ * und Infrastruktureinrichtungen nicht durch den Statusfilter der Abfragen herausfallen.
+ *
+ * @param schnellfilter der ausgewählte Schnellfilter.
+ * @returns die Suchkriterien.
+ */
+export function getSuchkriterienAnwender(schnellfilter: SchnellfilterVorgaenge): Suchkriterien {
+  switch (schnellfilter) {
+    case "ERLEDIGT":
+      return {
+        ...ABFRAGEN,
+        filterStatusAbfrage: [StatusAbfrage.ErledigtMitFachreferat, StatusAbfrage.ErledigtOhneFachreferat],
+      };
+    case "VORHABEN":
+      return { ...VORHABEN };
+    case "INFRASTRUKTUREINRICHTUNGEN":
+      return { ...INFRASTRUKTUREINRICHTUNGEN };
+    case "ALLE":
+    default:
+      return { ...ALLE_OBJEKTE };
+  }
+}
+
+/**
+ * Nutzer (Rolle Anwender) sehen die erledigten Abfragen sowie alle Vorhaben und Infrastruktureinrichtungen und
+ * können diese nach Stadtbezirken filtern. Da sie nur lesen, gibt es keine Neuanlage.
+ */
+export const STARTSEITE_ANWENDER: StartseitenKonfiguration = {
+  schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_ANWENDER,
+  getSuchkriterien: getSuchkriterienAnwender,
+  neuanlageOptionen: [],
+  stadtbezirkFilter: true,
+};
+
+/**
  * Die Rollen, für die eine personalisierte Startseite existiert.
  */
 export interface StartseitenRollen {
   hasRoleAdmin: boolean;
   hasRoleAbfrageerstellung: boolean;
   hasRoleSachbearbeitung: boolean;
+  hasRoleBedarfsmeldungKita: boolean;
+  hasRoleBedarfsmeldungSchule: boolean;
+  hasRoleBedarfsmeldungSozialplanung: boolean;
+  hasRoleFlaechenbedarfsmeldung: boolean;
+  hasOnlyRoleAnwender: boolean;
 }
 
 /**
@@ -196,8 +312,20 @@ export function getStartseitenKonfiguration(rollen: StartseitenRollen): Startsei
   if (rollen.hasRoleSachbearbeitung) {
     konfigurationen.push(STARTSEITE_SACHBEARBEITUNG);
   }
+  if (
+    rollen.hasRoleBedarfsmeldungKita ||
+    rollen.hasRoleBedarfsmeldungSchule ||
+    rollen.hasRoleBedarfsmeldungSozialplanung ||
+    rollen.hasRoleFlaechenbedarfsmeldung
+  ) {
+    konfigurationen.push(STARTSEITE_BEDARFSMELDUNG);
+  }
   if (rollen.hasRoleAbfrageerstellung) {
     konfigurationen.push(STARTSEITE_ABFRAGEERSTELLUNG);
+  }
+  // Wie im Backend gilt die Einschränkung auf erledigte Abfragen nur für Nutzer, die ausschließlich Anwender sind.
+  if (rollen.hasOnlyRoleAnwender) {
+    konfigurationen.push(STARTSEITE_ANWENDER);
   }
   if (konfigurationen.length <= 1) {
     return konfigurationen[0];
