@@ -120,7 +120,6 @@ export const SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG: Array<AuswahlOption<Schnellf
   { title: "Meine zur Kenntnis", value: "ZUR_KENNTNIS" },
   { title: "Meine erledigt", value: "ERLEDIGT" },
   { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
-  { title: "Vorhaben", value: "VORHABEN" },
 ];
 
 /**

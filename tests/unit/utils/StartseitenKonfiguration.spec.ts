@@ -236,7 +236,6 @@ describe("StartseitenKonfiguration.spec.ts", () => {
         "Meine zur Kenntnis",
         "Meine erledigt",
         "Infrastruktureinrichtungen",
-        "Vorhaben",
       ]);
     });
 
@@ -276,10 +275,9 @@ describe("StartseitenKonfiguration.spec.ts", () => {
       expect(suchkriterien.filterStatusAbfrage).toBeUndefined();
     });
 
-    test("zeigt bei 'Vorhaben' ausschließlich die eigenen Vorhaben", () => {
-      const suchkriterien = getSuchkriterienBedarfsmeldung("VORHABEN");
-      expect(getAusgewaehlteObjekte(suchkriterien)).toEqual(["selectBauvorhaben"]);
-      expect(suchkriterien.filterNurEigeneVorgaenge).toBe(true);
+    test("bietet keinen Schnellfilter 'Vorhaben' an und behandelt ihn wie 'Alle'", () => {
+      expect(STARTSEITE_BEDARFSMELDUNG.schnellfilterOptionen.map((option) => option.value)).not.toContain("VORHABEN");
+      expect(getSuchkriterienBedarfsmeldung("VORHABEN")).toEqual(getSuchkriterienBedarfsmeldung("ALLE"));
     });
 
     test("behandelt einen nicht angebotenen Schnellfilter wie 'Alle'", () => {
