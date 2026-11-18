@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="!editMode">
     <v-col cols="12">
       <span
         v-if="isEditable"
@@ -25,6 +25,8 @@
         id="e_akte_field"
         ref="eAkteField"
         v-model="infrastruktureinrichtung.linkKePlus"
+        :label="title"
+        :aria-label="title"
         variant="underlined"
         auto-grow
         rows="1"
@@ -53,6 +55,7 @@
           class="mt-3 mb-14"
           variant="plain"
           :icon="editMode ? 'mdi-eye-outline' : 'mdi-pencil-outline'"
+          :aria-label="editMode ? 'ke+-Link bearbeiten' : 'ke+-Link anzeigen'"
           @click="editMode = !editMode"
         />
       </v-row>
@@ -76,16 +79,26 @@ const title = "Link zur Einrichtung ke+";
 const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
   required: true,
 });
-const linkKePlusNotEmpty = computed(() => !_.isEmpty(infrastruktureinrichtung.value.linkKePlus));
+// Trim the optional link once for all checks and preview. Do not mutate the original model value here.
+const linkKePlusTrimmed = computed(() => {
+  const raw = infrastruktureinrichtung.value.linkKePlus ?? "";
+  return typeof raw === "string" ? raw.trim() : "";
+});
+
+const linkKePlusNotEmpty = computed(() => !_.isEmpty(linkKePlusTrimmed.value));
 const editMode = ref(false);
 
 const linkKePlusFormatted = computed(() => {
-  if (linkKePlusNotEmpty.value) {
-    const link = infrastruktureinrichtung.value.linkKePlus;
-    return link.toLowerCase().startsWith("http://") || link.toLowerCase().startsWith("https://")
-      ? link
-      : `https://${link}`;
+  const trimmed = linkKePlusTrimmed.value;
+  if (!trimmed) return "";
+
+  // Preserve explicit http(s) schemes (case-insensitive). Leading/trailing whitespace already removed.
+  const lower = trimmed.toLowerCase();
+  if (lower.startsWith("http://") || lower.startsWith("https://")) {
+    return trimmed;
   }
-  return "";
+
+  // No scheme -> assume https
+  return `https://${trimmed}`;
 });
 </script>
