@@ -142,13 +142,13 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
     expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
   });
 
-  test("speichert einen nicht angebotenen Schnellfilter unverändert, solange er nicht geändert wurde", async () => {
+  test("speichert den angezeigten Ersatzwert für einen nicht angebotenen Schnellfilter", async () => {
     const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG);
     expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
 
     await (wrapper.vm as any).speichern();
 
-    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ZUR_KENNTNIS");
+    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ALLE");
   });
 
   test("speichert einen von der Person gewählten Schnellfilter", async () => {
@@ -157,7 +157,7 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
       "update:modelValue",
       "ANGELEGT",
     );
-    (wrapper.vm as any).schnellfilter = "ANGELEGT";
+    await wrapper.vm.$nextTick();
 
     await (wrapper.vm as any).speichern();
 
@@ -179,11 +179,26 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
       "update:modelValue",
       "ZUR_BEARBEITUNG",
     );
-    (wrapper.vm as any).schnellfilter = "ZUR_BEARBEITUNG";
+    await wrapper.vm.$nextTick();
 
     await wrapper.setProps({ schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG });
 
     expect((wrapper.vm as any).schnellfilter).toBe("ZUR_BEARBEITUNG");
+  });
+
+  test("ersetzt eine nicht mehr angebotene Auswahl und speichert den angezeigten Ersatzwert", async () => {
+    const wrapper = await mountComponent(true, SCHNELLFILTER_OPTIONEN);
+    await (wrapper.findComponent("#startseiten_einstellungen_schnellfilter") as any).vm.$emit(
+      "update:modelValue",
+      "ENTWUERFE",
+    );
+    await wrapper.vm.$nextTick();
+
+    await wrapper.setProps({ schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG });
+    await (wrapper.vm as any).speichern();
+
+    expect((wrapper.vm as any).schnellfilter).toBe("ALLE");
+    expect(mockSaveStartseitenEinstellung.mock.calls[0][0].schnellfilter).toBe("ALLE");
   });
 
   test("behält ohne personalisierte Startseite den gespeicherten Schnellfilter beim Speichern", async () => {
