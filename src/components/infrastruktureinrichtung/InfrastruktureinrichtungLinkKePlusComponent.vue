@@ -55,7 +55,7 @@
           class="mt-3 mb-14"
           variant="plain"
           :icon="editMode ? 'mdi-eye-outline' : 'mdi-pencil-outline'"
-          :aria-label="editMode ? 'ke+-Link bearbeiten' : 'ke+-Link anzeigen'"
+          :aria-label="editMode ? 'ke+-Link anzeigen' : 'ke+-Link bearbeiten'"
           @click="editMode = !editMode"
         />
       </v-row>
