@@ -254,7 +254,7 @@ export function findFaultInAbfragevariante(
       abfragevariante.sobonOrientierungswertJahrPlanungsursaechlich ===
         AbfragevarianteBauleitplanverfahrenDtoSobonOrientierungswertJahrPlanungsursaechlichEnum.Unspecified
     ) {
-      return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungwerte angeben";
+      return "Bitte für die Bedarfsberechnung das Jahr für die SoBoN-Orientierungswerte angeben";
     }
   }
   if (

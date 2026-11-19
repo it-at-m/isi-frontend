@@ -46,6 +46,13 @@
           <v-icon size="x-large">{{ expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand" }}</v-icon>
         </button>
       </l-control>
+      <!-- Liegt innerhalb des Karten-Containers, damit der Inhalt auch in der erweiterten Ansicht sichtbar ist. -->
+      <div
+        v-if="$slots.overlay"
+        class="map-overlay"
+      >
+        <slot name="overlay" />
+      </div>
     </div>
   </v-sheet>
   <v-dialog
@@ -286,6 +293,18 @@ function onAcceptSelectedGeoJson(event: MouseEvent): void {
 </script>
 
 <style scoped>
+/* Oben mittig über der Karte (z-index über Leaflet-Panes und -Controls). Klicks gehen an die Karte durch. */
+.map-overlay {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 140px);
+  max-width: 420px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
 .map-control {
   width: 44px;
   height: 44px;

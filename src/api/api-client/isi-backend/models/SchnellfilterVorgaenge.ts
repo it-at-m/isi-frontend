@@ -23,6 +23,14 @@ export const SchnellfilterVorgaenge = {
     ZurBearbeitung: 'ZUR_BEARBEITUNG',
     ZurKenntnis: 'ZUR_KENNTNIS',
     Abgeschlossen: 'ABGESCHLOSSEN',
+    Angelegt: 'ANGELEGT',
+    UebermitteltZurBearbeitung: 'UEBERMITTELT_ZUR_BEARBEITUNG',
+    StartBearbeitung: 'START_BEARBEITUNG',
+    EinpflegenBedarfsmeldung: 'EINPFLEGEN_BEDARFSMELDUNG',
+    EinplanungBedarfe: 'EINPLANUNG_BEDARFE',
+    Erledigt: 'ERLEDIGT',
+    Vorhaben: 'VORHABEN',
+    Infrastruktureinrichtungen: 'INFRASTRUKTUREINRICHTUNGEN',
 } as const;
 export type SchnellfilterVorgaenge = typeof SchnellfilterVorgaenge[keyof typeof SchnellfilterVorgaenge];
 

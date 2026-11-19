@@ -20,7 +20,7 @@
               @update:model-value="formChanged"
             >
               <template #label>
-                Jahr für SoBoN-Orientierungwerte (planungsursächlich) <span class="text-secondary">*</span>
+                SoBoN-Orientierungswerte (planungsursächlich) <span class="text-secondary">*</span>
               </template>
             </v-select>
           </v-slide-y-reverse-transition>

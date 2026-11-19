@@ -32,7 +32,7 @@
           item-title="value"
           @update:model-value="formChanged"
         >
-          <template #label> Jahr für SoBoN-Orientierungwerte (SoBoN-ursächlich) </template>
+          <template #label> SoBoN-Orientierungswerte (SoBoN-ursächlich) </template>
         </v-select>
       </v-col>
     </v-expand-transition>
