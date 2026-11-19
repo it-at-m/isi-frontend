@@ -12,7 +12,25 @@
       @click-in-map="handleClickInMap"
       @deselect-geo-json="handleDeselectGeoJson"
       @accept-selected-geo-json="handleAcceptSelectedGeoJson"
-    />
+    >
+      <template
+        v-if="geodatenLadefortschritt.status.value !== 'inaktiv'"
+        #overlay
+      >
+        <v-progress-linear
+          id="verortung_geodaten_ladefortschritt"
+          :model-value="geodatenLadefortschritt.prozent.value"
+          :color="geodatenLadeColor"
+          bg-color="white"
+          bg-opacity="0.9"
+          height="22"
+          rounded
+          class="elevation-2"
+        >
+          <span class="text-caption font-weight-medium">{{ geodatenLadeText }}</span>
+        </v-progress-linear>
+      </template>
+    </city-map>
     <v-btn-toggle
       v-if="isEditable"
       v-model="selectionMode"
@@ -43,7 +61,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="stadtbezirke.length !== 0">Stadtbezirke</v-label>
+        <v-label v-if="stadtbezirke.length !== 0 || verortungVorhanden">Stadtbezirke</v-label>
+        <p
+          v-if="isNichtVerfuegbar(stadtbezirke.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="stadtbezirke.length !== 0"
           title="Stadtbezirke"
@@ -63,7 +87,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="kitaplanungsbereiche.length !== 0">Kitaplanungsbereiche</v-label>
+        <v-label v-if="kitaplanungsbereiche.length !== 0 || verortungVorhanden">Kitaplanungsbereiche</v-label>
+        <p
+          v-if="isNichtVerfuegbar(kitaplanungsbereiche.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="kitaplanungsbereiche.length !== 0"
           title="Kitaplanungsbereiche"
@@ -88,7 +118,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="bezirksteile.length !== 0">Bezirksteile</v-label>
+        <v-label v-if="bezirksteile.length !== 0 || verortungVorhanden">Bezirksteile</v-label>
+        <p
+          v-if="isNichtVerfuegbar(bezirksteile.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="bezirksteile.length !== 0"
           title="Bezirksteile"
@@ -109,14 +145,12 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="grundschulsprengel.length !== 0 || grundschulsprengelNichtVerfuegbar">
-          Grundschulsprengel
-        </v-label>
+        <v-label v-if="grundschulsprengel.length !== 0 || verortungVorhanden">Grundschulsprengel</v-label>
         <p
-          v-if="grundschulsprengelNichtVerfuegbar"
+          v-if="isNichtVerfuegbar(grundschulsprengel.length)"
           class="text-medium-emphasis"
         >
-          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
         </p>
         <v-chip-group
           v-if="grundschulsprengel.length !== 0"
@@ -142,7 +176,13 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="gemarkungen.length !== 0">Gemarkungen</v-label>
+        <v-label v-if="gemarkungen.length !== 0 || verortungVorhanden">Gemarkungen</v-label>
+        <p
+          v-if="isNichtVerfuegbar(gemarkungen.length)"
+          class="text-medium-emphasis"
+        >
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
+        </p>
         <v-chip-group
           v-if="gemarkungen.length !== 0"
           title="Gemarkungen"
@@ -163,14 +203,12 @@
         cols="12"
         md="6"
       >
-        <v-label v-if="mittelschulsprengel.length !== 0 || mittelschulsprengelNichtVerfuegbar">
-          Mittelschulsprengel
-        </v-label>
+        <v-label v-if="mittelschulsprengel.length !== 0 || verortungVorhanden">Mittelschulsprengel</v-label>
         <p
-          v-if="mittelschulsprengelNichtVerfuegbar"
+          v-if="isNichtVerfuegbar(mittelschulsprengel.length)"
           class="text-medium-emphasis"
         >
-          {{ TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR }}
+          {{ TEXT_GEODATEN_NICHT_VERFUEGBAR }}
         </p>
         <v-chip-group
           v-if="mittelschulsprengel.length !== 0"
@@ -254,17 +292,13 @@ import L, { LatLng, Layer } from "leaflet";
 import _ from "lodash";
 import VerortungMultiPolygonModel from "@/types/model/common/VerortungMultiPolygonModel";
 import { Context } from "@/utils/Context";
-import {
-  COLOR_POLYGON_UMGRIFF,
-  SCHULSPRENGEL_ABFRAGE_AKTIV,
-  TEXT_SCHULSPRENGEL_NICHT_VERFUEGBAR,
-  isSchulsprengelNichtVerfuegbar,
-} from "@/utils/MapUtil";
+import { COLOR_POLYGON_UMGRIFF, TEXT_GEODATEN_NICHT_VERFUEGBAR, isGeodatenNichtVerfuegbar } from "@/utils/MapUtil";
 import { useAbfrageSecurity } from "@/composables/security/AbfrageSecurity";
 import { useSecurity } from "@/composables/security/Security";
 import { useSaveLeave } from "@/composables/SaveLeave";
 import { useGeodataEaiApi } from "@/composables/requests/eai/GeodataEaiApi";
 import { useToast } from "vue-toastification";
+import { useLadefortschritt } from "@/composables/Ladefortschritt";
 
 interface Props {
   context?: Context;
@@ -334,12 +368,37 @@ const grundschulsprengel = computed(() =>
 const mittelschulsprengel = computed(() =>
   _.sortBy(Array.from(verortungModel.value?.mittelschulsprengel ?? []), ["nummer"]),
 );
-const grundschulsprengelNichtVerfuegbar = computed(() =>
-  isSchulsprengelNichtVerfuegbar(grundschulsprengel.value.length, stadtbezirke.value.length),
-);
-const mittelschulsprengelNichtVerfuegbar = computed(() =>
-  isSchulsprengelNichtVerfuegbar(mittelschulsprengel.value.length, stadtbezirke.value.length),
-);
+const verortungVorhanden = computed(() => !_.isNil(verortungModel.value?.multiPolygon));
+// Vereinigung, Gemarkungen, Stadtbezirke, Bezirksteile, Viertel, Kitaplanungsbereiche, Grund- und Mittelschulsprengel
+const ANZAHL_GEODATEN_LADESCHRITTE = 8;
+const geodatenLadefortschritt = useLadefortschritt(ANZAHL_GEODATEN_LADESCHRITTE);
+const geodatenLadeText = computed(() => {
+  switch (geodatenLadefortschritt.status.value) {
+    case "abgeschlossen":
+      return "Alle Geodaten wurden geladen";
+    case "unvollstaendig":
+      return "Geodaten geladen – nicht alle Daten verfügbar";
+    default:
+      return `Geodaten werden geladen … (${geodatenLadefortschritt.erledigteSchritte.value} von ${ANZAHL_GEODATEN_LADESCHRITTE})`;
+  }
+});
+const geodatenLadeColor = computed(() => {
+  switch (geodatenLadefortschritt.status.value) {
+    case "abgeschlossen":
+      return "success";
+    case "unvollstaendig":
+      return "warning";
+    default:
+      return "primary";
+  }
+});
+
+/**
+ * Liefert true, wenn die Geodaten eines Feldes bei vorhandener Verortung nicht ermittelt werden konnten.
+ */
+function isNichtVerfuegbar(anzahl: number): boolean {
+  return isGeodatenNichtVerfuegbar(anzahl, verortungVorhanden.value);
+}
 
 const isEditable = computed(() => {
   let editable = false;
@@ -531,23 +590,40 @@ function createMultiPolygonGeometryFromSelectedFlurstuecke(): MultiPolygonGeomet
 
 /**
  * Erstellt das VerortungMultiPolygonDto auf Basis der in den geoJson-Variable hinterlegten Flurstück-Multipolygone.
- * Tritt ein fehler bei der Erstellung des VerortungMultiPolygonDtos auf, so wird undefined zurückgegeben.
+ * Können die Vereinigung des Multipolygons oder die Gemarkungen nicht ermittelt werden, so wird undefined zurückgegeben.
+ * Fehler bei den übrigen Geodaten führen zu leeren Feldern in der Verortung.
  */
 async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<VerortungMultiPolygonDto | undefined> {
   const multipolygon = createMultiPolygonGeometryFromSelectedFlurstuecke();
+  const { schritt } = geodatenLadefortschritt;
+  geodatenLadefortschritt.starte();
   try {
-    const unifiedMultipolygon = await geoApi.getUnionOfMultipolygon(multipolygon);
-    const promiseStadtbezirke = await geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon);
-    const promiseBezirksteile = await geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon);
-    const promiseViertel = await geoApi.getViertelForMultipolygon(unifiedMultipolygon);
-    const promiseGemarkungen = await geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon);
-    const promiseKitaplanungsbereiche = await geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon);
-    const promiseGrundschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
-      ? await geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon)
-      : [];
-    const promiseMittelschulsprengel = SCHULSPRENGEL_ABFRAGE_AKTIV
-      ? await geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon)
-      : [];
+    const unifiedMultipolygon = await schritt(geoApi.getUnionOfMultipolygon(multipolygon));
+    // Die Gemarkungen sind zwingend erforderlich, da an diesen die gewählten Flurstücke hängen.
+    const promiseGemarkungen = await schritt(geoApi.getGemarkungenForMultipolygon(unifiedMultipolygon));
+    // Die übrigen Geodaten werden fehlertolerant ermittelt. Kann ein Feld nicht ermittelt werden,
+    // bleibt es leer und wird als "Aktuell nicht verfügbar" angezeigt.
+    const tolerantLoader = geoApi.createTolerantLoader();
+    const promiseStadtbezirke = await schritt(
+      tolerantLoader.load(geoApi.getStadtbezirkeForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseBezirksteile = await schritt(
+      tolerantLoader.load(geoApi.getBezirksteileForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseViertel = await schritt(
+      tolerantLoader.load(geoApi.getViertelForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseKitaplanungsbereiche = await schritt(
+      tolerantLoader.load(geoApi.getKitaplanungsbereicheForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseGrundschulsprengel = await schritt(
+      tolerantLoader.load(geoApi.getGrundschulsprengelForMultipolygon(unifiedMultipolygon, false)),
+    );
+    const promiseMittelschulsprengel = await schritt(
+      tolerantLoader.load(geoApi.getMittelschulsprengelForMultipolygon(unifiedMultipolygon, false)),
+    );
+    tolerantLoader.showErrorIfOccurred();
+    geodatenLadefortschritt.beende(!tolerantLoader.hasErrorOccurred());
 
     // Stadtbezirke ermitteln
     const stadtbezirkeBackend: Array<StadtbezirkDto> = stadtbezirkeGeoDataEaiToStadtbezirkeBackend(promiseStadtbezirke);
@@ -593,6 +669,7 @@ async function createVerortungMultiPolygonDtoFromSelectedFlurstuecke(): Promise<
       multiPolygon: JSON.parse(JSON.stringify(unifiedMultipolygon)) as MultiPolygonGeometryDtoBackend,
     } as VerortungMultiPolygonDto;
   } catch (error) {
+    geodatenLadefortschritt.brecheAb();
     return undefined;
   }
 }
