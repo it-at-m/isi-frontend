@@ -67,7 +67,7 @@
 import { computed, ref } from "vue";
 import _ from "lodash";
 import { useSaveLeave } from "@/composables/SaveLeave";
-import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
+import InfrastruktureinrichtungModel from "@/types/model/infrastruktureinrichtung/InfrastruktureinrichtungModel";
 
 interface Props {
   isEditable?: boolean;
@@ -76,7 +76,7 @@ interface Props {
 withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const { formChanged } = useSaveLeave();
 const title = "Link zur Einrichtung ke+";
-const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
+const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({
   required: true,
 });
 // Trim the optional link once for all checks and preview. Do not mutate the original model value here.
