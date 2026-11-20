@@ -256,10 +256,13 @@ const {
 const {
   getInfrastruktureinrichtungById,
   createInfrastruktureinrichtung,
+  createInfrastruktureinrichtungBedarfsmeldungKita,
   createInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   updateInfrastruktureinrichtung,
+  updateInfrastruktureinrichtungBedarfsmeldungKita,
   updateInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   deleteInfrastruktureinrichtungById,
+  deleteInfrastruktureinrichtungBedarfsmeldungKitaById,
   deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById,
 } = useInfrastruktureinrichtungApi();
 const toast = useToast();
@@ -318,9 +321,7 @@ const isEinrichtungstraegerRequired = computed(() => {
   return (
     infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff &&
-    (infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand ||
-      infrastruktureinrichtung.value.status ===
-        InfrastruktureinrichtungDtoStatusEnum.GesichertePlanungErwPlaetzeBestEinr)
+    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand
   );
 });
 
@@ -486,18 +487,42 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
       if (!_.isNil(infrastruktureinrichtung)) {
         commonStore.disableButton();
         if (isNew.value) {
-          const savedInfrastruktureinrichtung =
-            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-              ? await createInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
-              : await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          let savedInfrastruktureinrichtung = undefined;
+          switch (infrastruktureinrichtung.value.infrastruktureinrichtungTyp) {
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+              savedInfrastruktureinrichtung = await createInfrastruktureinrichtungBedarfsmeldungKita(
+                infrastruktureinrichtung.value,
+              );
+              break;
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+              savedInfrastruktureinrichtung = await createInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+                infrastruktureinrichtung.value,
+              );
+              break;
+            default:
+              savedInfrastruktureinrichtung = await createInfrastruktureinrichtung(infrastruktureinrichtung.value);
+              break;
+          }
           handleSuccess(savedInfrastruktureinrichtung);
         } else {
-          const savedInfrastruktureinrichtung =
-            infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-            InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-              ? await updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(infrastruktureinrichtung.value)
-              : await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+          let savedInfrastruktureinrichtung = undefined;
+          switch (infrastruktureinrichtung.value.infrastruktureinrichtungTyp) {
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+              savedInfrastruktureinrichtung = await updateInfrastruktureinrichtungBedarfsmeldungKita(
+                infrastruktureinrichtung.value,
+              );
+              break;
+            case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+              savedInfrastruktureinrichtung = await updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(
+                infrastruktureinrichtung.value,
+              );
+              break;
+            default:
+              savedInfrastruktureinrichtung = await updateInfrastruktureinrichtung(infrastruktureinrichtung.value);
+              break;
+          }
           handleSuccess(savedInfrastruktureinrichtung);
         }
       }
@@ -511,13 +536,17 @@ async function saveInfrastruktureinrichtung(): Promise<void> {
 
 async function deleteInfrastruktureinrichtung(): Promise<void> {
   if (!_.isNil(infrastruktureinrichtungId)) {
-    if (
-      infrastruktureinrichtung.value.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-    ) {
-      await deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(infrastruktureinrichtungId);
-    } else {
-      await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+    switch (infrastruktureinrichtung.value.infrastruktureinrichtungTyp) {
+      case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+      case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+        await deleteInfrastruktureinrichtungBedarfsmeldungKitaById(infrastruktureinrichtungId);
+        break;
+      case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+        await deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(infrastruktureinrichtungId);
+        break;
+      default:
+        await deleteInfrastruktureinrichtungById(infrastruktureinrichtungId);
+        break;
     }
     searchStore.removeSearchResultById(infrastruktureinrichtungId);
     returnToUebersicht("Die Infrastruktureinrichtung wurde erfolgreich gelöscht", TYPE.SUCCESS);

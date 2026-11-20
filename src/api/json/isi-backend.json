@@ -286,6 +286,62 @@
         }
       }
     },
+    "/kommentar/infrastruktureinrichtung/bedarfsmeldung_kita": {
+      "put": {
+        "tags": ["Kommentare"],
+        "summary": "Aktualisierung eines Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/KommentarInfrastruktureinrichtungDto" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK -> Kommentar wurde erfolgreich aktualisiert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarInfrastruktureinrichtungDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Kommentare"],
+        "summary": "Anlegen eines neuen Kommentars für eine Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "createKommentarForInfrastruktureinrichtungBedarfsmeldungKita",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/KommentarInfrastruktureinrichtungDto" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED -> Kommentar wurde erfolgreich erstellt.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/KommentarInfrastruktureinrichtungDto" } } }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/kommentar/bauvorhaben": {
       "put": {
         "tags": ["Kommentare"],
@@ -506,6 +562,114 @@
         "tags": ["Infrastruktureinrichtung"],
         "summary": "Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung",
         "operationId": "createInfrastruktureinrichtungBedarfsmeldungSozialplanung",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  { "$ref": "#/components/schemas/GrundschuleDto" },
+                  { "$ref": "#/components/schemas/GsNachmittagBetreuungDto" },
+                  { "$ref": "#/components/schemas/HausFuerKinderDto" },
+                  { "$ref": "#/components/schemas/KindergartenDto" },
+                  { "$ref": "#/components/schemas/KinderkrippeDto" },
+                  { "$ref": "#/components/schemas/MittelschuleDto" },
+                  { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED -> Infrastruktureinrichtung wurde erfolgreich erstellt.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/GrundschuleDto" },
+                    { "$ref": "#/components/schemas/GsNachmittagBetreuungDto" },
+                    { "$ref": "#/components/schemas/HausFuerKinderDto" },
+                    { "$ref": "#/components/schemas/KindergartenDto" },
+                    { "$ref": "#/components/schemas/KinderkrippeDto" },
+                    { "$ref": "#/components/schemas/MittelschuleDto" },
+                    { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
+    "/infrastruktureinrichtung/bedarfsmeldung_kita": {
+      "put": {
+        "tags": ["Infrastruktureinrichtung"],
+        "summary": "Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "updateInfrastruktureinrichtungBedarfsmeldungKita",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  { "$ref": "#/components/schemas/GrundschuleDto" },
+                  { "$ref": "#/components/schemas/GsNachmittagBetreuungDto" },
+                  { "$ref": "#/components/schemas/HausFuerKinderDto" },
+                  { "$ref": "#/components/schemas/KindergartenDto" },
+                  { "$ref": "#/components/schemas/KinderkrippeDto" },
+                  { "$ref": "#/components/schemas/MittelschuleDto" },
+                  { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK -> Infrastruktureinrichtung wurde erfolgreich aktualisiert.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/GrundschuleDto" },
+                    { "$ref": "#/components/schemas/GsNachmittagBetreuungDto" },
+                    { "$ref": "#/components/schemas/HausFuerKinderDto" },
+                    { "$ref": "#/components/schemas/KindergartenDto" },
+                    { "$ref": "#/components/schemas/KinderkrippeDto" },
+                    { "$ref": "#/components/schemas/MittelschuleDto" },
+                    { "$ref": "#/components/schemas/NachbarschaftstreffDto" }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Infrastruktureinrichtung"],
+        "summary": "Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "createInfrastruktureinrichtungBedarfsmeldungKita",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2128,6 +2292,27 @@
         }
       }
     },
+    "/kommentar/infrastruktureinrichtung/bedarfsmeldung_kita/{id}": {
+      "delete": {
+        "tags": ["Kommentare"],
+        "summary": "Löschen eines Kommentars einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "400": {
+            "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "404": {
+            "description": "NOT FOUND -> Kommentar mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
     "/kommentar/bauvorhaben/{id}": {
       "delete": {
         "tags": ["Kommentare"],
@@ -2154,6 +2339,27 @@
         "tags": ["Infrastruktureinrichtung"],
         "summary": "Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung",
         "operationId": "deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "204": { "description": "NO CONTENT" },
+          "404": {
+            "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "409": {
+            "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          }
+        }
+      }
+    },
+    "/infrastruktureinrichtung/bedarfsmeldung_kita/{id}": {
+      "delete": {
+        "tags": ["Infrastruktureinrichtung"],
+        "summary": "Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita",
+        "operationId": "deleteInfrastruktureinrichtungBedarfsmeldungKitaById",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
         ],
@@ -2301,7 +2507,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           }
         },
@@ -2444,6 +2650,16 @@
           "coordinate": { "$ref": "#/components/schemas/Wgs84Dto" },
           "coordinateUtm": { "$ref": "#/components/schemas/UtmDto" },
           "angabeLageErgaenzendeAdressinformation": { "type": "string", "maxLength": 255, "minLength": 0 }
+        }
+      },
+      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
+      "BearbeitungshistorieDto": {
+        "type": "object",
+        "properties": {
+          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
+          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
+          "zeitpunkt": { "type": "string", "format": "date-time" },
+          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }
         }
       },
       "BezirksteilDto": {
@@ -2615,10 +2831,8 @@
           "fertigstellungsjahr": { "type": "integer", "format": "int32", "maximum": 2100, "minimum": 1900 },
           "status": {
             "type": "string",
-            "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+            "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
           },
-          "flaecheGesamtgrundstueck": { "type": "number" },
-          "flaecheTeilgrundstueck": { "type": "number" },
           "idKibigWeb": { "type": "string" },
           "anlassPlanung": {
             "type": "string",
@@ -2642,9 +2856,6 @@
           {
             "type": "object",
             "properties": {
-              "anzahlKindergartenPlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKindergartenGruppen": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKindergartenPlaetze": { "type": "integer", "format": "int32" },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -2658,17 +2869,26 @@
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
-              }
+              },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "muenchnerKitafoerderung": { "type": "boolean" },
+              "miniKita": { "type": "boolean" },
+              "integrationseinrichtung": { "type": "boolean" },
+              "nameTraeger": { "type": "string" },
+              "gesamtplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "kindergartenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergartenKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "linkKePlus": { "type": "string" }
             }
           }
         ],
-        "required": [
-          "anlassPlanung",
-          "anzahlKindergartenGruppen",
-          "anzahlKindergartenPlaetze",
-          "nameEinrichtung",
-          "status"
-        ]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "KinderkrippeDto": {
         "allOf": [
@@ -2676,9 +2896,6 @@
           {
             "type": "object",
             "properties": {
-              "anzahlKinderkrippePlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKinderkrippeGruppen": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKinderkrippePlaetze": { "type": "integer", "format": "int32" },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -2692,17 +2909,27 @@
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
-              }
+              },
+              "fertigstellungsmonat": { "type": "integer", "format": "int32", "maximum": 12, "minimum": 1 },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "muenchnerKitafoerderung": { "type": "boolean" },
+              "miniKita": { "type": "boolean" },
+              "integrationseinrichtung": { "type": "boolean" },
+              "nameTraeger": { "type": "string" },
+              "gesamtplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "kinderkrippenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippeKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "linkKePlus": { "type": "string" }
             }
           }
         ],
-        "required": [
-          "anlassPlanung",
-          "anzahlKinderkrippeGruppen",
-          "anzahlKinderkrippePlaetze",
-          "nameEinrichtung",
-          "status"
-        ]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "KitaplanungsbereichDto": {
         "type": "object",
@@ -3056,7 +3283,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           },
           "filterAnlassPlanung": {
@@ -3156,7 +3383,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UNSPECIFIED", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN", "BESTAND"]
+              "enum": ["UNSPECIFIED", "BESTAND", "UNGESICHERTE_PLANUNG", "GESICHERTE_PLANUNG", "PLANUNG_ZURUECKGEZOGEN"]
             }
           },
           "filterAnlassPlanung": {
@@ -3315,10 +3542,10 @@
                 "type": "string",
                 "enum": [
                   "UNSPECIFIED",
+                  "BESTAND",
                   "UNGESICHERTE_PLANUNG",
                   "GESICHERTE_PLANUNG",
-                  "PLANUNG_ZURUECKGEZOGEN",
-                  "BESTAND"
+                  "PLANUNG_ZURUECKGEZOGEN"
                 ]
               },
               "anlassPlanung": {
@@ -4302,16 +4529,6 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/WohneinheitenProFoerderartProJahrDto" }
           }
-        }
-      },
-      "BearbeitungsArt": { "type": "string", "enum": ["ERSTELLT", "AKTUALISIERT", "STATUSAENDERUNG"] },
-      "BearbeitungshistorieDto": {
-        "type": "object",
-        "properties": {
-          "art": { "$ref": "#/components/schemas/BearbeitungsArt" },
-          "zielStatus": { "$ref": "#/components/schemas/StatusAbfrage" },
-          "zeitpunkt": { "type": "string", "format": "date-time" },
-          "bearbeitendePerson": { "$ref": "#/components/schemas/BearbeitendePersonDto" }
         }
       },
       "BedarfsmeldungDto": {

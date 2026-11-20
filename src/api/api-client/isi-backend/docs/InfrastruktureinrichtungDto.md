@@ -21,8 +21,6 @@ Name | Type
 `nameEinrichtung` | string
 `fertigstellungsjahr` | number
 `status` | string
-`flaecheGesamtgrundstueck` | number
-`flaecheTeilgrundstueck` | number
 `idKibigWeb` | string
 `anlassPlanung` | string
 
@@ -47,8 +45,6 @@ const example = {
   "nameEinrichtung": null,
   "fertigstellungsjahr": null,
   "status": null,
-  "flaecheGesamtgrundstueck": null,
-  "flaecheTeilgrundstueck": null,
   "idKibigWeb": null,
   "anlassPlanung": null,
 } satisfies InfrastruktureinrichtungDto

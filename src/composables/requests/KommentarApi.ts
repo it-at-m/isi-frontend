@@ -1,9 +1,11 @@
 import {
   type CreateKommentarForBauvorhabenRequest,
   type CreateKommentarForInfrastruktureinrichtungRequest,
+  type CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest,
   type CreateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type DeleteKommentarForBauvorhabenRequest,
   type DeleteKommentarForInfrastruktureinrichtungRequest,
+  type DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest,
   type DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type GetKommentareForBauvorhabenRequest,
   type GetKommentareForInfrastruktureinrichtungRequest,
@@ -11,6 +13,7 @@ import {
   type KommentarInfrastruktureinrichtungDto,
   type UpdateKommentarForBauvorhabenRequest,
   type UpdateKommentarForInfrastruktureinrichtungRequest,
+  type UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest,
   type UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   KommentareApi,
 } from "@/api/api-client/isi-backend";
@@ -86,6 +89,24 @@ export function useKommentarApi() {
     }
   }
 
+  async function createKommentarForInfrastruktureinrichtungBedarfsmeldungKita(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: CreateKommentarForInfrastruktureinrichtungBedarfsmeldungKitaRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
+    };
+    try {
+      const response = await kommentareApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungKita(
+        requestObject,
+        RequestUtils.getPOSTConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(
     kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
   ): Promise<KommentarInfrastruktureinrichtungDto> {
@@ -127,6 +148,24 @@ export function useKommentarApi() {
     };
     try {
       const response = await kommentareApi.updateKommentarForInfrastruktureinrichtung(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita(
+    kommentarInfrastruktureinrichtungDto: KommentarInfrastruktureinrichtungDto,
+  ): Promise<KommentarInfrastruktureinrichtungDto> {
+    const requestObject: UpdateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      kommentarInfrastruktureinrichtungDto: kommentarInfrastruktureinrichtungDto,
+    };
+    try {
+      const response = await kommentareApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita(
         requestObject,
         RequestUtils.getPUTConfig(),
       );
@@ -184,6 +223,22 @@ export function useKommentarApi() {
     }
   }
 
+  async function deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita(id: string): Promise<void> {
+    const requestObject: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
+      id: id,
+    };
+    try {
+      const response = await kommentareApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita(
+        requestObject,
+        RequestUtils.getDELETEConfig(),
+      );
+      resetCommentDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(id: string): Promise<void> {
     const requestObject: DeleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest = {
       id: id,
@@ -205,12 +260,15 @@ export function useKommentarApi() {
     getKommentareForInfrastruktureinrichtung,
     createKommentarForBauvorhaben,
     createKommentarForInfrastruktureinrichtung,
+    createKommentarForInfrastruktureinrichtungBedarfsmeldungKita,
     createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     updateKommentarForBauvorhaben,
     updateKommentarForInfrastruktureinrichtung,
+    updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita,
     updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     deleteKommentarForBauvorhaben,
     deleteKommentarForInfrastruktureinrichtung,
+    deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita,
     deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung,
   };
 }

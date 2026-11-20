@@ -20,6 +20,13 @@ import {
     InfrastruktureinrichtungDtoToJSON,
     InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+    UncertainBooleanToJSONTyped,
+} from './UncertainBoolean';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
@@ -58,19 +65,67 @@ export interface KindergartenDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    anzahlKindergartenPlaetze: number;
-    /**
-     * 
-     */
-    anzahlKindergartenGruppen: number;
-    /**
-     * 
-     */
-    wohnungsnaheKindergartenPlaetze?: number;
-    /**
-     * 
-     */
     einrichtungstraeger?: KindergartenDtoEinrichtungstraegerEnum;
+    /**
+     * 
+     */
+    sobonRelevant: UncertainBoolean;
+    /**
+     * 
+     */
+    muenchnerKitafoerderung?: boolean;
+    /**
+     * 
+     */
+    miniKita?: boolean;
+    /**
+     * 
+     */
+    integrationseinrichtung?: boolean;
+    /**
+     * 
+     */
+    nameTraeger?: string;
+    /**
+     * 
+     */
+    gesamtplaetzeNachBE?: number;
+    /**
+     * 
+     */
+    kindergartenplaetzeNachBE?: number;
+    /**
+     * 
+     */
+    ueberregionaleKindergartenplaetze?: number;
+    /**
+     * 
+     */
+    belegungKindergartenplaetze?: number;
+    /**
+     * 
+     */
+    sollBelegungKindergartenplaetzeKePlus?: number;
+    /**
+     * 
+     */
+    sollBelegungKindergartenplaetze?: number;
+    /**
+     * 
+     */
+    integrationsplaetzeKindergartenKePlus?: number;
+    /**
+     * 
+     */
+    integrationsplaetzeKindergarten?: number;
+    /**
+     * 
+     */
+    belegungIntegrationsplaetzeKindergarten?: number;
+    /**
+     * 
+     */
+    linkKePlus?: string;
 }
 
 
@@ -95,8 +150,7 @@ export type KindergartenDtoEinrichtungstraegerEnum = typeof KindergartenDtoEinri
  * Check if a given object implements the KindergartenDto interface.
  */
 export function instanceOfKindergartenDto(value: object): value is KindergartenDto {
-    if (!('anzahlKindergartenPlaetze' in value) || value['anzahlKindergartenPlaetze'] === undefined) return false;
-    if (!('anzahlKindergartenGruppen' in value) || value['anzahlKindergartenGruppen'] === undefined) return false;
+    if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
 
@@ -116,10 +170,22 @@ export function KindergartenDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
-        'anzahlKindergartenPlaetze': json['anzahlKindergartenPlaetze'],
-        'anzahlKindergartenGruppen': json['anzahlKindergartenGruppen'],
-        'wohnungsnaheKindergartenPlaetze': json['wohnungsnaheKindergartenPlaetze'] == null ? undefined : json['wohnungsnaheKindergartenPlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
+        'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
+        'muenchnerKitafoerderung': json['muenchnerKitafoerderung'] == null ? undefined : json['muenchnerKitafoerderung'],
+        'miniKita': json['miniKita'] == null ? undefined : json['miniKita'],
+        'integrationseinrichtung': json['integrationseinrichtung'] == null ? undefined : json['integrationseinrichtung'],
+        'nameTraeger': json['nameTraeger'] == null ? undefined : json['nameTraeger'],
+        'gesamtplaetzeNachBE': json['gesamtplaetzeNachBE'] == null ? undefined : json['gesamtplaetzeNachBE'],
+        'kindergartenplaetzeNachBE': json['kindergartenplaetzeNachBE'] == null ? undefined : json['kindergartenplaetzeNachBE'],
+        'ueberregionaleKindergartenplaetze': json['ueberregionaleKindergartenplaetze'] == null ? undefined : json['ueberregionaleKindergartenplaetze'],
+        'belegungKindergartenplaetze': json['belegungKindergartenplaetze'] == null ? undefined : json['belegungKindergartenplaetze'],
+        'sollBelegungKindergartenplaetzeKePlus': json['sollBelegungKindergartenplaetzeKePlus'] == null ? undefined : json['sollBelegungKindergartenplaetzeKePlus'],
+        'sollBelegungKindergartenplaetze': json['sollBelegungKindergartenplaetze'] == null ? undefined : json['sollBelegungKindergartenplaetze'],
+        'integrationsplaetzeKindergartenKePlus': json['integrationsplaetzeKindergartenKePlus'] == null ? undefined : json['integrationsplaetzeKindergartenKePlus'],
+        'integrationsplaetzeKindergarten': json['integrationsplaetzeKindergarten'] == null ? undefined : json['integrationsplaetzeKindergarten'],
+        'belegungIntegrationsplaetzeKindergarten': json['belegungIntegrationsplaetzeKindergarten'] == null ? undefined : json['belegungIntegrationsplaetzeKindergarten'],
+        'linkKePlus': json['linkKePlus'] == null ? undefined : json['linkKePlus'],
     };
 }
 
@@ -141,10 +207,22 @@ export function KindergartenDtoToJSONTyped(value?: KindergartenDto | null, ignor
 
     return {
         ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'anzahlKindergartenPlaetze': value['anzahlKindergartenPlaetze'],
-        'anzahlKindergartenGruppen': value['anzahlKindergartenGruppen'],
-        'wohnungsnaheKindergartenPlaetze': value['wohnungsnaheKindergartenPlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
+        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
+        'muenchnerKitafoerderung': value['muenchnerKitafoerderung'],
+        'miniKita': value['miniKita'],
+        'integrationseinrichtung': value['integrationseinrichtung'],
+        'nameTraeger': value['nameTraeger'],
+        'gesamtplaetzeNachBE': value['gesamtplaetzeNachBE'],
+        'kindergartenplaetzeNachBE': value['kindergartenplaetzeNachBE'],
+        'ueberregionaleKindergartenplaetze': value['ueberregionaleKindergartenplaetze'],
+        'belegungKindergartenplaetze': value['belegungKindergartenplaetze'],
+        'sollBelegungKindergartenplaetzeKePlus': value['sollBelegungKindergartenplaetzeKePlus'],
+        'sollBelegungKindergartenplaetze': value['sollBelegungKindergartenplaetze'],
+        'integrationsplaetzeKindergartenKePlus': value['integrationsplaetzeKindergartenKePlus'],
+        'integrationsplaetzeKindergarten': value['integrationsplaetzeKindergarten'],
+        'belegungIntegrationsplaetzeKindergarten': value['belegungIntegrationsplaetzeKindergarten'],
+        'linkKePlus': value['linkKePlus'],
     };
 }
 
