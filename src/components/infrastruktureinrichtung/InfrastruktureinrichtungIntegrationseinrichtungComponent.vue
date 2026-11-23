@@ -12,7 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
+import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
+import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
 interface Props {
   isEditable?: boolean;
 }
@@ -21,7 +23,7 @@ withDefaults(defineProps<Props>(), {
   isEditable: false,
 });
 
-const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeModel | KindergartenModel | HausFuerKinderModel>({
   required: true,
 });
 </script>

@@ -2757,15 +2757,6 @@
           {
             "type": "object",
             "properties": {
-              "anzahlKinderkrippePlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKindergartenPlaetze": { "type": "integer", "format": "int32" },
-              "anzahlHortPlaetze": { "type": "integer", "format": "int32" },
-              "anzahlKinderkrippeGruppen": { "type": "integer", "format": "int32" },
-              "anzahlKindergartenGruppen": { "type": "integer", "format": "int32" },
-              "anzahlHortGruppen": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKinderkrippePlaetze": { "type": "integer", "format": "int32" },
-              "wohnungsnaheKindergartenPlaetze": { "type": "integer", "format": "int32" },
-              "wohnungsnaheHortPlaetze": { "type": "integer", "format": "int32" },
               "einrichtungstraeger": {
                 "type": "string",
                 "enum": [
@@ -2779,11 +2770,43 @@
                   "PRIVATE_TRAEGERSCHAFT",
                   "KIRCHLICHE_TRAEGERSCHAFT"
                 ]
-              }
+              },
+              "sobonRelevant": { "$ref": "#/components/schemas/UncertainBoolean" },
+              "muenchnerKitafoerderung": { "type": "boolean" },
+              "miniKita": { "type": "boolean" },
+              "kitz": { "type": "boolean" },
+              "integrationseinrichtung": { "type": "boolean" },
+              "nameTraeger": { "type": "string" },
+              "gesamtplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "kinderkrippenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKinderkrippenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippeKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKinderkrippe": { "type": "integer", "format": "int32" },
+              "kindergartenplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "belegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetzeKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungKindergartenplaetze": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergartenKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeKindergarten": { "type": "integer", "format": "int32" },
+              "hortplaetzeNachBE": { "type": "integer", "format": "int32" },
+              "ueberregionaleHortplaetze": { "type": "integer", "format": "int32" },
+              "belegungHort": { "type": "integer", "format": "int32" },
+              "sollBelegungHortKePlus": { "type": "integer", "format": "int32" },
+              "sollBelegungHort": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeHortKePlus": { "type": "integer", "format": "int32" },
+              "integrationsplaetzeHort": { "type": "integer", "format": "int32" },
+              "belegungIntegrationsplaetzeHort": { "type": "integer", "format": "int32" },
+              "linkKePlus": { "type": "string" }
             }
           }
         ],
-        "required": ["anlassPlanung", "nameEinrichtung", "status"]
+        "required": ["anlassPlanung", "nameEinrichtung", "sobonRelevant", "status"]
       },
       "InfrastruktureinrichtungDto": {
         "type": "object",

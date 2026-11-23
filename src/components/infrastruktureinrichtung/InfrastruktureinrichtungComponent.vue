@@ -114,6 +114,17 @@
           />
         </v-col>
         <v-col
+          v-if="kitzVisible"
+          cols="12"
+          md="6"
+        >
+          <infrastruktureinrichtung-kitz-component
+            id="infrastruktureinrichtung_kitz_component"
+            v-model="infrastruktureinrichtung"
+            :is-editable="isEditable"
+          />
+        </v-col>
+        <v-col
           v-if="integrationseinrichtungVisible"
           cols="12"
           md="6"
@@ -188,6 +199,7 @@ import InfrastruktureinrichtungSobonRelevantComponent from "@/components/infrast
 import InfrastruktureinrichtungMuenchnerKitafoerderungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMuenchnerKitafoerderungComponent.vue";
 import InfrastruktureinrichtungKibigWebIdComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKibigWebIdComponent.vue";
 import InfrastruktureinrichtungMiniKitaComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungMiniKitaComponent.vue";
+import InfrastruktureinrichtungKitzComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungKitzComponent.vue";
 import InfrastruktureinrichtungIntegrationseinrichtungComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungIntegrationseinrichtungComponent.vue";
 import InfrastruktureinrichtungNameTraegerComponent from "@/components/infrastruktureinrichtung/InfrastruktureinrichtungNameTraegerComponent.vue";
 import EinrichtungstraegerComponent from "@/components/infrastruktureinrichtung/EinrichtungstraegerComponent.vue";
@@ -212,24 +224,31 @@ watch(
 
 const isEinrichtungstraegerRequired = computed(() => false);
 const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
-const isKinderkrippeOrKindergarten = computed(
+const isKinderkrippeOrKindergartenOrHausFuerKinder = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
       InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe ||
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten,
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten ||
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.HausFuerKinder,
 );
 const fertigstellungsmonatVisible = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
     InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe,
 );
-const einrichtungstraegerVisible = isKinderkrippeOrKindergarten;
-const nameTraegerVisible = isKinderkrippeOrKindergarten;
-const sobonRelevantVisible = isKinderkrippeOrKindergarten;
-const muenchnerKitafoerderungVisible = isKinderkrippeOrKindergarten;
-const kibigWebIdVisible = isKinderkrippeOrKindergarten;
-const miniKitaVisible = isKinderkrippeOrKindergarten;
-const integrationseinrichtungVisible = isKinderkrippeOrKindergarten;
-const linkKePlusVisible = isKinderkrippeOrKindergarten;
+const kitzVisible = computed(
+  () =>
+    infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===
+    InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.HausFuerKinder,
+);
+const einrichtungstraegerVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const nameTraegerVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const sobonRelevantVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const muenchnerKitafoerderungVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const kibigWebIdVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const miniKitaVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const integrationseinrichtungVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
+const linkKePlusVisible = isKinderkrippeOrKindergartenOrHausFuerKinder;
 </script>

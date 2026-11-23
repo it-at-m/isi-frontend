@@ -6,16 +6,39 @@
 
 Name | Type
 ------------ | -------------
-`anzahlKinderkrippePlaetze` | number
-`anzahlKindergartenPlaetze` | number
-`anzahlHortPlaetze` | number
-`anzahlKinderkrippeGruppen` | number
-`anzahlKindergartenGruppen` | number
-`anzahlHortGruppen` | number
-`wohnungsnaheKinderkrippePlaetze` | number
-`wohnungsnaheKindergartenPlaetze` | number
-`wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
+`sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
+`muenchnerKitafoerderung` | boolean
+`miniKita` | boolean
+`kitz` | boolean
+`integrationseinrichtung` | boolean
+`nameTraeger` | string
+`gesamtplaetzeNachBE` | number
+`kinderkrippenplaetzeNachBE` | number
+`ueberregionaleKinderkrippenplaetze` | number
+`belegungKinderkrippenplaetze` | number
+`sollBelegungKinderkrippenplaetzeKePlus` | number
+`sollBelegungKinderkrippenplaetze` | number
+`integrationsplaetzeKinderkrippeKePlus` | number
+`integrationsplaetzeKinderkrippe` | number
+`belegungIntegrationsplaetzeKinderkrippe` | number
+`kindergartenplaetzeNachBE` | number
+`ueberregionaleKindergartenplaetze` | number
+`belegungKindergartenplaetze` | number
+`sollBelegungKindergartenplaetzeKePlus` | number
+`sollBelegungKindergartenplaetze` | number
+`integrationsplaetzeKindergartenKePlus` | number
+`integrationsplaetzeKindergarten` | number
+`belegungIntegrationsplaetzeKindergarten` | number
+`hortplaetzeNachBE` | number
+`ueberregionaleHortplaetze` | number
+`belegungHort` | number
+`sollBelegungHortKePlus` | number
+`sollBelegungHort` | number
+`integrationsplaetzeHortKePlus` | number
+`integrationsplaetzeHort` | number
+`belegungIntegrationsplaetzeHort` | number
+`linkKePlus` | string
 
 ## Example
 
@@ -24,16 +47,39 @@ import type { HausFuerKinderDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "anzahlKinderkrippePlaetze": null,
-  "anzahlKindergartenPlaetze": null,
-  "anzahlHortPlaetze": null,
-  "anzahlKinderkrippeGruppen": null,
-  "anzahlKindergartenGruppen": null,
-  "anzahlHortGruppen": null,
-  "wohnungsnaheKinderkrippePlaetze": null,
-  "wohnungsnaheKindergartenPlaetze": null,
-  "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
+  "sobonRelevant": null,
+  "muenchnerKitafoerderung": null,
+  "miniKita": null,
+  "kitz": null,
+  "integrationseinrichtung": null,
+  "nameTraeger": null,
+  "gesamtplaetzeNachBE": null,
+  "kinderkrippenplaetzeNachBE": null,
+  "ueberregionaleKinderkrippenplaetze": null,
+  "belegungKinderkrippenplaetze": null,
+  "sollBelegungKinderkrippenplaetzeKePlus": null,
+  "sollBelegungKinderkrippenplaetze": null,
+  "integrationsplaetzeKinderkrippeKePlus": null,
+  "integrationsplaetzeKinderkrippe": null,
+  "belegungIntegrationsplaetzeKinderkrippe": null,
+  "kindergartenplaetzeNachBE": null,
+  "ueberregionaleKindergartenplaetze": null,
+  "belegungKindergartenplaetze": null,
+  "sollBelegungKindergartenplaetzeKePlus": null,
+  "sollBelegungKindergartenplaetze": null,
+  "integrationsplaetzeKindergartenKePlus": null,
+  "integrationsplaetzeKindergarten": null,
+  "belegungIntegrationsplaetzeKindergarten": null,
+  "hortplaetzeNachBE": null,
+  "ueberregionaleHortplaetze": null,
+  "belegungHort": null,
+  "sollBelegungHortKePlus": null,
+  "sollBelegungHort": null,
+  "integrationsplaetzeHortKePlus": null,
+  "integrationsplaetzeHort": null,
+  "belegungIntegrationsplaetzeHort": null,
+  "linkKePlus": null,
 } satisfies HausFuerKinderDto
 
 console.log(example)

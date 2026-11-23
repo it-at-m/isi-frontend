@@ -15,10 +15,12 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 import TriSwitch from "@/components/common/TriSwitch.vue";
 import { InfrastruktureinrichtungDtoAnlassPlanungEnum, UncertainBoolean } from "@/api/api-client/isi-backend";
 import { notUnspecified } from "@/utils/FieldValidationRules";
+import HausFuerKinderModel from "@/types/model/infrastruktureinrichtung/HausFuerKinderModel";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
+import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
 interface Props {
   isEditable?: boolean;
 }
@@ -28,7 +30,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 const isSobonRelevant = ref(false);
-const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeModel | KindergartenModel | HausFuerKinderModel>({
   required: true,
 });
 

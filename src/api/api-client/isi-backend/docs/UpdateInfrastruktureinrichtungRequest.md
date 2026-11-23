@@ -28,28 +28,13 @@ Name | Type
 `anzahlHortGruppen` | number
 `wohnungsnaheHortPlaetze` | number
 `einrichtungstraeger` | string
-`anzahlKinderkrippePlaetze` | number
-`anzahlKindergartenPlaetze` | number
-`anzahlKinderkrippeGruppen` | number
-`anzahlKindergartenGruppen` | number
-`wohnungsnaheKinderkrippePlaetze` | number
-`wohnungsnaheKindergartenPlaetze` | number
 `sobonRelevant` | [UncertainBoolean](UncertainBoolean.md)
 `muenchnerKitafoerderung` | boolean
 `miniKita` | boolean
+`kitz` | boolean
 `integrationseinrichtung` | boolean
 `nameTraeger` | string
 `gesamtplaetzeNachBE` | number
-`kindergartenplaetzeNachBE` | number
-`ueberregionaleKindergartenplaetze` | number
-`belegungKindergartenplaetze` | number
-`sollBelegungKindergartenplaetzeKePlus` | number
-`sollBelegungKindergartenplaetze` | number
-`integrationsplaetzeKindergartenKePlus` | number
-`integrationsplaetzeKindergarten` | number
-`belegungIntegrationsplaetzeKindergarten` | number
-`linkKePlus` | string
-`fertigstellungsmonat` | number
 `kinderkrippenplaetzeNachBE` | number
 `ueberregionaleKinderkrippenplaetze` | number
 `belegungKinderkrippenplaetze` | number
@@ -58,6 +43,24 @@ Name | Type
 `integrationsplaetzeKinderkrippeKePlus` | number
 `integrationsplaetzeKinderkrippe` | number
 `belegungIntegrationsplaetzeKinderkrippe` | number
+`kindergartenplaetzeNachBE` | number
+`ueberregionaleKindergartenplaetze` | number
+`belegungKindergartenplaetze` | number
+`sollBelegungKindergartenplaetzeKePlus` | number
+`sollBelegungKindergartenplaetze` | number
+`integrationsplaetzeKindergartenKePlus` | number
+`integrationsplaetzeKindergarten` | number
+`belegungIntegrationsplaetzeKindergarten` | number
+`hortplaetzeNachBE` | number
+`ueberregionaleHortplaetze` | number
+`belegungHort` | number
+`sollBelegungHortKePlus` | number
+`sollBelegungHort` | number
+`integrationsplaetzeHortKePlus` | number
+`integrationsplaetzeHort` | number
+`belegungIntegrationsplaetzeHort` | number
+`linkKePlus` | string
+`fertigstellungsmonat` | number
 `kooperation` | string
 `kooperationFreieEingabe` | string
 
@@ -90,28 +93,13 @@ const example = {
   "anzahlHortGruppen": null,
   "wohnungsnaheHortPlaetze": null,
   "einrichtungstraeger": null,
-  "anzahlKinderkrippePlaetze": null,
-  "anzahlKindergartenPlaetze": null,
-  "anzahlKinderkrippeGruppen": null,
-  "anzahlKindergartenGruppen": null,
-  "wohnungsnaheKinderkrippePlaetze": null,
-  "wohnungsnaheKindergartenPlaetze": null,
   "sobonRelevant": null,
   "muenchnerKitafoerderung": null,
   "miniKita": null,
+  "kitz": null,
   "integrationseinrichtung": null,
   "nameTraeger": null,
   "gesamtplaetzeNachBE": null,
-  "kindergartenplaetzeNachBE": null,
-  "ueberregionaleKindergartenplaetze": null,
-  "belegungKindergartenplaetze": null,
-  "sollBelegungKindergartenplaetzeKePlus": null,
-  "sollBelegungKindergartenplaetze": null,
-  "integrationsplaetzeKindergartenKePlus": null,
-  "integrationsplaetzeKindergarten": null,
-  "belegungIntegrationsplaetzeKindergarten": null,
-  "linkKePlus": null,
-  "fertigstellungsmonat": null,
   "kinderkrippenplaetzeNachBE": null,
   "ueberregionaleKinderkrippenplaetze": null,
   "belegungKinderkrippenplaetze": null,
@@ -120,6 +108,24 @@ const example = {
   "integrationsplaetzeKinderkrippeKePlus": null,
   "integrationsplaetzeKinderkrippe": null,
   "belegungIntegrationsplaetzeKinderkrippe": null,
+  "kindergartenplaetzeNachBE": null,
+  "ueberregionaleKindergartenplaetze": null,
+  "belegungKindergartenplaetze": null,
+  "sollBelegungKindergartenplaetzeKePlus": null,
+  "sollBelegungKindergartenplaetze": null,
+  "integrationsplaetzeKindergartenKePlus": null,
+  "integrationsplaetzeKindergarten": null,
+  "belegungIntegrationsplaetzeKindergarten": null,
+  "hortplaetzeNachBE": null,
+  "ueberregionaleHortplaetze": null,
+  "belegungHort": null,
+  "sollBelegungHortKePlus": null,
+  "sollBelegungHort": null,
+  "integrationsplaetzeHortKePlus": null,
+  "integrationsplaetzeHort": null,
+  "belegungIntegrationsplaetzeHort": null,
+  "linkKePlus": null,
+  "fertigstellungsmonat": null,
   "kooperation": null,
   "kooperationFreieEingabe": null,
 } satisfies UpdateInfrastruktureinrichtungRequest
