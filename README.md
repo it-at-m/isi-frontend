@@ -82,6 +82,10 @@ npm run serve
 npm run build
 ```
 
+### Konfiguration je Umgebung
+
+Die `VITE_*`-Werte aus den `.env`-Dateien werden beim Build fest in das Bundle geschrieben. Werte, die sich je Umgebung unterscheiden (derzeit `VITE_ARCGIS_URL`), werden zur Laufzeit aus `config.js` gelesen (`window.__ISI_CONFIG__`, siehe `src/utils/RuntimeConfig.ts`). Lokal liegt die Datei leer unter `public/config.js`, dann gilt der Wert aus der `.env`-Datei. Im Betrieb wird sie je Umgebung durch eine ConfigMap ersetzt.
+
 ### Test Suite ausführen
 
 ```
