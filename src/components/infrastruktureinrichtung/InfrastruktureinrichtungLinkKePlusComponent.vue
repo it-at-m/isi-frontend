@@ -76,7 +76,7 @@ interface Props {
 withDefaults(defineProps<Props>(), { isEditable: false, value: undefined });
 const { formChanged } = useSaveLeave();
 const title = "Link zur Einrichtung ke+";
-const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({
+const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel & { linkKePlus?: string | undefined }>({
   required: true,
 });
 // Trim the optional link once for all checks and preview. Do not mutate the original model value here.
