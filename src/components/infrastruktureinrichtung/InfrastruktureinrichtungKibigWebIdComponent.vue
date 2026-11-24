@@ -13,8 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
 import { useSaveLeave } from "@/composables/SaveLeave";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
+import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
 
 interface Props {
   isEditable?: boolean;
@@ -25,7 +26,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 const { formChanged } = useSaveLeave();
-const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeModel | KindergartenModel>({
   required: true,
 });
 </script>

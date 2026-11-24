@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { KinderkrippeKindergartenModel } from "@/types/common/Infrastruktureinrichtung";
-import TriSwitch from "@/components/common/TriSwitch.vue";
+import KinderkrippeModel from "@/types/model/infrastruktureinrichtung/KinderkrippeModel";
+import KindergartenModel from "@/types/model/infrastruktureinrichtung/KindergartenModel";
 
 interface Props {
   isEditable?: boolean;
@@ -24,7 +24,7 @@ withDefaults(defineProps<Props>(), {
   isEditable: false,
 });
 
-const infrastruktureinrichtung = defineModel<KinderkrippeKindergartenModel>({
+const infrastruktureinrichtung = defineModel<KinderkrippeModel | KindergartenModel>({
   required: true,
 });
 </script>
