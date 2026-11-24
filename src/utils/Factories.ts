@@ -763,8 +763,6 @@ export function createHausFuerKinderDto(): HausFuerKinderDto {
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     einrichtungstraeger: HausFuerKinderDtoEinrichtungstraegerEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
     anzahlKinderkrippePlaetze: Number.NaN,
     anzahlKindergartenPlaetze: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
