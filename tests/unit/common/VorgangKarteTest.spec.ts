@@ -110,6 +110,25 @@ describe("VorgangKarteTest.spec.ts", () => {
     expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("01/Altstadt-Lehel, Sendling");
   });
 
+  test("lässt Stadtbezirke ohne Nummer und Namen ohne zusätzliches Komma aus", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Mit leerem Bezirk",
+      stadtbezirke: new Set([{}, { nummer: "06", name: "Sendling" }]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("06/Sendling");
+  });
+
+  test("zeigt keinen Stadtbezirk an, wenn kein Stadtbezirk eine Bezeichnung hat", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Nur leere Bezirke",
+      stadtbezirke: new Set([{}, {}]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("");
+    expect(wrapper.find("#vorgang_karte_stadtbezirke").exists()).toBe(false);
+  });
+
   test("erzeugt ohne id keinen Link", () => {
     const wrapper = mountKarte({ type: SearchResultDtoTypeEnum.Bauvorhaben, nameVorhaben: "Ohne id" });
     expect(wrapper.findComponent({ name: "VCard" }).attributes("to")).toBeUndefined();

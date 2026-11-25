@@ -137,7 +137,8 @@ function getStadtbezirke(stadtbezirke: Set<StadtbezirkDto> | undefined): string 
     // Fehlt die Nummer oder der Name, wird nur der vorhandene Teil angezeigt.
     (stadtbezirk: StadtbezirkDto) => _.join(_.compact([stadtbezirk.nummer, stadtbezirk.name]), "/"),
   );
-  return _.join(bezeichnungen, ", ");
+  // Stadtbezirke ohne Nummer und Namen ergeben keine Bezeichnung und werden ausgelassen.
+  return _.join(_.compact(bezeichnungen), ", ");
 }
 
 defineExpose({ darstellung, link });
