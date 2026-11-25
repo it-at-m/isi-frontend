@@ -3,6 +3,7 @@ import iconAbfrageUrl from "@/assets/marker-icon-abfrage.png";
 import iconBauvorhabenUrl from "@/assets/marker-icon-bauvorhaben.png";
 import iconInfrastruktureinrichtungUrl from "@/assets/marker-icon-infrastruktureinrichtung.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { getRuntimeConfigValue } from "@/utils/RuntimeConfig";
 // import "@/types/common/Leaflet";
 
 // Vgl. https://github.com/Leaflet/Leaflet/blob/main/src/layer/marker/Icon.Default.js#L22
@@ -77,7 +78,6 @@ export interface OverlayUrlMapping {
   internalName: string;
   transparent: boolean;
   urlPart: string;
-  migrated: boolean;
   gruppe: GRUPPE;
 }
 
@@ -88,7 +88,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Flurstücke,Flst.Nr.",
     transparent: true,
     urlPart: "Stadtgrundkarte",
-    migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
   {
@@ -96,7 +95,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Gemarkungen",
     transparent: true,
     urlPart: "Gemarkungen",
-    migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
   {
@@ -104,7 +102,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Stadtbezirksviertel",
     transparent: true,
     urlPart: "Administrative_Gliederung",
-    migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
   {
@@ -112,7 +109,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Stadtbezirksteile",
     transparent: true,
     urlPart: "Administrative_Gliederung",
-    migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
   {
@@ -120,7 +116,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Stadtbezirke",
     transparent: true,
     urlPart: "Administrative_Gliederung",
-    migrated: true,
     gruppe: GRUPPE.VERWALTUNG,
   },
   {
@@ -128,7 +123,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Flächennutzungsplan",
     transparent: false,
     urlPart: "Flächennutzungsplan",
-    migrated: true,
     gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
@@ -136,7 +130,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Baublöcke",
     transparent: true,
     urlPart: "Administrative_Gliederung",
-    migrated: true,
     gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
@@ -144,7 +137,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "BB-Umgriff",
     transparent: true,
     urlPart: "Bebauungspläne",
-    migrated: true,
     gruppe: GRUPPE.PLANUNG_UND_BAUEN,
   },
   {
@@ -152,7 +144,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Kitaplanungsbereiche",
     transparent: true,
     urlPart: "Kitaplanungsbereiche",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -160,7 +151,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Grundschulsprengel",
     transparent: true,
     urlPart: "Schulsprengel",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -168,7 +158,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "Mittelschulsprengel",
     transparent: true,
     urlPart: "Schulsprengel",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -176,7 +165,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "SFZ_Schulsprengel_der_GS-Stufe10796",
     transparent: true,
     urlPart: "Förderschulen",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -184,7 +172,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "SFZ_Schulsprengel_der_MS-Stufe16646",
     transparent: true,
     urlPart: "Förderschulen",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -192,7 +179,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "FZgE_Schulsprengel_der_GS-Stufe3565",
     transparent: true,
     urlPart: "Förderschulen",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -200,7 +186,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "FZgE_Schulsprengel_der_MS-Stufe13927",
     transparent: true,
     urlPart: "Förderschulen",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
   {
@@ -208,7 +193,6 @@ export const OVERLAYS_ARCGIS: OverlayUrlMapping[] = [
     internalName: "FZesE_Schulsprengel_(Grund-_und_Mittelschule)20303",
     transparent: true,
     urlPart: "Förderschulen",
-    migrated: true,
     gruppe: GRUPPE.SCHUL_UND_KITAPLANUNG,
   },
 ];
@@ -254,10 +238,7 @@ function buildLayerStructure(layerStructure: LayerGruppe[]): void {
     new LayerGruppe(GRUPPE.SCHUL_UND_KITAPLANUNG, "Schul- und Kitaplanung", []),
   );
   for (const overlay of OVERLAYS_ARCGIS) {
-    const url = !overlay.migrated
-      ? (import.meta.env.VITE_ARCGIS_URL as string)
-      : (import.meta.env.VITE_ARCGIS_URL2 as string);
-    const layer = L.nonTiledLayer.wms(getArcgisUrl(url, overlay.urlPart), {
+    const layer = L.nonTiledLayer.wms(getArcgisUrl(getRuntimeConfigValue("VITE_ARCGIS_URL"), overlay.urlPart), {
       layers: overlay.internalName,
       transparent: overlay.transparent,
       ...LAYER_OPTIONS,

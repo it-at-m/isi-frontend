@@ -653,8 +653,6 @@ export function createInfrastruktureinrichtungDto(): InfrastruktureinrichtungDto
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
     anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
   };
 }
@@ -794,8 +792,6 @@ export function createGsNachmittagBetreuungDto(): GsNachmittagBetreuungDto {
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
     einrichtungstraeger: GsNachmittagBetreuungDtoEinrichtungstraegerEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
     artGsNachmittagBetreuung: undefined,
     anzahlHortGruppen: Number.NaN,
     anzahlHortPlaetze: Number.NaN,
@@ -820,8 +816,6 @@ export function createGrundschuleDto(): GrundschuleDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
     anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
   };
@@ -844,8 +838,6 @@ export function createMittelschuleDto(): MittelschuleDto {
     nameEinrichtung: "",
     fertigstellungsjahr: Number.NaN,
     status: InfrastruktureinrichtungDtoStatusEnum.Unspecified,
-    flaecheGesamtgrundstueck: undefined,
-    flaecheTeilgrundstueck: undefined,
     anlassPlanung: InfrastruktureinrichtungDtoAnlassPlanungEnum.Unspecified,
     schule: createSchuleDto(),
   };
