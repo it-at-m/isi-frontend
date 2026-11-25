@@ -23,7 +23,7 @@
       <v-textarea
         v-if="editMode"
         id="e_akte_field"
-        ref="eAkteField"
+        ref="kePlusField"
         v-model="infrastruktureinrichtung.linkKePlus"
         :label="title"
         :aria-label="title"
