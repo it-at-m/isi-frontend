@@ -17,7 +17,7 @@
     "core-js": "^3.47.0",
     "leaflet": "^1.9.4",
     "leaflet-groupedlayercontrol": "^0.6.1",
-    "leaflet.markercluster": "^1.5.3",
+    "leaflet.markercluster": "^2.0.0",
     "leaflet.nontiledlayer": "^1.0.9",
     "lodash": "^4.18.1",
     "moment": "^2.30.1",
