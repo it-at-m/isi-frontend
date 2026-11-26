@@ -6,6 +6,7 @@ import MeineVorgaengeListe from "@/components/startseite/MeineVorgaengeListe.vue
 import { useStartseitenEinstellungStore } from "@/stores/StartseitenEinstellungStore";
 import {
   STARTSEITE_ABFRAGEERSTELLUNG,
+  STARTSEITE_ANWENDER,
   STARTSEITE_SACHBEARBEITUNG,
   type StartseitenKonfiguration,
 } from "@/utils/StartseitenKonfiguration";
@@ -147,10 +148,37 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect(vm.vorgaenge[0].id).toBe("abfrage-1");
     });
 
-    test("zeigt einen Hinweis, wenn keine eigenen Vorgänge vorhanden sind", () => {
+    test("zeigt einen Hinweis, wenn keine Vorgänge gefunden wurden", () => {
       expect((wrapper.vm as any).vorgaenge).toHaveLength(0);
       expect(wrapper.find("#meine_vorgaenge_leer").exists()).toBe(true);
+      const mitInhalt = mount(MeineVorgaengeListe, {
+        shallow: true,
+        props: { konfiguration: STARTSEITE_ABFRAGEERSTELLUNG },
+        global: { renderStubDefaultSlot: true },
+      });
+      expect(mitInhalt.find("#meine_vorgaenge_leer").text()).toBe("Keine Vorgänge gefunden");
       expect(wrapper.find("#meine_vorgaenge_liste").exists()).toBe(false);
+    });
+
+    test("lädt keine weitere Seite nach, solange die neue erste Seite noch lädt", async () => {
+      const vm = wrapper.vm as any;
+      mockSearchForEntities.mockResolvedValue({ searchResults: [{ id: "abfrage-1" }], numberOfPages: 3, page: 1 });
+      await vm.loadVorgaenge();
+      expect(vm.numberOfPages).toBe(3);
+
+      let ersteSeiteLiefern: (value: unknown) => void = () => {};
+      mockSearchForEntities.mockClear();
+      mockSearchForEntities.mockReturnValueOnce(new Promise((resolve) => (ersteSeiteLiefern = resolve)));
+      const laden = vm.loadVorgaenge();
+      vm.loadAndAppendNextPage();
+      await flushPromises();
+
+      expect(mockSearchForEntities).toHaveBeenCalledTimes(1);
+      expect(mockSearchForEntities.mock.calls[0][0].page).toBe(1);
+
+      ersteSeiteLiefern({ searchResults: [{ id: "abfrage-2" }], numberOfPages: 2, page: 1 });
+      await laden;
+      expect(vm.numberOfPages).toBe(2);
     });
 
     test("zeigt die Liste statt des Hinweises, sobald Vorgänge vorhanden sind", async () => {
@@ -378,11 +406,20 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
     });
 
     test("fällt bei einer für die Rolle unbekannten Voreinstellung auf 'Alle' zurück", async () => {
+      const vm = sachbearbeitung.vm as any;
+      vm.schnellfilter = "ANGELEGT";
+      await flushPromises();
+      expect(mockSearchForEntities.mock.lastCall?.[0].filterStatusAbfrage).toEqual([StatusAbfrage.Angelegt]);
+
+      mockSearchForEntities.mockClear();
       useStartseitenEinstellungStore().setEinstellung("ENTWUERFE", "LAST_MODIFIED_DATE_TIME");
       await flushPromises();
-      const vm = sachbearbeitung.vm as any;
+
       expect(vm.schnellfilter).toBe("ALLE");
       expect(vm.sortierung).toBe("LAST_MODIFIED_DATE_TIME");
+      const query = mockSearchForEntities.mock.lastCall?.[0];
+      expect(query.filterStatusAbfrage ?? []).not.toContain(StatusAbfrage.Angelegt);
+      expect(query.sortBy).toBe("LAST_MODIFIED_DATE_TIME");
     });
   });
 
@@ -392,12 +429,24 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
       expect((wrapper.vm as any).createSearchQuery(1).filterStadtbezirkNummer).toBeUndefined();
     });
 
+    test("zeigt den Button 'Neu' an", () => {
+      expect(wrapper.findComponent({ name: "VMenu" }).exists()).toBe(true);
+    });
+
     test("bietet als Neuanlage die drei Abfragearten an", () => {
       expect((wrapper.vm as any).$.setupState.neuanlageOptionen.map((option: any) => option.route)).toEqual([
         "/abfrage?art=BAULEITPLANVERFAHREN",
         "/abfrage?art=BAUGENEHMIGUNGSVERFAHREN",
         "/abfrage?art=WEITERES_VERFAHREN",
       ]);
+    });
+  });
+
+  describe("Startseite der Nutzer", () => {
+    test("zeigt ohne Neuanlage keinen Button 'Neu' an", async () => {
+      const anwender = mountComponent(STARTSEITE_ANWENDER);
+      await anwender.vm.$nextTick();
+      expect(anwender.findComponent({ name: "VMenu" }).exists()).toBe(false);
     });
   });
 });

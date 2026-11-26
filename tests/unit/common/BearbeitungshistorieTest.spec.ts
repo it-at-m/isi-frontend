@@ -29,6 +29,20 @@ describe("BearbeitungshistorieTest.spec.ts", () => {
     ]);
   });
 
+  test("stellt Einträge ohne Zeitpunkt ans Ende", () => {
+    const wrapper = mountComponent([
+      { art: BearbeitungsArt.Erstellt },
+      { art: BearbeitungsArt.Aktualisiert, zeitpunkt: new Date(2026, 0, 3) },
+      { art: BearbeitungsArt.Statusaenderung, zeitpunkt: new Date(2026, 0, 2) },
+    ]);
+
+    expect((wrapper.vm as any).eintraege.map((eintrag: BearbeitungshistorieDto) => eintrag.art)).toEqual([
+      BearbeitungsArt.Aktualisiert,
+      BearbeitungsArt.Statusaenderung,
+      BearbeitungsArt.Erstellt,
+    ]);
+  });
+
   test("beschreibt Erstellung, Aktualisierung und Statusänderung", () => {
     const vm = mountComponent([]).vm as any;
 
@@ -39,10 +53,24 @@ describe("BearbeitungshistorieTest.spec.ts", () => {
     );
   });
 
-  test("gibt einen Eintrag ohne Art nicht als Statusänderung aus", () => {
+  test("zeigt bei einem Eintrag ohne Art den Zielstatus, aber nicht als Statusänderung", () => {
     const vm = mountComponent([]).vm as any;
 
-    expect(vm.aktionText({ zielStatus: StatusAbfrage.StartBearbeitung })).toBe("");
+    const text = vm.aktionText({ zielStatus: StatusAbfrage.StartBearbeitung });
+
+    expect(text).toBe("Start Bearbeitung");
+    expect(text).not.toContain("Statusänderung");
+    expect(vm.aktionText({})).toBe("");
+  });
+
+  test("zeigt den Zielstatus selbst, solange keine Bezeichnung verfügbar ist", () => {
+    const vm = mountComponent([]).vm as any;
+    useLookupStore().statusAbfrage = [];
+
+    expect(vm.aktionText({ art: BearbeitungsArt.Statusaenderung, zielStatus: StatusAbfrage.Angelegt })).toBe(
+      "Statusänderung: ANGELEGT",
+    );
+    expect(vm.aktionText({ art: BearbeitungsArt.Statusaenderung })).toBe("Statusänderung");
   });
 
   test("zeigt Datum und Uhrzeit der Änderung", () => {

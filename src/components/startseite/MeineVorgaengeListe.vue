@@ -1,13 +1,13 @@
 <template>
   <div class="d-flex flex-column fill-height">
-    <h2 class="text-h5 text-primary font-weight-bold mb-3">Meine Vorgänge</h2>
+    <h2 class="text-h5 text-primary font-weight-bold mb-3">Vorgänge</h2>
 
     <div class="d-flex align-center flex-nowrap ga-2 mb-3">
       <v-select
         id="meine_vorgaenge_schnellfilter"
         v-model="schnellfilter"
         :items="schnellfilterOptionen"
-        label="Meine Vorgänge"
+        label="Vorgänge"
         variant="outlined"
         density="compact"
         hide-details
@@ -27,6 +27,7 @@
       />
       <v-spacer />
       <v-menu
+        v-if="neuanlageOptionen.length > 0"
         id="meine_vorgaenge_neu_menu"
         location="bottom end"
         transition="slide-y-transition"
@@ -107,7 +108,7 @@
       class="pa-0 ma-0 w-100 d-flex justify-center align-center flex-grow-1"
       style="min-height: 100px"
     >
-      <span>Keine eigenen Vorgänge vorhanden</span>
+      <span>Keine Vorgänge gefunden</span>
     </v-container>
   </div>
 </template>
@@ -200,6 +201,9 @@ function createSearchQuery(requestedPage: number): SearchQueryAndSortingDto {
  */
 async function loadVorgaenge(): Promise<void> {
   const aktuelleGeneration = ++generation.value;
+  // Bis die neue erste Seite vorliegt, darf das Scrollen keine weitere Seite der neuen Suche nachladen.
+  page.value = 1;
+  numberOfPages.value = 0;
   const searchResults = await searchForEntities(createSearchQuery(1));
   if (aktuelleGeneration !== generation.value) {
     return;

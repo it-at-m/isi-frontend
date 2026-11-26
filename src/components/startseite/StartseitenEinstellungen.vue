@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { StartseitenEinstellungDto } from "@/api/api-client/isi-backend";
 import { useStartseitenEinstellungApi } from "@/composables/requests/startseite/StartseitenEinstellungApi";
 import { useFilterPersistence } from "@/composables/requests/filter/useFilterPersistence";
@@ -77,8 +77,8 @@ const emit = defineEmits<{ (e: "gespeichert"): void }>();
 
 interface Props {
   /**
-   * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge". Ohne personalisierte Startseite entfallen
-   * die Einstellungen für "Meine Vorgänge".
+   * Die Schnellfilter des Startseitenbereichs "Vorgänge". Ohne personalisierte Startseite entfallen
+   * die Einstellungen für "Vorgänge".
    */
   schnellfilterOptionen?: Array<AuswahlOption<SchnellfilterVorgaenge>>;
 }
@@ -109,16 +109,18 @@ const standardFilterOptionen = computed(() => [
 async function speichern(): Promise<void> {
   saving.value = true;
   try {
+    // Gespeichert wird der angezeigte Schnellfilter, also auch ein angezeigter Ersatzwert.
+    const zuSpeichernderSchnellfilter = schnellfilter.value;
     // Die Werte entsprechen den Backend-Enums SchnellfilterVorgaenge, SortAttribute und SortOrder.
     await saveStartseitenEinstellung({
-      schnellfilter: schnellfilter.value,
+      schnellfilter: zuSpeichernderSchnellfilter,
       sortBy: sortierung.value,
       sortOrder: getSortOrderForSortierung(sortierung.value),
       standardFilterId: standardFilterId.value ?? undefined,
     } as unknown as StartseitenEinstellungDto);
     // Erst nach erfolgreichem Speichern übernehmen, damit die Vorgangsliste keine verworfene
     // Einstellung anzeigt.
-    startseitenEinstellungStore.setEinstellung(schnellfilter.value, sortierung.value);
+    startseitenEinstellungStore.setEinstellung(zuSpeichernderSchnellfilter, sortierung.value);
     toast.success("Die Startseiteneinstellungen wurden gespeichert.");
     // Ein geänderter Standard-Filter wirkt sofort und nicht erst beim nächsten Laden der Anwendung.
     if (standardFilterId.value !== gespeicherteStandardFilterId.value) {
@@ -159,12 +161,35 @@ onMounted(async () => {
     // Ohne gespeicherte Einstellungen bleiben die Standardwerte bestehen.
   }
   await startseitenEinstellungStore.initialize();
-  // Ohne angebotene Schnellfilter bleibt die gespeicherte Voreinstellung beim Speichern unverändert erhalten.
-  schnellfilter.value = props.schnellfilterOptionen
-    ? getGueltigenSchnellfilter(startseitenEinstellungStore.schnellfilter, props.schnellfilterOptionen)
-    : startseitenEinstellungStore.schnellfilter;
+  zeigeGueltigenSchnellfilter(false);
   sortierung.value = startseitenEinstellungStore.sortierung;
 });
+
+/**
+ * Zeigt einen von der Startseite angebotenen Schnellfilter an, damit beim Speichern kein nicht angebotener Wert
+ * übernommen wird. Nicht angebotene Werte werden durch die gespeicherte Voreinstellung oder einen Ersatzwert ersetzt.
+ * Ohne angebotene Schnellfilter bleibt die gespeicherte Voreinstellung unverändert erhalten.
+ *
+ * @param behalteAuswahl ob der aktuell angezeigte Schnellfilter erhalten bleibt, solange er angeboten wird.
+ */
+function zeigeGueltigenSchnellfilter(behalteAuswahl: boolean): void {
+  const optionen = props.schnellfilterOptionen;
+  if (!optionen) {
+    schnellfilter.value = startseitenEinstellungStore.schnellfilter;
+    return;
+  }
+  if (behalteAuswahl && optionen.some((option) => option.value === schnellfilter.value)) {
+    return;
+  }
+  schnellfilter.value = getGueltigenSchnellfilter(startseitenEinstellungStore.schnellfilter, optionen);
+}
+
+// Die Schnellfilter stehen erst fest, wenn die Rollen der Person geladen sind. Eine noch nicht gespeicherte
+// Auswahl der Person bleibt dabei erhalten, solange sie angeboten wird.
+watch(
+  () => props.schnellfilterOptionen,
+  () => zeigeGueltigenSchnellfilter(true),
+);
 
 defineExpose({ schnellfilter, sortierung, standardFilterId, standardFilterOptionen, speichern });
 </script>

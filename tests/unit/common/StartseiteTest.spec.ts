@@ -8,6 +8,7 @@ import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
 import { HINWEIS_SUCHE_STARTEN, useSearchStore } from "@/stores/SearchStore";
 import {
   STARTSEITE_ABFRAGEERSTELLUNG,
+  STARTSEITE_ANWENDER,
   STARTSEITE_BEDARFSMELDUNG,
   STARTSEITE_SACHBEARBEITUNG,
 } from "@/utils/StartseitenKonfiguration";
@@ -79,8 +80,24 @@ describe("StartseiteTest.spec.ts", () => {
       expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(false);
     });
 
-    test("lässt die Startseite für alle anderen Rollen unverändert", () => {
+    test("zeigt Nutzern mit ausschließlich der Rolle Anwender die personalisierte Startseite der Nutzer", () => {
       setRoles(["anwender"]);
+      const wrapper: VueWrapper = mount(Main, { shallow: true });
+      const startseite = wrapper.findComponent({ name: "StartseitePersonalisiert" });
+      expect(startseite.exists()).toBe(true);
+      expect(startseite.props("konfiguration")).toBe(STARTSEITE_ANWENDER);
+    });
+
+    test("zeigt Anwendern mit einer weiteren Rolle die Startseite der weiteren Rolle", () => {
+      setRoles(["anwender", "abfrageerstellung"]);
+      const wrapper: VueWrapper = mount(Main, { shallow: true });
+      expect(wrapper.findComponent({ name: "StartseitePersonalisiert" }).props("konfiguration")).toBe(
+        STARTSEITE_ABFRAGEERSTELLUNG,
+      );
+    });
+
+    test("lässt die Startseite für alle anderen Rollen unverändert", () => {
+      setRoles(["bedarfsmeldung"]);
       const wrapper: VueWrapper = mount(Main, { shallow: true });
       expect((wrapper.vm as any).startseitenKonfiguration).toBeUndefined();
       expect(wrapper.findComponent({ name: "StartseiteStandard" }).exists()).toBe(true);

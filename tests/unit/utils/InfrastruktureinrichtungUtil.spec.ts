@@ -38,4 +38,10 @@ describe("InfrastruktureinrichtungUtil.spec.ts", () => {
     expect(isInfrastruktureinrichtungEditable(sozialplanung, false, Typ.Nachbarschaftstreff)).toBe(true);
     expect(isInfrastruktureinrichtungEditable(sozialplanung, false, Typ.Kindergarten)).toBe(false);
   });
+
+  test("mit Sozialplanung und einer weiteren schreibenden Rolle sind alle Einrichtungen bearbeitbar", () => {
+    const beide = { ...KEINE, isBedarfsmeldungSozialplanung: true, isInfrastruktureinrichtungSchreibend: true };
+    expect(isInfrastruktureinrichtungEditable(beide, false, Typ.Nachbarschaftstreff)).toBe(true);
+    expect(isInfrastruktureinrichtungEditable(beide, false, Typ.Kindergarten)).toBe(true);
+  });
 });

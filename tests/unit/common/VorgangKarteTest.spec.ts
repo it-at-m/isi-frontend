@@ -89,6 +89,44 @@ describe("VorgangKarteTest.spec.ts", () => {
   test("zeigt bei einer Infrastruktureinrichtung ohne Verortung keinen Stadtbezirk an", () => {
     const wrapper = mountKarte({ type: SearchResultDtoTypeEnum.Infrastruktureinrichtung, nameEinrichtung: "Ohne Ort" });
     expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("");
+    expect(wrapper.find("#vorgang_karte_stadtbezirke").exists()).toBe(false);
+  });
+
+  test("zeigt den Stadtbezirk mit Marker an, wenn eine Bezeichnung vorliegt", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Mit Ort",
+      stadtbezirke: new Set([{ nummer: "06", name: "Sendling" }]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect(wrapper.find("#vorgang_karte_stadtbezirke").exists()).toBe(true);
+  });
+
+  test("zeigt bei einem Stadtbezirk ohne Nummer nur den Namen an", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Ohne Nummer",
+      stadtbezirke: new Set([{ name: "Sendling" }, { nummer: "01", name: "Altstadt-Lehel" }]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("01/Altstadt-Lehel, Sendling");
+  });
+
+  test("lässt Stadtbezirke ohne Nummer und Namen ohne zusätzliches Komma aus", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Mit leerem Bezirk",
+      stadtbezirke: new Set([{}, { nummer: "06", name: "Sendling" }]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("06/Sendling");
+  });
+
+  test("zeigt keinen Stadtbezirk an, wenn kein Stadtbezirk eine Bezeichnung hat", () => {
+    const wrapper = mountKarte({
+      type: SearchResultDtoTypeEnum.Infrastruktureinrichtung,
+      nameEinrichtung: "Nur leere Bezirke",
+      stadtbezirke: new Set([{}, {}]) as Set<StadtbezirkDto>,
+    } as InfrastruktureinrichtungSearchResultDto);
+    expect((wrapper.vm as any).darstellung.stadtbezirke).toBe("");
+    expect(wrapper.find("#vorgang_karte_stadtbezirke").exists()).toBe(false);
   });
 
   test("erzeugt ohne id keinen Link", () => {

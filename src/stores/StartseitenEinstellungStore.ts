@@ -16,7 +16,7 @@ interface State {
 }
 
 /**
- * Hält die gespeicherten Startseiteneinstellungen des Nutzers für den Bereich "Meine Vorgänge".
+ * Hält die gespeicherten Startseiteneinstellungen des Nutzers für den Bereich "Vorgänge".
  *
  * Der Store ist die gemeinsame Quelle für die Profileinstellungen und die Vorgangsliste, damit eine
  * gespeicherte Änderung sofort in der Liste ankommt, ohne die Seite neu zu laden.

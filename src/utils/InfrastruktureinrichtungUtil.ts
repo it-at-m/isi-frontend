@@ -35,5 +35,6 @@ export function isInfrastruktureinrichtungEditable(
     return true;
   }
   const isNachbarschaftstreff = typ === InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff;
-  return rollen.isBedarfsmeldungSozialplanung ? isNachbarschaftstreff : !isNachbarschaftstreff;
+  // Die Rechte werden je Einrichtungstyp geprüft, damit eine Person mit beiden Rollen beide Bereiche bearbeiten kann.
+  return isNachbarschaftstreff ? rollen.isBedarfsmeldungSozialplanung : rollen.isInfrastruktureinrichtungSchreibend;
 }

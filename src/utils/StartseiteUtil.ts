@@ -7,7 +7,7 @@ import {
 } from "@/api/api-client/isi-backend";
 
 /**
- * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge" aller Rollen.
+ * Die Schnellfilter des Startseitenbereichs "Vorgänge" aller Rollen.
  *
  * Die Werte entsprechen dem Backend-Enum `SchnellfilterVorgaenge`. Welche Schnellfilter einer Rolle angeboten
  * werden, legt deren Startseitenkonfiguration fest (siehe `StartseitenKonfiguration.ts`).
@@ -15,12 +15,12 @@ import {
 export type { SchnellfilterVorgaenge };
 
 /**
- * Ein Eintrag im Bereich "Meine Vorgänge".
+ * Ein Eintrag im Bereich "Vorgänge".
  */
 export type Vorgang = AbfrageSearchResultDto | BauvorhabenSearchResultDto | InfrastruktureinrichtungSearchResultDto;
 
 /**
- * Die Sortierkriterien des Startseitenbereichs "Meine Vorgänge".
+ * Die Sortierkriterien des Startseitenbereichs "Vorgänge".
  *
  * Die Werte entsprechen dem Backend-Enum `SortAttribute`.
  */
@@ -57,7 +57,7 @@ export const SORTIERUNG_OPTIONEN: Array<AuswahlOption<SortierungVorgaenge>> = [
  * <p>
  * Der Schnellfilter "Entwürfe" enthält ausschließlich die noch nicht übermittelten Abfragen im Status
  * `ANGELEGT`. Die Einschränkung auf die selbst angelegten Abfragen erfolgt beim Aufruf der Suche über
- * `filterNurEigeneAbfragen`, welches im Bereich "Meine Vorgänge" immer gesetzt ist.
+ * `filterNurEigeneAbfragen`, welches im Bereich "Vorgänge" immer gesetzt ist.
  *
  * @param schnellfilter der ausgewählte Schnellfilter.
  * @returns die zu filternden Status oder `undefined`, falls nicht nach Status gefiltert werden soll.
@@ -123,6 +123,16 @@ export const SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG: Array<AuswahlOption<Schnellf
 ];
 
 /**
+ * Die Schnellfilter der Startseite für Nutzer (Rolle Anwender).
+ */
+export const SCHNELLFILTER_OPTIONEN_ANWENDER: Array<AuswahlOption<SchnellfilterVorgaenge>> = [
+  { title: "Alle", value: "ALLE" },
+  { title: "Erledigte Abfragen", value: "ERLEDIGT" },
+  { title: "Vorhaben", value: "VORHABEN" },
+  { title: "Infrastruktureinrichtungen", value: "INFRASTRUKTUREINRICHTUNGEN" },
+];
+
+/**
  * Liefert den Schnellfilter, falls er zu den angebotenen Optionen gehört, andernfalls den Standard-Schnellfilter.
  *
  * Die Voreinstellung wird je Nutzer gespeichert. Ein Nutzer mit mehreren Rollen kann daher einen Schnellfilter
@@ -136,9 +146,14 @@ export function getGueltigenSchnellfilter(
   schnellfilter: SchnellfilterVorgaenge | undefined,
   optionen: Array<AuswahlOption<SchnellfilterVorgaenge>>,
 ): SchnellfilterVorgaenge {
-  return optionen.some((option) => option.value === schnellfilter)
-    ? (schnellfilter as SchnellfilterVorgaenge)
-    : DEFAULT_SCHNELLFILTER;
+  if (optionen.some((option) => option.value === schnellfilter)) {
+    return schnellfilter as SchnellfilterVorgaenge;
+  }
+  // Ersatzwert ist "Alle", falls angeboten, sonst der erste angebotene Schnellfilter. Ohne Optionen bleibt es bei "Alle".
+  if (optionen.length === 0 || optionen.some((option) => option.value === DEFAULT_SCHNELLFILTER)) {
+    return DEFAULT_SCHNELLFILTER;
+  }
+  return optionen[0].value;
 }
 
 /**
