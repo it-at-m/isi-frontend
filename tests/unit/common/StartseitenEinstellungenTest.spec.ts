@@ -76,7 +76,7 @@ describe("StartseitenEinstellungenTest.spec.ts", () => {
     expect((wrapper.vm as any).standardFilterId).toBe("filter-1");
   });
 
-  test("zeigt den Standard-Filter allen Rollen, Meine Vorgänge nur mit personalisierter Startseite", async () => {
+  test("zeigt den Standard-Filter allen Rollen, Vorgänge nur mit personalisierter Startseite", async () => {
     const ohneMeineVorgaenge = await mountComponent(false);
     expect(ohneMeineVorgaenge.find("#startseiten_einstellungen_standard_filter").exists()).toBe(true);
     expect(ohneMeineVorgaenge.find("#startseiten_einstellungen_schnellfilter").exists()).toBe(false);

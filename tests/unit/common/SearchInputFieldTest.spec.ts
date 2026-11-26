@@ -98,7 +98,7 @@ describe("SearchInputFieldTest.spec.ts", () => {
   });
 
   describe("Filterauswahl", () => {
-    test("ersetzt das Bookmark-Symbol durch eine Auswahl im Stil von Meine Vorgänge", () => {
+    test("ersetzt das Bookmark-Symbol durch eine Auswahl im Stil von Vorgänge", () => {
       const wrapper = mountComponent();
       const auswahl = wrapper.findComponent({ name: "VSelect" });
       expect(auswahl.exists()).toBe(true);

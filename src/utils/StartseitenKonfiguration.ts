@@ -12,7 +12,7 @@ import {
 } from "@/utils/StartseiteUtil";
 
 /**
- * Die vom Schnellfilter abhängigen Teile der Suchanfrage im Bereich "Meine Vorgänge".
+ * Die vom Schnellfilter abhängigen Teile der Suchanfrage im Bereich "Vorgänge".
  */
 export type Suchkriterien = Pick<
   SearchQueryAndSortingDto,
@@ -33,7 +33,7 @@ export type Suchkriterien = Pick<
 >;
 
 /**
- * Ein Eintrag im Menü "Neu" des Bereichs "Meine Vorgänge".
+ * Ein Eintrag im Menü "Neu" des Bereichs "Vorgänge".
  */
 export interface NeuanlageOption {
   title: string;
@@ -49,7 +49,7 @@ export interface NeuanlageOption {
  * Rollen geteilt.
  */
 export interface StartseitenKonfiguration {
-  /** Die im Bereich "Meine Vorgänge" und in den Profileinstellungen angebotenen Schnellfilter. */
+  /** Die im Bereich "Vorgänge" und in den Profileinstellungen angebotenen Schnellfilter. */
   schnellfilterOptionen: Array<AuswahlOption<SchnellfilterVorgaenge>>;
   /** Bildet den gewählten Schnellfilter auf die Suchkriterien ab. */
   getSuchkriterien: (schnellfilter: SchnellfilterVorgaenge) => Suchkriterien;

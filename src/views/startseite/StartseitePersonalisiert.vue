@@ -35,7 +35,7 @@ import UebersichtPanel from "@/components/startseite/UebersichtPanel.vue";
 import type { StartseitenKonfiguration } from "@/utils/StartseitenKonfiguration";
 
 /**
- * Personalisierte Startseite mit den Bereichen "Meine Vorgänge" und "Übersicht".
+ * Personalisierte Startseite mit den Bereichen "Vorgänge" und "Übersicht".
  *
  * Der Aufbau ist für alle Rollen gleich, die rollenspezifischen Teile kommen aus der Konfiguration.
  */

@@ -77,8 +77,8 @@ const emit = defineEmits<{ (e: "gespeichert"): void }>();
 
 interface Props {
   /**
-   * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge". Ohne personalisierte Startseite entfallen
-   * die Einstellungen für "Meine Vorgänge".
+   * Die Schnellfilter des Startseitenbereichs "Vorgänge". Ohne personalisierte Startseite entfallen
+   * die Einstellungen für "Vorgänge".
    */
   schnellfilterOptionen?: Array<AuswahlOption<SchnellfilterVorgaenge>>;
 }

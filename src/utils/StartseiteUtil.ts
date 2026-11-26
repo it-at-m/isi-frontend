@@ -7,7 +7,7 @@ import {
 } from "@/api/api-client/isi-backend";
 
 /**
- * Die Schnellfilter des Startseitenbereichs "Meine Vorgänge" aller Rollen.
+ * Die Schnellfilter des Startseitenbereichs "Vorgänge" aller Rollen.
  *
  * Die Werte entsprechen dem Backend-Enum `SchnellfilterVorgaenge`. Welche Schnellfilter einer Rolle angeboten
  * werden, legt deren Startseitenkonfiguration fest (siehe `StartseitenKonfiguration.ts`).
@@ -15,12 +15,12 @@ import {
 export type { SchnellfilterVorgaenge };
 
 /**
- * Ein Eintrag im Bereich "Meine Vorgänge".
+ * Ein Eintrag im Bereich "Vorgänge".
  */
 export type Vorgang = AbfrageSearchResultDto | BauvorhabenSearchResultDto | InfrastruktureinrichtungSearchResultDto;
 
 /**
- * Die Sortierkriterien des Startseitenbereichs "Meine Vorgänge".
+ * Die Sortierkriterien des Startseitenbereichs "Vorgänge".
  *
  * Die Werte entsprechen dem Backend-Enum `SortAttribute`.
  */
@@ -57,7 +57,7 @@ export const SORTIERUNG_OPTIONEN: Array<AuswahlOption<SortierungVorgaenge>> = [
  * <p>
  * Der Schnellfilter "Entwürfe" enthält ausschließlich die noch nicht übermittelten Abfragen im Status
  * `ANGELEGT`. Die Einschränkung auf die selbst angelegten Abfragen erfolgt beim Aufruf der Suche über
- * `filterNurEigeneAbfragen`, welches im Bereich "Meine Vorgänge" immer gesetzt ist.
+ * `filterNurEigeneAbfragen`, welches im Bereich "Vorgänge" immer gesetzt ist.
  *
  * @param schnellfilter der ausgewählte Schnellfilter.
  * @returns die zu filternden Status oder `undefined`, falls nicht nach Status gefiltert werden soll.
