@@ -442,6 +442,20 @@ describe("MeineVorgaengeListeTest.spec.ts", () => {
     });
   });
 
+  describe("Überschrift", () => {
+    test("zeigt bei personenbezogenen Vorgängen 'Meine Vorgänge' an", () => {
+      expect(wrapper.find("h2").text()).toBe("Meine Vorgänge");
+      expect(wrapper.findComponent({ name: "VSelect" }).props("label")).toBe("Meine Vorgänge");
+    });
+
+    test("zeigt bei den Nutzern 'Vorgänge' an", async () => {
+      const anwender = mountComponent(STARTSEITE_ANWENDER);
+      await anwender.vm.$nextTick();
+      expect(anwender.find("h2").text()).toBe("Vorgänge");
+      expect(anwender.findComponent({ name: "VSelect" }).props("label")).toBe("Vorgänge");
+    });
+  });
+
   describe("Startseite der Nutzer", () => {
     test("zeigt ohne Neuanlage keinen Button 'Neu' an", async () => {
       const anwender = mountComponent(STARTSEITE_ANWENDER);

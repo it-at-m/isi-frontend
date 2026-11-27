@@ -49,6 +49,8 @@ export interface NeuanlageOption {
  * Rollen geteilt.
  */
 export interface StartseitenKonfiguration {
+  /** Die Überschrift des Bereichs der Vorgänge, zugleich die Beschriftung des Schnellfilters. */
+  titel: string;
   /** Die im Bereich "Vorgänge" und in den Profileinstellungen angebotenen Schnellfilter. */
   schnellfilterOptionen: Array<AuswahlOption<SchnellfilterVorgaenge>>;
   /** Bildet den gewählten Schnellfilter auf die Suchkriterien ab. */
@@ -112,6 +114,7 @@ const ALLE_OBJEKTE: Suchkriterien = {
  * Abfrageersteller sehen ausschließlich die selbst angelegten Abfragen.
  */
 export const STARTSEITE_ABFRAGEERSTELLUNG: StartseitenKonfiguration = {
+  titel: "Meine Vorgänge",
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN,
   getSuchkriterien: (schnellfilter) => ({
     ...ABFRAGEN,
@@ -175,6 +178,7 @@ export function getSuchkriterienSachbearbeitung(schnellfilter: SchnellfilterVorg
  * Über die Startseite legt sie ausschließlich Vorhaben an.
  */
 export const STARTSEITE_SACHBEARBEITUNG: StartseitenKonfiguration = {
+  titel: "Meine Vorgänge",
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_SACHBEARBEITUNG,
   getSuchkriterien: getSuchkriterienSachbearbeitung,
   neuanlageOptionen: [{ title: "Vorhaben erstellen", icon: "mdi-account-hard-hat", route: "/bauvorhaben" }],
@@ -233,6 +237,7 @@ export function getSuchkriterienBedarfsmeldung(schnellfilter: SchnellfilterVorga
  * werden dürfen (Authority `ISI_BACKEND_WRITE_BAUVORHABEN`). Aus demselben Grund gibt es keinen Schnellfilter "Vorhaben".
  */
 export const STARTSEITE_BEDARFSMELDUNG: StartseitenKonfiguration = {
+  titel: "Meine Vorgänge",
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_BEDARFSMELDUNG,
   getSuchkriterien: getSuchkriterienBedarfsmeldung,
   neuanlageOptionen: [
@@ -273,6 +278,8 @@ export function getSuchkriterienAnwender(schnellfilter: SchnellfilterVorgaenge):
  * können diese nach Stadtbezirken filtern. Da sie nur lesen, gibt es keine Neuanlage.
  */
 export const STARTSEITE_ANWENDER: StartseitenKonfiguration = {
+  // Nutzer sehen alle Vorgänge ohne Personenbezug, deshalb nicht "Meine Vorgänge".
+  titel: "Vorgänge",
   schnellfilterOptionen: SCHNELLFILTER_OPTIONEN_ANWENDER,
   getSuchkriterien: getSuchkriterienAnwender,
   neuanlageOptionen: [],

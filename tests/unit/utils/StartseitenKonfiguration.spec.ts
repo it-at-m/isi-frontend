@@ -292,6 +292,15 @@ describe("StartseitenKonfiguration.spec.ts", () => {
     });
   });
 
+  describe("Titel", () => {
+    test("heißt nur bei den Nutzern 'Vorgänge', bei allen anderen Rollen 'Meine Vorgänge'", () => {
+      expect(STARTSEITE_ANWENDER.titel).toBe("Vorgänge");
+      expect(STARTSEITE_ABFRAGEERSTELLUNG.titel).toBe("Meine Vorgänge");
+      expect(STARTSEITE_SACHBEARBEITUNG.titel).toBe("Meine Vorgänge");
+      expect(STARTSEITE_BEDARFSMELDUNG.titel).toBe("Meine Vorgänge");
+    });
+  });
+
   describe("Startseite der Nutzer", () => {
     test("bietet den Stadtbezirksfilter und keine Neuanlage an", () => {
       expect(STARTSEITE_ANWENDER.stadtbezirkFilter).toBe(true);
