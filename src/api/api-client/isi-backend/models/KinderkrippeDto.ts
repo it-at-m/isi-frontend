@@ -20,6 +20,13 @@ import {
     InfrastruktureinrichtungDtoToJSON,
     InfrastruktureinrichtungDtoToJSONTyped,
 } from './InfrastruktureinrichtungDto';
+import type { UncertainBoolean } from './UncertainBoolean';
+import {
+    UncertainBooleanFromJSON,
+    UncertainBooleanFromJSONTyped,
+    UncertainBooleanToJSON,
+    UncertainBooleanToJSONTyped,
+} from './UncertainBoolean';
 import type { VerortungPointDto } from './VerortungPointDto';
 import {
     VerortungPointDtoFromJSON,
@@ -58,19 +65,71 @@ export interface KinderkrippeDto extends InfrastruktureinrichtungDto {
     /**
      * 
      */
-    anzahlKinderkrippePlaetze: number;
-    /**
-     * 
-     */
-    anzahlKinderkrippeGruppen: number;
-    /**
-     * 
-     */
-    wohnungsnaheKinderkrippePlaetze?: number;
-    /**
-     * 
-     */
     einrichtungstraeger?: KinderkrippeDtoEinrichtungstraegerEnum;
+    /**
+     * 
+     */
+    fertigstellungsmonat?: number;
+    /**
+     * 
+     */
+    sobonRelevant: UncertainBoolean;
+    /**
+     * 
+     */
+    muenchnerKitafoerderung?: boolean;
+    /**
+     * 
+     */
+    miniKita?: boolean;
+    /**
+     * 
+     */
+    integrationseinrichtung?: boolean;
+    /**
+     * 
+     */
+    nameTraeger?: string;
+    /**
+     * 
+     */
+    gesamtplaetzeNachBE?: number;
+    /**
+     * 
+     */
+    kinderkrippenplaetzeNachBE?: number;
+    /**
+     * 
+     */
+    ueberregionaleKinderkrippenplaetze?: number;
+    /**
+     * 
+     */
+    belegungKinderkrippenplaetze?: number;
+    /**
+     * 
+     */
+    sollBelegungKinderkrippenplaetzeKePlus?: number;
+    /**
+     * 
+     */
+    sollBelegungKinderkrippenplaetze?: number;
+    /**
+     * 
+     */
+    integrationsplaetzeKinderkrippeKePlus?: number;
+    /**
+     * 
+     */
+    integrationsplaetzeKinderkrippe?: number;
+    /**
+     * 
+     */
+    belegungIntegrationsplaetzeKinderkrippe?: number;
+    /**
+     * 
+     */
+    linkKePlus?: string;
 }
 
 
@@ -95,8 +154,7 @@ export type KinderkrippeDtoEinrichtungstraegerEnum = typeof KinderkrippeDtoEinri
  * Check if a given object implements the KinderkrippeDto interface.
  */
 export function instanceOfKinderkrippeDto(value: object): value is KinderkrippeDto {
-    if (!('anzahlKinderkrippePlaetze' in value) || value['anzahlKinderkrippePlaetze'] === undefined) return false;
-    if (!('anzahlKinderkrippeGruppen' in value) || value['anzahlKinderkrippeGruppen'] === undefined) return false;
+    if (!('sobonRelevant' in value) || value['sobonRelevant'] === undefined) return false;
     return true;
 }
 
@@ -116,10 +174,23 @@ export function KinderkrippeDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         ...InfrastruktureinrichtungDtoFromJSONTyped(json, true),
-        'anzahlKinderkrippePlaetze': json['anzahlKinderkrippePlaetze'],
-        'anzahlKinderkrippeGruppen': json['anzahlKinderkrippeGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': json['wohnungsnaheKinderkrippePlaetze'] == null ? undefined : json['wohnungsnaheKinderkrippePlaetze'],
         'einrichtungstraeger': json['einrichtungstraeger'] == null ? undefined : json['einrichtungstraeger'],
+        'fertigstellungsmonat': json['fertigstellungsmonat'] == null ? undefined : json['fertigstellungsmonat'],
+        'sobonRelevant': UncertainBooleanFromJSON(json['sobonRelevant']),
+        'muenchnerKitafoerderung': json['muenchnerKitafoerderung'] == null ? undefined : json['muenchnerKitafoerderung'],
+        'miniKita': json['miniKita'] == null ? undefined : json['miniKita'],
+        'integrationseinrichtung': json['integrationseinrichtung'] == null ? undefined : json['integrationseinrichtung'],
+        'nameTraeger': json['nameTraeger'] == null ? undefined : json['nameTraeger'],
+        'gesamtplaetzeNachBE': json['gesamtplaetzeNachBE'] == null ? undefined : json['gesamtplaetzeNachBE'],
+        'kinderkrippenplaetzeNachBE': json['kinderkrippenplaetzeNachBE'] == null ? undefined : json['kinderkrippenplaetzeNachBE'],
+        'ueberregionaleKinderkrippenplaetze': json['ueberregionaleKinderkrippenplaetze'] == null ? undefined : json['ueberregionaleKinderkrippenplaetze'],
+        'belegungKinderkrippenplaetze': json['belegungKinderkrippenplaetze'] == null ? undefined : json['belegungKinderkrippenplaetze'],
+        'sollBelegungKinderkrippenplaetzeKePlus': json['sollBelegungKinderkrippenplaetzeKePlus'] == null ? undefined : json['sollBelegungKinderkrippenplaetzeKePlus'],
+        'sollBelegungKinderkrippenplaetze': json['sollBelegungKinderkrippenplaetze'] == null ? undefined : json['sollBelegungKinderkrippenplaetze'],
+        'integrationsplaetzeKinderkrippeKePlus': json['integrationsplaetzeKinderkrippeKePlus'] == null ? undefined : json['integrationsplaetzeKinderkrippeKePlus'],
+        'integrationsplaetzeKinderkrippe': json['integrationsplaetzeKinderkrippe'] == null ? undefined : json['integrationsplaetzeKinderkrippe'],
+        'belegungIntegrationsplaetzeKinderkrippe': json['belegungIntegrationsplaetzeKinderkrippe'] == null ? undefined : json['belegungIntegrationsplaetzeKinderkrippe'],
+        'linkKePlus': json['linkKePlus'] == null ? undefined : json['linkKePlus'],
     };
 }
 
@@ -141,10 +212,23 @@ export function KinderkrippeDtoToJSONTyped(value?: KinderkrippeDto | null, ignor
 
     return {
         ...InfrastruktureinrichtungDtoToJSONTyped(value, true),
-        'anzahlKinderkrippePlaetze': value['anzahlKinderkrippePlaetze'],
-        'anzahlKinderkrippeGruppen': value['anzahlKinderkrippeGruppen'],
-        'wohnungsnaheKinderkrippePlaetze': value['wohnungsnaheKinderkrippePlaetze'],
         'einrichtungstraeger': value['einrichtungstraeger'],
+        'fertigstellungsmonat': value['fertigstellungsmonat'],
+        'sobonRelevant': UncertainBooleanToJSON(value['sobonRelevant']),
+        'muenchnerKitafoerderung': value['muenchnerKitafoerderung'],
+        'miniKita': value['miniKita'],
+        'integrationseinrichtung': value['integrationseinrichtung'],
+        'nameTraeger': value['nameTraeger'],
+        'gesamtplaetzeNachBE': value['gesamtplaetzeNachBE'],
+        'kinderkrippenplaetzeNachBE': value['kinderkrippenplaetzeNachBE'],
+        'ueberregionaleKinderkrippenplaetze': value['ueberregionaleKinderkrippenplaetze'],
+        'belegungKinderkrippenplaetze': value['belegungKinderkrippenplaetze'],
+        'sollBelegungKinderkrippenplaetzeKePlus': value['sollBelegungKinderkrippenplaetzeKePlus'],
+        'sollBelegungKinderkrippenplaetze': value['sollBelegungKinderkrippenplaetze'],
+        'integrationsplaetzeKinderkrippeKePlus': value['integrationsplaetzeKinderkrippeKePlus'],
+        'integrationsplaetzeKinderkrippe': value['integrationsplaetzeKinderkrippe'],
+        'belegungIntegrationsplaetzeKinderkrippe': value['belegungIntegrationsplaetzeKinderkrippe'],
+        'linkKePlus': value['linkKePlus'],
     };
 }
 

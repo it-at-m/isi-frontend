@@ -24,6 +24,7 @@ interface State {
   anlassPlanung: LookupEntryDto[];
   einrichtungstraeger: LookupEntryDto[];
   einrichtungstraegerSchulen: LookupEntryDto[];
+  einrichtungstraegerKinderkrippeKindergarten: LookupEntryDto[];
   infrastruktureinrichtungArt: LookupEntryDto[];
   infrastruktureinrichtungTyp: LookupEntryDto[];
   artGsNachmittagBetreuung: LookupEntryDto[];
@@ -56,6 +57,7 @@ export const useLookupStore = defineStore("lookup", {
       anlassPlanung: [],
       einrichtungstraeger: [],
       einrichtungstraegerSchulen: [],
+      einrichtungstraegerKinderkrippeKindergarten: [],
       infrastruktureinrichtungArt: [],
       infrastruktureinrichtungTyp: [],
       artGsNachmittagBetreuung: [],
@@ -91,6 +93,7 @@ export const useLookupStore = defineStore("lookup", {
         this.setAnlassPlanung(lookupLists.anlassPlanung);
         this.setEinrichtungstraeger(lookupLists.einrichtungstraeger);
         this.setEinrichtungstraegerSchulen(lookupLists.einrichtungstraegerSchulen);
+        this.setEinrichtungstraegerKinderkrippeKindergarten(lookupLists.einrichtungstraegerKinderkrippeKindergarten);
         this.setInfrastruktureinrichtungArt(lookupLists.infrastruktureinrichtungArt);
         this.setInfrastruktureinrichtungTyp(lookupLists.infrastruktureinrichtungTyp);
         this.setArtGsNachmittagBetreuung(lookupLists.artGsNachmittagBetreuung);
@@ -191,6 +194,11 @@ export const useLookupStore = defineStore("lookup", {
       !_.isNil(payload) && !_.isNil(payload.list)
         ? (this.einrichtungstraegerSchulen = payload?.list)
         : (this.einrichtungstraegerSchulen = []);
+    },
+    setEinrichtungstraegerKinderkrippeKindergarten(payload: LookupListDto | undefined): void {
+      !_.isNil(payload) && !_.isNil(payload.list)
+        ? (this.einrichtungstraegerKinderkrippeKindergarten = payload?.list)
+        : (this.einrichtungstraegerKinderkrippeKindergarten = []);
     },
     setInfrastruktureinrichtungArt(payload: LookupListDto | undefined): void {
       !_.isNil(payload) && !_.isNil(payload.list)

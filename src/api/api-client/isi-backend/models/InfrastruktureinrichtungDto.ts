@@ -114,14 +114,6 @@ export interface InfrastruktureinrichtungDto {
     /**
      * 
      */
-    flaecheGesamtgrundstueck?: number;
-    /**
-     * 
-     */
-    flaecheTeilgrundstueck?: number;
-    /**
-     * 
-     */
     idKibigWeb?: string;
     /**
      * 
@@ -150,10 +142,10 @@ export type InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum = typeof 
  */
 export const InfrastruktureinrichtungDtoStatusEnum = {
     Unspecified: 'UNSPECIFIED',
+    Bestand: 'BESTAND',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
     GesichertePlanung: 'GESICHERTE_PLANUNG',
     PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
-    Bestand: 'BESTAND',
 } as const;
 export type InfrastruktureinrichtungDtoStatusEnum = typeof InfrastruktureinrichtungDtoStatusEnum[keyof typeof InfrastruktureinrichtungDtoStatusEnum];
 
@@ -231,8 +223,6 @@ export function InfrastruktureinrichtungDtoFromJSONTyped(json: any, ignoreDiscri
         'nameEinrichtung': json['nameEinrichtung'],
         'fertigstellungsjahr': json['fertigstellungsjahr'] == null ? undefined : json['fertigstellungsjahr'],
         'status': json['status'],
-        'flaecheGesamtgrundstueck': json['flaecheGesamtgrundstueck'] == null ? undefined : json['flaecheGesamtgrundstueck'],
-        'flaecheTeilgrundstueck': json['flaecheTeilgrundstueck'] == null ? undefined : json['flaecheTeilgrundstueck'],
         'idKibigWeb': json['idKibigWeb'] == null ? undefined : json['idKibigWeb'],
         'anlassPlanung': json['anlassPlanung'],
     };
@@ -284,8 +274,6 @@ export function InfrastruktureinrichtungDtoToJSONTyped(value?: Infrastruktureinr
         'nameEinrichtung': value['nameEinrichtung'],
         'fertigstellungsjahr': value['fertigstellungsjahr'],
         'status': value['status'],
-        'flaecheGesamtgrundstueck': value['flaecheGesamtgrundstueck'],
-        'flaecheTeilgrundstueck': value['flaecheTeilgrundstueck'],
         'idKibigWeb': value['idKibigWeb'],
         'anlassPlanung': value['anlassPlanung'],
     };

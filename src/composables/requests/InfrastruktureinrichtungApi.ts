@@ -1,12 +1,15 @@
 import {
   type ApiResponse,
   type CreateInfrastruktureinrichtungRequest,
+  type CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest,
   type CreateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type DeleteInfrastruktureinrichtungByIdRequest,
+  type DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest,
   type DeleteInfrastruktureinrichtungBedarfsmeldungSozialplanungByIdRequest,
   type GetInfrastruktureinrichtungByIdRequest,
   type InfrastruktureinrichtungDto,
   type UpdateInfrastruktureinrichtungOperationRequest,
+  type UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest,
   type UpdateInfrastruktureinrichtungBedarfsmeldungSozialplanungRequest,
   type UpdateInfrastruktureinrichtungRequest,
   InfrastruktureinrichtungApi,
@@ -70,6 +73,26 @@ export function useInfrastruktureinrichtungApi() {
     }
   }
 
+  async function createInfrastruktureinrichtungBedarfsmeldungKita(
+    dto: InfrastruktureinrichtungDto,
+  ): Promise<InfrastruktureinrichtungDto> {
+    // create
+    const requestObject: CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest = {
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.createInfrastruktureinrichtungBedarfsmeldungKitaRaw(
+        requestObject,
+        RequestUtils.getPOSTConfig(),
+      );
+      const mapped = await mapResponse(response);
+      resetFormDirty();
+      return mapped;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function createInfrastruktureinrichtungBedarfsmeldungSozialplanung(
     dto: InfrastruktureinrichtungDto,
   ): Promise<InfrastruktureinrichtungDto> {
@@ -99,6 +122,26 @@ export function useInfrastruktureinrichtungApi() {
     };
     try {
       const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungRaw(
+        requestObject,
+        RequestUtils.getPUTConfig(),
+      );
+      const mapped = await mapResponse(response);
+      resetFormDirty();
+      return mapped;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  async function updateInfrastruktureinrichtungBedarfsmeldungKita(
+    dto: InfrastruktureinrichtungDto,
+  ): Promise<InfrastruktureinrichtungDto> {
+    // update
+    const requestObject: UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest = {
+      updateInfrastruktureinrichtungRequest: dto as unknown as UpdateInfrastruktureinrichtungRequest,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.updateInfrastruktureinrichtungBedarfsmeldungKitaRaw(
         requestObject,
         RequestUtils.getPUTConfig(),
       );
@@ -146,6 +189,22 @@ export function useInfrastruktureinrichtungApi() {
     }
   }
 
+  async function deleteInfrastruktureinrichtungBedarfsmeldungKitaById(id: string): Promise<void> {
+    const requestObject: DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest = {
+      id: id,
+    };
+    try {
+      const response = await infrastruktureinrichtungApi.deleteInfrastruktureinrichtungBedarfsmeldungKitaById(
+        requestObject,
+        RequestUtils.getDELETEConfig(),
+      );
+      resetFormDirty();
+      return response;
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   async function deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById(id: string): Promise<void> {
     const requestObject: DeleteInfrastruktureinrichtungBedarfsmeldungSozialplanungByIdRequest = {
       id: id,
@@ -165,10 +224,13 @@ export function useInfrastruktureinrichtungApi() {
   return {
     getInfrastruktureinrichtungById,
     createInfrastruktureinrichtung,
+    createInfrastruktureinrichtungBedarfsmeldungKita,
     createInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     updateInfrastruktureinrichtung,
+    updateInfrastruktureinrichtungBedarfsmeldungKita,
     updateInfrastruktureinrichtungBedarfsmeldungSozialplanung,
     deleteInfrastruktureinrichtungById,
+    deleteInfrastruktureinrichtungBedarfsmeldungKitaById,
     deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById,
   };
 }

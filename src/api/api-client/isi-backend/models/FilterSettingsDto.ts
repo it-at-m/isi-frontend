@@ -199,10 +199,10 @@ export type FilterSettingsDtoVerfahrensstandEnum = typeof FilterSettingsDtoVerfa
  */
 export const FilterSettingsDtoInfrastruktureinrichtungStatusEnum = {
     Unspecified: 'UNSPECIFIED',
+    Bestand: 'BESTAND',
     UngesichertePlanung: 'UNGESICHERTE_PLANUNG',
     GesichertePlanung: 'GESICHERTE_PLANUNG',
     PlanungZurueckgezogen: 'PLANUNG_ZURUECKGEZOGEN',
-    Bestand: 'BESTAND',
 } as const;
 export type FilterSettingsDtoInfrastruktureinrichtungStatusEnum = typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum[keyof typeof FilterSettingsDtoInfrastruktureinrichtungStatusEnum];
 

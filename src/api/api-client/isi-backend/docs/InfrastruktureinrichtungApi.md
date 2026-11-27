@@ -5,11 +5,14 @@ All URIs are relative to *http://localhost:8089*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**createInfrastruktureinrichtung**](InfrastruktureinrichtungApi.md#createinfrastruktureinrichtung) | **POST** /infrastruktureinrichtung | Anlegen einer neuen Infrastruktureinrichtung |
+| [**createInfrastruktureinrichtungBedarfsmeldungKita**](InfrastruktureinrichtungApi.md#createinfrastruktureinrichtungbedarfsmeldungkita) | **POST** /infrastruktureinrichtung/bedarfsmeldung_kita | Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita |
 | [**createInfrastruktureinrichtungBedarfsmeldungSozialplanung**](InfrastruktureinrichtungApi.md#createinfrastruktureinrichtungbedarfsmeldungsozialplanung) | **POST** /infrastruktureinrichtung/bedarfsmeldung_sozialplanung | Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung |
+| [**deleteInfrastruktureinrichtungBedarfsmeldungKitaById**](InfrastruktureinrichtungApi.md#deleteinfrastruktureinrichtungbedarfsmeldungkitabyid) | **DELETE** /infrastruktureinrichtung/bedarfsmeldung_kita/{id} | Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita |
 | [**deleteInfrastruktureinrichtungBedarfsmeldungSozialplanungById**](InfrastruktureinrichtungApi.md#deleteinfrastruktureinrichtungbedarfsmeldungsozialplanungbyid) | **DELETE** /infrastruktureinrichtung/bedarfsmeldung_sozialplanung/{id} | Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung |
 | [**deleteInfrastruktureinrichtungById**](InfrastruktureinrichtungApi.md#deleteinfrastruktureinrichtungbyid) | **DELETE** /infrastruktureinrichtung/{id} | Löschen einer Infrastruktureinrichtung |
 | [**getInfrastruktureinrichtungById**](InfrastruktureinrichtungApi.md#getinfrastruktureinrichtungbyid) | **GET** /infrastruktureinrichtung/{id} | Lesen einer Infrastruktureinrichtung |
 | [**updateInfrastruktureinrichtung**](InfrastruktureinrichtungApi.md#updateinfrastruktureinrichtungoperation) | **PUT** /infrastruktureinrichtung | Aktualisierung einer Infrastruktureinrichtung |
+| [**updateInfrastruktureinrichtungBedarfsmeldungKita**](InfrastruktureinrichtungApi.md#updateinfrastruktureinrichtungbedarfsmeldungkita) | **PUT** /infrastruktureinrichtung/bedarfsmeldung_kita | Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita |
 | [**updateInfrastruktureinrichtungBedarfsmeldungSozialplanung**](InfrastruktureinrichtungApi.md#updateinfrastruktureinrichtungbedarfsmeldungsozialplanung) | **PUT** /infrastruktureinrichtung/bedarfsmeldung_sozialplanung | Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Sozialplanung |
 
 
@@ -81,6 +84,74 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## createInfrastruktureinrichtungBedarfsmeldungKita
+
+> UpdateInfrastruktureinrichtungRequest createInfrastruktureinrichtungBedarfsmeldungKita(updateInfrastruktureinrichtungRequest)
+
+Anlegen einer neuen Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+
+### Example
+
+```ts
+import {
+  Configuration,
+  InfrastruktureinrichtungApi,
+} from '';
+import type { CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new InfrastruktureinrichtungApi();
+
+  const body = {
+    // UpdateInfrastruktureinrichtungRequest
+    updateInfrastruktureinrichtungRequest: ...,
+  } satisfies CreateInfrastruktureinrichtungBedarfsmeldungKitaRequest;
+
+  try {
+    const data = await api.createInfrastruktureinrichtungBedarfsmeldungKita(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **updateInfrastruktureinrichtungRequest** | [UpdateInfrastruktureinrichtungRequest](UpdateInfrastruktureinrichtungRequest.md) |  | |
+
+### Return type
+
+[**UpdateInfrastruktureinrichtungRequest**](UpdateInfrastruktureinrichtungRequest.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `*/*`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | CREATED -&gt; Infrastruktureinrichtung wurde erfolgreich erstellt. |  -  |
+| **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
+| **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## createInfrastruktureinrichtungBedarfsmeldungSozialplanung
 
 > UpdateInfrastruktureinrichtungRequest createInfrastruktureinrichtungBedarfsmeldungSozialplanung(updateInfrastruktureinrichtungRequest)
@@ -143,7 +214,76 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | CREATED -&gt; Infrastruktureinrichtung wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## deleteInfrastruktureinrichtungBedarfsmeldungKitaById
+
+> deleteInfrastruktureinrichtungBedarfsmeldungKitaById(id)
+
+Löschen einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+
+### Example
+
+```ts
+import {
+  Configuration,
+  InfrastruktureinrichtungApi,
+} from '';
+import type { DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new InfrastruktureinrichtungApi();
+
+  const body = {
+    // string
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies DeleteInfrastruktureinrichtungBedarfsmeldungKitaByIdRequest;
+
+  try {
+    const data = await api.deleteInfrastruktureinrichtungBedarfsmeldungKitaById(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `*/*`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | NO CONTENT |  -  |
+| **404** | NOT FOUND -&gt; Infrastruktureinrichtung mit dieser ID nicht vorhanden. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
+| **409** | CONFLICT -&gt; Die Infrastruktureinrichtung referenziert ein Bauvorhaben. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -210,6 +350,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Infrastruktureinrichtung mit dieser ID nicht vorhanden. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **409** | CONFLICT -&gt; Die Infrastruktureinrichtung referenziert ein Bauvorhaben. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -416,6 +557,75 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## updateInfrastruktureinrichtungBedarfsmeldungKita
+
+> UpdateInfrastruktureinrichtungRequest updateInfrastruktureinrichtungBedarfsmeldungKita(updateInfrastruktureinrichtungRequest)
+
+Aktualisierung einer Infrastruktureinrichtung für die Rolle Bedarfsmeldung Kita
+
+### Example
+
+```ts
+import {
+  Configuration,
+  InfrastruktureinrichtungApi,
+} from '';
+import type { UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new InfrastruktureinrichtungApi();
+
+  const body = {
+    // UpdateInfrastruktureinrichtungRequest
+    updateInfrastruktureinrichtungRequest: ...,
+  } satisfies UpdateInfrastruktureinrichtungBedarfsmeldungKitaRequest;
+
+  try {
+    const data = await api.updateInfrastruktureinrichtungBedarfsmeldungKita(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **updateInfrastruktureinrichtungRequest** | [UpdateInfrastruktureinrichtungRequest](UpdateInfrastruktureinrichtungRequest.md) |  | |
+
+### Return type
+
+[**UpdateInfrastruktureinrichtungRequest**](UpdateInfrastruktureinrichtungRequest.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `*/*`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK -&gt; Infrastruktureinrichtung wurde erfolgreich aktualisiert. |  -  |
+| **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
+| **404** | NOT_FOUND -&gt; Es gibt keine Infrastruktureinrichtung mit der ID. |  -  |
+| **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## updateInfrastruktureinrichtungBedarfsmeldungSozialplanung
 
 > UpdateInfrastruktureinrichtungRequest updateInfrastruktureinrichtungBedarfsmeldungSozialplanung(updateInfrastruktureinrichtungRequest)
@@ -478,6 +688,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Infrastruktureinrichtung wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT_FOUND -&gt; Es gibt keine Infrastruktureinrichtung mit der ID. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 

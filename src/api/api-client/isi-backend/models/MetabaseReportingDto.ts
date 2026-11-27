@@ -22,22 +22,6 @@ export interface MetabaseReportingDto {
     /**
      * 
      */
-    url?: string;
-    /**
-     * 
-     */
-    reportErgebnissePlanungsursaechlich?: string;
-    /**
-     * 
-     */
-    reportErgebnisseSobonUrsaechlich?: string;
-    /**
-     * 
-     */
-    reportWohneinheiten?: string;
-    /**
-     * 
-     */
     reportBauratendatei?: string;
     /**
      * 
@@ -51,6 +35,22 @@ export interface MetabaseReportingDto {
      * 
      */
     reportAndere?: string;
+    /**
+     * 
+     */
+    url?: string;
+    /**
+     * 
+     */
+    reportErgebnissePlanungsursaechlich?: string;
+    /**
+     * 
+     */
+    reportErgebnisseSobonUrsaechlich?: string;
+    /**
+     * 
+     */
+    reportWohneinheiten?: string;
 }
 
 /**
@@ -70,14 +70,14 @@ export function MetabaseReportingDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'url': json['url'] == null ? undefined : json['url'],
-        'reportErgebnissePlanungsursaechlich': json['reportErgebnissePlanungsursaechlich'] == null ? undefined : json['reportErgebnissePlanungsursaechlich'],
-        'reportErgebnisseSobonUrsaechlich': json['reportErgebnisseSobonUrsaechlich'] == null ? undefined : json['reportErgebnisseSobonUrsaechlich'],
-        'reportWohneinheiten': json['reportWohneinheiten'] == null ? undefined : json['reportWohneinheiten'],
         'reportBauratendatei': json['reportBauratendatei'] == null ? undefined : json['reportBauratendatei'],
         'reportKitaplanungsbereichKrippe': json['reportKitaplanungsbereichKrippe'] == null ? undefined : json['reportKitaplanungsbereichKrippe'],
         'reportKitaplanungsbereichKiga': json['reportKitaplanungsbereichKiga'] == null ? undefined : json['reportKitaplanungsbereichKiga'],
         'reportAndere': json['reportAndere'] == null ? undefined : json['reportAndere'],
+        'url': json['url'] == null ? undefined : json['url'],
+        'reportErgebnissePlanungsursaechlich': json['reportErgebnissePlanungsursaechlich'] == null ? undefined : json['reportErgebnissePlanungsursaechlich'],
+        'reportErgebnisseSobonUrsaechlich': json['reportErgebnisseSobonUrsaechlich'] == null ? undefined : json['reportErgebnisseSobonUrsaechlich'],
+        'reportWohneinheiten': json['reportWohneinheiten'] == null ? undefined : json['reportWohneinheiten'],
     };
 }
 
@@ -92,14 +92,14 @@ export function MetabaseReportingDtoToJSONTyped(value?: MetabaseReportingDto | n
 
     return {
         
-        'url': value['url'],
-        'reportErgebnissePlanungsursaechlich': value['reportErgebnissePlanungsursaechlich'],
-        'reportErgebnisseSobonUrsaechlich': value['reportErgebnisseSobonUrsaechlich'],
-        'reportWohneinheiten': value['reportWohneinheiten'],
         'reportBauratendatei': value['reportBauratendatei'],
         'reportKitaplanungsbereichKrippe': value['reportKitaplanungsbereichKrippe'],
         'reportKitaplanungsbereichKiga': value['reportKitaplanungsbereichKiga'],
         'reportAndere': value['reportAndere'],
+        'url': value['url'],
+        'reportErgebnissePlanungsursaechlich': value['reportErgebnissePlanungsursaechlich'],
+        'reportErgebnisseSobonUrsaechlich': value['reportErgebnisseSobonUrsaechlich'],
+        'reportWohneinheiten': value['reportWohneinheiten'],
     };
 }
 

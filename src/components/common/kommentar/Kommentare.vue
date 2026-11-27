@@ -137,11 +137,20 @@ async function saveKommentar(
       if (props.context === Context.BAUVORHABEN) {
         model = new KommentarBauvorhabenModel(await kommentarApi.createKommentarForBauvorhaben(kommentar));
       } else {
-        const savedKommentar =
-          props.infrastruktureinrichtungTyp ===
-          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-            ? await kommentarApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar)
-            : await kommentarApi.createKommentarForInfrastruktureinrichtung(kommentar);
+        let savedKommentar = undefined;
+        switch (props.infrastruktureinrichtungTyp) {
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+            savedKommentar = await kommentarApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungKita(kommentar);
+            break;
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+            savedKommentar =
+              await kommentarApi.createKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar);
+            break;
+          default:
+            savedKommentar = await kommentarApi.createKommentarForInfrastruktureinrichtung(kommentar);
+            break;
+        }
         model = new KommentarInfrastruktureinrichtungModel(savedKommentar);
       }
       model.isDirty = false;
@@ -151,11 +160,20 @@ async function saveKommentar(
       if (props.context === Context.BAUVORHABEN) {
         model = new KommentarBauvorhabenModel(await kommentarApi.updateKommentarForBauvorhaben(kommentar));
       } else {
-        const savedKommentar =
-          props.infrastruktureinrichtungTyp ===
-          InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-            ? await kommentarApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar)
-            : await kommentarApi.updateKommentarForInfrastruktureinrichtung(kommentar);
+        let savedKommentar = undefined;
+        switch (props.infrastruktureinrichtungTyp) {
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+            savedKommentar = await kommentarApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungKita(kommentar);
+            break;
+          case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+            savedKommentar =
+              await kommentarApi.updateKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar);
+            break;
+          default:
+            savedKommentar = await kommentarApi.updateKommentarForInfrastruktureinrichtung(kommentar);
+            break;
+        }
         model = new KommentarInfrastruktureinrichtungModel(savedKommentar);
       }
       model.isDirty = false;
@@ -196,13 +214,17 @@ async function deleteKommentar(
     if (props.context === Context.BAUVORHABEN) {
       await kommentarApi.deleteKommentarForBauvorhaben(kommentar.id);
     } else {
-      if (
-        props.infrastruktureinrichtungTyp ===
-        InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff
-      ) {
-        await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar.id);
-      } else {
-        await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+      switch (props.infrastruktureinrichtungTyp) {
+        case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kinderkrippe:
+        case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Kindergarten:
+          await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungKita(kommentar.id);
+          break;
+        case InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff:
+          await kommentarApi.deleteKommentarForInfrastruktureinrichtungBedarfsmeldungSozialplanung(kommentar.id);
+          break;
+        default:
+          await kommentarApi.deleteKommentarForInfrastruktureinrichtung(kommentar.id);
+          break;
       }
     }
     const removeIndex = kommentare.value.findIndex((k) => k.id === kommentar.id);
