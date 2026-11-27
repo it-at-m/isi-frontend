@@ -1,13 +1,13 @@
 <template>
   <div class="d-flex flex-column fill-height">
-    <h2 class="text-h5 text-primary font-weight-bold mb-3">Vorgänge</h2>
+    <h2 class="text-h5 text-primary font-weight-bold mb-3">{{ konfiguration.titel }}</h2>
 
     <div class="d-flex align-center flex-nowrap ga-2 mb-3">
       <v-select
         id="meine_vorgaenge_schnellfilter"
         v-model="schnellfilter"
         :items="schnellfilterOptionen"
-        label="Vorgänge"
+        :label="konfiguration.titel"
         variant="outlined"
         density="compact"
         hide-details
