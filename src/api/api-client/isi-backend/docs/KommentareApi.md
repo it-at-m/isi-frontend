@@ -217,6 +217,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | CREATED -&gt; Kommentar wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -284,6 +285,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | CREATED -&gt; Kommentar wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -485,6 +487,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht gelöscht werden |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -552,6 +555,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht gelöscht werden |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -885,6 +889,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Kommentar wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT_FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
@@ -953,6 +958,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Kommentar wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT_FOUND -&gt; Kommentar mit dieser ID nicht vorhanden. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 

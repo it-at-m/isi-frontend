@@ -23,7 +23,6 @@
           ref="kinderkrippeComponent"
           v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <kindergarten-component
           v-if="isKindergarten"
@@ -31,7 +30,6 @@
           ref="kindergartenComponent"
           v-model="infrastruktureinrichtung"
           :is-editable="isEditable"
-          :is-einrichtungstraeger-required="isEinrichtungstraegerRequired"
         />
         <haus-fuer-kinder-component
           v-if="isHausFuerKinder"
@@ -318,11 +316,7 @@ const infrastruktureinrichtungDisplayName = computed(() => {
 });
 
 const isEinrichtungstraegerRequired = computed(() => {
-  return (
-    infrastruktureinrichtung.value.infrastruktureinrichtungTyp !==
-      InfrastruktureinrichtungDtoInfrastruktureinrichtungTypEnum.Nachbarschaftstreff &&
-    infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand
-  );
+  return infrastruktureinrichtung.value.status === InfrastruktureinrichtungDtoStatusEnum.Bestand;
 });
 
 const isInfrastruktureinrichtungComponentVisible = computed(() => {

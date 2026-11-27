@@ -26,6 +26,7 @@ Name | Type
 `anlassPlanung` | [LookupListDto](LookupListDto.md)
 `einrichtungstraeger` | [LookupListDto](LookupListDto.md)
 `einrichtungstraegerSchulen` | [LookupListDto](LookupListDto.md)
+`einrichtungstraegerKinderkrippeKindergarten` | [LookupListDto](LookupListDto.md)
 `infrastruktureinrichtungTyp` | [LookupListDto](LookupListDto.md)
 `artGsNachmittagBetreuung` | [LookupListDto](LookupListDto.md)
 `sobonOrientierungswertJahr` | [LookupListDto](LookupListDto.md)
@@ -61,6 +62,7 @@ const example = {
   "anlassPlanung": null,
   "einrichtungstraeger": null,
   "einrichtungstraegerSchulen": null,
+  "einrichtungstraegerKinderkrippeKindergarten": null,
   "infrastruktureinrichtungTyp": null,
   "artGsNachmittagBetreuung": null,
   "sobonOrientierungswertJahr": null,

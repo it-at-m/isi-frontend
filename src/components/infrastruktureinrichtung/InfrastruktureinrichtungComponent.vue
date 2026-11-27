@@ -198,7 +198,7 @@ interface Props {
 
 const { formChanged } = useSaveLeave();
 const lookupStore = useLookupStore();
-withDefaults(defineProps<Props>(), { isEditable: false, isEinrichtungstraegerRequired: false });
+withDefaults(defineProps<Props>(), { isEditable: false });
 const infrastruktureinrichtung = defineModel<InfrastruktureinrichtungModel>({ required: true });
 const emit = defineEmits(["update:modelValue"]);
 
@@ -211,7 +211,11 @@ watch(
 );
 
 const isEinrichtungstraegerRequired = computed(() => false);
-const einrichtungstraegerList = computed(() => lookupStore.einrichtungstraeger);
+const einrichtungstraegerList = computed(() =>
+  isKinderkrippeOrKindergarten
+    ? lookupStore.einrichtungstraegerKinderkrippeKindergarten
+    : lookupStore.einrichtungstraeger,
+);
 const isKinderkrippeOrKindergarten = computed(
   () =>
     infrastruktureinrichtung.value?.infrastruktureinrichtungTyp ===

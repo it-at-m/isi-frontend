@@ -146,6 +146,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | CREATED -&gt; Infrastruktureinrichtung wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -213,6 +214,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | CREATED -&gt; Infrastruktureinrichtung wurde erfolgreich erstellt. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -280,6 +282,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Infrastruktureinrichtung mit dieser ID nicht vorhanden. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **409** | CONFLICT -&gt; Die Infrastruktureinrichtung referenziert ein Bauvorhaben. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -347,6 +350,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **204** | NO CONTENT |  -  |
 | **404** | NOT FOUND -&gt; Infrastruktureinrichtung mit dieser ID nicht vorhanden. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **409** | CONFLICT -&gt; Die Infrastruktureinrichtung referenziert ein Bauvorhaben. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -615,6 +619,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Infrastruktureinrichtung wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT_FOUND -&gt; Es gibt keine Infrastruktureinrichtung mit der ID. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 
@@ -683,6 +688,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK -&gt; Infrastruktureinrichtung wurde erfolgreich aktualisiert. |  -  |
 | **400** | BAD_REQUEST -&gt; Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe. |  -  |
+| **403** | FORBIDDEN_REQUEST -&gt; Unerwarteter Infrastruktureinrichtung Typ. |  -  |
 | **404** | NOT_FOUND -&gt; Es gibt keine Infrastruktureinrichtung mit der ID. |  -  |
 | **412** | PRECONDITION_FAILED -&gt; In der Anwendung ist bereits eine neuere Version der Entität gespeichert. |  -  |
 

@@ -250,6 +250,10 @@
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT_FOUND -> Kommentar mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -279,6 +283,10 @@
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -304,6 +312,10 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
@@ -333,6 +345,10 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Kommentar konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
@@ -548,6 +564,10 @@
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT_FOUND -> Es gibt keine Infrastruktureinrichtung mit der ID.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -603,6 +623,10 @@
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "412": {
             "description": "PRECONDITION_FAILED -> In der Anwendung ist bereits eine neuere Version der Entität gespeichert.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -654,6 +678,10 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht aktualisiert werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
@@ -709,6 +737,10 @@
           },
           "400": {
             "description": "BAD_REQUEST -> Infrastruktureinrichtung konnte nicht erstellt werden, überprüfen sie die Eingabe.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "412": {
@@ -2285,6 +2317,10 @@
             "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "404": {
             "description": "NOT FOUND -> Kommentar mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -2304,6 +2340,10 @@
           "204": { "description": "NO CONTENT" },
           "400": {
             "description": "BAD_REQUEST -> Kommentar konnte nicht gelöscht werden",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "404": {
@@ -2348,6 +2388,10 @@
             "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
           "409": {
             "description": "CONFLICT -> Die Infrastruktureinrichtung referenziert ein Bauvorhaben.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
@@ -2367,6 +2411,10 @@
           "204": { "description": "NO CONTENT" },
           "404": {
             "description": "NOT FOUND -> Infrastruktureinrichtung mit dieser ID nicht vorhanden.",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
+          },
+          "403": {
+            "description": "FORBIDDEN_REQUEST -> Unerwarteter Infrastruktureinrichtung Typ.",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/InformationResponseDto" } } }
           },
           "409": {
@@ -5449,14 +5497,14 @@
       "MetabaseReportingDto": {
         "type": "object",
         "properties": {
-          "url": { "type": "string" },
-          "reportErgebnissePlanungsursaechlich": { "type": "string" },
-          "reportErgebnisseSobonUrsaechlich": { "type": "string" },
-          "reportWohneinheiten": { "type": "string" },
           "reportBauratendatei": { "type": "string" },
           "reportKitaplanungsbereichKrippe": { "type": "string" },
           "reportKitaplanungsbereichKiga": { "type": "string" },
-          "reportAndere": { "type": "string" }
+          "reportAndere": { "type": "string" },
+          "url": { "type": "string" },
+          "reportErgebnissePlanungsursaechlich": { "type": "string" },
+          "reportErgebnisseSobonUrsaechlich": { "type": "string" },
+          "reportWohneinheiten": { "type": "string" }
         }
       },
       "FileInformationDto": {
@@ -5506,6 +5554,7 @@
           "anlassPlanung": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraeger": { "$ref": "#/components/schemas/LookupListDto" },
           "einrichtungstraegerSchulen": { "$ref": "#/components/schemas/LookupListDto" },
+          "einrichtungstraegerKinderkrippeKindergarten": { "$ref": "#/components/schemas/LookupListDto" },
           "infrastruktureinrichtungTyp": { "$ref": "#/components/schemas/LookupListDto" },
           "artGsNachmittagBetreuung": { "$ref": "#/components/schemas/LookupListDto" },
           "sobonOrientierungswertJahr": { "$ref": "#/components/schemas/LookupListDto" },
